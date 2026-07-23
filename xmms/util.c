@@ -30,7 +30,7 @@ static GQuark quark_popup_data;
 
 
 /*
- * find_file_recursively() by Jörg Schuler Wed, 17 Feb 1999 23:50:52
+ * find_file_recursively() by Jï¿½rg Schuler Wed, 17 Feb 1999 23:50:52
  * +0100 Placed under GPL version 2 or (at your option) any later
  * version
  */
@@ -125,7 +125,7 @@ void del_directory(const char *dirname)
 	FTS *fts;
 	FTSENT *p;
 
-	fts = fts_open(argv, FTS_PHYSICAL, (int (*)())NULL);
+	fts = fts_open(argv, FTS_PHYSICAL, NULL);
 	while ((p = fts_read(fts)) != NULL) {
 		switch (p->fts_info) {
 		case FTS_D:
