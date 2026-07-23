@@ -291,7 +291,7 @@ void show_about_window(void)
 	gtk_signal_connect(GTK_OBJECT(about_window), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &about_window);
 	gtk_signal_connect(GTK_OBJECT(about_window), "key_press_event",
-			   util_dialog_keypress_cb, NULL);
+			   GTK_SIGNAL_FUNC(util_dialog_keypress_cb), NULL);
 	gtk_widget_realize(about_window);
 	
 	about_vbox = gtk_vbox_new(FALSE, 5);

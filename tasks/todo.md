@@ -11,6 +11,12 @@
 - [ ] **Task 9:** Cast GTK item-factory callbacks at legacy table boundaries. Depends on: Task 8.
 - [ ] **Task 10:** Convert GTK2 `GdkAtom` values at Xlib boundaries. Depends on: Task 8.
 - [ ] **Task 11:** Update changed GTK2 pointer-grab and accelerator APIs. Depends on: Tasks 9-10.
+- [ ] **Task 12:** Correct final GTK2 pointer-grab and dialog-signal boundaries exposed by the full build. Depends on: Tasks 9-11.
+- [ ] **Task 13:** Correct OSS configuration callback boundaries. Depends on: Task 12.
+- [ ] **Task 14:** Correct mpg123 plugin signal callback boundaries. Depends on: Task 13.
+- [ ] **Task 15:** Correct CD-audio plugin signal callback boundaries. Depends on: Task 14.
+- [ ] **Task 16:** Correct the tone-generator about-dialog signal boundary. Depends on: Task 15.
+- [ ] **Task 17:** Replace removed GTK1 `GtkPacker` use in the joystick configuration UI. Depends on: Task 16.
 
 ## Completion criteria
 - [x] `make -C tests check` passes.

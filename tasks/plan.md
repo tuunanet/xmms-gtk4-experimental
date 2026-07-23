@@ -247,6 +247,86 @@ full configure + build verification
 
 **Estimated scope:** Medium (2 files)
 
+#### Task 12: Correct newly exposed GTK callback and pointer-grab boundaries
+
+**Description:** Replace the remaining `GDK_NONE` values passed where GTK2 expects null window/cursor pointers and cast the final legacy dialog keypress signal registration at the GTK boundary.
+
+**Acceptance criteria:**
+- [ ] `xmms/playlist_popup.c` and `xmms/about.c` compile without incompatible-pointer errors.
+
+**Verification:**
+- [ ] Run the full parallel build.
+
+**Dependencies:** Tasks 9-11
+
+**Estimated scope:** Small (2 files)
+
+#### Task 13: Correct OSS configuration callback boundaries
+
+**Description:** Cast typed callbacks passed into the legacy OSS device-menu helper and GTK signal registration points, without changing device-selection behavior.
+
+**Acceptance criteria:**
+- [ ] `Output/OSS/configure.c` compiles without incompatible callback-pointer errors.
+
+**Verification:**
+- [ ] Build the OSS output plugin and then run the full parallel build.
+
+**Dependencies:** Task 12
+
+**Estimated scope:** Small (1 file)
+
+#### Task 14: Correct mpg123 plugin signal callback boundaries
+
+**Description:** Cast typed callbacks at GTK signal registrations in the mpg123 plugin configuration and file-information dialogs.
+
+**Acceptance criteria:**
+- [ ] `Input/mpg123/configure.c` and `Input/mpg123/fileinfo.c` compile without incompatible callback-pointer errors.
+
+**Verification:**
+- [ ] Build the mpg123 plugin and then run the full parallel build.
+
+**Dependencies:** Task 13
+
+**Estimated scope:** Small (2 files)
+
+#### Task 15: Correct CD-audio plugin signal callback boundaries
+
+**Description:** Cast the typed CD-audio configuration and CDDB callbacks only when registering them with the GTK2 signal API.
+
+**Acceptance criteria:**
+- [ ] `Input/cdaudio/cddb.c` and `Input/cdaudio/configure.c` compile without incompatible callback-pointer errors.
+
+**Verification:**
+- [ ] Build the CD-audio plugin and then run the full parallel build.
+
+**Dependencies:** Task 14
+
+**Estimated scope:** Small (2 files)
+
+#### Task 16: Correct the tone-generator about-dialog signal boundary
+
+**Description:** Cast the typed destroy callback at the GTK2 signal registration boundary.
+
+**Acceptance criteria:**
+- [ ] `Input/tonegen/tonegen.c` compiles without incompatible callback-pointer errors.
+
+**Dependencies:** Task 15
+
+#### Task 17: Replace removed GTK1 `GtkPacker` in joystick configuration
+
+**Description:** Rebuild the joystick direction-button layout using a supported GTK2 container while preserving the directional arrangement and configuration behavior.
+
+**Acceptance criteria:**
+- [ ] `General/joystick/configure.c` no longer references `GtkPacker`.
+- [ ] Direction controls preserve their existing layout and button callbacks.
+
+**Verification:**
+- [ ] Build the joystick plugin and run the full parallel build.
+
+**Dependencies:** Task 16
+
+**Estimated scope:** Medium (1 file)
+
 ### Checkpoint: Complete
 - [ ] All focused tests and the full build pass.
 - [ ] No generated build artifacts or unintended source changes are staged.
