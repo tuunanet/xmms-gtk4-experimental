@@ -435,7 +435,7 @@ static void input_general_file_info_box(char *filename, InputPlugin *ip)
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 	gtk_signal_connect(GTK_OBJECT(window), "key_press_event",
-			   util_dialog_keypress_cb, NULL);
+			   GTK_SIGNAL_FUNC(util_dialog_keypress_cb), NULL);
 
 	gtk_widget_show_all(window);
 }
