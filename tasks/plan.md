@@ -200,6 +200,53 @@ full configure + build verification
 
 **Estimated scope:** Small (verification only)
 
+### Phase 5: Port remaining GTK2 callback and X11 API boundaries
+
+#### Task 9: Cast GTK item-factory callbacks at table boundaries
+
+**Description:** Wrap callbacks stored in `GtkItemFactoryEntry` tables with `GTK_SIGNAL_FUNC()`. The callbacks retain their typed implementation signatures; only the legacy GTK item-factory storage boundary uses its generic `void (*)(void)` type.
+
+**Acceptance criteria:**
+- [ ] Item-factory tables in `xmms/main.c`, `xmms/playlistwin.c`, and `xmms/equalizer.c` compile without callback-pointer errors.
+- [ ] Menu action values and callback implementations are unchanged.
+
+**Verification:**
+- [ ] Build the three affected objects.
+
+**Dependencies:** Task 8
+
+**Estimated scope:** Medium (3 files)
+
+#### Task 10: Use GTK2/X11 atom conversion at Xlib boundaries
+
+**Description:** Convert `GdkAtom` values returned by `gdk_atom_intern()` to X11 `Atom` values before passing them to Xlib. Preserve `GdkAtom` values for GDK APIs such as `gdk_property_change()`.
+
+**Acceptance criteria:**
+- [ ] `xmms/hints.c` and `xmms/main.c` compile without `GdkAtom`/`Atom` conversion errors.
+- [ ] Xlib calls receive X11 `Atom` values; GDK calls receive `GdkAtom` values.
+
+**Verification:**
+- [ ] Build `hints.o` and `main.o`.
+
+**Dependencies:** Task 8
+
+**Estimated scope:** Medium (2 files)
+
+#### Task 11: Update changed GTK2 function argument types
+
+**Description:** Correct the remaining calls to `gdk_pointer_grab()` and `gtk_accel_group_activate()` in `xmms/playlistwin.c` and `xmms/equalizer.c`, using null window/cursor pointers and GTK2's `GQuark`/`GObject` argument types.
+
+**Acceptance criteria:**
+- [ ] No incompatible-pointer errors remain at these calls.
+- [ ] Pointer grabbing and accelerator dispatch retain their existing behavior.
+
+**Verification:**
+- [ ] Build `playlistwin.o` and `equalizer.o`.
+
+**Dependencies:** Tasks 9-10
+
+**Estimated scope:** Medium (2 files)
+
 ### Checkpoint: Complete
 - [ ] All focused tests and the full build pass.
 - [ ] No generated build artifacts or unintended source changes are staged.

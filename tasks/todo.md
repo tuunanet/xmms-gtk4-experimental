@@ -8,6 +8,9 @@
 - [ ] **Task 6:** Restore native callback assignments for `sbutton` and `pbutton`. Depends on: Task 3.
 - [ ] **Task 7:** Audit currently failing GTK signal callback boundaries. Depends on: Task 3.
 - [ ] **Task 8:** Iterate to a clean full build without warning suppression. Depends on: Tasks 4-7.
+- [ ] **Task 9:** Cast GTK item-factory callbacks at legacy table boundaries. Depends on: Task 8.
+- [ ] **Task 10:** Convert GTK2 `GdkAtom` values at Xlib boundaries. Depends on: Task 8.
+- [ ] **Task 11:** Update changed GTK2 pointer-grab and accelerator APIs. Depends on: Tasks 9-10.
 
 ## Completion criteria
 - [x] `make -C tests check` passes.
