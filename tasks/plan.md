@@ -98,10 +98,112 @@ full configure + build verification
 
 **Estimated scope:** Small (verification only)
 
+### Phase 4: Resolve the next compiler blockers
+
+#### Task 4: Remove the C23-reserved identifier from the control socket
+
+**Description:** Rename the `gboolean bool` parameter in `xmms/controlsocket.c`; GCC 15 treats `bool` as a language keyword, preventing the control-socket translation unit from compiling.
+
+**Acceptance criteria:**
+- [ ] `ctrl_write_gboolean()` retains its packet payload and length.
+- [ ] `xmms/controlsocket.c` compiles without errors.
+
+**Verification:**
+- [ ] Build the affected target or run `make -C xmms controlsocket.o`.
+
+**Dependencies:** Task 3
+
+**Files likely touched:**
+- `xmms/controlsocket.c`
+
+**Estimated scope:** Small (1 file)
+
+#### Task 5: Correct the `fts_open()` comparator type
+
+**Description:** Replace the incompatible function-pointer cast in `xmms/util.c` with the correctly typed null comparator. Do not alter deletion traversal behavior.
+
+**Acceptance criteria:**
+- [ ] `fts_open()` receives `NULL` or a comparator with its exact declared type.
+- [ ] `xmms/util.c` compiles without the incompatible-pointer error.
+
+**Verification:**
+- [ ] Build the affected target or run `make -C xmms util.o`.
+
+**Dependencies:** Task 3
+
+**Files likely touched:**
+- `xmms/util.c`
+
+**Estimated scope:** Small (1 file)
+
+#### Task 6: Restore typed custom-widget callback assignments
+
+**Description:** Replace `GTK_SIGNAL_FUNC()` casts assigned to the strongly typed `Widget` callback fields with the callback functions' native signatures. Start with `sbutton.c` and `pbutton.c`, then compile all custom-widget implementations and handle newly exposed instances as a separate small task if needed.
+
+**Acceptance criteria:**
+- [ ] `sbutton.c` and `pbutton.c` assign compatible press, release, and motion callbacks.
+- [ ] The custom-widget callback ABI and behavior are unchanged.
+- [ ] No incompatible-pointer errors remain in the custom-widget translation units.
+
+**Verification:**
+- [ ] Build `sbutton.o` and `pbutton.o`.
+- [ ] Run the focused entry test: `make -C tests check`.
+
+**Dependencies:** Task 3
+
+**Files likely touched:**
+- `xmms/sbutton.c`
+- `xmms/pbutton.c`
+
+**Estimated scope:** Small (2 files)
+
+#### Task 7: Audit GTK signal callback boundaries revealed by GCC 15
+
+**Description:** Update only the direct `gtk_signal_connect()` calls and callback-holder types that fail compilation (initially in `xmms/input.c` and `xmms/util.c`) so each callback crosses GTK's generic `GtkSignalFunc` boundary explicitly. Preserve signal names and user-data arguments.
+
+**Acceptance criteria:**
+- [ ] All currently failing GTK signal connections compile with their intended callback signature.
+- [ ] No signal handler behavior or connected user data changes.
+- [ ] No new callback casts are used for assignments to the project's strongly typed `Widget` fields.
+
+**Verification:**
+- [ ] Build `input.o` and `util.o`.
+- [ ] Inspect the changed signal connections against their callback declarations.
+
+**Dependencies:** Task 3
+
+**Files likely touched:**
+- `xmms/input.c`
+- `xmms/util.c`
+- `xmms/util.h` (only if a callback-holder type needs to change)
+
+**Estimated scope:** Medium (2-3 files)
+
+#### Task 8: Iterate to a clean full build
+
+**Description:** Reconfigure and rebuild after Tasks 4-7. Treat each subsequently exposed compiler error as a new, scoped task rather than applying broad warning suppression or a global compiler-flag workaround.
+
+**Acceptance criteria:**
+- [ ] `./configure && make -j"$(nproc)"` succeeds.
+- [ ] `make -C tests check` and `make check` succeed.
+- [ ] No generated build artifacts are staged.
+
+**Verification:**
+- [ ] Run `./configure`.
+- [ ] Run `make -j"$(nproc)"`.
+- [ ] Run `make -C tests check` and `make check`.
+
+**Dependencies:** Tasks 4-7
+
+**Files likely touched:**
+- No source files expected; generated build artifacts only.
+
+**Estimated scope:** Small (verification only)
+
 ### Checkpoint: Complete
-- [ ] All focused tests and the full build pass (full build remains blocked outside this plan's scope).
+- [ ] All focused tests and the full build pass.
 - [ ] No generated build artifacts or unintended source changes are staged.
-- [ ] The fix is ready for code review and an atomic `fix:` commit.
+- [ ] The changes are ready for code review and atomic `fix:` commits.
 
 ## Risks and Mitigations
 
@@ -109,7 +211,8 @@ full configure + build verification
 |---|---|---|
 | GTK test needs an X display | Medium | Run the focused test with `xvfb-run`; document/install that test-only dependency if absent. |
 | UTF-8 byte indexing changes cursor semantics | High | Use GLib UTF-8 character/pointer helpers and explicitly test multibyte text. |
-| Other legacy APIs fail after `xentry.c` is fixed | Medium | Stop at the next compiler error and create a separate, scoped plan item rather than broadening this fix. |
+| Other legacy APIs fail after `xentry.c` is fixed | Medium | The GCC 15 findings are decomposed into Tasks 4-8; stop and add a new scoped task for any further blocker. |
+| Callback casts hide a real ABI mismatch | High | Preserve native callback signatures for custom `Widget` fields and use GTK's generic callback boundary only at `gtk_signal_connect()` calls. |
 
 ## Open Questions
 - Is `xvfb-run` available in the intended development and CI environments, or should the project add it as an explicit test dependency?
