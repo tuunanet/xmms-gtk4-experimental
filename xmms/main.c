@@ -1475,7 +1475,7 @@ void mainwin_jump_to_time(void)
 	if (!get_input_playing())
 		return;
 
-	mainwin_jtt = gtk_window_new(GDK_WINDOW_DIALOG);
+	mainwin_jtt = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(mainwin_jtt), _("Jump to time"));
 	gtk_window_set_policy(GTK_WINDOW(mainwin_jtt), FALSE, FALSE, FALSE);
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtt), GTK_WINDOW(mainwin));
@@ -1889,7 +1889,7 @@ static void mainwin_jump_to_file(void)
 	 */
 	GtkWidget **edit_clist_qlist_and_queue = g_malloc(sizeof(GtkWidget *)*4);
 
-	mainwin_jtf = gtk_window_new(GDK_WINDOW_DIALOG);
+	mainwin_jtf = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(mainwin_jtf), _("Jump to file"));
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtf),
 				     GTK_WINDOW(mainwin));
@@ -2211,7 +2211,7 @@ void mainwin_queue_manager(void)
 	 */
 	GtkWidget **edit_clist_qlist_and_queue = g_malloc(sizeof(GtkWidget *)*4);
 
-	mainwin_qm = gtk_window_new(GDK_WINDOW_DIALOG);
+	mainwin_qm = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(mainwin_qm), _("Jump to file"));
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_qm),
 				     GTK_WINDOW(mainwin));
@@ -4073,13 +4073,19 @@ void segfault_handler(int sig)
 	exit(1);
 }
 
+static gboolean pposition_destroy(gpointer data)
+{
+	gtk_widget_destroy(GTK_WIDGET(data));
+	return FALSE;
+}
+
 static gboolean pposition_configure(GtkWidget *w, GdkEventConfigure *event, gpointer data)
 {
 	gint x,y;
 	gdk_window_get_deskrelative_origin(w->window, &x, &y);
 	if(x != 0 || y != 0)
 		pposition_broken = TRUE;
-	gtk_widget_destroy(w);
+	g_idle_add(pposition_destroy, w);
 
 	return FALSE;
 }
