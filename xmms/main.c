@@ -514,17 +514,42 @@ static void read_config(void)
 		cfg.gentitle_format = g_strdup("%p - %t");
 	if (cfg.outputplugin == NULL)
 	{
-#ifdef HAVE_OSS
-		cfg.outputplugin = g_strdup_printf("%s/%s/libOSS.so", PLUGIN_DIR, plugin_dir_list[0]);
-#elif defined(sun)
-		cfg.outputplugin = g_strdup_printf("%s/%s/libSolaris.so", PLUGIN_DIR, plugin_dir_list[0]);
-#else
-		/*
-		 * FIXME: This implisitly means the output plugin that is first
-		 * in the alphabet will be used (usually the disk writer plugin)
-		 */
-		cfg.outputplugin = g_strdup("");
+		gchar *alsa_plugin;
+
+#ifdef BUILD_PLUGIN_DIR
+		if (!g_file_test(PLUGIN_DIR, G_FILE_TEST_IS_DIR))
+		{
+			alsa_plugin = g_build_filename(BUILD_PLUGIN_DIR, "Output", "alsa",
+						   ".libs", "libALSA.so", NULL);
+			if (g_file_test(alsa_plugin, G_FILE_TEST_EXISTS))
+				cfg.outputplugin = alsa_plugin;
+			else
+				g_free(alsa_plugin);
+		}
 #endif
+		if (cfg.outputplugin == NULL)
+		{
+			alsa_plugin = g_strdup_printf("%s/%s/libALSA.so", PLUGIN_DIR,
+						     plugin_dir_list[0]);
+			if (g_file_test(alsa_plugin, G_FILE_TEST_EXISTS))
+				cfg.outputplugin = alsa_plugin;
+			else
+				g_free(alsa_plugin);
+		}
+		if (cfg.outputplugin == NULL)
+		{
+#ifdef HAVE_OSS
+			cfg.outputplugin = g_strdup_printf("%s/%s/libOSS.so", PLUGIN_DIR, plugin_dir_list[0]);
+#elif defined(sun)
+			cfg.outputplugin = g_strdup_printf("%s/%s/libSolaris.so", PLUGIN_DIR, plugin_dir_list[0]);
+#else
+			/*
+			 * FIXME: This implisitly means the output plugin that is first
+			 * in the alphabet will be used (usually the disk writer plugin)
+			 */
+			cfg.outputplugin = g_strdup("");
+#endif
+		}
 	}
 	if (cfg.eqpreset_default_file == NULL)
 		cfg.eqpreset_default_file = g_strdup("dir_default.preset");
