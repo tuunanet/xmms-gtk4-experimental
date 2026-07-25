@@ -36,6 +36,7 @@
 #include "libxmms/xmmsctrl.h"
 #include "libxmms/util.h"
 #include "libxmms/dirbrowser.h"
+#include "outputplugin.h"
 #include "xmms_mini.xpm"
 
 #define RANDTABLE_SIZE 128
@@ -512,6 +513,19 @@ static void read_config(void)
 		cfg.mainwin_font = g_strdup("-adobe-helvetica-medium-r-*-*-8-*");
 	if (cfg.gentitle_format == NULL)
 		cfg.gentitle_format = g_strdup("%p - %t");
+	/* Migrate the old automatic OSS default when this system has no OSS device. */
+	if (output_plugin_is_unavailable_oss(cfg.outputplugin))
+	{
+		gchar *alsa_plugin = output_plugin_find_alsa(plugin_dir_list[0]);
+
+		if (alsa_plugin)
+		{
+			g_free(cfg.outputplugin);
+			cfg.outputplugin = alsa_plugin;
+		}
+	}
+	if (cfg.outputplugin == NULL)
+		cfg.outputplugin = output_plugin_find_alsa(plugin_dir_list[0]);
 	if (cfg.outputplugin == NULL)
 	{
 #ifdef HAVE_OSS
