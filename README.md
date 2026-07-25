@@ -1,0 +1,180 @@
+# XMMS — X Multimedia System
+
+> A cross-platform multimedia player, originally created in 1997. This repository is a community-maintained fork that keeps XMMS building and running on modern systems by porting it to **GTK2** and current toolchains.
+
+![License](https://img.shields.io/badge/license-GPL--2.0-blue)
+![Language](https://img.shields.io/badge/language-C-555555)
+![Toolkit](https://img.shields.io/badge/toolkit-GTK2-729fcf)
+![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20BSD-4c9e2f)
+![Status](https://img.shields.io/badge/status-maintained%20fork-8f4f9f)
+
+---
+
+## About
+
+XMMS (X Multimedia System) is a lightweight, skinnable audio player with a
+plugin architecture for input, output, effect, general, and visualization
+plugins. It supports MP3, Ogg Vorbis, WAV, module formats (MOD, XM, S3M, IT and
+others via libmikmod), CD audio, and HTTP/Icecast/Shoutcast streaming.
+
+This fork is based on the last upstream release, **XMMS 1.2.11**, and migrates
+the original GTK1 codebase to **GTK2 / GLib2** so that it continues to compile
+and run on contemporary Linux and BSD distributions.
+
+---
+
+## Fork status & maintainer
+
+This is **not** the original XMMS project. The original upstream development
+ended with the 1.2.11 release (2007), and the original `xmms.org` website is no
+longer online. This fork is maintained independently on GitHub by:
+
+**the current maintainer** (2026–present)
+
+The goal of this fork is purely preservation and modernization — keeping a
+piece of desktop multimedia history usable on today's systems. Work so far has
+focused on:
+
+- Migrating the UI from GTK1 to **GTK2 / GLib2**
+- Fixing **GCC 15** build blockers and modern compiler warnings
+- Defaulting audio output to **ALSA** on modern Linux (OSS as a legacy option)
+- Fixing plugin discovery from development build trees
+- Restoring playback stability (e.g. ALSA seek-dropout fixes)
+
+See the [ChangeLog](ChangeLog) and the git history for the full set of changes.
+
+---
+
+## Honoring the original creators
+
+XMMS would not exist without the people who originally designed, built, and
+documented it between 1997 and 2007. Their work is the foundation of everything
+in this repository, and this fork exists only to keep that work alive. We honor
+and thank them.
+
+**Created by:**
+
+- Peter Alm — main programming
+- Håvard Kvålen — additional programming
+- Thomas Nilsson — homepage, graphics, documentation & support
+- Olle Hällnäs — documentation & support
+
+XMMS was also shaped by a large number of additional contributors over the
+years — the full, credited list is preserved in [AUTHORS](AUTHORS). If you are
+(or represent) one of those contributors and would like a correction or
+additional credit, please open an issue.
+
+> ℹ️ The original `http://www.xmms.org` website, its bug tracker
+> (`bugs.xmms.org`), and the historical `@xmms.org` contact addresses are no
+> longer active. For this fork, please use the [GitHub issue tracker](#issues)
+> instead.
+
+---
+
+## Features
+
+- Skinnable WinAmp 2.x-compatible interface (`.wsz`, zip, tar archives)
+- Plugin system: Input, Output, Effect, General, Visualization
+- Supported formats: MP1/2/3, Ogg Vorbis, WAV, MOD/XM/S3M/IT/… (via libmikmod), CD audio
+- Streaming: HTTP, Icecast, Shoutcast (1.0/1.1) with title streaming
+- Graphic equalizer with WinAmp EQF preset import/export
+- Playlist editor with queue manager, jump-to-file, and sort options
+- Visualization: blur scope, OpenGL spectrum analyzer, simple spectrum
+- Doublesize, winshade, and dock-app (Window Maker / GNOME / AfterStep) modes
+
+The complete feature list is in the [user manual](docs/manual.md#5-features).
+
+---
+
+## Building from source
+
+XMMS uses the GNU Autotools build system. This repository ships a pre-generated
+`configure` script, so a from-tarball build is straightforward.
+
+### Requirements
+
+**Required:**
+
+- A C compiler (GCC or Clang)
+- `pkg-config`
+- **GTK+ ≥ 2.0** and **GLib ≥ 2.0** (with `gthread`)
+- POSIX threads (`pthread`)
+- `zlib`
+
+**Optional (enable additional plugins):**
+
+- `libmikmod` ≥ 3.1.5 — module format support (MOD, XM, S3M, IT, …)
+- `libvorbis` — Ogg Vorbis input plugin
+- OpenGL (`libGL` or Mesa) — OpenGL spectrum analyzer visualization
+- ALSA development headers — ALSA output plugin (recommended on Linux)
+- ESD development headers — eSound output plugin (legacy)
+- OSS / Sun audio — platform output plugins
+
+### Build
+
+```sh
+./configure
+make
+```
+
+To install system-wide (default prefix `/usr/local`):
+
+```sh
+sudo make install
+```
+
+This installs the `xmms` binary to `<prefix>/bin` and plugins to
+`<prefix>/lib/xmms/`.
+
+### Useful `configure` options
+
+| Option | Description |
+| --- | --- |
+| `--prefix=PATH` | Installation prefix (default `/usr/local`) |
+| `--disable-opengl` | Disable the OpenGL visualization plugin |
+| `--disable-vorbis` | Disable the Ogg Vorbis input plugin |
+| `--disable-mikmod` | Disable the MikMod input plugin |
+| `--enable-one-plugin-dir` | Use a single plugin directory |
+| `--disable-user-plugin-dir` | Disable per-user plugin directory |
+| `--with-dev-dsp=PATH` | Path to OSS DSP device (default `/dev/dsp`) |
+| `--with-dev-mixer=PATH` | Path to OSS mixer device (default `/dev/mixer`) |
+
+Run `./configure --help` for the full list.
+
+---
+
+## Documentation
+
+- **[User manual](docs/manual.md)** — the complete XMMS manual (controls,
+  playlist editor, equalizer, preferences, and every bundled plugin),
+  converted from the original `README`.
+- **[Keyboard shortcuts](docs/manual.md#311-key-bindings)** — full key binding
+  reference.
+- **[FAQ](FAQ)** — frequently asked questions.
+- **[TODO](TODO)** — historical developer task list.
+- **[ChangeLog](ChangeLog)** — upstream change history.
+
+---
+
+## Contributing
+
+Contributions are welcome. This is a preservation-focused fork, so changes that
+keep XMMS building and running on modern systems — without altering its classic
+behavior — are the priority.
+
+1. Search the [issue tracker](#issues) for existing discussions.
+2. Open an issue describing the bug or proposed change.
+3. Fork the repository and create a branch (e.g. `fix/...` or `feat/...`).
+4. Keep commits focused and write clear commit messages.
+5. Open a pull request referencing the related issue.
+
+<a name="issues"></a>
+Bug reports and pull requests: **https://github.com/tuunanet/xmms-gtk2/issues**
+
+---
+
+## License
+
+XMMS is free software licensed under the **GNU General Public License version 2**
+([COPYING](COPYING)). It is provided "as is", without warranty of any kind.
+```
