@@ -55,7 +55,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_xmms_OBJECTS = bmp.$(OBJEXT) skin.$(OBJEXT) util.$(OBJEXT) \
 	output.$(OBJEXT) fft.$(OBJEXT) input.$(OBJEXT) \
 	effect.$(OBJEXT) general.$(OBJEXT) visualization.$(OBJEXT) \
-	fullscreen.$(OBJEXT) pluginenum.$(OBJEXT) playlist.$(OBJEXT) \
+	fullscreen.$(OBJEXT) pluginenum.$(OBJEXT) outputplugin.$(OBJEXT) \
+	playlist.$(OBJEXT) \
 	controlsocket.$(OBJEXT) dock.$(OBJEXT) widget.$(OBJEXT) \
 	sbutton.$(OBJEXT) pbutton.$(OBJEXT) tbutton.$(OBJEXT) \
 	textbox.$(OBJEXT) menurow.$(OBJEXT) hslider.$(OBJEXT) \
@@ -323,6 +324,7 @@ general.c general.h \
 visualization.c visualization.h \
 fullscreen.c fullscreen.h \
 pluginenum.c pluginenum.h \
+outputplugin.c outputplugin.h \
 playlist.c playlist.h \
 controlsocket.c controlsocket.h \
 dock.c dock.h \

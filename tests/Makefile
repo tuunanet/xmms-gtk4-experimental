@@ -4,10 +4,11 @@ LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean
 
-check: test-xentry test-filebrowser test-pluginenum
+check: test-xentry test-filebrowser test-pluginenum test-outputplugin
 	./test-xentry
 	./test-filebrowser
 	./test-pluginenum
+	./test-outputplugin
 
 test-xentry: test-xentry.c ../libxmms/xentry.c ../libxmms/xentry.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ test-xentry.c ../libxmms/xentry.c $(LDLIBS)
@@ -30,5 +31,13 @@ test-plugins/Output/fixture/.libs/libfixture-output.so: fixture-output-plugin.c
 	mkdir -p test-plugins/Output/fixture/.libs
 	$(CC) $(CPPFLAGS) $(CFLAGS) -fPIC -shared -o $@ $<
 
+test-outputplugin: CFLAGS += -DBUILD_PLUGIN_DIR=\"$(CURDIR)/test-outputplugin-plugins\" -DPLUGIN_DIR=\"/nonexistent\"
+test-outputplugin: test-outputplugin.c ../xmms/outputplugin.c ../xmms/outputplugin.h test-outputplugin-plugins/Output/alsa/.libs/libALSA.so
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ test-outputplugin.c ../xmms/outputplugin.c $(LDLIBS)
+
+test-outputplugin-plugins/Output/alsa/.libs/libALSA.so:
+	mkdir -p test-outputplugin-plugins/Output/alsa/.libs
+	touch $@
+
 clean:
-	rm -rf test-xentry test-filebrowser test-pluginenum test-plugins
+	rm -rf test-xentry test-filebrowser test-pluginenum test-outputplugin test-plugins test-outputplugin-plugins
