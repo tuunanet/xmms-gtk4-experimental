@@ -30,6 +30,7 @@
 
 
 #include "alsa.h"
+#include "pcm-state.h"
 #include <ctype.h>
 #include <pthread.h>
 #include <math.h>
@@ -814,8 +815,14 @@ static void *alsa_loop(void *arg)
 	{
 		if (get_thread_buffer_filled() > prebuffer_size)
 			prebuffer = FALSE;
-		if (!paused && !prebuffer &&
-		    get_thread_buffer_filled() > hw_period_size_in)
+		AlsaPcmAction action = alsa_pcm_action(
+			paused, prebuffer,
+			get_thread_buffer_filled() > hw_period_size_in,
+			snd_pcm_state(alsa_pcm) == SND_PCM_STATE_PREPARED);
+
+		if (action == ALSA_PCM_WRITE)
+			alsa_write_out_thread_data();
+		else if (action == ALSA_PCM_POLL)
 		{
 			snd_pcm_poll_descriptors(alsa_pcm, pfds, npfds);
 			if (poll(pfds, npfds, 10) > 0)

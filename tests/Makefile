@@ -4,11 +4,12 @@ LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean
 
-check: test-xentry test-filebrowser test-pluginenum test-outputplugin
+check: test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state
 	./test-xentry
 	./test-filebrowser
 	./test-pluginenum
 	./test-outputplugin
+	./test-alsa-pcm-state
 
 test-xentry: test-xentry.c ../libxmms/xentry.c ../libxmms/xentry.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ test-xentry.c ../libxmms/xentry.c $(LDLIBS)
@@ -39,5 +40,8 @@ test-outputplugin-plugins/Output/alsa/.libs/libALSA.so:
 	mkdir -p test-outputplugin-plugins/Output/alsa/.libs
 	touch $@
 
+test-alsa-pcm-state: test-alsa-pcm-state.c ../Output/alsa/pcm-state.c ../Output/alsa/pcm-state.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ test-alsa-pcm-state.c ../Output/alsa/pcm-state.c $(LDLIBS)
+
 clean:
-	rm -rf test-xentry test-filebrowser test-pluginenum test-outputplugin test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state test-plugins test-outputplugin-plugins
