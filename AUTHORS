@@ -1,8 +1,30 @@
-XMMS - X Multimedia System (C) 1997-2004
+XMMS - X Multimedia System
+==========================
+
+This file credits everyone who has contributed to XMMS.
+
+The original XMMS project was created in 1997 and its upstream development
+ended with the 1.2.11 release in 2007. The original http://www.xmms.org
+website and its @xmms.org contact addresses are no longer active.
+
+This is a community-maintained fork (https://github.com/tuunanet/xmms-gtk2)
+that keeps XMMS building and running on modern systems. The people listed
+below under "Original XMMS authors and contributors" are the ones who
+actually designed, built, documented, and shaped XMMS. Their work is the
+foundation of everything in this repository, and this fork exists only to
+keep that work usable. We honor and thank them.
+
+The original contact addresses are preserved for the historical record only;
+they are no longer valid. For this fork, please use the GitHub issue tracker:
+https://github.com/tuunanet/xmms-gtk2/issues
+
+
+Original XMMS authors and contributors (1997-2007)
+--------------------------------------------------
 
        Main Programming: Peter Alm
 
- Additional Programming: Håvard Kvålen
+ Additional Programming: HÃ¥vard KvÃ¥len
                          Derrik Pates
 
    With Additional Help: Sean Atkinson
@@ -16,10 +38,10 @@ XMMS - X Multimedia System (C) 1997-2004
                          Logan Hanks
                          Eric L. Hernes (FreeBSD patches)
                          Ville Herva
-			 Ian 'Hixie' Hickson
+                         Ian 'Hixie' Hickson
                          higway (MMX)
                          Michael Hipp and others (MPG123 engine)
-                         Olle Hällnäs (compiling fixes)
+                         Olle HÃ¤llnÃ¤s (compiling fixes)
                          David Jacoby
                          Osamu Kayasono (3DNow!)
                          Lyle B Kempler
@@ -33,10 +55,10 @@ XMMS - X Multimedia System (C) 1997-2004
                          Josip Rodin
                          Pablo Saratxaga (i18n)
                          Carl van Schaik (pro logic plugin)
-                         Jörg Schuler
+                         JÃ¶rg Schuler
                          Charles Sielski (irman plugin)
                          Espen Skoglund
-			 Matthieu Sozeau (ALSA plugin)
+                         Matthieu Sozeau (ALSA plugin)
                          Kimura Takuhiro (3DNow!)
                          Zinx Verituse
                          Ryan Weaver (RPMs among other things)
@@ -50,5 +72,15 @@ XMMS - X Multimedia System (C) 1997-2004
 
   Homepage and Graphics: Thomas Nilsson
 
-       Support and Docs: Olle Hällnäs
+       Support and Docs: Olle HÃ¤llnÃ¤s
 
+
+Fork maintainer (2026-present)
+------------------------------
+
+       Maintainer: Tuomo Tuunanen
+                   GTK2 / GLib2 port, modern toolchain fixes (GCC 15),
+                   ALSA default output, and build/repairs to keep XMMS
+                   running on contemporary Linux and BSD systems.
+
+                   https://github.com/tuunanet/xmms-gtk2
