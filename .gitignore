@@ -1,0 +1,41 @@
+# Autotools configuration output
+/Makefile
+**/Makefile
+/config.h
+/libxmms/config.h
+/config.log
+**/config.log
+/config.status
+**/config.status
+/libtool
+**/libtool
+/stamp-h[0-9]*
+**/stamp-h[0-9]*
+/autom4te.cache/
+/config.cache
+
+# Generated localization and configuration headers
+/po/Makefile.in
+/po/POTFILES
+/xmms/i18n.h
+
+# Compiler and libtool artifacts
+*.o
+*.lo
+*.la
+*.a
+*.so
+*.lai
+*.exp
+*.ver
+.deps/
+.libs/
+
+# Built programs and generated scripts/manual pages
+/xmms/xmms
+/wmxmms/wmxmms
+/xmms-config
+/xmms.1
+/wmxmms.1
+/tests/test-xentry
+/tests/test-filebrowser
