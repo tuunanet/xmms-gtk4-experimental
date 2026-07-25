@@ -26554,6 +26554,7 @@ fi
 
 
 plugindir=$libdir/xmms
+BUILD_PLUGIN_DIR=`pwd`
 
 
 if test "x$enable_one_plugin_dir" = "xyes"; then
@@ -26579,7 +26580,7 @@ fi
 
 
 
-XMMS_DEFINES="$CFLAGS -DDATA_DIR=\\\"$datadir/xmms\\\" -DPLUGIN_DIR=\\\"$plugindir\\\" -DPLUGINSUBS=$pluginsubs -DLOCALEDIR=\\\"$localedir\\\""
+XMMS_DEFINES="$CFLAGS -DDATA_DIR=\\\"$datadir/xmms\\\" -DPLUGIN_DIR=\\\"$plugindir\\\" -DBUILD_PLUGIN_DIR=\\\"$BUILD_PLUGIN_DIR\\\" -DPLUGINSUBS=$pluginsubs -DLOCALEDIR=\\\"$localedir\\\""
 
 if test "x$enable_user_plugin_dir" = "xno"; then
 
