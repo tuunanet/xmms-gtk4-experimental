@@ -34,6 +34,7 @@ EXTRA_DIST = \
 	tests/test-alsa-pcm-state.c \
 	tests/test-alsa-volume.c \
 	tests/test-filebrowser.c \
+	tests/test-mpg123-stream-position.c \
 	tests/test-outputplugin.c \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \

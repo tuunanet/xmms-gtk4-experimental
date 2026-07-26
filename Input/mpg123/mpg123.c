@@ -1,5 +1,6 @@
 #include "mpg123.h"
 #include "id3_header.h"
+#include "stream-position.h"
 #include "libxmms/configfile.h"
 #include "libxmms/titlestring.h"
 #include <string.h>
@@ -819,8 +820,9 @@ static int mpg123_seek(struct frame *fr, xing_header_t *xh, gboolean vbr, int ti
 	
 	if (xh)
 	{
-		int percent = ((double) time * 100.0) /
-			(mpg123_info->num_frames * mpg123_info->tpf);
+		/* Preserve fractions so long tracks do not seek up to 1% early. */
+		gdouble percent = mpg123_seek_percentage(time,
+			mpg123_info->num_frames, mpg123_info->tpf);
 		int byte = mpg123_seek_point(xh, percent);
 		jumped = mpg123_stream_jump_to_byte(fr, byte);
 	}
@@ -1128,13 +1130,23 @@ static void do_pause(short p)
 
 static int get_time(void)
 {
+	gint output_time;
+
 	if (audio_error)
 		return -2;
-	if (!mpg123_info)
+	if (!mpg123_info || !mpg123_info->going)
 		return -1;
-	if (!mpg123_info->going || (mpg123_info->eof && !mpg123_ip.output->buffer_playing()))
+
+	output_time = mpg123_ip.output->output_time();
+	/*
+	 * PipeWire-backed ALSA can remain running after useful audio drains.
+	 * A finite track is complete once decoder EOF reaches its known length.
+	 */
+	if (mpg123_info->eof && mpg123_output_has_finished(
+			mpg123_ip.output->buffer_playing(), output_time,
+			mpg123_length))
 		return -1;
-	return mpg123_ip.output->output_time();
+	return output_time;
 }
 
 static void aboutbox(void)
