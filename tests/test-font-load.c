@@ -13,6 +13,10 @@ static void assert_legacy_default_loads(const gchar *name)
 	cfg.use_fontsets = FALSE;
 	font = util_font_load((gchar *) name);
 	g_assert_nonnull(font);
+	g_assert_cmpint(gdk_text_width(font, "ABC", 3), ==,
+	                gdk_char_width(font, 'A') +
+	                gdk_char_width(font, 'B') +
+	                gdk_char_width(font, 'C'));
 	gdk_font_unref(font);
 }
 
