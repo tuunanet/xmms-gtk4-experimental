@@ -14,7 +14,7 @@ if ! printf '%s\n' "$expected" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0
 	exit 1
 fi
 
-for file in configure.in configure CHANGELOG.md; do
+for file in configure.in configure xmms.spec CHANGELOG.md; do
 	if [ ! -f "$root/$file" ]; then
 		echo "error: required release file is missing: $file" >&2
 		exit 1
@@ -42,6 +42,18 @@ if [ "$generated_count" -ne 1 ]; then
 fi
 if [ "$generated_versions" != "$expected" ]; then
 	echo "error: generated configure version $generated_versions does not match $expected" >&2
+	exit 1
+fi
+
+spec_versions=$(sed -n 's/^%define[[:space:]][[:space:]]*version[[:space:]][[:space:]]*\([^[:space:]]*\).*$/\1/p' \
+	"$root/xmms.spec")
+spec_count=$(printf '%s\n' "$spec_versions" | grep -c . || true)
+if [ "$spec_count" -ne 1 ]; then
+	echo "error: xmms.spec must contain exactly one generated package version" >&2
+	exit 1
+fi
+if [ "$spec_versions" != "$expected" ]; then
+	echo "error: generated xmms.spec version $spec_versions does not match $expected" >&2
 	exit 1
 fi
 

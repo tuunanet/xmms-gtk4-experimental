@@ -36,6 +36,10 @@ EOF
 #!/bin/sh
  VERSION=$version
 EOF
+	cat > "$root/xmms.spec" <<EOF
+%define name xmms
+%define version $version
+EOF
 	cat > "$root/CHANGELOG.md" <<EOF
 # Changelog
 
@@ -70,6 +74,13 @@ sed 's/VERSION=1.3.0/VERSION=1.2.11/' "$stale/configure" > "$stale/configure.new
 mv "$stale/configure.new" "$stale/configure"
 expect_failure "rejects a stale generated configure script" \
 	"$checker" 1.3.0 "$stale"
+
+stale_spec="$tmpdir/stale-spec"
+write_fixture "$stale_spec" 1.3.0
+sed 's/version 1.3.0/version 1.2.11/' "$stale_spec/xmms.spec" > "$stale_spec/xmms.spec.new"
+mv "$stale_spec/xmms.spec.new" "$stale_spec/xmms.spec"
+expect_failure "rejects stale generated package metadata" \
+	"$checker" 1.3.0 "$stale_spec"
 
 missing="$tmpdir/missing-changelog"
 write_fixture "$missing" 1.3.0
