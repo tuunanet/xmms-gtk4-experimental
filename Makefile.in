@@ -37,14 +37,13 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+DIST_COMMON = $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(srcdir)/wmxmms.1.in $(srcdir)/xmms-config.in \
 	$(srcdir)/xmms.1.in $(srcdir)/xmms.spec.in \
 	$(top_srcdir)/configure $(top_srcdir)/intl/Makefile.in \
-	ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL NEWS TODO \
-	config.guess config.rpath config.sub depcomp install-sh \
-	ltmain.sh missing
+	ABOUT-NLS COPYING config.guess config.rpath config.sub depcomp \
+	install-sh ltmain.sh missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -300,7 +299,39 @@ target_alias = @target_alias@
 xmmsdir = @xmmsdir@
 SUBDIRS = intl libxmms xmms Output Input Effect General Visualization wmxmms po
 bin_SCRIPTS = xmms-config
-EXTRA_DIST = xmms.spec xmms.spec.in FAQ xmms.m4
+EXTRA_DIST = \
+	.editorconfig \
+	.gitattributes \
+	.github/dependabot.yml \
+	.github/ISSUE_TEMPLATE/bug_report.yml \
+	.github/ISSUE_TEMPLATE/config.yml \
+	.github/ISSUE_TEMPLATE/feature_request.yml \
+	.github/pull_request_template.md \
+	.github/workflows/ci.yml \
+	CHANGELOG.md \
+	CODE_OF_CONDUCT.md \
+	CONTRIBUTING.md \
+	CONTRIBUTORS.md \
+	README.md \
+	SECURITY.md \
+	docs/history/README.md \
+	docs/history/upstream-changelog.txt \
+	docs/history/upstream-faq.txt \
+	docs/history/upstream-release-notes.txt \
+	docs/history/upstream-todo.txt \
+	docs/manual.md \
+	mkinstalldirs \
+	tests/Makefile \
+	tests/fixture-input-plugin.c \
+	tests/fixture-output-plugin.c \
+	tests/test-alsa-pcm-state.c \
+	tests/test-filebrowser.c \
+	tests/test-outputplugin.c \
+	tests/test-pluginenum.c \
+	tests/test-xentry.c \
+	xmms.m4 \
+	xmms.spec \
+	xmms.spec.in
 m4datadir = $(datadir)/aclocal
 m4data_DATA = xmms.m4
 man_MANS = xmms.1 wmxmms.1
@@ -735,7 +766,21 @@ distcleancheck: distclean
 	  || { echo "ERROR: files left in build directory after distclean:" ; \
 	       $(distcleancheck_listfiles) ; \
 	       exit 1; } >&2
-check-am: all-am
+check-local:
+	$(mkdir_p) tests
+	@top_srcdir=`cd $(top_srcdir) && pwd`; top_builddir=`pwd`; \
+	$(MAKE) -C tests -f "$$top_srcdir/tests/Makefile" \
+		srcdir="$$top_srcdir/tests" top_srcdir="$$top_srcdir" \
+		top_builddir="$$top_builddir" check
+
+clean-local:
+	@if test -d tests; then \
+		top_srcdir=`cd $(top_srcdir) && pwd`; \
+		$(MAKE) -C tests -f "$$top_srcdir/tests/Makefile" \
+			srcdir="$$top_srcdir/tests" top_srcdir="$$top_srcdir" clean; \
+	fi
+
+check-am: all-am check-local
 check: check-recursive
 all-am: Makefile $(SCRIPTS) $(MANS) $(DATA) config.h
 installdirs: installdirs-recursive
@@ -769,7 +814,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-recursive
 
-clean-am: clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic clean-libtool clean-local mostlyclean-am
 
 distclean: distclean-recursive
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
@@ -823,7 +868,7 @@ uninstall-info: uninstall-info-recursive
 uninstall-man: uninstall-man1
 
 .PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am am--refresh check \
-	check-am clean clean-generic clean-libtool clean-recursive \
+	check-am check-local clean clean-generic clean-libtool clean-local clean-recursive \
 	ctags ctags-recursive dist dist-all dist-bzip2 dist-gzip \
 	dist-shar dist-tarZ dist-zip distcheck distclean \
 	distclean-generic distclean-hdr distclean-libtool \

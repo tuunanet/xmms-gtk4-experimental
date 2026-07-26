@@ -2,17 +2,43 @@
 
 All notable changes to this fork are documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+Versioned entries will follow
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html) when the fork begins
+publishing tagged releases.
 
-The historical upstream changelog (1997–2007) is preserved in
-[`ChangeLog`](ChangeLog). This file covers the GTK2 fork's work only.
+The detailed upstream history (1997–2007) is preserved under
+[`docs/history/`](docs/history/README.md). This file is the canonical changelog
+for the GTK2 fork.
 
 ---
 
 ## [Unreleased]
 
+### Added
+- Added GitHub Actions CI for clean configuration, compilation, regression
+  tests, and source-distribution verification on Ubuntu 24.04.
+- Added structured bug and enhancement issue forms, a pull-request template,
+  weekly Dependabot updates for GitHub Actions, and contribution, conduct, and
+  security policies.
+- Added EditorConfig and Git attributes so text encoding, line endings, and
+  indentation expectations are explicit.
+
+### Changed
+- Consolidated the fork's release history in `CHANGELOG.md`. Moved the original
+  `NEWS`, detailed `ChangeLog`, GTK1-era `FAQ`, and stale developer `TODO` to
+  `docs/history/` with an index that clearly marks them as archival.
+- Replaced the top-level `AUTHORS` file with the readable Markdown
+  `CONTRIBUTORS.md`, preserving all original credits.
+- Removed the generic, obsolete Automake `INSTALL` document; current build and
+  installation instructions live in `README.md`.
+- Integrated the existing regression suite into the conventional top-level
+  `make check` target.
+
 ### Fixed
+- Fixed source-distribution (`make distcheck`) builds by correcting the bundled
+  gettext implementation's obsolete `getcwd()` declaration and making
+  `libxmms` resolve public headers from out-of-tree builds.
 - **Clean configure now succeeds.** The pre-generated `configure` script
   requires the `mkinstalldirs` automake auxiliary file, which was never
   committed (not even in the original 1.2.11 import), causing `./configure` to
@@ -76,8 +102,8 @@ blockers, and port the remaining GTK2 callback and X11 API boundaries so XMMS
   prominent section honoring the original XMMS authors.
 - Moved the full original user manual to `docs/manual.md` (Markdown), with
   dead `xmms.org` links annotated and redirected to the fork's GitHub Issues.
-- Rewrote `AUTHORS` as UTF-8 (fixing mojibake names), preserving every original
-  contributor and adding the fork maintainer.
+- Converted the original author credits to UTF-8 (fixing mojibake names),
+  preserving every contributor and adding the fork maintainer.
 
 ### Verified
 - `./configure && make -j"$(nproc)"` succeeds from a clean checkout.
@@ -88,10 +114,11 @@ blockers, and port the remaining GTK2 callback and X11 API boundaries so XMMS
 
 ## Original upstream — XMMS 1.2.11 (2007)
 
-The last upstream XMMS release, on which this fork is based. See
-[`ChangeLog`](ChangeLog) and [`NEWS`](NEWS) for the full upstream history.
+The last upstream XMMS release, on which this fork is based. See the archived
+[upstream changelog and release notes](docs/history/README.md) for the full
+history.
 
 ### Original authors
 Created by **Peter Alm**, **Håvard Kvålen**, **Thomas Nilsson**, and
 **Olle Hällnäs**, with contributions from many others listed in
-[`AUTHORS`](AUTHORS).
+[`CONTRIBUTORS.md`](CONTRIBUTORS.md).

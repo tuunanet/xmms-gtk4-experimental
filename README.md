@@ -2,7 +2,8 @@
 
 > A cross-platform multimedia player, originally created in 1997. This repository is a community-maintained fork that keeps XMMS building and running on modern systems by porting it to **GTK2** and current toolchains.
 
-![License](https://img.shields.io/badge/license-GPL--2.0-blue)
+[![CI](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml/badge.svg)](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml)
+![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)
 ![Language](https://img.shields.io/badge/language-C-555555)
 ![Toolkit](https://img.shields.io/badge/toolkit-GTK2-729fcf)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20BSD-4c9e2f)
@@ -41,7 +42,7 @@ focused on:
 - Fixing plugin discovery from development build trees
 - Restoring playback stability (e.g. ALSA seek-dropout fixes)
 
-See the [ChangeLog](ChangeLog) and the git history for the full set of changes.
+See the [changelog](CHANGELOG.md) and git history for the full set of changes.
 
 ---
 
@@ -60,14 +61,15 @@ and thank them.
 - Olle Hällnäs — documentation & support
 
 XMMS was also shaped by a large number of additional contributors over the
-years — the full, credited list is preserved in [AUTHORS](AUTHORS). If you are
-(or represent) one of those contributors and would like a correction or
-additional credit, please open an issue.
+years — the full, credited list is preserved in
+[CONTRIBUTORS.md](CONTRIBUTORS.md). If you are (or represent) one of those
+contributors and would like a correction or additional credit, please open an
+issue.
 
 > ℹ️ The original `http://www.xmms.org` website, its bug tracker
 > (`bugs.xmms.org`), and the historical `@xmms.org` contact addresses are no
-> longer active. For this fork, please use the [GitHub issue tracker](#issues)
-> instead.
+> longer active. For this fork, please use the
+> [GitHub issue tracker](https://github.com/tuunanet/xmms-gtk2/issues) instead.
 
 ---
 
@@ -114,10 +116,12 @@ XMMS uses the GNU Autotools build system. This repository ships a pre-generated
 
 ```sh
 ./configure
-make
+make -j"$(nproc)"
+make check
 ```
 
-To install system-wide (default prefix `/usr/local`):
+`make check` runs the display-independent regression suite. To install
+system-wide (default prefix `/usr/local`):
 
 ```sh
 sudo make install
@@ -150,33 +154,35 @@ Run `./configure --help` for the full list.
   converted from the original `README`.
 - **[Keyboard shortcuts](docs/manual.md#311-key-bindings)** — full key binding
   reference.
-- **[FAQ](FAQ)** — frequently asked questions.
-- **[TODO](TODO)** — historical developer task list.
-- **[ChangeLog](ChangeLog)** — upstream (1997–2007) change history.
-- **[CHANGELOG.md](CHANGELOG.md)** — this fork's changelog (GTK2 port, GCC 15
-  fixes, ALSA output, docs modernization, and the completed GTK2 build plan).
+- **[CHANGELOG.md](CHANGELOG.md)** — curated release history for this fork.
+- **[CONTRIBUTORS.md](CONTRIBUTORS.md)** — original project credits and the fork
+  maintainer.
+- **[Upstream history](docs/history/README.md)** — archived release notes,
+  detailed changelog, GTK1-era FAQ, and developer TODO list from 1997–2007.
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** — development workflow, tests, and
+  pull-request expectations.
+- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** — participation and enforcement
+  standards.
+- **[SECURITY.md](SECURITY.md)** — supported versions and vulnerability
+  reporting guidance.
 
 ---
 
 ## Contributing
 
 Contributions are welcome. This is a preservation-focused fork, so changes that
-keep XMMS building and running on modern systems — without altering its classic
-behavior — are the priority.
+keep XMMS building and running on modern systems—without altering its classic
+behavior—are the priority.
 
-1. Search the [issue tracker](#issues) for existing discussions.
-2. Open an issue describing the bug or proposed change.
-3. Fork the repository and create a branch (e.g. `fix/...` or `feat/...`).
-4. Keep commits focused and write clear commit messages.
-5. Open a pull request referencing the related issue.
-
-<a name="issues"></a>
-Bug reports and pull requests: **https://github.com/tuunanet/xmms-gtk2/issues**
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for the build, test, commit, and pull
+request workflow. Use the structured
+[GitHub issue forms](https://github.com/tuunanet/xmms-gtk2/issues/new/choose) for
+bug reports and compatibility proposals.
 
 ---
 
 ## License
 
-XMMS is free software licensed under the **GNU General Public License version 2**
-([COPYING](COPYING)). It is provided "as is", without warranty of any kind.
-```
+XMMS is free software licensed under the
+**GNU General Public License version 2 or later** ([COPYING](COPYING)). It is
+provided “as is,” without warranty of any kind.

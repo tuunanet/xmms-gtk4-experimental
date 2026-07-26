@@ -1,3 +1,6 @@
+# Editor backup files
+*~
+
 # Autotools configuration output
 /Makefile
 **/Makefile
@@ -17,6 +20,7 @@
 # Generated localization and configuration headers
 /po/Makefile.in
 /po/POTFILES
+/po/remove-potcdate.sed
 /xmms/i18n.h
 
 # Compiler and libtool artifacts
@@ -42,3 +46,7 @@
 /tests/test-pluginenum
 /tests/test-outputplugin
 /tests/test-alsa-pcm-state
+
+# Source distribution artifacts
+/xmms-[0-9]*/
+/xmms-[0-9]*.tar.*
