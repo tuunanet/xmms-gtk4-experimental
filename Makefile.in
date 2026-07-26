@@ -324,6 +324,7 @@ EXTRA_DIST = \
 	docs/images/README.md \
 	docs/images/xmms.png \
 	docs/manual.md \
+	docs/releases.md \
 	mkinstalldirs \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \

@@ -60,6 +60,13 @@ When modifying build metadata:
 Do not run `autoreconf --force --install` and commit its broad generated diff
 unless the pull request is specifically migrating the Autotools stack.
 
+## Releases
+
+Merges to `main` are not automatically published. Maintainers collect changes,
+build manually tested candidates from short-lived `release/*` branches, and
+publish official releases from annotated version tags. See the
+[release process](docs/releases.md) for the complete checklist.
+
 ## Pull requests
 
 A pull request should explain:
