@@ -7,6 +7,23 @@ Historical `@xmms.org` addresses are no longer active. Use the
 [GitHub issue tracker](https://github.com/tuunanet/xmms-gtk2/issues) for this
 fork.
 
+## Repository import and GTK2 port (2015)
+
+- **Oleg Pudeyev** — imported XMMS 1.2.11 into Git, applied downstream FreeBSD
+  compatibility patches, and created the initial GTK2 / GLib2 port preserved
+  in this repository's history.
+
+## Current maintainer (2026–present)
+
+- **[Tuomo Tuunanen](https://github.com/tuunanet)** — completes and maintains
+  GTK2 compatibility; fixes modern compiler, build, plugin, and ALSA runtime
+  issues; and maintains the regression suite, source distributions,
+  documentation, and GitHub project infrastructure.
+
+The GitHub fork relationship records repository hosting lineage. Current
+maintenance, historical GTK2 porting, and original XMMS authorship are
+separate contributions, all preserved here and in the git history.
+
 ## Original XMMS authors and contributors (1997–2007)
 
 | Contribution | People |
@@ -57,8 +74,3 @@ fork.
 - Chris Wilson
 - Dave Yearke
 - Stephan K. Zitz
-
-## Fork maintainer (2026–present)
-
-- **Tuomo Tuunanen** — GTK2/GLib2 port, modern toolchain fixes, ALSA default
-  output, and build/runtime repairs for contemporary Linux and BSD systems.

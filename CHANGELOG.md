@@ -36,6 +36,8 @@ for the GTK2 fork.
   installation instructions live in `README.md`.
 - Integrated the existing regression suite into the conventional top-level
   `make check` target.
+- Clarified repository lineage and attribution by distinguishing the original
+  XMMS project, the 2015 import and GTK2 port, and current maintenance.
 
 ### Fixed
 - Fixed GTK popup menus opening at the screen's upper-left corner instead of

@@ -31,25 +31,41 @@ and run on contemporary Linux and BSD distributions.
 
 ---
 
-## Fork status & maintainer
+## Maintenance status and repository lineage
 
-This is **not** the original XMMS project. The original upstream development
-ended with the 1.2.11 release (2007), and the original `xmms.org` website is no
-longer online. This fork is maintained independently on GitHub by:
+This is **not** the original XMMS project. Original upstream development ended
+with the 1.2.11 release in 2007, and the original `xmms.org` website is no
+longer online. This fork is actively and independently maintained by
+**[the current maintainer](https://github.com/tuunanet) (2026–present)**.
 
-**the current maintainer** (2026–present)
+The repository history has three distinct eras:
 
-The goal of this fork is purely preservation and modernization — keeping a
-piece of desktop multimedia history usable on today's systems. Work so far has
-focused on:
+1. The original XMMS authors and contributors developed XMMS from 1997 to 2007.
+2. **Oleg Pudeyev** imported XMMS 1.2.11 into Git in 2015, applied downstream
+   FreeBSD patches, and created the initial GTK2 / GLib2 port preserved in this
+   repository's history.
+3. the current maintainer forked that work in 2026 and became its current maintainer,
+   completing compatibility work and establishing the present preservation and
+   modernization project.
 
-- Migrating the UI from GTK1 to **GTK2 / GLib2**
+GitHub's “forked from `p/xmms-gtk2`” label records the second-to-third step in
+that hosting lineage. It does not identify that repository as the original
+XMMS project or its owner as the current maintainer.
+
+The current maintenance era focuses on:
+
+- Completing and hardening GTK2 compatibility while preserving classic UI
+  behavior
 - Fixing **GCC 15** build blockers and modern compiler warnings
 - Defaulting audio output to **ALSA** on modern Linux (OSS as a legacy option)
-- Fixing plugin discovery from development build trees
-- Restoring playback stability (e.g. ALSA seek-dropout fixes)
+- Fixing plugin discovery and ALSA playback and volume behavior
+- Maintaining regression tests, source distributions, documentation, and
+  GitHub project infrastructure
 
-See the [changelog](CHANGELOG.md) and git history for the full set of changes.
+The goal is preservation and modernization: keeping a piece of desktop
+multimedia history usable on today's systems. See the
+[changelog](CHANGELOG.md), [contributors](CONTRIBUTORS.md), and git history for
+full details and attribution.
 
 ---
 
