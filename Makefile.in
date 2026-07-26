@@ -327,6 +327,7 @@ EXTRA_DIST = \
 	tests/fixture-input-plugin.c \
 	tests/fixture-output-plugin.c \
 	tests/test-alsa-pcm-state.c \
+	tests/test-alsa-volume.c \
 	tests/test-filebrowser.c \
 	tests/test-outputplugin.c \
 	tests/test-pluginenum.c \

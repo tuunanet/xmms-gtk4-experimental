@@ -46,6 +46,7 @@
 /tests/test-pluginenum
 /tests/test-outputplugin
 /tests/test-alsa-pcm-state
+/tests/test-alsa-volume
 
 # Source distribution artifacts
 /xmms-[0-9]*/

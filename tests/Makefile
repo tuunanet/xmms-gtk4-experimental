@@ -8,12 +8,13 @@ LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean
 
-check: test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state
+check: test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume
 	./test-xentry
 	./test-filebrowser
 	./test-pluginenum
 	./test-outputplugin
 	./test-alsa-pcm-state
+	./test-alsa-volume
 
 test-xentry: $(srcdir)/test-xentry.c $(top_srcdir)/libxmms/xentry.c $(top_srcdir)/libxmms/xentry.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-xentry.c $(top_srcdir)/libxmms/xentry.c $(LDLIBS)
@@ -47,5 +48,10 @@ test-outputplugin-plugins/Output/alsa/.libs/libALSA.so:
 test-alsa-pcm-state: $(srcdir)/test-alsa-pcm-state.c $(top_srcdir)/Output/alsa/pcm-state.c $(top_srcdir)/Output/alsa/pcm-state.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-alsa-pcm-state.c $(top_srcdir)/Output/alsa/pcm-state.c $(LDLIBS)
 
+test-alsa-volume: CFLAGS += -ffunction-sections -fdata-sections $(shell pkg-config --cflags alsa)
+test-alsa-volume: LDFLAGS += -Wl,--gc-sections
+test-alsa-volume: $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c $(top_srcdir)/Output/alsa/alsa.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c $(LDLIBS) $(shell pkg-config --libs alsa) -lm -lpthread
+
 clean:
-	rm -rf test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-plugins test-outputplugin-plugins
