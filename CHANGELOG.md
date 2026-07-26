@@ -46,10 +46,10 @@ for XMMS Classic.
   `xmms` runtime and package identifiers.
 
 ### Fixed
-- Replaced unavailable Adobe bitmap-font defaults with byte-compatible
-  `misc-fixed` equivalents, avoiding GTK2 character-set warnings while
-  preserving legacy playlist and main-window text rendering; configurations
-  that saved the short-lived ISO-10646 defaults are migrated automatically.
+- Replaced incomplete Adobe bitmap-font patterns with byte-compatible,
+  proportional Helvetica/Nimbus Sans patterns, avoiding GTK2 character-set
+  warnings while preserving the classic playlist and main-window appearance;
+  configurations that saved short-lived replacement defaults are migrated.
 - Prevented timestamp-dependent source-distribution failures from regenerating
   the bundled gettext plural parser with incompatible modern Bison output.
 - Fixed MP3 seeks landing before the requested position and playing beyond the
