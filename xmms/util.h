@@ -32,14 +32,12 @@
 	"-misc-fixed-bold-r-normal--10-*-*-*-*-*-iso8859-1"
 #define XMMS_INTERIM_FIXED_MAINWIN_FONT \
 	"-misc-fixed-medium-r-normal--8-*-*-*-*-*-iso8859-1"
-#define XMMS_DEFAULT_PLAYLIST_FONT \
+#define XMMS_INTERIM_PROPORTIONAL_PLAYLIST_FONT \
 	"-adobe-helvetica-bold-r-normal--10-*-*-*-p-*-iso8859-1"
-#define XMMS_DEFAULT_MAINWIN_FONT \
+#define XMMS_INTERIM_PROPORTIONAL_MAINWIN_FONT \
 	"-adobe-helvetica-medium-r-normal--8-*-*-*-p-*-iso8859-1"
-#define XMMS_FALLBACK_PLAYLIST_FONT \
-	"-urw-nimbus sans l-bold-r-normal--10-*-*-*-p-*-iso8859-1"
-#define XMMS_FALLBACK_MAINWIN_FONT \
-	"-urw-nimbus sans l-regular-r-normal--8-*-*-*-p-*-iso8859-1"
+#define XMMS_DEFAULT_PLAYLIST_FONT "fixed"
+#define XMMS_DEFAULT_MAINWIN_FONT "fixed"
 
 gchar *find_file_recursively(const char *dirname, const char *file);
 void del_directory(const char *dirname);

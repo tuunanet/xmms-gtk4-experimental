@@ -50,29 +50,43 @@ static void test_interim_fixed_main_window_default(void)
 	assert_default_loads_byte_compatible(XMMS_INTERIM_FIXED_MAINWIN_FONT);
 }
 
-static void assert_preferred_default_is_proportional(const gchar *name)
+static void test_interim_proportional_playlist_default(void)
 {
-	GdkFont *font;
+	assert_default_loads_byte_compatible(
+		XMMS_INTERIM_PROPORTIONAL_PLAYLIST_FONT);
+}
 
-	font = gdk_font_load(name);
-	if (font)
-	{
-		g_assert_cmpint(gdk_char_width(font, 'i'), <,
-		                gdk_char_width(font, 'W'));
-		gdk_font_unref(font);
-	}
+static void test_interim_proportional_main_window_default(void)
+{
+	assert_default_loads_byte_compatible(
+		XMMS_INTERIM_PROPORTIONAL_MAINWIN_FONT);
+}
+
+static void assert_default_matches_classic_fixed(const gchar *name)
+{
+	GdkFont *font, *classic;
+
+	cfg.use_fontsets = FALSE;
+	font = util_font_load((gchar *) name);
+	classic = gdk_font_load("fixed");
+	g_assert_nonnull(font);
+	g_assert_nonnull(classic);
+	g_assert_cmpint(font->ascent, ==, classic->ascent);
+	g_assert_cmpint(font->descent, ==, classic->descent);
+	g_assert_cmpint(gdk_text_width(font, "XMMS Classic", 12), ==,
+	                gdk_text_width(classic, "XMMS Classic", 12));
+	gdk_font_unref(classic);
+	gdk_font_unref(font);
 }
 
 static void test_preferred_playlist_default(void)
 {
-	assert_preferred_default_is_proportional(XMMS_DEFAULT_PLAYLIST_FONT);
-	assert_preferred_default_is_proportional(XMMS_FALLBACK_PLAYLIST_FONT);
+	assert_default_matches_classic_fixed(XMMS_DEFAULT_PLAYLIST_FONT);
 }
 
 static void test_preferred_main_window_default(void)
 {
-	assert_preferred_default_is_proportional(XMMS_DEFAULT_MAINWIN_FONT);
-	assert_preferred_default_is_proportional(XMMS_FALLBACK_MAINWIN_FONT);
+	assert_default_matches_classic_fixed(XMMS_DEFAULT_MAINWIN_FONT);
 }
 
 int main(int argc, char **argv)
@@ -93,6 +107,10 @@ int main(int argc, char **argv)
 	                test_interim_fixed_playlist_default);
 	g_test_add_func("/font/interim-fixed-main-window-default",
 	                test_interim_fixed_main_window_default);
+	g_test_add_func("/font/interim-proportional-playlist-default",
+	                test_interim_proportional_playlist_default);
+	g_test_add_func("/font/interim-proportional-main-window-default",
+	                test_interim_proportional_main_window_default);
 	g_test_add_func("/font/preferred-playlist-default",
 	                test_preferred_playlist_default);
 	g_test_add_func("/font/preferred-main-window-default",
