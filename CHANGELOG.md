@@ -20,6 +20,10 @@ The historical upstream changelog (1997–2007) is preserved in
   `cannot find required auxiliary files: mkinstalldirs`. Added the standard
   automake `mkinstalldirs` helper so the documented `./configure && make` flow
   works without `autoreconf`.
+- Removed modern Autoconf `datarootdir` warnings from every generated build
+  template while preserving custom `--datarootdir` installation paths. Removed
+  the obsolete duplicate `ALL_LINGUAS` declaration; `po/LINGUAS` remains the
+  canonical translation list.
 - Extended `.gitignore` to cover the `tests/test-alsa-pcm-state` binary, the
   only compiled test not previously ignored.
 

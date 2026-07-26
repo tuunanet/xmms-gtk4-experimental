@@ -22558,10 +22558,6 @@ CFLAGS=$CFLAGS_save
 LIBS=$LIBS_save
 
 
-ALL_LINGUAS="af az be bg bs ca cs cy da de el en en_GB eo es et eu fi fr ga gl hr hu id it ja ka ko lt lv mk ms nn nl no pl pt pt_BR ro ru sk sl sq sr sr@Latn sv tg th tr uk uz vi wa zh_CN zh_TW"
-
-
-
         MKINSTALLDIRS=
   if test -n "$ac_aux_dir"; then
     case "$ac_aux_dir" in
