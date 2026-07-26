@@ -37,15 +37,15 @@ Name:		%{name}
 Version:	%{version}
 Release:	%{release}
 Epoch:		%{epoch}
-License:	GPL
+License:	GPL-2.0-or-later
 Group:		Applications/Multimedia
-Vendor:		XMMS Development Team <bugs@xmms.org>
-Url:		http://www.xmms.org/
+Vendor:		XMMS GTK2 contributors
+Url:		https://github.com/tuunanet/xmms-gtk2
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 Obsoletes:	x11amp, x11amp0.7-1-1, xmms-mpg123, xmms-mp3
-Requires:	gtk+ >= 1:1.2.2
-BuildPrereq:	gtk+-devel
+Requires:	gtk2 >= 2.0.0
+BuildPrereq:	gtk2-devel
 
 %description
 X MultiMedia System is a sound player written from scratch. Since it 
@@ -57,7 +57,7 @@ visualization plugins.
 Summary:	XMMS - Static libraries and header files.
 Group:		Applications/Multimedia
 Obsoletes:	x11amp-devel
-Requires:	%{name} = %{epoch}:%{version}, glib-devel >= 1:1.2.2, gtk+-devel >= 1:1.2.2
+Requires:	%{name} = %{epoch}:%{version}, glib2-devel >= 2.0.0, gtk2-devel >= 2.0.0
 
 %description	devel
 Static libraries and header files required for compiling xmms plugins.
@@ -163,7 +163,7 @@ install -m 644 xmms/xmms.desktop \
 
 %files
 %defattr(-, root, root)
-%doc AUTHORS COPYING ChangeLog INSTALL NEWS README
+%doc CHANGELOG.md CONTRIBUTORS.md COPYING README.md
 %{_sysconfdir}/X11/wmconfig/xmms
 %{_sysconfdir}/X11/applnk/Multimedia/xmms.desktop
 %{_bindir}/xmms
