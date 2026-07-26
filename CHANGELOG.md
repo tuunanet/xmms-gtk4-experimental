@@ -15,6 +15,11 @@ for XMMS Classic.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-07-26
+
+The first XMMS Classic release establishes the maintained, preservation-focused
+continuation of XMMS 1.2.11 for current Linux and BSD systems.
+
 ### Added
 - Added a credited, GPL-licensed screenshot of the classic XMMS interface to
   the project overview.
@@ -80,10 +85,6 @@ for XMMS Classic.
 - Extended `.gitignore` to cover the `tests/test-alsa-pcm-state` binary, the
   only compiled test not previously ignored.
 
----
-
-## [GTK2 fork] — 2026-07
-
 The work below completed the GTK2 compatibility and modern-build plan: a
 17-task effort to restore GTK2 entry navigation, clear the GCC 15 build
 blockers, and port the remaining GTK2 callback and X11 API boundaries so XMMS
@@ -136,8 +137,6 @@ blockers, and port the remaining GTK2 callback and X11 API boundaries so XMMS
 - `./configure && make -j"$(nproc)"` succeeds from a clean checkout.
 - `make -C tests check` passes (entry navigation, output-plugin discovery, and
   ALSA PCM state tests).
-
----
 
 ## Original upstream — XMMS 1.2.11 (2007)
 
