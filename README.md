@@ -9,6 +9,13 @@
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20BSD-4c9e2f)
 ![Status](https://img.shields.io/badge/status-maintained%20fork-8f4f9f)
 
+![The classic XMMS interface](docs/images/xmms.png)
+
+*The classic XMMS interface. Screenshot by
+[ShadowDragon](https://en.wikipedia.org/wiki/User:ShadowDragon), licensed under
+[GPL-2.0-or-later](docs/images/README.md), via
+[Wikimedia Commons](https://commons.wikimedia.org/wiki/File:XMMS_(1).png).*
+
 ---
 
 ## About

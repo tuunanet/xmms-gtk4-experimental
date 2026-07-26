@@ -319,6 +319,8 @@ EXTRA_DIST = \
 	docs/history/upstream-faq.txt \
 	docs/history/upstream-release-notes.txt \
 	docs/history/upstream-todo.txt \
+	docs/images/README.md \
+	docs/images/xmms.png \
 	docs/manual.md \
 	mkinstalldirs \
 	tests/Makefile \
