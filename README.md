@@ -35,7 +35,7 @@ and run on contemporary Linux and BSD distributions.
 
 This is **not** the original XMMS project. Original upstream development ended
 with the 1.2.11 release in 2007, and the original `xmms.org` website is no
-longer online. This fork is actively and independently maintained by
+longer online. This particular fork is maintained by
 **[the current maintainer](https://github.com/tuunanet) (2026–present)**.
 
 The repository history has three distinct eras:
@@ -46,7 +46,7 @@ The repository history has three distinct eras:
    repository's history.
 3. the current maintainer began maintaining this fork in 2026, continuing
    compatibility and preservation work alongside many other XMMS forks and
-   related projects.
+   related projects from other developers.
 
 The current maintenance era focuses on:
 
