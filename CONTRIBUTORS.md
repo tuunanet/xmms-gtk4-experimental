@@ -9,7 +9,7 @@ fork.
 
 ## Repository import and GTK2 port (2015)
 
-- **Oleg Pudeyev** — imported XMMS 1.2.11 into Git, applied downstream FreeBSD
+- Oleg Pudeyev — imported XMMS 1.2.11 into Git, applied downstream FreeBSD
   compatibility patches, and created the initial GTK2 / GLib2 port preserved
   in this repository's history.
 

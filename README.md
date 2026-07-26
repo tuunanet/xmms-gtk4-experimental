@@ -41,16 +41,12 @@ longer online. This fork is actively and independently maintained by
 The repository history has three distinct eras:
 
 1. The original XMMS authors and contributors developed XMMS from 1997 to 2007.
-2. **Oleg Pudeyev** imported XMMS 1.2.11 into Git in 2015, applied downstream
+2. Oleg Pudeyev imported XMMS 1.2.11 into Git in 2015, applied downstream
    FreeBSD patches, and created the initial GTK2 / GLib2 port preserved in this
    repository's history.
 3. the current maintainer forked that work in 2026 and became its current maintainer,
    completing compatibility work and establishing the present preservation and
    modernization project.
-
-GitHub's “forked from `p/xmms-gtk2`” label records the second-to-third step in
-that hosting lineage. It does not identify that repository as the original
-XMMS project or its owner as the current maintainer.
 
 The current maintenance era focuses on:
 
