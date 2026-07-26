@@ -1,4 +1,4 @@
-# Contributing to XMMS GTK2
+# Contributing to XMMS Classic
 
 Thank you for helping preserve XMMS. Changes should keep the classic XMMS
 experience intact while improving compatibility, reliability, security, or
@@ -6,7 +6,7 @@ maintainability on current systems.
 
 ## Before starting
 
-- Search [existing issues](https://github.com/tuunanet/xmms-gtk2/issues).
+- Search [existing issues](https://github.com/tuunanet/xmms-classic/issues).
 - For a substantial behavior change, open an issue before writing code.
 - Keep pull requests focused; avoid mixing formatting, refactoring, and behavior
   changes.

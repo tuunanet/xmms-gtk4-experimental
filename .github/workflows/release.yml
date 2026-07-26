@@ -133,7 +133,7 @@ jobs:
             gh release upload "$RELEASE_TAG" \
               "$archive" "$checksums" --clobber
             gh release edit "$RELEASE_TAG" \
-              --title "XMMS GTK2 $RELEASE_VERSION" \
+              --title "XMMS Classic $RELEASE_VERSION" \
               --notes-file "$notes" \
               --verify-tag
           else
@@ -141,6 +141,6 @@ jobs:
               "$archive" "$checksums" \
               --draft \
               --verify-tag \
-              --title "XMMS GTK2 $RELEASE_VERSION" \
+              --title "XMMS Classic $RELEASE_VERSION" \
               --notes-file "$notes"
           fi

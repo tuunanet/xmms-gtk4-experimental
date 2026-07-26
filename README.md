@@ -1,8 +1,9 @@
-# XMMS — X Multimedia System
+# XMMS Classic
 
-> A cross-platform multimedia player, originally created in 1997. This repository is a fork that keeps XMMS building and running on modern systems using **GTK2** widgets.
+> A community-maintained preservation fork of XMMS 1.2.11, keeping the classic
+> player usable on modern Linux and BSD systems.
 
-[![CI](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml/badge.svg)](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml)
+[![CI](https://github.com/tuunanet/xmms-classic/actions/workflows/ci.yml/badge.svg)](https://github.com/tuunanet/xmms-classic/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)
 ![Language](https://img.shields.io/badge/language-C-555555)
 ![Toolkit](https://img.shields.io/badge/toolkit-GTK2-729fcf)
@@ -25,9 +26,11 @@ plugin architecture for input, output, effect, general, and visualization
 plugins. It supports MP3, Ogg Vorbis, WAV, module formats (MOD, XM, S3M, IT and
 others via libmikmod), CD audio, and HTTP/Icecast/Shoutcast streaming.
 
-This fork is based on the last upstream release, **XMMS 1.2.11**, and migrates
-the original GTK1 codebase to **GTK2 / GLib2** so that it continues to compile
-and run on contemporary Linux and BSD distributions.
+XMMS Classic is based on the last upstream release, **XMMS 1.2.11**, and
+currently uses the **GTK2 / GLib2** port of the original GTK1 codebase so that
+it continues to compile and run on contemporary Linux and BSD distributions.
+The `xmms` executable, source-package name, configuration paths, and plugin
+interfaces retain their historical identifiers for compatibility.
 
 ---
 
@@ -88,7 +91,8 @@ issue.
 > ℹ️ The original `http://www.xmms.org` website, its bug tracker
 > (`bugs.xmms.org`), and the historical `@xmms.org` contact addresses are no
 > longer active. For this fork, please use the
-> [GitHub issue tracker](https://github.com/tuunanet/xmms-gtk2/issues) instead.
+> [GitHub issue tracker](https://github.com/tuunanet/xmms-classic/issues)
+> instead.
 
 ---
 
@@ -213,8 +217,8 @@ behavior—are the priority.
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) for the build, test, commit, and pull
 request workflow. Use the structured
-[GitHub issue forms](https://github.com/tuunanet/xmms-gtk2/issues/new/choose) for
-bug reports and compatibility proposals.
+[GitHub issue forms](https://github.com/tuunanet/xmms-classic/issues/new/choose)
+for bug reports and compatibility proposals.
 
 ---
 
