@@ -51,6 +51,8 @@ continuation of XMMS 1.2.11 for current Linux and BSD systems.
   `xmms` runtime and package identifiers.
 
 ### Fixed
+- Replaced unavailable Adobe bitmap-font defaults with Unicode `misc-fixed`
+  equivalents, avoiding GTK2 missing-character-set warnings on modern X servers.
 - Prevented timestamp-dependent source-distribution failures from regenerating
   the bundled gettext plural parser with incompatible modern Bison output.
 - Fixed MP3 seeks landing before the requested position and playing beyond the

@@ -881,13 +881,31 @@ GtkWidget * util_create_filebrowser(gboolean play_button)
 	return filebrowser;
 }
 
+static const gchar *util_font_resolve_default(const gchar *name)
+{
+	if (!strcmp(name, XMMS_LEGACY_PLAYLIST_FONT) ||
+	    !strcmp(name, XMMS_DEFAULT_PLAYLIST_FONT))
+		return XMMS_DEFAULT_PLAYLIST_FONT;
+	if (!strcmp(name, XMMS_LEGACY_MAINWIN_FONT) ||
+	    !strcmp(name, XMMS_DEFAULT_MAINWIN_FONT))
+		return XMMS_DEFAULT_MAINWIN_FONT;
+	return NULL;
+}
+
 GdkFont *util_font_load(char *name)
 {
 	GdkFont *font;
+	const gchar *default_name;
 
-	/* First try the prefered way, then just try to get some font */
-
-	if (!cfg.use_fontsets)
+	/* The historical Adobe defaults are absent on many modern X servers. */
+	default_name = util_font_resolve_default(name);
+	if (default_name)
+	{
+		font = gdk_font_load(default_name);
+		if (!font)
+			font = gdk_font_load("fixed");
+	}
+	else if (!cfg.use_fontsets)
 	{
 		if ((font = gdk_font_load(name)) == NULL)
 			font = gdk_fontset_load(name);
