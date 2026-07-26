@@ -333,7 +333,10 @@ EXTRA_DIST = \
 	tests/test-outputplugin.c \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \
+	tests/test-release-tools.sh \
 	tests/test-xentry.c \
+	tools/check-release-version.sh \
+	tools/extract-release-notes.sh \
 	xmms.m4 \
 	xmms.spec \
 	xmms.spec.in
