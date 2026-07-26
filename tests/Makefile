@@ -6,9 +6,9 @@ CPPFLAGS += -I$(top_builddir) -I$(top_builddir)/xmms -I$(top_srcdir) -I$(top_src
 CFLAGS += $(shell pkg-config --cflags gtk+-2.0)
 LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
-.PHONY: check clean
+.PHONY: check clean test-release-tools
 
-check: test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position
+check: test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-popup-position
@@ -62,6 +62,9 @@ test-alsa-volume: $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c
 
 test-mpg123-stream-position: $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(top_srcdir)/Input/mpg123/stream-position.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(LDLIBS)
+
+test-release-tools:
+	$(srcdir)/test-release-tools.sh $(top_srcdir)
 
 clean:
 	rm -rf test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position test-plugins test-outputplugin-plugins

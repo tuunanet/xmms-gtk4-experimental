@@ -175,6 +175,8 @@ Run `./configure --help` for the full list.
 - **[Keyboard shortcuts](docs/manual.md#311-key-bindings)** — full key binding
   reference.
 - **[CHANGELOG.md](CHANGELOG.md)** — curated release history for this fork.
+- **[Release process](docs/releases.md)** — candidate builds, manual testing,
+  version tags, and draft GitHub Releases.
 - **[CONTRIBUTORS.md](CONTRIBUTORS.md)** — original project credits and the fork
   maintainer.
 - **[Upstream history](docs/history/README.md)** — archived release notes,

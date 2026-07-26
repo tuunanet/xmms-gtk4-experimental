@@ -25,6 +25,9 @@ for the GTK2 fork.
   security policies.
 - Added EditorConfig and Git attributes so text encoding, line endings, and
   indentation expectations are explicit.
+- Added automated release-candidate builds for short-lived `release/*` branches
+  and tag-driven draft GitHub Releases with validated versions, distchecked
+  source archives, checksums, and curated changelog notes.
 
 ### Changed
 - Consolidated the fork's release history in `CHANGELOG.md`. Moved the original

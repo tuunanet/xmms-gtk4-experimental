@@ -13,6 +13,8 @@ EXTRA_DIST = \
 	.github/ISSUE_TEMPLATE/feature_request.yml \
 	.github/pull_request_template.md \
 	.github/workflows/ci.yml \
+	.github/workflows/release-candidate.yml \
+	.github/workflows/release.yml \
 	CHANGELOG.md \
 	CODE_OF_CONDUCT.md \
 	CONTRIBUTING.md \
@@ -27,6 +29,7 @@ EXTRA_DIST = \
 	docs/images/README.md \
 	docs/images/xmms.png \
 	docs/manual.md \
+	docs/releases.md \
 	mkinstalldirs \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
@@ -38,7 +41,10 @@ EXTRA_DIST = \
 	tests/test-outputplugin.c \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \
+	tests/test-release-tools.sh \
 	tests/test-xentry.c \
+	tools/check-release-version.sh \
+	tools/extract-release-notes.sh \
 	xmms.m4 \
 	xmms.spec \
 	xmms.spec.in
