@@ -1,6 +1,6 @@
 # XMMS — X Multimedia System
 
-> A cross-platform multimedia player, originally created in 1997. This repository is a community-maintained fork that keeps XMMS building and running on modern systems by porting it to **GTK2** and current toolchains.
+> A cross-platform multimedia player, originally created in 1997. This repository is a fork that keeps XMMS building and running on modern systems using **GTK2** widgets.
 
 [![CI](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml/badge.svg)](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)
@@ -35,7 +35,7 @@ and run on contemporary Linux and BSD distributions.
 
 This is **not** the original XMMS project. Original upstream development ended
 with the 1.2.11 release in 2007, and the original `xmms.org` website is no
-longer online. This fork is actively and independently maintained by
+longer online. This particular fork is maintained by
 **[the current maintainer](https://github.com/tuunanet) (2026–present)**.
 
 The repository history has three distinct eras:
@@ -44,9 +44,9 @@ The repository history has three distinct eras:
 2. Oleg Pudeyev imported XMMS 1.2.11 into Git in 2015, applied downstream
    FreeBSD patches, and created the initial GTK2 / GLib2 port preserved in this
    repository's history.
-3. the current maintainer forked that work in 2026 and became its current maintainer,
-   completing compatibility work and establishing the present preservation and
-   modernization project.
+3. the current maintainer began maintaining this fork in 2026, continuing
+   compatibility and preservation work alongside many other XMMS forks and
+   related projects from other developers.
 
 The current maintenance era focuses on:
 
