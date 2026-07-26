@@ -94,6 +94,7 @@ jobs:
           path: release-artifacts/
           if-no-files-found: error
           retention-days: 30
+          overwrite: true
 
   create-draft-release:
     needs: build-release

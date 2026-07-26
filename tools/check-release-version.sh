@@ -60,8 +60,8 @@ fi
 changelog_count=$(awk -v heading="## [$expected]" '
 	index($0, heading) == 1 {
 		suffix = substr($0, length(heading) + 1)
-		if (suffix == "" || substr(suffix, 1, 3) == " - " ||
-		    substr(suffix, 1, 3) == " — ")
+		if (suffix == "" || index(suffix, " - ") == 1 ||
+		    index(suffix, " — ") == 1)
 			count++
 	}
 	END { print count + 0 }

@@ -39,6 +39,9 @@ jobs:
               ;;
           esac
           tools/check-release-version.sh "$EXPECTED_VERSION"
+          mkdir release-artifacts
+          tools/extract-release-notes.sh \
+            "$EXPECTED_VERSION" release-artifacts/release-notes.md
 
       - name: Install build dependencies
         run: |
@@ -72,7 +75,7 @@ jobs:
         run: |
           archive="xmms-$EXPECTED_VERSION.tar.gz"
           test -f "$archive"
-          mkdir release-artifacts
+          mkdir -p release-artifacts
           cp "$archive" release-artifacts/
           (
             cd release-artifacts
@@ -92,3 +95,4 @@ jobs:
           path: release-artifacts/
           if-no-files-found: error
           retention-days: 30
+          overwrite: true

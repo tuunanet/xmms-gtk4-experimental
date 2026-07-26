@@ -68,7 +68,8 @@ The workflow accepts only `release/*` branches. It runs:
 A successful run uploads a 30-day workflow artifact containing:
 
 - `xmms-1.3.0.tar.gz`;
-- `SHA256SUMS`; and
+- `SHA256SUMS`;
+- `release-notes.md`, extracted from the versioned changelog entry; and
 - `RELEASE-METADATA.txt`, identifying the candidate commit and workflow run.
 
 Download that workflow artifact and verify it before testing:
