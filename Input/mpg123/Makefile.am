@@ -5,7 +5,7 @@ libdir = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
 COMMON_SRC = \
 mpg123.c mpg123.h \
-common.c \
+common.c stream-position.c stream-position.h \
 tabinit.c l2tables.h \
 configure.c fileinfo.c \
 decode_2to1.c decode_4to1.c \
