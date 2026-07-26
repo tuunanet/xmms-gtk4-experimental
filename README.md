@@ -1,6 +1,6 @@
 # XMMS — X Multimedia System
 
-> A cross-platform multimedia player, originally created in 1997. This repository is a community-maintained fork that keeps XMMS building and running on modern systems by porting it to **GTK2** and current toolchains.
+> A cross-platform multimedia player, originally created in 1997. This repository is a fork that keeps XMMS building and running on modern systems using **GTK2** widgets.
 
 [![CI](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml/badge.svg)](https://github.com/tuunanet/xmms-gtk2/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)
