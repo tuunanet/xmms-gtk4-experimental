@@ -38,6 +38,10 @@ for the GTK2 fork.
   `make check` target.
 
 ### Fixed
+- Fixed ALSA volume and balance controls when the configured hardware mixer is
+  unavailable, as with PipeWire-backed default devices, by falling back to the
+  plugin's software volume control
+  ([#10](https://github.com/tuunanet/xmms-gtk2/issues/10)).
 - Fixed source-distribution (`make distcheck`) builds by correcting the bundled
   gettext implementation's obsolete `getcwd()` declaration and making
   `libxmms` resolve public headers from out-of-tree builds.

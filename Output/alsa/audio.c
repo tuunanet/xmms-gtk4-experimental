@@ -471,20 +471,34 @@ static void alsa_cleanup_mixer(void)
 	}
 }
 
+static void alsa_ensure_volume_control(void)
+{
+	if (!mixer_start)
+		return;
+
+	mixer_start = FALSE;
+	if (alsa_cfg.soft_volume)
+		return;
+
+	if (alsa_setup_mixer() < 0)
+	{
+		alsa_cleanup_mixer();
+		alsa_cfg.soft_volume = TRUE;
+		g_warning("ALSA mixer unavailable; using software volume control");
+	}
+}
+
 void alsa_get_volume(int *l, int *r)
 {
 	long ll = *l, lr = *r;
 
-	if (mixer_start)
-	{
-		alsa_setup_mixer();
-		mixer_start = FALSE;
-	}
+	alsa_ensure_volume_control();
 
 	if (alsa_cfg.soft_volume)
 	{
 		*l = alsa_cfg.vol.left;
 		*r = alsa_cfg.vol.right;
+		return;
 	}
 
 	if (!pcm_element)
@@ -511,6 +525,8 @@ void alsa_get_volume(int *l, int *r)
 
 void alsa_set_volume(int l, int r)
 {
+	alsa_ensure_volume_control();
+
 	if (alsa_cfg.soft_volume)
 	{
 		alsa_cfg.vol.left = l;
