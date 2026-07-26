@@ -44,9 +44,9 @@ The repository history has three distinct eras:
 2. Oleg Pudeyev imported XMMS 1.2.11 into Git in 2015, applied downstream
    FreeBSD patches, and created the initial GTK2 / GLib2 port preserved in this
    repository's history.
-3. the current maintainer forked that work in 2026 and became its current maintainer,
-   completing compatibility work and establishing the present preservation and
-   modernization project.
+3. the current maintainer began maintaining this fork in 2026, continuing
+   compatibility and preservation work alongside many other XMMS forks and
+   related projects.
 
 The current maintenance era focuses on:
 
