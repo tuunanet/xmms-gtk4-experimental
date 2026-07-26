@@ -884,9 +884,15 @@ GtkWidget * util_create_filebrowser(gboolean play_button)
 static const gchar *util_font_resolve_default(const gchar *name)
 {
 	if (!strcmp(name, XMMS_LEGACY_PLAYLIST_FONT) ||
+	    !strcmp(name, XMMS_INTERIM_PLAYLIST_FONT) ||
+	    !strcmp(name, XMMS_INTERIM_FIXED_PLAYLIST_FONT) ||
+	    !strcmp(name, XMMS_INTERIM_PROPORTIONAL_PLAYLIST_FONT) ||
 	    !strcmp(name, XMMS_DEFAULT_PLAYLIST_FONT))
 		return XMMS_DEFAULT_PLAYLIST_FONT;
 	if (!strcmp(name, XMMS_LEGACY_MAINWIN_FONT) ||
+	    !strcmp(name, XMMS_INTERIM_MAINWIN_FONT) ||
+	    !strcmp(name, XMMS_INTERIM_FIXED_MAINWIN_FONT) ||
+	    !strcmp(name, XMMS_INTERIM_PROPORTIONAL_MAINWIN_FONT) ||
 	    !strcmp(name, XMMS_DEFAULT_MAINWIN_FONT))
 		return XMMS_DEFAULT_MAINWIN_FONT;
 	return NULL;
@@ -897,7 +903,7 @@ GdkFont *util_font_load(char *name)
 	GdkFont *font;
 	const gchar *default_name;
 
-	/* The historical Adobe defaults are absent on many modern X servers. */
+	/* Select the same built-in font used by the historical fallback path. */
 	default_name = util_font_resolve_default(name);
 	if (default_name)
 	{
