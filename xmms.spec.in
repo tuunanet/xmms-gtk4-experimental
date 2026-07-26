@@ -39,8 +39,8 @@ Release:	%{release}
 Epoch:		%{epoch}
 License:	GPL-2.0-or-later
 Group:		Applications/Multimedia
-Vendor:		XMMS GTK2 contributors
-Url:		https://github.com/tuunanet/xmms-gtk2
+Vendor:		XMMS Classic contributors
+Url:		https://github.com/tuunanet/xmms-classic
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 Obsoletes:	x11amp, x11amp0.7-1-1, xmms-mpg123, xmms-mp3
