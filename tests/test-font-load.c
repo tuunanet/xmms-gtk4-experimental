@@ -6,7 +6,7 @@
 
 Config cfg;
 
-static void assert_legacy_default_loads(const gchar *name)
+static void assert_default_loads_byte_compatible(const gchar *name)
 {
 	GdkFont *font;
 
@@ -22,12 +22,22 @@ static void assert_legacy_default_loads(const gchar *name)
 
 static void test_legacy_playlist_default(void)
 {
-	assert_legacy_default_loads(XMMS_LEGACY_PLAYLIST_FONT);
+	assert_default_loads_byte_compatible(XMMS_LEGACY_PLAYLIST_FONT);
 }
 
 static void test_legacy_main_window_default(void)
 {
-	assert_legacy_default_loads(XMMS_LEGACY_MAINWIN_FONT);
+	assert_default_loads_byte_compatible(XMMS_LEGACY_MAINWIN_FONT);
+}
+
+static void test_interim_playlist_default(void)
+{
+	assert_default_loads_byte_compatible(XMMS_INTERIM_PLAYLIST_FONT);
+}
+
+static void test_interim_main_window_default(void)
+{
+	assert_default_loads_byte_compatible(XMMS_INTERIM_MAINWIN_FONT);
 }
 
 int main(int argc, char **argv)
@@ -40,5 +50,9 @@ int main(int argc, char **argv)
 	                test_legacy_playlist_default);
 	g_test_add_func("/font/legacy-main-window-default",
 	                test_legacy_main_window_default);
+	g_test_add_func("/font/interim-playlist-default",
+	                test_interim_playlist_default);
+	g_test_add_func("/font/interim-main-window-default",
+	                test_interim_main_window_default);
 	return g_test_run();
 }
