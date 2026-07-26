@@ -160,6 +160,11 @@ LTV_CURRENT=5
 LTV_REVISION=0
 LTV_AGE=3
 
+# plural.c is a shipped generated source.  Modern Bison emits a separate
+# plural.h that this legacy gettext snapshot does not distribute, so checkout
+# mtimes must not trigger regeneration through the generic .y.c rule below.
+plural.c: ;
+
 .SUFFIXES:
 .SUFFIXES: .c .y .o .lo .sin .sed
 
