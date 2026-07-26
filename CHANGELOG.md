@@ -16,6 +16,8 @@ for the GTK2 fork.
 ## [Unreleased]
 
 ### Added
+- Added a credited, GPL-licensed screenshot of the classic XMMS interface to
+  the project overview.
 - Added GitHub Actions CI for clean configuration, compilation, Xvfb-backed
   regression tests, and source-distribution verification on Ubuntu 24.04.
 - Added structured bug and enhancement issue forms, a pull-request template,
