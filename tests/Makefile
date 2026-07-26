@@ -8,7 +8,7 @@ LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean
 
-check: test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume
+check: test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position
 	./test-xentry
 	./test-filebrowser
 	./test-popup-position
@@ -16,6 +16,7 @@ check: test-xentry test-filebrowser test-popup-position test-pluginenum test-out
 	./test-outputplugin
 	./test-alsa-pcm-state
 	./test-alsa-volume
+	./test-mpg123-stream-position
 
 test-xentry: $(srcdir)/test-xentry.c $(top_srcdir)/libxmms/xentry.c $(top_srcdir)/libxmms/xentry.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-xentry.c $(top_srcdir)/libxmms/xentry.c $(LDLIBS)
@@ -59,5 +60,8 @@ test-alsa-volume: LDFLAGS += -Wl,--gc-sections
 test-alsa-volume: $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c $(top_srcdir)/Output/alsa/alsa.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c $(LDLIBS) $(shell pkg-config --libs alsa) -lm -lpthread
 
+test-mpg123-stream-position: $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(top_srcdir)/Input/mpg123/stream-position.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(LDLIBS)
+
 clean:
-	rm -rf test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position test-plugins test-outputplugin-plugins
