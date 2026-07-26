@@ -46,6 +46,8 @@ for XMMS Classic.
   `xmms` runtime and package identifiers.
 
 ### Fixed
+- Prevented timestamp-dependent source-distribution failures from regenerating
+  the bundled gettext plural parser with incompatible modern Bison output.
 - Fixed MP3 seeks landing before the requested position and playing beyond the
   reported duration by preserving fractional Xing percentages, anchoring seek
   offsets at the first MPEG frame, and completing finite tracks at their known
