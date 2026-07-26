@@ -190,6 +190,21 @@ Run `./configure --help` for the full list.
 
 ---
 
+## Related projects
+
+These independent projects also preserve or reinterpret the classic XMMS and
+Winamp experience using modern technologies. They are not affiliated with this
+repository and have different compatibility goals.
+
+- **[xubamp](https://github.com/hec-ovi/xubamp)** — a from-scratch Rust
+  reimplementation of the classic Winamp 2.9x player for Ubuntu 26.04, using
+  native Wayland and PipeWire while supporting classic `.wsz` skins.
+- **[XMMS Resuscitated](https://gitlab.com/cschalle/xmms-resuscitated)** — a
+  modern XMMS reimplementation built with GTK 4 and GStreamer, preserving
+  Winamp 2.x skin compatibility and providing Flatpak releases.
+
+---
+
 ## Contributing
 
 Contributions are welcome. This is a preservation-focused fork, so changes that
