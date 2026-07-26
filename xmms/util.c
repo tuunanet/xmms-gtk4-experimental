@@ -441,7 +441,8 @@ struct MenuPos
 	gint y;
 };
 
-static void util_menu_position(GtkMenu *menu, gint *x, gint *y, gpointer data)
+static void util_menu_position(GtkMenu *menu, gint *x, gint *y,
+			       gboolean *push_in, gpointer data)
 {
 	GtkRequisition requisition;
 	gint screen_width;
@@ -455,6 +456,7 @@ static void util_menu_position(GtkMenu *menu, gint *x, gint *y, gpointer data)
 
 	*x = CLAMP(pos->x - 2, 0, MAX(0, screen_width - requisition.width));
 	*y = CLAMP(pos->y - 2, 0, MAX(0, screen_height - requisition.height));
+	*push_in = FALSE;
 }
 
 static void util_menu_delete_popup_data(GtkObject *object,
@@ -515,8 +517,7 @@ void util_item_factory_popup_with_data(GtkItemFactory * ifactory,
 	}
 
 	gtk_menu_popup(GTK_MENU(ifactory->widget), NULL, NULL,
-		       (GtkMenuPositionFunc) util_menu_position,
-		       pos, mouse_button, time);
+		       util_menu_position, pos, mouse_button, time);
 }
 
 void util_item_factory_popup(GtkItemFactory * ifactory, guint x, guint y,

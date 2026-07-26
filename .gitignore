@@ -43,6 +43,7 @@
 /wmxmms.1
 /tests/test-xentry
 /tests/test-filebrowser
+/tests/test-popup-position
 /tests/test-pluginenum
 /tests/test-outputplugin
 /tests/test-alsa-pcm-state
