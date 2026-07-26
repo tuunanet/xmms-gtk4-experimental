@@ -120,8 +120,9 @@ make -j"$(nproc)"
 make check
 ```
 
-`make check` runs the display-independent regression suite. To install
-system-wide (default prefix `/usr/local`):
+`make check` runs the regression suite. The file-browser tests require an X11
+display; CI supplies one with Xvfb. To install system-wide (default prefix
+`/usr/local`):
 
 ```sh
 sudo make install

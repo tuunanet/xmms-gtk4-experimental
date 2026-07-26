@@ -23,9 +23,15 @@ make -j"$(nproc)"
 make check
 ```
 
-`make check` runs display-independent regression tests. If a change affects UI
-or audio behavior, also describe the manual runtime testing performed in the
-pull request.
+`make check` runs the regression tests. The file-browser tests require an X11
+display; in a headless environment, run them through Xvfb:
+
+```sh
+xvfb-run --auto-servernum make check
+```
+
+If a change affects UI or audio behavior, also describe the manual runtime
+testing performed in the pull request.
 
 ## Project conventions
 

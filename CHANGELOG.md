@@ -16,8 +16,8 @@ for the GTK2 fork.
 ## [Unreleased]
 
 ### Added
-- Added GitHub Actions CI for clean configuration, compilation, regression
-  tests, and source-distribution verification on Ubuntu 24.04.
+- Added GitHub Actions CI for clean configuration, compilation, Xvfb-backed
+  regression tests, and source-distribution verification on Ubuntu 24.04.
 - Added structured bug and enhancement issue forms, a pull-request template,
   weekly Dependabot updates for GitHub Actions, and contribution, conduct, and
   security policies.
