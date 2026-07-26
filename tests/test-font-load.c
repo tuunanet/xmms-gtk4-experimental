@@ -62,6 +62,11 @@ static void test_interim_proportional_main_window_default(void)
 		XMMS_INTERIM_PROPORTIONAL_MAINWIN_FONT);
 }
 
+static void test_interim_classic_default(void)
+{
+	assert_default_loads_byte_compatible(XMMS_INTERIM_CLASSIC_FONT);
+}
+
 static void assert_default_matches_classic_fixed(const gchar *name)
 {
 	GdkFont *font, *classic;
@@ -81,11 +86,13 @@ static void assert_default_matches_classic_fixed(const gchar *name)
 
 static void test_preferred_playlist_default(void)
 {
+	g_assert_nonnull(strstr(XMMS_DEFAULT_PLAYLIST_FONT, "-bold-"));
 	assert_default_matches_classic_fixed(XMMS_DEFAULT_PLAYLIST_FONT);
 }
 
 static void test_preferred_main_window_default(void)
 {
+	g_assert_nonnull(strstr(XMMS_DEFAULT_MAINWIN_FONT, "-medium-"));
 	assert_default_matches_classic_fixed(XMMS_DEFAULT_MAINWIN_FONT);
 }
 
@@ -111,6 +118,8 @@ int main(int argc, char **argv)
 	                test_interim_proportional_playlist_default);
 	g_test_add_func("/font/interim-proportional-main-window-default",
 	                test_interim_proportional_main_window_default);
+	g_test_add_func("/font/interim-classic-default",
+	                test_interim_classic_default);
 	g_test_add_func("/font/preferred-playlist-default",
 	                test_preferred_playlist_default);
 	g_test_add_func("/font/preferred-main-window-default",

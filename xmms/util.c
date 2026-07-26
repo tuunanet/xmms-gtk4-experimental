@@ -906,7 +906,11 @@ GdkFont *util_font_load(char *name)
 	/* Select the same built-in font used by the historical fallback path. */
 	default_name = util_font_resolve_default(name);
 	if (default_name)
+	{
 		font = gdk_font_load(default_name);
+		if (!font)
+			font = gdk_font_load("fixed");
+	}
 	else if (!cfg.use_fontsets)
 	{
 		if ((font = gdk_font_load(name)) == NULL)

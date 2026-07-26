@@ -511,7 +511,8 @@ static void read_config(void)
 	    !strcmp(cfg.playlist_font, XMMS_LEGACY_PLAYLIST_FONT) ||
 	    !strcmp(cfg.playlist_font, XMMS_INTERIM_PLAYLIST_FONT) ||
 	    !strcmp(cfg.playlist_font, XMMS_INTERIM_FIXED_PLAYLIST_FONT) ||
-	    !strcmp(cfg.playlist_font, XMMS_INTERIM_PROPORTIONAL_PLAYLIST_FONT))
+	    !strcmp(cfg.playlist_font, XMMS_INTERIM_PROPORTIONAL_PLAYLIST_FONT) ||
+	    !strcmp(cfg.playlist_font, XMMS_INTERIM_CLASSIC_FONT))
 	{
 		g_free(cfg.playlist_font);
 		cfg.playlist_font = g_strdup(XMMS_DEFAULT_PLAYLIST_FONT);
@@ -520,7 +521,8 @@ static void read_config(void)
 	    !strcmp(cfg.mainwin_font, XMMS_LEGACY_MAINWIN_FONT) ||
 	    !strcmp(cfg.mainwin_font, XMMS_INTERIM_MAINWIN_FONT) ||
 	    !strcmp(cfg.mainwin_font, XMMS_INTERIM_FIXED_MAINWIN_FONT) ||
-	    !strcmp(cfg.mainwin_font, XMMS_INTERIM_PROPORTIONAL_MAINWIN_FONT))
+	    !strcmp(cfg.mainwin_font, XMMS_INTERIM_PROPORTIONAL_MAINWIN_FONT) ||
+	    !strcmp(cfg.mainwin_font, XMMS_INTERIM_CLASSIC_FONT))
 	{
 		g_free(cfg.mainwin_font);
 		cfg.mainwin_font = g_strdup(XMMS_DEFAULT_MAINWIN_FONT);

@@ -36,8 +36,11 @@
 	"-adobe-helvetica-bold-r-normal--10-*-*-*-p-*-iso8859-1"
 #define XMMS_INTERIM_PROPORTIONAL_MAINWIN_FONT \
 	"-adobe-helvetica-medium-r-normal--8-*-*-*-p-*-iso8859-1"
-#define XMMS_DEFAULT_PLAYLIST_FONT "fixed"
-#define XMMS_DEFAULT_MAINWIN_FONT "fixed"
+#define XMMS_INTERIM_CLASSIC_FONT "fixed"
+#define XMMS_DEFAULT_PLAYLIST_FONT \
+	"-misc-fixed-bold-r-semicondensed--13-120-75-75-c-60-iso8859-1"
+#define XMMS_DEFAULT_MAINWIN_FONT \
+	"-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1"
 
 gchar *find_file_recursively(const char *dirname, const char *file);
 void del_directory(const char *dirname);
