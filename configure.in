@@ -293,11 +293,8 @@ LIBS=$LIBS_save
 
 
 dnl ***
-dnl *** This is just a copy of po/LINGUAS and is here to avoid breaking
-dnl *** compatibility with automake 1.4
+dnl *** po/LINGUAS is the canonical list of available translations.
 dnl ***
-ALL_LINGUAS="af az be bg bs ca cs cy da de el en en_GB eo es et eu fi fr ga gl hr hu id it ja ka ko lt lv mk ms nn nl no pl pt pt_BR ro ru sk sl sq sr sr@Latn sv tg th tr uk uz vi wa zh_CN zh_TW"
-
 AM_GNU_GETTEXT
 
 localedir=${datadir}/locale

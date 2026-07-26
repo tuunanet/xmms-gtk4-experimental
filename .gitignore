@@ -41,3 +41,4 @@
 /tests/test-filebrowser
 /tests/test-pluginenum
 /tests/test-outputplugin
+/tests/test-alsa-pcm-state

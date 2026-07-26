@@ -152,7 +152,9 @@ Run `./configure --help` for the full list.
   reference.
 - **[FAQ](FAQ)** — frequently asked questions.
 - **[TODO](TODO)** — historical developer task list.
-- **[ChangeLog](ChangeLog)** — upstream change history.
+- **[ChangeLog](ChangeLog)** — upstream (1997–2007) change history.
+- **[CHANGELOG.md](CHANGELOG.md)** — this fork's changelog (GTK2 port, GCC 15
+  fixes, ALSA output, docs modernization, and the completed GTK2 build plan).
 
 ---
 
