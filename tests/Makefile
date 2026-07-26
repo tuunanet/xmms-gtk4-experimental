@@ -8,9 +8,10 @@ LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean
 
-check: test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume
+check: test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume
 	./test-xentry
 	./test-filebrowser
+	./test-popup-position
 	./test-pluginenum
 	./test-outputplugin
 	./test-alsa-pcm-state
@@ -23,6 +24,11 @@ test-filebrowser: CFLAGS += -ffunction-sections -fdata-sections
 test-filebrowser: LDFLAGS += -Wl,--gc-sections
 test-filebrowser: $(srcdir)/test-filebrowser.c $(top_srcdir)/xmms/util.c $(top_srcdir)/xmms/util.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-filebrowser.c $(top_srcdir)/xmms/util.c $(LDLIBS)
+
+test-popup-position: CFLAGS += -ffunction-sections -fdata-sections
+test-popup-position: LDFLAGS += -Wl,--gc-sections
+test-popup-position: $(srcdir)/test-popup-position.c $(top_srcdir)/xmms/util.c $(top_srcdir)/xmms/util.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-popup-position.c $(top_srcdir)/xmms/util.c $(LDLIBS)
 
 test-pluginenum: CFLAGS += -ffunction-sections -fdata-sections -DBUILD_PLUGIN_DIR=\"$(CURDIR)/test-plugins\" -DPLUGIN_DIR=\"/nonexistent\" -DPLUGINSUBS='"Output","Input"'
 test-pluginenum: LDFLAGS += -Wl,--gc-sections
@@ -54,4 +60,4 @@ test-alsa-volume: $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c $(LDLIBS) $(shell pkg-config --libs alsa) -lm -lpthread
 
 clean:
-	rm -rf test-xentry test-filebrowser test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-plugins test-outputplugin-plugins

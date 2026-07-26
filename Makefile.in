@@ -331,6 +331,7 @@ EXTRA_DIST = \
 	tests/test-filebrowser.c \
 	tests/test-outputplugin.c \
 	tests/test-pluginenum.c \
+	tests/test-popup-position.c \
 	tests/test-xentry.c \
 	xmms.m4 \
 	xmms.spec \

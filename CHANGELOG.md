@@ -38,6 +38,9 @@ for the GTK2 fork.
   `make check` target.
 
 ### Fixed
+- Fixed GTK popup menus opening at the screen's upper-left corner instead of
+  their requested pointer position
+  ([#12](https://github.com/tuunanet/xmms-gtk2/issues/12)).
 - Fixed ALSA volume and balance controls when the configured hardware mixer is
   unavailable, as with PipeWire-backed default devices, by falling back to the
   plugin's software volume control
