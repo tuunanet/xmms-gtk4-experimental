@@ -13,6 +13,8 @@ EXTRA_DIST = \
 	.github/ISSUE_TEMPLATE/feature_request.yml \
 	.github/pull_request_template.md \
 	.github/workflows/ci.yml \
+	.github/workflows/release-candidate.yml \
+	.github/workflows/release.yml \
 	CHANGELOG.md \
 	CODE_OF_CONDUCT.md \
 	CONTRIBUTING.md \
