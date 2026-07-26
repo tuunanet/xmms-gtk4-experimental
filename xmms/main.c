@@ -507,10 +507,18 @@ static void read_config(void)
 		g_free(cfg.mainwin_font);
 		cfg.mainwin_font = NULL;
 	}
-	if (cfg.playlist_font == NULL)
-		cfg.playlist_font = g_strdup("-adobe-helvetica-bold-r-*-*-10-*");
-	if (cfg.mainwin_font == NULL)
-		cfg.mainwin_font = g_strdup("-adobe-helvetica-medium-r-*-*-8-*");
+	if (cfg.playlist_font == NULL ||
+	    !strcmp(cfg.playlist_font, XMMS_LEGACY_PLAYLIST_FONT))
+	{
+		g_free(cfg.playlist_font);
+		cfg.playlist_font = g_strdup(XMMS_DEFAULT_PLAYLIST_FONT);
+	}
+	if (cfg.mainwin_font == NULL ||
+	    !strcmp(cfg.mainwin_font, XMMS_LEGACY_MAINWIN_FONT))
+	{
+		g_free(cfg.mainwin_font);
+		cfg.mainwin_font = g_strdup(XMMS_DEFAULT_MAINWIN_FONT);
+	}
 	if (cfg.gentitle_format == NULL)
 		cfg.gentitle_format = g_strdup("%p - %t");
 	/* Migrate the old automatic OSS default when this system has no OSS device. */
