@@ -45,6 +45,8 @@ macro required to build compatible XMMS plugins.
 %autosetup
 
 %build
+# GCC 15 promotes the remaining GTK2 Vorbis callback conversions to errors.
+export CFLAGS="%{optflags} -Wno-error=incompatible-pointer-types"
 %configure --disable-esd
 %make_build
 

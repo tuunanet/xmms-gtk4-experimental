@@ -23,7 +23,7 @@ Package: xmms
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Recommends: unzip
-Description: XMMS Classic audio player
+Description: classic skinnable audio player
  XMMS Classic is a maintained preservation fork of XMMS 1.2.11. It keeps the
  classic skinnable interface and plugin architecture usable on current Linux
  and BSD systems while retaining historical runtime identifiers.

@@ -99,6 +99,9 @@ require_text packaging/rpm/xmms.spec.in 'Version:        @VERSION@' \
 	'requires an explicit RPM release version'
 require_text packaging/rpm/xmms.spec.in '%global _lto_cflags %{nil}' \
 	'disables LTO for the legacy bundled libtool in RPM builds'
+require_text packaging/rpm/xmms.spec.in \
+	'-Wno-error=incompatible-pointer-types' \
+	'permits known GTK callback conversions with Fedora GCC'
 require_text packaging/rpm/xmms.spec.in '%check' \
 	'runs package-level RPM checks'
 require_text packaging/rpm/xmms.spec.in '%package devel' \
