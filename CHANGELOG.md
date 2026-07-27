@@ -57,7 +57,8 @@ continuation of XMMS 1.2.11 for current Linux and BSD systems.
 
 ### Fixed
 - Calculated MP3 playlist durations from MPEG frame headers when no Xing header
-  is present, instead of extrapolating a VBR file from its first frame's bitrate.
+  is present, instead of extrapolating a VBR file from its first frame's bitrate;
+  accelerated these scans for large local playlists.
 - Positioned the playlist's hold-activated bottom-row menus above their buttons
   instead of at the upper-left corner of the screen under XWayland.
 - Replaced incomplete Adobe bitmap-font patterns with byte-compatible 6x13
