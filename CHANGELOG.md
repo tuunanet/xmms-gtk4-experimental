@@ -15,6 +15,11 @@ for XMMS Classic.
 
 ## [Unreleased]
 
+### Fixed
+- Linked the MP3 input plugin directly to the math libraries it uses, so native
+  packages can load the plugin and add or play MP3 files without relying on
+  symbols from the main executable.
+
 ## [1.3.1] - 2026-07-27
 
 The first XMMS Classic release establishes the maintained, preservation-focused

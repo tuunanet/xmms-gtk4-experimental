@@ -84,6 +84,15 @@ require_text .github/workflows/package-release.yml \
 	'protects draft package assets from replacement'
 require_text .github/workflows/package-release.yml "tr '~' '.'" \
 	'uses GitHub-safe Debian asset names'
+require_text .github/workflows/package-release.yml \
+	'/usr/lib/x86_64-linux-gnu/xmms/Input/libmpg123.so' \
+	'checks installed Debian MP3 plugin linkage'
+require_text .github/workflows/package-release.yml \
+	'/usr/lib64/xmms/Input/libmpg123.so' \
+	'checks installed RPM MP3 plugin linkage'
+require_text .github/workflows/package-release.yml \
+	"grep 'undefined symbol: .*_ZGV'" \
+	'rejects unresolved vector math symbols in packaged MP3 plugins'
 require_absent_text .github/workflows/package-release.yml \
 	'must be a published stable release' \
 	'does not require an already immutable release'
