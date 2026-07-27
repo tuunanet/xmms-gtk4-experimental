@@ -620,14 +620,14 @@ static gchar *get_song_title(FILE * fd, char *filename)
 
 static long get_song_length(FILE *file)
 {
-	int len;
+	long len;
 	char tmp[4];
 
-	fseek(file, 0, SEEK_END);
+	if (fseek(file, 0, SEEK_END))
+		return -1;
 	len = ftell(file);
-	fseek(file, -128, SEEK_END);
-	fread(tmp, 1, 3, file);
-	if (!strncmp(tmp, "TAG", 3))
+	if (len >= 128 && !fseek(file, -128, SEEK_END) &&
+	    fread(tmp, 1, 3, file) == 3 && !strncmp(tmp, "TAG", 3))
 		len -= 128;
 	return len;
 }
@@ -748,13 +748,75 @@ gboolean mpg123_get_first_frame(FILE *fh, struct frame *frm, guint8 **buffer)
 	}
 }
 
-static guint get_song_time(FILE * file)
+static gboolean get_frame_time_and_size(guint32 head, double *time,
+					guint *size)
+{
+	const int samples_per_frame[] = {0, 384, 1152, 1152};
+	int lsf, mpeg25, layer, bitrate_index, sampling_frequency;
+	int bitrate, frequency, padding;
+
+	if (!mpg123_head_check(head))
+		return FALSE;
+
+	if (head & (1 << 20))
+	{
+		lsf = (head & (1 << 19)) ? 0 : 1;
+		mpeg25 = 0;
+	}
+	else
+	{
+		lsf = 1;
+		mpeg25 = 1;
+	}
+	layer = 4 - ((head >> 17) & 3);
+	sampling_frequency = mpeg25 ? 6 + ((head >> 10) & 3) :
+		((head >> 10) & 3) + (lsf * 3);
+	bitrate_index = (head >> 12) & 0xf;
+	bitrate = tabsel_123[lsf][layer - 1][bitrate_index];
+	frequency = mpg123_freqs[sampling_frequency];
+	padding = (head >> 9) & 1;
+
+	if (layer == 1)
+		*size = ((bitrate * 12000 / frequency) + padding) << 2;
+	else if (layer == 2)
+		*size = (bitrate * 144000 / frequency) + padding;
+	else
+		*size = (bitrate * 144000 / (frequency << lsf)) + padding;
+	*time = (double) samples_per_frame[layer] / (frequency << lsf);
+	return *size >= 4;
+}
+
+static guint scan_song_time(FILE *file, long audio_end)
+{
+	guint32 head;
+	double frame_time, seconds = 0;
+	guint frame_size;
+	long frame_start;
+
+	while ((frame_start = ftell(file)) >= 0 &&
+	       frame_start <= audio_end - 4 && head_read(file, &head))
+	{
+		if (get_frame_time_and_size(head, &frame_time, &frame_size) &&
+		    frame_start + frame_size <= audio_end)
+		{
+			seconds += frame_time;
+			if (fseek(file, frame_size - 4, SEEK_CUR))
+				break;
+		}
+		else if (fseek(file, frame_start + 1, SEEK_SET))
+			break;
+	}
+
+	return (guint) MIN((seconds * 1000) + 0.5, G_MAXUINT);
+}
+
+guint mpg123_get_file_duration(FILE *file)
 {
 	guint8 *buf;
 	struct frame frm;
 	xing_header_t xing_header;
-	double tpf, bpf;
-	guint32 len;
+	double tpf;
+	long audio_start, audio_end;
 
 	if (!file)
 		return -1;
@@ -762,6 +824,7 @@ static guint get_song_time(FILE * file)
 	if (!mpg123_get_first_frame(file, &frm, &buf))
 		return 0;
 
+	audio_start = ftell(file);
 	tpf = mpg123_compute_tpf(&frm);
 	if (mpg123_get_xing_header(&xing_header, buf))
 	{
@@ -770,9 +833,11 @@ static guint get_song_time(FILE * file)
 	}
 
 	g_free(buf);
-	bpf = mpg123_compute_bpf(&frm);
-	len = get_song_length(file);
-	return ((guint)(len / bpf) * tpf * 1000);
+	audio_end = get_song_length(file);
+	if (audio_start < 0 || audio_end <= audio_start ||
+	    fseek(file, audio_start, SEEK_SET))
+		return 0;
+	return scan_song_time(file, audio_end);
 }
 
 static void get_song_info(char *filename, char **title_real, int *len_real)
@@ -789,7 +854,7 @@ static void get_song_info(char *filename, char **title_real, int *len_real)
 	{
 		if ((file = fopen(filename, "rb")) != NULL)
 		{
-			(*len_real) = get_song_time(file);
+			(*len_real) = mpg123_get_file_duration(file);
 			(*title_real) = get_song_title(file, filename);
 			fclose(file);
 		}
