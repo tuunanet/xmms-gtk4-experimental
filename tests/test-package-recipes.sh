@@ -68,6 +68,8 @@ require_text .github/workflows/package-release.yml 'container: fedora:42' \
 	'builds RPMs in the declared Fedora target'
 require_text .github/workflows/package-release.yml 'runs-on: ubuntu-24.04' \
 	'builds DEBs on the declared Ubuntu target'
+require_text .github/workflows/package-release.yml 'runtime=$(realpath' \
+	'installs Debian artifacts by explicit local paths'
 require_text .github/workflows/package-release.yml \
 	'Refusing to replace existing release asset' \
 	'protects published package assets from replacement'
@@ -102,6 +104,8 @@ require_text packaging/rpm/xmms.spec.in '%global _lto_cflags %{nil}' \
 require_text packaging/rpm/xmms.spec.in \
 	'-Wno-error=incompatible-pointer-types' \
 	'permits known GTK callback conversions with Fedora GCC'
+require_text packaging/rpm/xmms.spec.in 'chrpath --delete' \
+	'removes redundant standard-library runpaths from RPM binaries'
 require_text packaging/rpm/xmms.spec.in '%check' \
 	'runs package-level RPM checks'
 require_text packaging/rpm/xmms.spec.in '%package devel' \

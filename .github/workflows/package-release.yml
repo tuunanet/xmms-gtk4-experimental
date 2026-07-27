@@ -179,8 +179,9 @@ jobs:
         run: |
           set -eu
           test "$(find deb-artifacts -name '*.deb' -type f | wc -l)" -eq 2
-          runtime=$(find deb-artifacts -name 'xmms_*.deb' -type f)
-          devel=$(find deb-artifacts -name 'libxmms-dev_*.deb' -type f)
+          runtime=$(realpath "$(find deb-artifacts -name 'xmms_*.deb' -type f)")
+          devel=$(realpath \
+            "$(find deb-artifacts -name 'libxmms-dev_*.deb' -type f)")
           test "$(dpkg-deb --field "$runtime" Package)" = xmms
           test "$(dpkg-deb --field "$devel" Package)" = libxmms-dev
           test "$(dpkg-deb --field "$runtime" Version)" = \
@@ -234,6 +235,7 @@ jobs:
         run: |
           dnf install -y \
             alsa-lib-devel \
+            chrpath \
             desktop-file-utils \
             gcc \
             gettext \

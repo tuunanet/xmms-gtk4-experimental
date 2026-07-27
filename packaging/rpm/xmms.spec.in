@@ -11,6 +11,7 @@ Source0:        https://github.com/tuunanet/xmms-classic/releases/download/v%{ve
 Source1:        xmms.desktop
 
 BuildRequires:  alsa-lib-devel
+BuildRequires:  chrpath
 BuildRequires:  desktop-file-utils
 BuildRequires:  gcc
 BuildRequires:  gettext
@@ -56,6 +57,9 @@ xvfb-run -a make check
 %install
 %make_install
 find %{buildroot} -name '*.la' -delete
+chrpath --delete %{buildroot}%{_bindir}/xmms
+chrpath --delete %{buildroot}%{_bindir}/wmxmms
+chrpath --delete %{buildroot}%{_libdir}/xmms/Input/libmpg123.so
 install -D -m 0644 %{SOURCE1} \
     %{buildroot}%{_datadir}/applications/xmms.desktop
 install -D -m 0644 xmms/xmms_mini.xpm \
