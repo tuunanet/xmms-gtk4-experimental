@@ -30,6 +30,17 @@ display; in a headless environment, run them through Xvfb:
 xvfb-run --auto-servernum make check
 ```
 
+On Ubuntu 24.04 or a compatible Debian build environment, build the same
+runtime and development packages checked by CI with:
+
+```sh
+make deb
+```
+
+This creates `deb-artifacts/*.deb`, runs the package test suite, and checks the
+packaged MP3 plugin linkage. It never installs dependencies or elevates
+privileges; required build dependencies must already be installed.
+
 If a change affects UI or audio behavior, also describe the manual runtime
 testing performed in the pull request.
 
