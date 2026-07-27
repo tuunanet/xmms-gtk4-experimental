@@ -18,7 +18,7 @@ concurrency:
 jobs:
   build-candidate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     steps:
       - name: Check out selected release branch
@@ -48,9 +48,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install --no-install-recommends \
             build-essential \
+            debhelper \
+            devscripts \
             gettext \
             libasound2-dev \
+            libgl-dev \
             libgtk2.0-dev \
+            libmikmod-dev \
+            libsm-dev \
+            libvorbis-dev \
+            libxxf86vm-dev \
+            lintian \
             pkg-config \
             xvfb \
             zlib1g-dev
@@ -67,6 +75,27 @@ jobs:
       - name: Verify source distribution
         run: xvfb-run --auto-servernum make distcheck
 
+      - name: Build Debian candidate packages
+        env:
+          EXPECTED_VERSION: ${{ inputs.version }}
+        run: |
+          SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
+          export SOURCE_DATE_EPOCH
+          make deb \
+            DEB_SOURCE_ARCHIVE="$PWD/xmms-$EXPECTED_VERSION.tar.gz" \
+            DEB_OUTPUT_DIR="$PWD/release-artifacts"
+
+      - name: Install and smoke-test Debian candidate packages
+        env:
+          EXPECTED_VERSION: ${{ inputs.version }}
+        run: |
+          set -eu
+          runtime=$(realpath release-artifacts/xmms_*.deb)
+          devel=$(realpath release-artifacts/libxmms-dev_*.deb)
+          sudo apt-get install -y "$runtime" "$devel"
+          xvfb-run --auto-servernum xmms --version | grep -Fx \
+            "xmms $EXPECTED_VERSION"
+
       - name: Prepare candidate artifacts
         env:
           EXPECTED_VERSION: ${{ inputs.version }}
@@ -79,7 +108,7 @@ jobs:
           cp "$archive" release-artifacts/
           (
             cd release-artifacts
-            sha256sum "$archive" > SHA256SUMS
+            sha256sum "$archive" *.deb > SHA256SUMS
           )
           cat > release-artifacts/RELEASE-METADATA.txt <<EOF
           Version: $EXPECTED_VERSION

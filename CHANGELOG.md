@@ -19,7 +19,12 @@ for XMMS Classic.
 
 XMMS Classic 1.3.2 supersedes the unpublished 1.3.1 draft and is intended to
 be the first published XMMS Classic release. It includes the 1.3.1 changes
-listed below plus the native-package fix in this entry.
+listed below plus the native-package fixes in this entry.
+
+### Added
+- Added a top-level `make deb` target and made pull-request and release-candidate
+  CI build and verify Debian packages through it. Candidate artifacts now
+  include install-tested runtime and development DEBs with checksums.
 
 ### Fixed
 - Linked the MP3 input plugin directly to the math libraries it uses, so native

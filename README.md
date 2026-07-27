@@ -180,6 +180,16 @@ sudo make install
 This installs the `xmms` binary to `<prefix>/bin` and plugins to
 `<prefix>/lib/xmms/`.
 
+On Ubuntu 24.04, after installing the Debian package build dependencies, build
+and verify binary packages from the current source with:
+
+```sh
+make deb
+```
+
+The unsigned `xmms` and `libxmms-dev` packages are written to
+`deb-artifacts/`. The target does not use `sudo` or install dependencies.
+
 ### Useful `configure` options
 
 | Option | Description |
