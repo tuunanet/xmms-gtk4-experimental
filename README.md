@@ -111,6 +111,32 @@ The complete feature list is in the [user manual](docs/manual.md#5-features).
 
 ---
 
+## Installing a release package
+
+The [GitHub Releases](https://github.com/tuunanet/xmms-classic/releases)
+provide native x86-64 packages alongside the source archive:
+
+- DEB packages target Ubuntu 24.04 LTS (`amd64`).
+- RPM packages target Fedora 42 (`x86_64`).
+
+Download the runtime package and its `PACKAGES-SHA256SUMS` file from the
+release, verify the checksum, then install it with the distribution package
+manager:
+
+```sh
+# Ubuntu 24.04 LTS
+sudo apt install ./xmms_1.3.0-1~ubuntu24.04_amd64.deb
+
+# Fedora 42
+sudo dnf install ./xmms-1.3.0-1.fc42.x86_64.rpm
+```
+
+The optional `libxmms-dev` DEB or `xmms-devel` RPM contains headers and linker
+files for plugin development. Packages for other distributions should be built
+from source rather than forced onto an incompatible system.
+
+---
+
 ## Building from source
 
 XMMS uses the GNU Autotools build system. This repository ships a pre-generated

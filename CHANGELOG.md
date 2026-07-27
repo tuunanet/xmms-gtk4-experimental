@@ -15,6 +15,10 @@ for XMMS Classic.
 
 ## [Unreleased]
 
+### Added
+- Added tested Ubuntu 24.04 DEB and Fedora 42 RPM release packages, including
+  development packages for plugin authors and checksum metadata.
+
 ## [1.3.0] - 2026-07-26
 
 The first XMMS Classic release establishes the maintained, preservation-focused

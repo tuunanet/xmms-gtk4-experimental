@@ -49,6 +49,7 @@ require_absent_text()
 }
 
 for file in \
+	.github/workflows/package-release.yml \
 	packaging/xmms.desktop \
 	packaging/debian/control \
 	packaging/debian/copyright \
@@ -61,6 +62,17 @@ do
 	require_file "$file"
 done
 
+require_text .github/workflows/package-release.yml 'workflow_dispatch:' \
+	'requires manual package publication'
+require_text .github/workflows/package-release.yml 'container: fedora:42' \
+	'builds RPMs in the declared Fedora target'
+require_text .github/workflows/package-release.yml 'runs-on: ubuntu-24.04' \
+	'builds DEBs on the declared Ubuntu target'
+require_text .github/workflows/package-release.yml \
+	'Refusing to replace existing release asset' \
+	'protects published package assets from replacement'
+require_absent_text .github/workflows/package-release.yml '--clobber' \
+	'never clobbers published package assets'
 require_text packaging/xmms.desktop 'Name=XMMS Classic' \
 	'uses current branding in the desktop entry'
 require_text packaging/xmms.desktop 'Exec=xmms %U' \
@@ -85,6 +97,8 @@ require_text packaging/rpm/xmms.spec.in 'Name:           xmms' \
 	'preserves the RPM package name'
 require_text packaging/rpm/xmms.spec.in 'Version:        @VERSION@' \
 	'requires an explicit RPM release version'
+require_text packaging/rpm/xmms.spec.in '%global _lto_cflags %{nil}' \
+	'disables LTO for the legacy bundled libtool in RPM builds'
 require_text packaging/rpm/xmms.spec.in '%check' \
 	'runs package-level RPM checks'
 require_text packaging/rpm/xmms.spec.in '%package devel' \
