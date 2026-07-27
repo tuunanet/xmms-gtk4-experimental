@@ -39,7 +39,6 @@ EXTRA_DIST = \
 	packaging/debian/source/format \
 	packaging/debian/xmms.docs \
 	packaging/debian/xmms.install \
-	packaging/rpm/xmms.spec.in \
 	packaging/xmms.desktop \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
@@ -61,9 +60,7 @@ EXTRA_DIST = \
 	tools/build-deb.sh \
 	tools/check-release-version.sh \
 	tools/extract-release-notes.sh \
-	xmms.m4 \
-	xmms.spec \
-	xmms.spec.in
+	xmms.m4
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = xmms.m4
