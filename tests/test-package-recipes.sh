@@ -77,6 +77,9 @@ require_text .github/workflows/package-release.yml \
 	'must be an unpublished draft release' \
 	'requires packages to be attached before publication'
 require_text .github/workflows/package-release.yml \
+	'Draft releases and their assets are only visible to tokens with write' \
+	'grants draft validation the permission needed to read unpublished assets'
+require_text .github/workflows/package-release.yml \
 	'Refusing to replace existing release asset' \
 	'protects draft package assets from replacement'
 require_text .github/workflows/package-release.yml "tr '~' '.'" \
