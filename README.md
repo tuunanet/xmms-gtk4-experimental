@@ -125,10 +125,10 @@ manager:
 
 ```sh
 # Ubuntu 24.04 LTS
-sudo apt install ./xmms_1.3.1-1.ubuntu24.04_amd64.deb
+sudo apt install ./xmms_1.3.2-1.ubuntu24.04_amd64.deb
 
 # Fedora 42
-sudo dnf install ./xmms-1.3.1-1.fc42.x86_64.rpm
+sudo dnf install ./xmms-1.3.2-1.fc42.x86_64.rpm
 ```
 
 The optional `libxmms-dev` DEB or `xmms-devel` RPM contains headers and linker
