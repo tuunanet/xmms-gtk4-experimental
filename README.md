@@ -1,13 +1,13 @@
 # XMMS Classic
 
 > A community-maintained preservation fork of XMMS 1.2.11, keeping the classic
-> player usable on modern Linux and BSD systems.
+> player usable on modern Linux systems.
 
 [![CI](https://github.com/tuunanet/xmms-classic/actions/workflows/ci.yml/badge.svg)](https://github.com/tuunanet/xmms-classic/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)
 ![Language](https://img.shields.io/badge/language-C-555555)
 ![Toolkit](https://img.shields.io/badge/toolkit-GTK2-729fcf)
-![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20BSD-4c9e2f)
+![Platform](https://img.shields.io/badge/platform-Linux-4c9e2f)
 ![Status](https://img.shields.io/badge/status-maintained%20fork-8f4f9f)
 
 ![The classic XMMS interface](docs/images/xmms.png)
@@ -28,30 +28,27 @@ others via libmikmod), CD audio, and HTTP/Icecast/Shoutcast streaming.
 
 XMMS Classic is based on the last upstream release, **XMMS 1.2.11**, and
 currently uses the **GTK2 / GLib2** port of the original GTK1 codebase so that
-it continues to compile and run on contemporary Linux and BSD distributions.
+it continues to compile and run on contemporary Linux distributions.
 The `xmms` executable, source-package name, configuration paths, and plugin
 interfaces retain their historical identifiers for compatibility.
 
 ---
 
-## Maintenance status and repository lineage
+## Project lineage and credits
 
-This is **not** the original XMMS project. Original upstream development ended
-with the 1.2.11 release in 2007, and the original `xmms.org` website is no
-longer online. This particular fork is maintained by
-**[the current maintainer](https://github.com/tuunanet) (2026–present)**.
+This is **not** the original XMMS project. Upstream development ended with the
+1.2.11 release in 2007, and the original `xmms.org` website is no longer
+online. The current fork maintainers resumed active maintenance in 2026.
 
-The repository history has three distinct eras:
+Repository history falls into three periods:
 
 1. The original XMMS authors and contributors developed XMMS from 1997 to 2007.
-2. Oleg Pudeyev imported XMMS 1.2.11 into Git in 2015, applied downstream
-   FreeBSD patches, and created the initial GTK2 / GLib2 port preserved in this
-   repository's history.
-3. the current maintainer began maintaining this fork in 2026, continuing
-   compatibility and preservation work alongside many other XMMS forks and
-   related projects from other developers.
+2. Oleg Pudeyev imported XMMS 1.2.11 into Git in 2015 and created the initial
+   GTK2 / GLib2 port preserved in this repository's history.
+3. Current fork maintenance continues from 2026, focusing on compatibility and
+   preservation alongside other independent XMMS forks and related projects.
 
-The current maintenance era focuses on:
+Current maintenance priorities include:
 
 - Completing and hardening GTK2 compatibility while preserving classic UI
   behavior
@@ -62,31 +59,20 @@ The current maintenance era focuses on:
   GitHub project infrastructure
 
 The goal is preservation and modernization: keeping a piece of desktop
-multimedia history usable on today's systems. See the
-[changelog](CHANGELOG.md), [contributors](CONTRIBUTORS.md), and git history for
-full details and attribution.
+multimedia history usable on today's systems.
 
----
-
-## Honoring the original creators
-
-XMMS would not exist without the people who originally designed, built, and
-documented it between 1997 and 2007. Their work is the foundation of everything
-in this repository, and this fork exists only to keep that work alive. We honor
-and thank them.
-
-**Created by:**
+**Original creators:**
 
 - Peter Alm — main programming
 - Håvard Kvålen — additional programming
 - Thomas Nilsson — homepage, graphics, documentation & support
 - Olle Hällnäs — documentation & support
 
-XMMS was also shaped by a large number of additional contributors over the
-years — the full, credited list is preserved in
-[CONTRIBUTORS.md](CONTRIBUTORS.md). If you are (or represent) one of those
-contributors and would like a correction or additional credit, please open an
-issue.
+Many additional contributors shaped XMMS over the years. The full credited
+list is preserved in [CONTRIBUTORS.md](CONTRIBUTORS.md). If you are (or
+represent) one of those contributors and would like a correction or additional
+credit, please open an issue. See also the [changelog](CHANGELOG.md) and git
+history for fuller attribution.
 
 > ℹ️ The original `http://www.xmms.org` website, its bug tracker
 > (`bugs.xmms.org`), and the historical `@xmms.org` contact addresses are no
@@ -217,8 +203,8 @@ Run `./configure --help` for the full list.
 - **[CHANGELOG.md](CHANGELOG.md)** — curated release history for this fork.
 - **[Release process](docs/releases.md)** — candidate builds, manual testing,
   version tags, and draft GitHub Releases.
-- **[CONTRIBUTORS.md](CONTRIBUTORS.md)** — original project credits and the fork
-  maintainer.
+- **[CONTRIBUTORS.md](CONTRIBUTORS.md)** — original project credits and later
+  maintenance attribution.
 - **[Upstream history](docs/history/README.md)** — archived release notes,
   detailed changelog, GTK1-era FAQ, and developer TODO list from 1997–2007.
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** — development workflow, tests, and
