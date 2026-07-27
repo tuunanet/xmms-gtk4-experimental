@@ -210,6 +210,12 @@ jobs:
             './usr/include/xmms/plugin.h'
           lintian --fail-on error deb-artifacts/*.deb
           sudo apt-get install -y "$runtime" "$devel"
+          readelf -d /usr/lib/x86_64-linux-gnu/xmms/Input/libmpg123.so | \
+            grep -F 'libm.so'
+          if ldd -r /usr/lib/x86_64-linux-gnu/xmms/Input/libmpg123.so \
+              2>&1 | grep 'undefined symbol: .*_ZGV'; then
+            exit 1
+          fi
           xvfb-run --auto-servernum xmms --version | grep -Fx \
             "xmms $RELEASE_VERSION"
 
@@ -298,6 +304,11 @@ jobs:
             /usr/share/applications/xmms.desktop
           rpm -qlp "$devel" | grep -Fx /usr/include/xmms/plugin.h
           dnf install -y "$runtime" "$devel"
+          readelf -d /usr/lib64/xmms/Input/libmpg123.so | grep -F 'libm.so'
+          if ldd -r /usr/lib64/xmms/Input/libmpg123.so 2>&1 | \
+              grep 'undefined symbol: .*_ZGV'; then
+            exit 1
+          fi
           xvfb-run -a xmms --version | grep -Fx "xmms $RELEASE_VERSION"
 
       - name: Upload RPM packages
