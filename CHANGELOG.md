@@ -24,6 +24,10 @@ for XMMS Classic.
   publication, so the complete source and package release can become immutable
   in one step.
 
+### Fixed
+- Positioned the playlist's hold-activated bottom-row menus above their buttons
+  instead of at the upper-left corner of the screen under XWayland.
+
 ## [1.3.0] - 2026-07-26
 
 The first XMMS Classic release establishes the maintained, preservation-focused

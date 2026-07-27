@@ -2,6 +2,28 @@
 
 #include "../xmms/util.h"
 
+static void test_popup_window_uses_requested_coordinates(void)
+{
+	GtkWidget *popup;
+	gint x = -1;
+	gint y = -1;
+
+	popup = gtk_window_new(GTK_WINDOW_POPUP);
+	gtk_widget_set_usize(popup, 25, 54);
+	gtk_widget_realize(popup);
+
+	util_move_popup_window(popup, 300, 250);
+	gtk_widget_show(popup);
+	while (gtk_events_pending())
+		gtk_main_iteration();
+
+	gdk_window_get_origin(popup->window, &x, &y);
+	g_assert_cmpint(x, ==, 300);
+	g_assert_cmpint(y, ==, 250);
+
+	gtk_widget_destroy(popup);
+}
+
 static void test_popup_uses_requested_coordinates(void)
 {
 	GtkItemFactory *factory;
@@ -33,6 +55,8 @@ int main(int argc, char **argv)
 {
 	gtk_init(&argc, &argv);
 	g_test_init(&argc, &argv, NULL);
+	g_test_add_func("/popup-position/popup-window-uses-requested-coordinates",
+			test_popup_window_uses_requested_coordinates);
 	g_test_add_func("/popup-position/uses-requested-coordinates",
 			test_popup_uses_requested_coordinates);
 
