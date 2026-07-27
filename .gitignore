@@ -50,6 +50,7 @@
 /tests/test-alsa-pcm-state
 /tests/test-alsa-volume
 
-# Source distribution artifacts
+# Source distribution and package artifacts
 /xmms-[0-9]*/
 /xmms-[0-9]*.tar.*
+/deb-artifacts/

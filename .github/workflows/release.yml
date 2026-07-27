@@ -56,12 +56,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install --no-install-recommends \
             build-essential \
+            ccache \
             gettext \
             libasound2-dev \
             libgtk2.0-dev \
             pkg-config \
             xvfb \
             zlib1g-dev
+
+      - name: Set up compiler cache
+        uses: ./.github/actions/setup-ccache
+        with:
+          cache-namespace: ubuntu-24.04
 
       - name: Configure
         run: ./configure --disable-esd
@@ -86,6 +92,9 @@ jobs:
             cd release-artifacts
             sha256sum "$archive" > SHA256SUMS
           )
+
+      - name: Report compiler cache statistics
+        run: ccache --show-stats
 
       - name: Upload verified release artifacts
         uses: actions/upload-artifact@v7
