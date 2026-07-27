@@ -15,6 +15,11 @@ for XMMS Classic.
 
 ## [Unreleased]
 
+### Added
+- Added a top-level `make deb` target and made pull-request and release-candidate
+  CI build and verify Debian packages through it. Candidate artifacts now
+  include install-tested runtime and development DEBs with checksums.
+
 ### Fixed
 - Linked the MP3 input plugin directly to the math libraries it uses, so native
   packages can load the plugin and add or play MP3 files without relying on

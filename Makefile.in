@@ -353,6 +353,7 @@ EXTRA_DIST = \
 	tests/test-popup-position.c \
 	tests/test-release-tools.sh \
 	tests/test-xentry.c \
+	tools/build-deb.sh \
 	tools/check-release-version.sh \
 	tools/extract-release-notes.sh \
 	xmms.m4 \
@@ -792,6 +793,17 @@ distcleancheck: distclean
 	  || { echo "ERROR: files left in build directory after distclean:" ; \
 	       $(distcleancheck_listfiles) ; \
 	       exit 1; } >&2
+deb:
+	@archive='$(DEB_SOURCE_ARCHIVE)'; \
+	if test -z "$$archive"; then \
+		$(MAKE) dist-gzip; \
+		archive='$(top_builddir)/$(PACKAGE)-$(VERSION).tar.gz'; \
+	fi; \
+	$(SHELL) '$(top_srcdir)/tools/build-deb.sh' '$(VERSION)' \
+		"$$archive" '$(DEB_OUTPUT_DIR)' '$(top_srcdir)/packaging'
+
+DEB_OUTPUT_DIR = $(top_builddir)/deb-artifacts
+
 check-local:
 	$(mkdir_p) tests
 	@top_srcdir=`cd $(top_srcdir) && pwd`; top_builddir=`pwd`; \
@@ -895,7 +907,7 @@ uninstall-man: uninstall-man1
 
 .PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am am--refresh check \
 	check-am check-local clean clean-generic clean-libtool clean-local clean-recursive \
-	ctags ctags-recursive dist dist-all dist-bzip2 dist-gzip \
+	ctags ctags-recursive deb dist dist-all dist-bzip2 dist-gzip \
 	dist-shar dist-tarZ dist-zip distcheck distclean \
 	distclean-generic distclean-hdr distclean-libtool \
 	distclean-recursive distclean-tags distcleancheck distdir \

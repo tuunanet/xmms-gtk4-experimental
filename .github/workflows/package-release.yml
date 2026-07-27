@@ -172,23 +172,15 @@ jobs:
           tar -xzf "source-release/xmms-$RELEASE_VERSION.tar.gz" \
             -C "$build_root"
           source_dir="$build_root/xmms-$RELEASE_VERSION"
-          rm -rf "$source_dir/packaging" "$source_dir/debian"
+          rm -rf "$source_dir/packaging"
           cp -a packaging "$source_dir/packaging"
-          cp -a packaging/debian "$source_dir/debian"
-          release_date=$(date --date="@$SOURCE_DATE_EPOCH" --rfc-email)
-          cat > "$source_dir/debian/changelog" <<EOF
-          xmms (1:$RELEASE_VERSION-1~ubuntu24.04) noble; urgency=medium
-
-            * Package XMMS Classic $RELEASE_VERSION.
-
-           -- XMMS Classic contributors <47913151+tuunanet@users.noreply.github.com>  $release_date
-          EOF
           (
             cd "$source_dir"
-            dpkg-buildpackage --build=binary --no-sign
+            ./configure --disable-esd
+            make deb \
+              DEB_SOURCE_ARCHIVE="$GITHUB_WORKSPACE/source-release/xmms-$RELEASE_VERSION.tar.gz" \
+              DEB_OUTPUT_DIR="$GITHUB_WORKSPACE/deb-artifacts"
           )
-          mkdir deb-artifacts
-          cp "$build_root"/*.deb deb-artifacts/
 
       - name: Verify and install Debian packages
         run: |

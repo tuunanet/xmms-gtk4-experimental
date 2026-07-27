@@ -58,6 +58,7 @@ EXTRA_DIST = \
 	tests/test-popup-position.c \
 	tests/test-release-tools.sh \
 	tests/test-xentry.c \
+	tools/build-deb.sh \
 	tools/check-release-version.sh \
 	tools/extract-release-notes.sh \
 	xmms.m4 \
@@ -68,6 +69,19 @@ m4datadir = $(datadir)/aclocal
 m4data_DATA = xmms.m4
 
 man_MANS = xmms.1 wmxmms.1
+
+.PHONY: deb
+
+deb:
+	@archive='$(DEB_SOURCE_ARCHIVE)'; \
+	if test -z "$$archive"; then \
+		$(MAKE) dist-gzip; \
+		archive='$(top_builddir)/$(PACKAGE)-$(VERSION).tar.gz'; \
+	fi; \
+	$(SHELL) '$(top_srcdir)/tools/build-deb.sh' '$(VERSION)' \
+		"$$archive" '$(DEB_OUTPUT_DIR)' '$(top_srcdir)/packaging'
+
+DEB_OUTPUT_DIR = $(top_builddir)/deb-artifacts
 
 check-local:
 	$(mkdir_p) tests

@@ -57,11 +57,30 @@ for file in \
 	packaging/debian/rules \
 	packaging/debian/source/format \
 	packaging/debian/xmms.install \
-	packaging/rpm/xmms.spec.in
+	packaging/rpm/xmms.spec.in \
+	tools/build-deb.sh
 do
 	require_file "$file"
 done
 
+require_text Makefile.am 'deb:' \
+	'exposes a top-level make deb target'
+require_text Makefile.am '$(MAKE) dist-gzip' \
+	'creates a source archive for local Debian builds'
+require_text Makefile.am 'tools/build-deb.sh' \
+	'builds Debian packages through the shared helper'
+require_text .github/workflows/ci.yml 'make deb' \
+	'builds Debian packages before release candidates'
+require_text .github/workflows/release-candidate.yml 'make deb' \
+	'builds candidate Debian packages through the public target'
+require_text .github/workflows/release-candidate.yml \
+	'sha256sum "$archive" *.deb' \
+	'includes Debian packages in candidate checksums'
+require_text .github/workflows/release-candidate.yml \
+	'sudo apt-get install -y "$runtime" "$devel"' \
+	'installs candidate Debian packages before upload'
+require_text .github/workflows/package-release.yml 'make deb' \
+	'reuses the public target for final Debian packages'
 require_text .github/workflows/package-release.yml 'workflow_dispatch:' \
 	'requires manual package publication'
 require_text .github/workflows/package-release.yml 'container: fedora:42' \
@@ -71,7 +90,7 @@ require_text .github/workflows/package-release.yml 'runs-on: ubuntu-24.04' \
 require_text .github/workflows/package-release.yml 'runtime=$(realpath' \
 	'installs Debian artifacts by explicit local paths'
 require_text .github/workflows/package-release.yml \
-	'rm -rf "$source_dir/packaging" "$source_dir/debian"' \
+	'rm -rf "$source_dir/packaging"' \
 	'replaces bundled recipes without nesting directories'
 require_text .github/workflows/package-release.yml \
 	'must be an unpublished draft release' \
@@ -104,6 +123,14 @@ require_text packaging/xmms.desktop 'Exec=xmms %U' \
 	'preserves the xmms executable name'
 require_absent_text packaging/xmms.desktop 'Encoding=' \
 	'does not use the obsolete desktop Encoding key'
+require_text tools/build-deb.sh 'dpkg-buildpackage --build=binary --no-sign' \
+	'builds unsigned binary Debian packages'
+require_text tools/build-deb.sh "grep 'undefined symbol: .*_ZGV'" \
+	'checks packaged MP3 plugin vector math linkage'
+require_text tools/build-deb.sh 'lintian --fail-on error' \
+	'runs Debian package policy checks from make deb'
+require_absent_text tools/build-deb.sh 'sudo' \
+	'never elevates privileges from make deb'
 require_text packaging/debian/control 'Package: xmms' \
 	'defines the Debian runtime package'
 require_text packaging/debian/control 'Package: libxmms-dev' \

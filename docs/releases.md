@@ -55,6 +55,8 @@ tools/check-release-version.sh 1.3.1
 This rejects non-SemVer versions, disagreement between source and generated
 package metadata, missing changelog entries, and duplicate version headings.
 Submit the release preparation through the normal pull-request and CI process.
+Normal CI invokes `make deb`, so Debian packaging regressions must pass before
+candidate assembly begins.
 
 ## 2. Build and test a candidate
 
@@ -64,13 +66,15 @@ Open **Actions -> Release candidate -> Run workflow** in GitHub. Select the
 The workflow accepts only `release/*` branches. It runs:
 
 - configuration and compilation;
-- the complete Xvfb-backed `make check` suite; and
-- `make distcheck` from the source distribution.
+- the complete Xvfb-backed `make check` suite;
+- `make distcheck` from the source distribution; and
+- `make deb`, followed by installation and smoke testing of both packages.
 
 A successful run uploads a 30-day workflow artifact containing:
 
 - `xmms-1.3.1.tar.gz`;
-- `SHA256SUMS`;
+- Ubuntu 24.04 `xmms` and `libxmms-dev` DEBs;
+- `SHA256SUMS` covering the source archive and both DEBs;
 - `release-notes.md`, extracted from the versioned changelog entry; and
 - `RELEASE-METADATA.txt`, identifying the candidate commit and workflow run.
 
@@ -79,6 +83,8 @@ Download that workflow artifact and verify it before testing:
 ```sh
 sha256sum -c SHA256SUMS
 tar -xzf xmms-1.3.1.tar.gz
+sudo apt install './xmms_1.3.1-1~ubuntu24.04_amd64.deb' \
+  './libxmms-dev_1.3.1-1~ubuntu24.04_amd64.deb'
 ```
 
 Manual testing should use the candidate archive rather than an unrelated local

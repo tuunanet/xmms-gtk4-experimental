@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build-and-test:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 35
 
     steps:
       - name: Check out repository
@@ -27,9 +27,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install --no-install-recommends \
             build-essential \
+            debhelper \
+            devscripts \
             gettext \
             libasound2-dev \
+            libgl-dev \
             libgtk2.0-dev \
+            libmikmod-dev \
+            libsm-dev \
+            libvorbis-dev \
+            libxxf86vm-dev \
+            lintian \
             pkg-config \
             xvfb \
             zlib1g-dev
@@ -45,3 +53,6 @@ jobs:
 
       - name: Verify source distribution
         run: xvfb-run --auto-servernum make distcheck
+
+      - name: Build and verify Debian packages
+        run: make deb
