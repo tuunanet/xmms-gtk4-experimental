@@ -51,6 +51,7 @@ GArray *read_ini_array(const gchar * filename, const gchar * section, const gcha
 GArray *string_to_garray(const gchar * str);
 void glist_movedown(GList * list);
 void glist_moveup(GList * list);
+void util_move_popup_window(GtkWidget *window, gint x, gint y);
 void util_item_factory_popup(GtkItemFactory * ifactory, guint x, guint y, guint mouse_button, guint32 time);
 void util_item_factory_popup_with_data(GtkItemFactory * ifactory, gpointer data, GtkDestroyNotify destroy, guint x, guint y, guint mouse_button, guint32 time);
 GtkWidget *util_create_add_url_window(gchar *caption, GtkSignalFunc ok_func, GtkSignalFunc enqueue_func);

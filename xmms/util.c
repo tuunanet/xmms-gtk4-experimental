@@ -441,6 +441,12 @@ struct MenuPos
 	gint y;
 };
 
+void util_move_popup_window(GtkWidget *window, gint x, gint y)
+{
+	/* Preserve the requested initial position when GTK maps the popup. */
+	gtk_window_move(GTK_WINDOW(window), x, y);
+}
+
 static void util_menu_position(GtkMenu *menu, gint *x, gint *y,
 			       gboolean *push_in, gpointer data)
 {
