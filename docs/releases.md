@@ -30,7 +30,7 @@ an up-to-date `main`:
 ```sh
 git switch main
 git pull --ff-only
-git switch -c release/1.3.0
+git switch -c release/1.3.1
 ```
 
 Prepare a release commit that:
@@ -49,7 +49,7 @@ than committing a broad Autotools regeneration.
 Validate the release metadata locally:
 
 ```sh
-tools/check-release-version.sh 1.3.0
+tools/check-release-version.sh 1.3.1
 ```
 
 This rejects non-SemVer versions, disagreement between source and generated
@@ -59,7 +59,7 @@ Submit the release preparation through the normal pull-request and CI process.
 ## 2. Build and test a candidate
 
 Open **Actions -> Release candidate -> Run workflow** in GitHub. Select the
-`release/1.3.0` branch and enter `1.3.0` as the version.
+`release/1.3.1` branch and enter `1.3.1` as the version.
 
 The workflow accepts only `release/*` branches. It runs:
 
@@ -69,7 +69,7 @@ The workflow accepts only `release/*` branches. It runs:
 
 A successful run uploads a 30-day workflow artifact containing:
 
-- `xmms-1.3.0.tar.gz`;
+- `xmms-1.3.1.tar.gz`;
 - `SHA256SUMS`;
 - `release-notes.md`, extracted from the versioned changelog entry; and
 - `RELEASE-METADATA.txt`, identifying the candidate commit and workflow run.
@@ -78,7 +78,7 @@ Download that workflow artifact and verify it before testing:
 
 ```sh
 sha256sum -c SHA256SUMS
-tar -xzf xmms-1.3.0.tar.gz
+tar -xzf xmms-1.3.1.tar.gz
 ```
 
 Manual testing should use the candidate archive rather than an unrelated local
@@ -100,8 +100,8 @@ commit:
 ```sh
 git switch main
 git pull --ff-only
-git tag -a v1.3.0 -m "XMMS Classic 1.3.0"
-git push origin v1.3.0
+git tag -a v1.3.1 -m "XMMS Classic 1.3.1"
+git push origin v1.3.1
 ```
 
 A release tag must:
