@@ -17,6 +17,8 @@ pull requests -> main -> release/VERSION -> candidate artifact -> manual tests
                                                                |
                                               draft GitHub Release
                                                                |
+                                              tested DEB/RPM packages
+                                                               |
                                                  manual publication
 ```
 
@@ -116,47 +118,54 @@ job receive `contents: write` permission and create the draft GitHub Release.
 The draft receives the distchecked source archive, `SHA256SUMS`, and release
 notes extracted from the matching changelog entry.
 
-## 4. Review and publish
+## 4. Build native packages
 
-Before publishing the draft in GitHub:
-
-1. confirm the tag and displayed version;
-2. inspect the extracted release notes;
-3. download the attached archive and verify `SHA256SUMS`;
-4. confirm the release workflow succeeded for the tagged commit; and
-5. perform any final smoke test required for the release.
-
-Then publish the draft manually. Delete the short-lived release branch after
-publication. Never move or recreate a published version tag; prepare a new
-patch release instead.
-
-Rerunning a failed tag workflow may update an existing draft and replace its
-assets. It deliberately refuses to modify a release that has already been
-published.
-
-## 5. Build native packages
-
-After the source release is published, manually run **Package release** with
-the released SemVer version. The workflow downloads and verifies the existing
-release archive rather than rebuilding from a moving branch. It then:
+While the official release is still a draft, manually run **Package release**
+from `main` with the release's SemVer version. The workflow downloads and
+verifies the draft's source archive rather than rebuilding from a moving
+branch. It then:
 
 - builds `xmms` and `libxmms-dev` DEBs on Ubuntu 24.04 LTS;
 - builds `xmms` and `xmms-devel` RPMs inside Fedora 42;
 - runs the full Xvfb-backed tests during both native package builds;
 - inspects package metadata and expected files;
 - installs both runtime and development packages in their clean build
-  environments and checks `xmms --version`; and
+  environments and checks `xmms --version`;
+- normalizes DEB filenames for GitHub release assets; and
 - creates `PACKAGES-SHA256SUMS` and `PACKAGE-METADATA.txt` before attaching the
-  files to the published release.
+  files to the unpublished draft.
 
-The attachment job has the only `contents: write` permission. It refuses to
-replace any existing release asset, so a package correction requires an
-incremented package release or application patch release rather than silently
-changing published bytes.
+The attachment job has the only `contents: write` permission. It requires an
+unpublished, stable draft and refuses to replace any existing release asset.
+A package correction must therefore happen before publication or use an
+incremented application patch release rather than silently changing published
+bytes.
 
 These packages target x86-64 Ubuntu 24.04 and Fedora 42. A native package is not
 claimed to support unrelated distributions merely because they use the same
 archive format.
+
+## 5. Review and publish
+
+Before publishing the draft in GitHub:
+
+1. confirm the tag and displayed version;
+2. inspect the extracted release notes;
+3. download the source archive and verify `SHA256SUMS`;
+4. download the native packages and verify `PACKAGES-SHA256SUMS`;
+5. confirm both release workflows succeeded for the tagged commit and packaging
+   recipes on `main`; and
+6. perform any final smoke test required for the release.
+
+Then publish the complete draft manually. With immutable releases enabled,
+publication permanently locks its tag, notes, and all source and package
+assets. Delete the short-lived release branch after publication. Never move,
+delete, or recreate a published version tag; prepare a new patch release
+instead.
+
+Rerunning a failed tag workflow may update an existing draft and replace its
+source assets. The release workflow refuses to modify a published release, and
+the package workflow never replaces package assets.
 
 ## Rollback and hotfixes
 
@@ -182,7 +191,8 @@ Draft creation uses the official
 with `--verify-tag` so automation cannot silently create a missing tag. Native
 package attachment uses the documented
 [`gh release upload`](https://cli.github.com/manual/gh_release_upload) command
-without `--clobber`, after checking every asset name. Package recipes follow
+without `--clobber`, after checking every asset name while the release remains
+a draft. Package recipes follow
 the official [Debian maintainer
 reference](https://www.debian.org/doc/manuals/debmake-doc/) and [Fedora
 packaging guidelines](https://docs.fedoraproject.org/en-US/packaging-guidelines/).
