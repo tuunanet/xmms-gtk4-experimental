@@ -215,6 +215,7 @@ jobs:
     env:
       RELEASE_VERSION: ${{ needs.validate-release.outputs.version }}
       RELEASE_TAG: ${{ needs.validate-release.outputs.tag }}
+      SOURCE_DATE_EPOCH: ${{ needs.validate-release.outputs.source_date_epoch }}
 
     steps:
       - name: Install workflow prerequisites
