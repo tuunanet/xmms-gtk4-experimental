@@ -71,10 +71,21 @@ require_text .github/workflows/package-release.yml 'runs-on: ubuntu-24.04' \
 require_text .github/workflows/package-release.yml 'runtime=$(realpath' \
 	'installs Debian artifacts by explicit local paths'
 require_text .github/workflows/package-release.yml \
+	'rm -rf "$source_dir/packaging" "$source_dir/debian"' \
+	'replaces bundled recipes without nesting directories'
+require_text .github/workflows/package-release.yml \
+	'must be an unpublished draft release' \
+	'requires packages to be attached before publication'
+require_text .github/workflows/package-release.yml \
 	'Refusing to replace existing release asset' \
-	'protects published package assets from replacement'
+	'protects draft package assets from replacement'
+require_text .github/workflows/package-release.yml "tr '~' '.'" \
+	'uses GitHub-safe Debian asset names'
+require_absent_text .github/workflows/package-release.yml \
+	'must be a published stable release' \
+	'does not require an already immutable release'
 require_absent_text .github/workflows/package-release.yml '--clobber' \
-	'never clobbers published package assets'
+	'never clobbers release package assets'
 require_text packaging/xmms.desktop 'Name=XMMS Classic' \
 	'uses current branding in the desktop entry'
 require_text packaging/xmms.desktop 'Exec=xmms %U' \

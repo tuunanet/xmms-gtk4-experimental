@@ -124,11 +124,11 @@ release, verify the checksum, then install it with the distribution package
 manager:
 
 ```sh
-# Ubuntu 24.04 LTS
-sudo apt install ./xmms_1.3.0-1~ubuntu24.04_amd64.deb
+# Ubuntu 24.04 LTS (replace VERSION with the release version)
+sudo apt install ./xmms_VERSION-1.ubuntu24.04_amd64.deb
 
-# Fedora 42
-sudo dnf install ./xmms-1.3.0-1.fc42.x86_64.rpm
+# Fedora 42 (replace VERSION with the release version)
+sudo dnf install ./xmms-VERSION-1.fc42.x86_64.rpm
 ```
 
 The optional `libxmms-dev` DEB or `xmms-devel` RPM contains headers and linker

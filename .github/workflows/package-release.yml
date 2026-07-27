@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Published SemVer release to package"
+        description: "Draft SemVer release to package before publication"
         required: true
         type: string
 
@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Select and validate published release
+      - name: Select and validate release source
         id: release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -46,55 +46,65 @@ jobs:
         run: |
           set -eu
           version=$REQUESTED_VERSION
-          if [ -z "$version" ]; then
-            tag=$(gh release list \
-              --exclude-drafts --exclude-pre-releases --limit 1 \
-              --json tagName --jq '.[0].tagName')
-            version=${tag#v}
-          fi
-          if ! printf '%s\n' "$version" | grep -Eq \
-              '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
-            echo "Version must be MAJOR.MINOR.PATCH SemVer." >&2
-            exit 1
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            version=$(sed -n \
+              's/^AM_INIT_AUTOMAKE(\[xmms\], \[\([^]]*\)\])$/\1/p' \
+              configure.in)
+            tools/check-release-version.sh "$version"
+            tag="v$version-pr"
+            source_date_epoch=$(git show -s --format=%ct HEAD)
+            mkdir source-release
+            git archive --format=tar --prefix="xmms-$version/" HEAD | \
+              gzip -n > "source-release/xmms-$version.tar.gz"
+          else
+            if [ "$GITHUB_REF" != refs/heads/main ]; then
+              echo "Package publication must run from main." >&2
+              exit 1
+            fi
+            if ! printf '%s\n' "$version" | grep -Eq \
+                '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
+              echo "Version must be MAJOR.MINOR.PATCH SemVer." >&2
+              exit 1
+            fi
+
+            tag="v$version"
+            git fetch --force origin \
+              "refs/heads/main:refs/remotes/origin/main" \
+              "refs/tags/$tag:refs/tags/$tag"
+            if [ "$(git cat-file -t "$tag")" != tag ]; then
+              echo "$tag must be an annotated tag." >&2
+              exit 1
+            fi
+            tag_commit=$(git rev-list -n 1 "$tag")
+            if ! git merge-base --is-ancestor "$tag_commit" origin/main; then
+              echo "$tag must point to a commit contained in main." >&2
+              exit 1
+            fi
+
+            release=$(gh release view "$tag" \
+              --json isDraft,isPrerelease,tagName)
+            if [ "$(printf '%s' "$release" | jq -r .isDraft)" != true ] || \
+               [ "$(printf '%s' "$release" | jq -r .isPrerelease)" != false ]; then
+              echo "$tag must be an unpublished draft release." >&2
+              exit 1
+            fi
+
+            mkdir source-release
+            gh release download "$tag" --dir source-release \
+              --pattern "xmms-$version.tar.gz" --pattern SHA256SUMS
+            (
+              cd source-release
+              grep -Fx "$(grep "  xmms-$version.tar.gz$" SHA256SUMS)" \
+                SHA256SUMS >/dev/null
+              sha256sum -c SHA256SUMS
+            )
+            source_date_epoch=$(git for-each-ref \
+              --format='%(taggerdate:unix)' "refs/tags/$tag")
           fi
 
-          tag="v$version"
-          git fetch --force origin \
-            "refs/heads/main:refs/remotes/origin/main" \
-            "refs/tags/$tag:refs/tags/$tag"
-          if [ "$(git cat-file -t "$tag")" != tag ]; then
-            echo "$tag must be an annotated tag." >&2
-            exit 1
-          fi
-          tag_commit=$(git rev-list -n 1 "$tag")
-          if ! git merge-base --is-ancestor "$tag_commit" origin/main; then
-            echo "$tag must point to a commit contained in main." >&2
-            exit 1
-          fi
-
-          release=$(gh release view "$tag" \
-            --json isDraft,isPrerelease,tagName)
-          if [ "$(printf '%s' "$release" | jq -r .isDraft)" != false ] || \
-             [ "$(printf '%s' "$release" | jq -r .isPrerelease)" != false ]; then
-            echo "$tag must be a published stable release." >&2
-            exit 1
-          fi
-
-          mkdir source-release
-          gh release download "$tag" --dir source-release \
-            --pattern "xmms-$version.tar.gz" --pattern SHA256SUMS
-          (
-            cd source-release
-            grep -Fx "$(grep "  xmms-$version.tar.gz$" SHA256SUMS)" \
-              SHA256SUMS >/dev/null
-            sha256sum -c SHA256SUMS
-          )
           source_sha256=$(sha256sum \
             "source-release/xmms-$version.tar.gz" | cut -d' ' -f1)
-          source_date_epoch=$(git for-each-ref \
-            --format='%(taggerdate:unix)' "refs/tags/$tag")
           test -n "$source_date_epoch"
-
           echo "source_date_epoch=$source_date_epoch" >> "$GITHUB_OUTPUT"
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
@@ -158,6 +168,7 @@ jobs:
           tar -xzf "source-release/xmms-$RELEASE_VERSION.tar.gz" \
             -C "$build_root"
           source_dir="$build_root/xmms-$RELEASE_VERSION"
+          rm -rf "$source_dir/packaging" "$source_dir/debian"
           cp -a packaging "$source_dir/packaging"
           cp -a packaging/debian "$source_dir/debian"
           release_date=$(date --date="@$SOURCE_DATE_EPOCH" --rfc-email)
@@ -326,6 +337,12 @@ jobs:
           set -eu
           test "$(find release-packages -name '*.deb' -type f | wc -l)" -eq 2
           test "$(find release-packages -name '*.rpm' -type f | wc -l)" -eq 2
+          for asset in release-packages/*.deb; do
+            safe_name=$(basename "$asset" | tr '~' '.')
+            if [ "$asset" != "release-packages/$safe_name" ]; then
+              mv "$asset" "release-packages/$safe_name"
+            fi
+          done
           (
             cd release-packages
             sha256sum ./*.deb ./*.rpm | sort -k2 > PACKAGES-SHA256SUMS
@@ -335,17 +352,21 @@ jobs:
           Source tag: $RELEASE_TAG
           Source archive SHA-256: $SOURCE_SHA256
           Packaging recipe commit: $GITHUB_SHA
+          Package workflow: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           Debian target: Ubuntu 24.04 LTS (amd64)
           RPM target: Fedora 42 (x86_64)
           EOF
 
-      - name: Attach packages to published release
+      - name: Attach packages to draft release
         run: |
           set -eu
           release=$(gh release view "$RELEASE_TAG" \
             --json assets,isDraft,isPrerelease)
-          test "$(printf '%s' "$release" | jq -r .isDraft)" = false
-          test "$(printf '%s' "$release" | jq -r .isPrerelease)" = false
+          if [ "$(printf '%s' "$release" | jq -r .isDraft)" != true ] || \
+             [ "$(printf '%s' "$release" | jq -r .isPrerelease)" != false ]; then
+            echo "$RELEASE_TAG must be an unpublished draft release." >&2
+            exit 1
+          fi
           for asset in release-packages/*; do
             name=$(basename "$asset")
             if printf '%s' "$release" | jq -e --arg name "$name" \
