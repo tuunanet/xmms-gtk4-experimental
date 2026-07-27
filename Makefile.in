@@ -40,7 +40,7 @@ host_triplet = @host@
 DIST_COMMON = $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(srcdir)/wmxmms.1.in $(srcdir)/xmms-config.in \
-	$(srcdir)/xmms.1.in $(srcdir)/xmms.spec.in \
+	$(srcdir)/xmms.1.in \
 	$(top_srcdir)/configure $(top_srcdir)/intl/Makefile.in \
 	ABOUT-NLS COPYING config.guess config.rpath config.sub depcomp \
 	install-sh ltmain.sh missing
@@ -54,7 +54,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h $(top_builddir)/xmms/i18n.h
-CONFIG_CLEAN_FILES = xmms.1 wmxmms.1 xmms.spec xmms-config \
+CONFIG_CLEAN_FILES = xmms.1 wmxmms.1 xmms-config \
 	intl/Makefile
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" \
 	"$(DESTDIR)$(m4datadir)"
@@ -334,7 +334,6 @@ EXTRA_DIST = \
 	packaging/debian/source/format \
 	packaging/debian/xmms.docs \
 	packaging/debian/xmms.install \
-	packaging/rpm/xmms.spec.in \
 	packaging/xmms.desktop \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
@@ -356,9 +355,7 @@ EXTRA_DIST = \
 	tools/build-deb.sh \
 	tools/check-release-version.sh \
 	tools/extract-release-notes.sh \
-	xmms.m4 \
-	xmms.spec \
-	xmms.spec.in
+	xmms.m4
 m4datadir = $(datadir)/aclocal
 m4data_DATA = xmms.m4
 man_MANS = xmms.1 wmxmms.1
@@ -419,8 +416,6 @@ distclean-hdr:
 xmms.1: $(top_builddir)/config.status $(srcdir)/xmms.1.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 wmxmms.1: $(top_builddir)/config.status $(srcdir)/wmxmms.1.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-xmms.spec: $(top_builddir)/config.status $(srcdir)/xmms.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 xmms-config: $(top_builddir)/config.status $(srcdir)/xmms-config.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@

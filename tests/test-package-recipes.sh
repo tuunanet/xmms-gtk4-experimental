@@ -57,7 +57,6 @@ for file in \
 	packaging/debian/rules \
 	packaging/debian/source/format \
 	packaging/debian/xmms.install \
-	packaging/rpm/xmms.spec.in \
 	tools/build-deb.sh
 do
 	require_file "$file"
@@ -83,10 +82,12 @@ require_text .github/workflows/package-release.yml 'make deb' \
 	'reuses the public target for final Debian packages'
 require_text .github/workflows/package-release.yml 'workflow_dispatch:' \
 	'requires manual package publication'
-require_text .github/workflows/package-release.yml 'container: fedora:42' \
-	'builds RPMs in the declared Fedora target'
 require_text .github/workflows/package-release.yml 'runs-on: ubuntu-24.04' \
 	'builds DEBs on the declared Ubuntu target'
+require_absent_text .github/workflows/package-release.yml 'container: fedora:42' \
+	'does not build RPM packages'
+require_absent_text .github/workflows/package-release.yml 'build-rpm' \
+	'does not define an RPM package job'
 require_text .github/workflows/package-release.yml 'runtime=$(realpath' \
 	'installs Debian artifacts by explicit local paths'
 require_text .github/workflows/package-release.yml \
@@ -106,9 +107,6 @@ require_text .github/workflows/package-release.yml "tr '~' '.'" \
 require_text .github/workflows/package-release.yml \
 	'/usr/lib/x86_64-linux-gnu/xmms/Input/libmpg123.so' \
 	'checks installed Debian MP3 plugin linkage'
-require_text .github/workflows/package-release.yml \
-	'/usr/lib64/xmms/Input/libmpg123.so' \
-	'checks installed RPM MP3 plugin linkage'
 require_text .github/workflows/package-release.yml \
 	"grep 'undefined symbol: .*_ZGV'" \
 	'rejects unresolved vector math symbols in packaged MP3 plugins'
@@ -147,23 +145,10 @@ require_text packaging/debian/rules 'DEB_BUILD_OPTIONS' \
 	'honors Debian package test controls'
 require_text packaging/debian/rules '--disable-esd' \
 	'disables the obsolete ESD plugin in Debian builds'
-require_text packaging/rpm/xmms.spec.in 'Name:           xmms' \
-	'preserves the RPM package name'
-require_text packaging/rpm/xmms.spec.in 'Version:        @VERSION@' \
-	'requires an explicit RPM release version'
-require_text packaging/rpm/xmms.spec.in '%global _lto_cflags %{nil}' \
-	'disables LTO for the legacy bundled libtool in RPM builds'
-require_text packaging/rpm/xmms.spec.in \
-	'-Wno-error=incompatible-pointer-types' \
-	'permits known GTK callback conversions with Fedora GCC'
-require_text packaging/rpm/xmms.spec.in 'chrpath --delete' \
-	'removes redundant standard-library runpaths from RPM binaries'
-require_text packaging/rpm/xmms.spec.in '%check' \
-	'runs package-level RPM checks'
-require_text packaging/rpm/xmms.spec.in '%package devel' \
-	'defines the RPM development package'
-require_absent_text packaging/rpm/xmms.spec.in '%{_libdir}/xmms/**/*.la' \
-	'does not package libtool archives'
+require_absent_text Makefile.am 'xmms.spec' \
+	'does not ship legacy RPM package metadata'
+require_absent_text Makefile.am 'packaging/rpm' \
+	'does not ship modern RPM package recipes'
 
 if test "$failures" -ne 0; then
 	echo "$failures package recipe checks failed" >&2

@@ -229,111 +229,9 @@ jobs:
           retention-days: 30
           overwrite: true
 
-  build-rpm:
-    needs: validate-release
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    container: fedora:42
-    env:
-      RELEASE_VERSION: ${{ needs.validate-release.outputs.version }}
-      RELEASE_TAG: ${{ needs.validate-release.outputs.tag }}
-      SOURCE_DATE_EPOCH: ${{ needs.validate-release.outputs.source_date_epoch }}
-
-    steps:
-      - name: Install workflow prerequisites
-        run: dnf install -y findutils git gzip tar
-
-      - name: Check out packaging recipes
-        uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - name: Download verified release source
-        uses: actions/download-artifact@v8
-        with:
-          name: package-source-${{ env.RELEASE_TAG }}
-          path: source-release
-
-      - name: Install RPM package dependencies
-        run: |
-          dnf install -y \
-            alsa-lib-devel \
-            ccache \
-            chrpath \
-            desktop-file-utils \
-            gcc \
-            gettext \
-            gtk2-devel \
-            libglvnd-devel \
-            libmikmod-devel \
-            libSM-devel \
-            libvorbis-devel \
-            libXxf86vm-devel \
-            make \
-            pkgconf-pkg-config \
-            rpm-build \
-            xorg-x11-server-Xvfb \
-            zlib-ng-compat-devel
-
-      - name: Set up compiler cache
-        uses: ./.github/actions/setup-ccache
-        with:
-          cache-namespace: fedora-42
-          compiler-wrapper-path: /usr/lib64/ccache
-
-      - name: Build RPM packages
-        run: |
-          set -eu
-          rpmdev=$HOME/rpmbuild
-          mkdir -p "$rpmdev"/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
-          cp "source-release/xmms-$RELEASE_VERSION.tar.gz" "$rpmdev/SOURCES/"
-          cp packaging/xmms.desktop "$rpmdev/SOURCES/"
-          sed "s/@VERSION@/$RELEASE_VERSION/g" \
-            packaging/rpm/xmms.spec.in > "$rpmdev/SPECS/xmms.spec"
-          rpmbuild -ba "$rpmdev/SPECS/xmms.spec"
-          mkdir rpm-artifacts
-          find "$rpmdev/RPMS" -type f -name '*.rpm' \
-            ! -name '*debuginfo*' ! -name '*debugsource*' \
-            -exec cp {} rpm-artifacts/ \;
-
-      - name: Verify and install RPM packages
-        run: |
-          set -eu
-          test "$(find rpm-artifacts -name '*.rpm' -type f | wc -l)" -eq 2
-          runtime=$(find rpm-artifacts -name 'xmms-[0-9]*.x86_64.rpm' -type f)
-          devel=$(find rpm-artifacts -name 'xmms-devel-*.x86_64.rpm' -type f)
-          test "$(rpm -qp --qf '%{NAME}' "$runtime")" = xmms
-          test "$(rpm -qp --qf '%{NAME}' "$devel")" = xmms-devel
-          test "$(rpm -qp --qf '%{VERSION}' "$runtime")" = "$RELEASE_VERSION"
-          test "$(rpm -qp --qf '%{ARCH}' "$runtime")" = x86_64
-          rpm -qlp "$runtime" | grep -Fx /usr/bin/xmms
-          rpm -qlp "$runtime" | grep -F /libALSA.so
-          rpm -qlp "$runtime" | grep -Fx \
-            /usr/share/applications/xmms.desktop
-          rpm -qlp "$devel" | grep -Fx /usr/include/xmms/plugin.h
-          dnf install -y "$runtime" "$devel"
-          readelf -d /usr/lib64/xmms/Input/libmpg123.so | grep -F 'libm.so'
-          if ldd -r /usr/lib64/xmms/Input/libmpg123.so 2>&1 | \
-              grep 'undefined symbol: .*_ZGV'; then
-            exit 1
-          fi
-          xvfb-run -a xmms --version | grep -Fx "xmms $RELEASE_VERSION"
-
-      - name: Report compiler cache statistics
-        run: ccache --show-stats
-
-      - name: Upload RPM packages
-        uses: actions/upload-artifact@v7
-        with:
-          name: rpm-packages-${{ env.RELEASE_TAG }}
-          path: rpm-artifacts/*.rpm
-          if-no-files-found: error
-          retention-days: 30
-          overwrite: true
-
   attach-packages:
     if: github.event_name == 'workflow_dispatch'
-    needs: [validate-release, build-deb, build-rpm]
+    needs: [validate-release, build-deb]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
@@ -352,17 +250,10 @@ jobs:
           name: deb-packages-${{ env.RELEASE_TAG }}
           path: release-packages
 
-      - name: Download RPM packages
-        uses: actions/download-artifact@v8
-        with:
-          name: rpm-packages-${{ env.RELEASE_TAG }}
-          path: release-packages
-
       - name: Prepare package metadata
         run: |
           set -eu
           test "$(find release-packages -name '*.deb' -type f | wc -l)" -eq 2
-          test "$(find release-packages -name '*.rpm' -type f | wc -l)" -eq 2
           for asset in release-packages/*.deb; do
             safe_name=$(basename "$asset" | tr '~' '.')
             if [ "$asset" != "release-packages/$safe_name" ]; then
@@ -371,7 +262,7 @@ jobs:
           done
           (
             cd release-packages
-            sha256sum ./*.deb ./*.rpm | sort -k2 > PACKAGES-SHA256SUMS
+            sha256sum ./*.deb | sort -k2 > PACKAGES-SHA256SUMS
           )
           cat > release-packages/PACKAGE-METADATA.txt <<EOF
           XMMS Classic: $RELEASE_VERSION
@@ -380,7 +271,6 @@ jobs:
           Packaging recipe commit: $GITHUB_SHA
           Package workflow: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
           Debian target: Ubuntu 24.04 LTS (amd64)
-          RPM target: Fedora 42 (x86_64)
           EOF
 
       - name: Attach packages to draft release

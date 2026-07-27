@@ -17,7 +17,7 @@ pull requests -> main -> release/VERSION -> candidate artifact -> manual tests
                                                                |
                                               draft GitHub Release
                                                                |
-                                              tested DEB/RPM packages
+                                              tested DEB packages
                                                                |
                                                  manual publication
 ```
@@ -37,10 +37,9 @@ Prepare a release commit that:
 
 1. changes the version in `configure.in` (`AM_INIT_AUTOMAKE`);
 2. applies the same version to the shipped generated `configure` script;
-3. applies the same version to the shipped generated `xmms.spec` file;
-4. changes `CHANGELOG.md`'s `[Unreleased]` content into a dated
+3. changes `CHANGELOG.md`'s `[Unreleased]` content into a dated
    `[VERSION]` entry and adds a new empty `[Unreleased]` section; and
-5. contains no unrelated behavior changes.
+4. contains no unrelated behavior changes.
 
 The legacy Autotools stack cannot currently be regenerated unchanged with
 modern `autoreconf`. Update the narrowly scoped generated version fields rather
@@ -115,7 +114,7 @@ A release tag must:
 - use the exact `vMAJOR.MINOR.PATCH` form;
 - be annotated rather than lightweight;
 - point to a commit contained in `main`;
-- match `configure.in`, `configure`, and `xmms.spec`; and
+- match `configure.in` and `configure`; and
 - have exactly one non-empty `CHANGELOG.md` release entry.
 
 The tag workflow rebuilds and retests the tagged source with read-only
@@ -132,11 +131,10 @@ verifies the draft's source archive rather than rebuilding from a moving
 branch. It then:
 
 - builds `xmms` and `libxmms-dev` DEBs on Ubuntu 24.04 LTS;
-- builds `xmms` and `xmms-devel` RPMs inside Fedora 42;
-- runs the full Xvfb-backed tests during both native package builds;
+- runs the full Xvfb-backed tests during the native package build;
 - inspects package metadata and expected files;
-- installs both runtime and development packages in their clean build
-  environments and checks `xmms --version`;
+- installs both runtime and development packages in a clean build environment
+  and checks `xmms --version`;
 - normalizes DEB filenames for GitHub release assets; and
 - creates `PACKAGES-SHA256SUMS` and `PACKAGE-METADATA.txt` before attaching the
   files to the unpublished draft.
@@ -149,9 +147,9 @@ A package correction must therefore happen before publication or use an
 incremented application patch release rather than silently changing published
 bytes.
 
-These packages target x86-64 Ubuntu 24.04 and Fedora 42. A native package is not
-claimed to support unrelated distributions merely because they use the same
-archive format.
+These packages target x86-64 Ubuntu 24.04. A native package is not claimed to
+support unrelated distributions merely because they use the same archive
+format.
 
 ## 5. Review and publish
 
@@ -202,5 +200,4 @@ package attachment uses the documented
 without `--clobber`, after checking every asset name while the release remains
 a draft. Package recipes follow
 the official [Debian maintainer
-reference](https://www.debian.org/doc/manuals/debmake-doc/) and [Fedora
-packaging guidelines](https://docs.fedoraproject.org/en-US/packaging-guidelines/).
+reference](https://www.debian.org/doc/manuals/debmake-doc/).

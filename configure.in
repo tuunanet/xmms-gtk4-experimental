@@ -625,7 +625,6 @@ AC_OUTPUT([
 Makefile
 xmms.1
 wmxmms.1
-xmms.spec
 xmms-config
 xmms/Makefile
 xmms/defskin/Makefile

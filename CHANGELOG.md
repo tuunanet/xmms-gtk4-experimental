@@ -15,6 +15,11 @@ for XMMS Classic.
 
 ## [Unreleased]
 
+### Removed
+- Removed RPM packaging recipes, the Fedora package workflow job, and the
+  legacy Autotools-generated `xmms.spec` files. Official native packages are
+  DEB-only for Ubuntu 24.04 LTS.
+
 ## [1.3.2] - 2026-07-27
 
 XMMS Classic 1.3.2 supersedes the unpublished 1.3.1 draft and is intended to
