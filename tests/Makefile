@@ -8,7 +8,7 @@ LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean test-intl-generated-sources test-package-recipes test-release-tools
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position test-intl-generated-sources test-package-recipes test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-intl-generated-sources test-package-recipes test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
@@ -17,6 +17,7 @@ check: test-xentry test-filebrowser test-font-load test-popup-position test-plug
 	./test-outputplugin
 	./test-alsa-pcm-state
 	./test-alsa-volume
+	./test-mpg123-file-duration
 	./test-mpg123-stream-position
 
 test-xentry: $(srcdir)/test-xentry.c $(top_srcdir)/libxmms/xentry.c $(top_srcdir)/libxmms/xentry.h
@@ -66,6 +67,11 @@ test-alsa-volume: LDFLAGS += -Wl,--gc-sections
 test-alsa-volume: $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c $(top_srcdir)/Output/alsa/alsa.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-alsa-volume.c $(top_srcdir)/Output/alsa/audio.c $(LDLIBS) $(shell pkg-config --libs alsa) -lm -lpthread
 
+test-mpg123-file-duration: CFLAGS += -ffunction-sections -fdata-sections
+test-mpg123-file-duration: LDFLAGS += -Wl,--gc-sections
+test-mpg123-file-duration: $(srcdir)/test-mpg123-file-duration.c $(top_srcdir)/Input/mpg123/mpg123.c $(top_srcdir)/Input/mpg123/mpg123.h $(top_srcdir)/Input/mpg123/common.c $(top_srcdir)/Input/mpg123/dxhead.c $(top_srcdir)/Input/mpg123/dxhead.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-mpg123-file-duration.c $(top_srcdir)/Input/mpg123/mpg123.c $(top_srcdir)/Input/mpg123/common.c $(top_srcdir)/Input/mpg123/dxhead.c $(LDLIBS) -lm -lpthread
+
 test-mpg123-stream-position: $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(top_srcdir)/Input/mpg123/stream-position.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(LDLIBS)
 
@@ -79,4 +85,4 @@ test-release-tools:
 	$(srcdir)/test-release-tools.sh $(top_srcdir)
 
 clean:
-	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins
