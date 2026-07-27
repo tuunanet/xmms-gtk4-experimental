@@ -141,6 +141,8 @@ require_text packaging/debian/rules 'override_dh_autoreconf:' \
 	'preserves the shipped legacy Autotools files'
 require_text packaging/debian/rules 'optimize=-lto' \
 	'disables LTO for the legacy bundled libtool'
+require_text packaging/debian/rules '-Wno-error=incompatible-pointer-types' \
+	'permits legacy GTK callbacks with newer Ubuntu GCC'
 require_text packaging/debian/rules 'DEB_BUILD_OPTIONS' \
 	'honors Debian package test controls'
 require_text packaging/debian/rules '--disable-esd' \
