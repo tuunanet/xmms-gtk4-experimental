@@ -14,13 +14,41 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-test:
+  changes:
+    name: Classify changes
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      full-ci: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.source == 'true' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Classify changed paths
+        id: filter
+        if: github.event_name != 'workflow_dispatch'
+        uses: dorny/paths-filter@7b450fff21473bca461d4b92ce414b9d0420d706 # v4
+        with:
+          predicate-quantifier: every
+          filters: |
+            source:
+              - '**'
+              - '!README.md'
+              - '!docs/**'
+
+  full-ci:
+    name: Full build and test
+    needs: changes
+    if: needs.changes.outputs.full-ci == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install build dependencies
         run: |
@@ -56,3 +84,39 @@ jobs:
 
       - name: Build and verify Debian packages
         run: make deb
+
+  build-and-test:
+    name: build-and-test
+    needs: [changes, full-ci]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    permissions: {}
+
+    steps:
+      - name: Verify CI result
+        env:
+          CLASSIFICATION_RESULT: ${{ needs.changes.result }}
+          FULL_CI_REQUIRED: ${{ needs.changes.outputs.full-ci }}
+          FULL_CI_RESULT: ${{ needs.full-ci.result }}
+        run: |
+          set -euo pipefail
+
+          if [ "${CLASSIFICATION_RESULT}" != success ]; then
+            echo "Change classification did not succeed: ${CLASSIFICATION_RESULT}" >&2
+            exit 1
+          fi
+
+          if [ "${FULL_CI_REQUIRED}" = true ]; then
+            if [ "${FULL_CI_RESULT}" != success ]; then
+              echo "Full CI did not succeed: ${FULL_CI_RESULT}" >&2
+              exit 1
+            fi
+            echo "Full CI passed."
+          else
+            if [ "${FULL_CI_RESULT}" != skipped ]; then
+              echo "Expected full CI to be skipped, got: ${FULL_CI_RESULT}" >&2
+              exit 1
+            fi
+            echo "Documentation-only change; full CI was not required."
+          fi
