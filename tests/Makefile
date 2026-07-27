@@ -6,9 +6,9 @@ CPPFLAGS += -I$(top_builddir) -I$(top_builddir)/xmms -I$(top_srcdir) -I$(top_src
 CFLAGS += $(shell pkg-config --cflags gtk+-2.0)
 LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
-.PHONY: check clean test-intl-generated-sources test-release-tools
+.PHONY: check clean test-intl-generated-sources test-package-recipes test-release-tools
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position test-intl-generated-sources test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-stream-position test-intl-generated-sources test-package-recipes test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
@@ -71,6 +71,9 @@ test-mpg123-stream-position: $(srcdir)/test-mpg123-stream-position.c $(top_srcdi
 
 test-intl-generated-sources:
 	$(srcdir)/test-intl-generated-sources.sh $(top_srcdir)
+
+test-package-recipes:
+	$(srcdir)/test-package-recipes.sh $(top_srcdir)
 
 test-release-tools:
 	$(srcdir)/test-release-tools.sh $(top_srcdir)

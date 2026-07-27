@@ -31,6 +31,15 @@ EXTRA_DIST = \
 	docs/manual.md \
 	docs/releases.md \
 	mkinstalldirs \
+	packaging/debian/control \
+	packaging/debian/copyright \
+	packaging/debian/libxmms-dev.install \
+	packaging/debian/rules \
+	packaging/debian/source/format \
+	packaging/debian/xmms.docs \
+	packaging/debian/xmms.install \
+	packaging/rpm/xmms.spec.in \
+	packaging/xmms.desktop \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
 	tests/fixture-output-plugin.c \
@@ -41,6 +50,7 @@ EXTRA_DIST = \
 	tests/test-intl-generated-sources.sh \
 	tests/test-mpg123-stream-position.c \
 	tests/test-outputplugin.c \
+	tests/test-package-recipes.sh \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \
 	tests/test-release-tools.sh \
