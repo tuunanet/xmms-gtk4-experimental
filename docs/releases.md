@@ -135,8 +135,10 @@ branch. It then:
 - creates `PACKAGES-SHA256SUMS` and `PACKAGE-METADATA.txt` before attaching the
   files to the unpublished draft.
 
-The attachment job has the only `contents: write` permission. It requires an
-unpublished, stable draft and refuses to replace any existing release asset.
+Only draft validation and attachment jobs receive `contents: write` permission,
+because unpublished draft releases and their assets are hidden from read-only
+workflow tokens. The attachment job requires an unpublished, stable draft and
+refuses to replace any existing release asset.
 A package correction must therefore happen before publication or use an
 incremented application patch release rather than silently changing published
 bytes.

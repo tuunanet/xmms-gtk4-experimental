@@ -24,6 +24,10 @@ jobs:
   validate-release:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    permissions:
+      # Draft releases and their assets are only visible to tokens with write
+      # access; keep broader permissions out of the package build jobs.
+      contents: write
     outputs:
       source_date_epoch: ${{ steps.release.outputs.source_date_epoch }}
       source_sha256: ${{ steps.release.outputs.source_sha256 }}
