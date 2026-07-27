@@ -21,8 +21,65 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Detect documentation-only changes
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          case "${{ github.event_name }}" in
+            pull_request)
+              base_sha="${{ github.event.pull_request.base.sha }}"
+              head_sha="${{ github.sha }}"
+              changed_files="$(git diff --name-only --diff-filter=ACDMRTUXB "${base_sha}"..."${head_sha}")"
+              ;;
+            push)
+              before="${{ github.event.before }}"
+              if [ -z "${before}" ] || [ "${before}" = "0000000000000000000000000000000000000000" ]; then
+                changed_files="$(git show --pretty='' --name-only --diff-filter=ACDMRTUXB HEAD)"
+              else
+                changed_files="$(git diff --name-only --diff-filter=ACDMRTUXB "${before}" "${{ github.sha }}")"
+              fi
+              ;;
+            *)
+              changed_files="__force_full_ci__"
+              ;;
+          esac
+
+          if [ -z "${changed_files}" ]; then
+            echo "No changed files detected; running the full CI suite."
+            echo "docs_only=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          echo "Changed files:"
+          printf '%s\n' "${changed_files}"
+
+          docs_only=true
+          while IFS= read -r path; do
+            [ -z "${path}" ] && continue
+            case "${path}" in
+              README.md|docs|docs/*) ;;
+              *)
+                docs_only=false
+                break
+                ;;
+            esac
+          done <<< "${changed_files}"
+
+          if [ "${docs_only}" = true ]; then
+            echo "Documentation-only change set detected; skipping build and package verification."
+          else
+            echo "Non-documentation changes detected; running the full CI suite."
+          fi
+
+          echo "docs_only=${docs_only}" >> "${GITHUB_OUTPUT}"
 
       - name: Install build dependencies
+        if: steps.changes.outputs.docs_only != 'true'
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends \
@@ -43,16 +100,26 @@ jobs:
             zlib1g-dev
 
       - name: Configure
+        if: steps.changes.outputs.docs_only != 'true'
         run: ./configure --disable-esd
 
       - name: Build
+        if: steps.changes.outputs.docs_only != 'true'
         run: make -j"$(nproc)"
 
       - name: Test
+        if: steps.changes.outputs.docs_only != 'true'
         run: xvfb-run --auto-servernum make check
 
       - name: Verify source distribution
+        if: steps.changes.outputs.docs_only != 'true'
         run: xvfb-run --auto-servernum make distcheck
 
       - name: Build and verify Debian packages
+        if: steps.changes.outputs.docs_only != 'true'
         run: make deb
+
+      - name: Skip full CI for documentation-only changes
+        if: steps.changes.outputs.docs_only == 'true'
+        run: |
+          echo "Skipped configure/build/test/distcheck/deb because this change only touches README.md and/or docs/."

@@ -44,6 +44,11 @@ privileges; required build dependencies must already be installed.
 If a change affects UI or audio behavior, also describe the manual runtime
 testing performed in the pull request.
 
+Pull requests and pushes that only change `README.md` and/or files under
+`docs/` still report the required `build-and-test` check, but CI skips the
+full configure, build, test, distcheck, and Debian package steps for those
+change sets. Any other path keeps the full suite.
+
 ## Project conventions
 
 - Follow the style of the surrounding C code; do not reformat unrelated lines.
