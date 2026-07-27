@@ -56,6 +56,8 @@ continuation of XMMS 1.2.11 for current Linux and BSD systems.
   `xmms` runtime and package identifiers.
 
 ### Fixed
+- Positioned the playlist's hold-activated bottom-row menus above their buttons
+  instead of at the upper-left corner of the screen under XWayland.
 - Replaced incomplete Adobe bitmap-font patterns with byte-compatible 6x13
   `fixed` family fonts: bold for playlist text and matching medium weight for
   main-window X text. This preserves the clear classic appearance without GTK2
