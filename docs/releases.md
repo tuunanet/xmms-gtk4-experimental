@@ -30,7 +30,7 @@ an up-to-date `main`:
 ```sh
 git switch main
 git pull --ff-only
-git switch -c release/1.3.1
+git switch -c release/1.3.2
 ```
 
 Prepare a release commit that:
@@ -49,7 +49,7 @@ than committing a broad Autotools regeneration.
 Validate the release metadata locally:
 
 ```sh
-tools/check-release-version.sh 1.3.1
+tools/check-release-version.sh 1.3.2
 ```
 
 This rejects non-SemVer versions, disagreement between source and generated
@@ -61,7 +61,7 @@ candidate assembly begins.
 ## 2. Build and test a candidate
 
 Open **Actions -> Release candidate -> Run workflow** in GitHub. Select the
-`release/1.3.1` branch and enter `1.3.1` as the version.
+`release/1.3.2` branch and enter `1.3.2` as the version.
 
 The workflow accepts only `release/*` branches. It runs:
 
@@ -72,7 +72,7 @@ The workflow accepts only `release/*` branches. It runs:
 
 A successful run uploads a 30-day workflow artifact containing:
 
-- `xmms-1.3.1.tar.gz`;
+- `xmms-1.3.2.tar.gz`;
 - Ubuntu 24.04 `xmms` and `libxmms-dev` DEBs;
 - `SHA256SUMS` covering the source archive and both DEBs;
 - `release-notes.md`, extracted from the versioned changelog entry; and
@@ -82,9 +82,9 @@ Download that workflow artifact and verify it before testing:
 
 ```sh
 sha256sum -c SHA256SUMS
-tar -xzf xmms-1.3.1.tar.gz
-sudo apt install './xmms_1.3.1-1~ubuntu24.04_amd64.deb' \
-  './libxmms-dev_1.3.1-1~ubuntu24.04_amd64.deb'
+tar -xzf xmms-1.3.2.tar.gz
+sudo apt install './xmms_1.3.2-1~ubuntu24.04_amd64.deb' \
+  './libxmms-dev_1.3.2-1~ubuntu24.04_amd64.deb'
 ```
 
 Manual testing should use the candidate archive rather than an unrelated local
@@ -106,8 +106,8 @@ commit:
 ```sh
 git switch main
 git pull --ff-only
-git tag -a v1.3.1 -m "XMMS Classic 1.3.1"
-git push origin v1.3.1
+git tag -a v1.3.2 -m "XMMS Classic 1.3.2"
+git push origin v1.3.2
 ```
 
 A release tag must:

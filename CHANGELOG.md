@@ -15,6 +15,12 @@ for XMMS Classic.
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-07-27
+
+XMMS Classic 1.3.2 supersedes the unpublished 1.3.1 draft and is intended to
+be the first published XMMS Classic release. It includes the 1.3.1 changes
+listed below plus the native-package fixes in this entry.
+
 ### Added
 - Added a top-level `make deb` target and made pull-request and release-candidate
   CI build and verify Debian packages through it. Candidate artifacts now
@@ -27,9 +33,9 @@ for XMMS Classic.
   packages can load the plugin and add or play MP3 files without relying on
   symbols from the main executable.
 
-## [1.3.1] - 2026-07-27
+## [1.3.1] - 2026-07-27 (unpublished draft)
 
-The first XMMS Classic release establishes the maintained, preservation-focused
+The unpublished 1.3.1 draft established the maintained, preservation-focused
 continuation of XMMS 1.2.11 for current Linux and BSD systems.
 
 ### Added
