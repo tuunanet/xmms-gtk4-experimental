@@ -1,0 +1,92 @@
+%global _lto_cflags %{nil}
+
+Name:           xmms
+Version:        @VERSION@
+Release:        1%{?dist}
+Epoch:          1
+Summary:        XMMS Classic audio player
+License:        GPL-2.0-or-later
+URL:            https://github.com/tuunanet/xmms-classic
+Source0:        https://github.com/tuunanet/xmms-classic/releases/download/v%{version}/xmms-%{version}.tar.gz
+Source1:        xmms.desktop
+
+BuildRequires:  alsa-lib-devel
+BuildRequires:  chrpath
+BuildRequires:  desktop-file-utils
+BuildRequires:  gcc
+BuildRequires:  gettext
+BuildRequires:  gtk2-devel
+BuildRequires:  libglvnd-devel
+BuildRequires:  libmikmod-devel
+BuildRequires:  libSM-devel
+BuildRequires:  libvorbis-devel
+BuildRequires:  libXxf86vm-devel
+BuildRequires:  make
+BuildRequires:  pkgconf-pkg-config
+BuildRequires:  xorg-x11-server-Xvfb
+BuildRequires:  zlib-ng-compat-devel
+Recommends:     unzip
+
+%description
+XMMS Classic is a maintained preservation fork of XMMS 1.2.11. It keeps the
+classic skinnable interface and plugin architecture usable on current Linux
+and BSD systems while retaining historical runtime identifiers.
+
+%package devel
+Summary:        Development files for XMMS Classic plugins
+Requires:       %{name}%{?_isa} = %{epoch}:%{version}-%{release}
+Requires:       glib2-devel
+Requires:       gtk2-devel
+
+%description devel
+Headers, static and shared-library linker files, xmms-config, and the Autoconf
+macro required to build compatible XMMS plugins.
+
+%prep
+%autosetup
+
+%build
+# GCC 15 promotes the remaining GTK2 Vorbis callback conversions to errors.
+export CFLAGS="%{optflags} -Wno-error=incompatible-pointer-types"
+%configure --disable-esd
+%make_build
+
+%check
+xvfb-run -a make check
+
+%install
+%make_install
+find %{buildroot} -name '*.la' -delete
+chrpath --delete %{buildroot}%{_bindir}/xmms
+chrpath --delete %{buildroot}%{_bindir}/wmxmms
+chrpath --delete %{buildroot}%{_libdir}/xmms/Input/libmpg123.so
+install -D -m 0644 %{SOURCE1} \
+    %{buildroot}%{_datadir}/applications/xmms.desktop
+install -D -m 0644 xmms/xmms_mini.xpm \
+    %{buildroot}%{_datadir}/icons/hicolor/16x16/apps/xmms.xpm
+desktop-file-validate %{buildroot}%{_datadir}/applications/xmms.desktop
+
+%files
+%license COPYING
+%doc CHANGELOG.md CONTRIBUTORS.md README.md
+%{_bindir}/xmms
+%{_bindir}/wmxmms
+%{_libdir}/libxmms.so.1*
+%{_libdir}/xmms/
+%{_datadir}/applications/xmms.desktop
+%{_datadir}/icons/hicolor/16x16/apps/xmms.xpm
+%{_datadir}/locale/*/LC_MESSAGES/xmms.mo
+%{_datadir}/man/man1/wmxmms.1*
+%{_datadir}/man/man1/xmms.1*
+%{_datadir}/xmms/
+
+%files devel
+%{_bindir}/xmms-config
+%{_includedir}/xmms/
+%{_libdir}/libxmms.a
+%{_libdir}/libxmms.so
+%{_datadir}/aclocal/xmms.m4
+
+%changelog
+* Sun Jul 26 2026 XMMS Classic contributors <47913151+tuunanet@users.noreply.github.com> - 1:@VERSION@-1
+- Package XMMS Classic @VERSION@ for current Fedora systems.

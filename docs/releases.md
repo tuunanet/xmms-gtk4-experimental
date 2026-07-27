@@ -134,6 +134,30 @@ Rerunning a failed tag workflow may update an existing draft and replace its
 assets. It deliberately refuses to modify a release that has already been
 published.
 
+## 5. Build native packages
+
+After the source release is published, manually run **Package release** with
+the released SemVer version. The workflow downloads and verifies the existing
+release archive rather than rebuilding from a moving branch. It then:
+
+- builds `xmms` and `libxmms-dev` DEBs on Ubuntu 24.04 LTS;
+- builds `xmms` and `xmms-devel` RPMs inside Fedora 42;
+- runs the full Xvfb-backed tests during both native package builds;
+- inspects package metadata and expected files;
+- installs both runtime and development packages in their clean build
+  environments and checks `xmms --version`; and
+- creates `PACKAGES-SHA256SUMS` and `PACKAGE-METADATA.txt` before attaching the
+  files to the published release.
+
+The attachment job has the only `contents: write` permission. It refuses to
+replace any existing release asset, so a package correction requires an
+incremented package release or application patch release rather than silently
+changing published bytes.
+
+These packages target x86-64 Ubuntu 24.04 and Fedora 42. A native package is not
+claimed to support unrelated distributions merely because they use the same
+archive format.
+
 ## Rollback and hotfixes
 
 A GitHub Release is immutable release history, not a deployment that can be
@@ -155,4 +179,10 @@ and least-privilege
 [`GITHUB_TOKEN` permissions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token).
 Draft creation uses the official
 [`gh release create`](https://cli.github.com/manual/gh_release_create) command
-with `--verify-tag` so automation cannot silently create a missing tag.
+with `--verify-tag` so automation cannot silently create a missing tag. Native
+package attachment uses the documented
+[`gh release upload`](https://cli.github.com/manual/gh_release_upload) command
+without `--clobber`, after checking every asset name. Package recipes follow
+the official [Debian maintainer
+reference](https://www.debian.org/doc/manuals/debmake-doc/) and [Fedora
+packaging guidelines](https://docs.fedoraproject.org/en-US/packaging-guidelines/).
