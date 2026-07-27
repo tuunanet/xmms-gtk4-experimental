@@ -15,21 +15,14 @@ for XMMS Classic.
 
 ## [Unreleased]
 
-### Added
-- Added tested Ubuntu 24.04 DEB and Fedora 42 RPM release packages, including
-  development packages for plugin authors and checksum metadata.
-
-### Changed
-- Native packages are now attached to a verified draft GitHub Release before
-  publication, so the complete source and package release can become immutable
-  in one step.
-
-## [1.3.0] - 2026-07-26
+## [1.3.1] - 2026-07-27
 
 The first XMMS Classic release establishes the maintained, preservation-focused
 continuation of XMMS 1.2.11 for current Linux and BSD systems.
 
 ### Added
+- Added tested Ubuntu 24.04 DEB and Fedora 42 RPM release packages, including
+  development packages for plugin authors and checksum metadata.
 - Added a credited, GPL-licensed screenshot of the classic XMMS interface to
   the project overview.
 - Added GitHub Actions CI for clean configuration, compilation, Xvfb-backed
@@ -44,6 +37,9 @@ continuation of XMMS 1.2.11 for current Linux and BSD systems.
   source archives, checksums, and curated changelog notes.
 
 ### Changed
+- Native packages are attached to a verified draft GitHub Release before
+  publication, so the complete source and package release becomes immutable in
+  one step.
 - Consolidated the fork's release history in `CHANGELOG.md`. Moved the original
   `NEWS`, detailed `ChangeLog`, GTK1-era `FAQ`, and stale developer `TODO` to
   `docs/history/` with an index that clearly marks them as archival.
