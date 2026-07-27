@@ -21,6 +21,8 @@ for XMMS Classic.
   include install-tested runtime and development DEBs with checksums.
 
 ### Fixed
+- Allowed legacy GTK callback pointer conversions in Debian package builds so
+  `make deb` also works with GCC 15 on newer Ubuntu systems.
 - Linked the MP3 input plugin directly to the math libraries it uses, so native
   packages can load the plugin and add or play MP3 files without relying on
   symbols from the main executable.
