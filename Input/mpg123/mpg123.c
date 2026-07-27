@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+#ifdef HAVE_MMAP
+#include <sys/mman.h>
+#include <unistd.h>
+#endif
+
 #define CPU_HAS_MMX() (cpu_fflags & 0x800000)
 #define CPU_HAS_3DNOW() (cpu_efflags & 0x80000000)
 
@@ -786,12 +791,70 @@ static gboolean get_frame_time_and_size(guint32 head, double *time,
 	return *size >= 4;
 }
 
-static guint scan_song_time(FILE *file, long audio_end)
+static guint duration_milliseconds(double seconds)
+{
+	return (guint) MIN((seconds * 1000) + 0.5, G_MAXUINT);
+}
+
+#ifdef HAVE_MMAP
+static guint scan_mapped_song_time(const guint8 *data, long audio_start,
+				   long audio_end)
+{
+	struct frame_properties
+	{
+		double time;
+		guint size;
+	} cache[4096] = {{0}};
+	double seconds = 0;
+	long position = audio_start;
+
+	while (position <= audio_end - 4)
+	{
+		guint32 head = ((guint32) data[position] << 24) |
+			((guint32) data[position + 1] << 16) |
+			((guint32) data[position + 2] << 8) |
+			data[position + 3];
+		/* Bits 9-20 contain every field that affects size and time. */
+		struct frame_properties *properties =
+			&cache[(head >> 9) & 0xfff];
+
+		if (mpg123_head_check(head) &&
+		    (properties->size ||
+		     get_frame_time_and_size(head, &properties->time,
+					     &properties->size)) &&
+		    position + properties->size <= audio_end)
+		{
+			seconds += properties->time;
+			position += properties->size;
+		}
+		else
+			position++;
+	}
+
+	return duration_milliseconds(seconds);
+}
+#endif
+
+static guint scan_song_time(FILE *file, long audio_start, long audio_end)
 {
 	guint32 head;
 	double frame_time, seconds = 0;
 	guint frame_size;
 	long frame_start;
+
+#ifdef HAVE_MMAP
+	/* Avoid a buffered seek for every MPEG frame on supported systems. */
+	size_t map_length = audio_end;
+	guint8 *data = mmap(NULL, map_length, PROT_READ, MAP_PRIVATE,
+			    fileno(file), 0);
+
+	if (data != MAP_FAILED)
+	{
+		guint duration = scan_mapped_song_time(data, audio_start, audio_end);
+		munmap(data, map_length);
+		return duration;
+	}
+#endif
 
 	while ((frame_start = ftell(file)) >= 0 &&
 	       frame_start <= audio_end - 4 && head_read(file, &head))
@@ -807,7 +870,7 @@ static guint scan_song_time(FILE *file, long audio_end)
 			break;
 	}
 
-	return (guint) MIN((seconds * 1000) + 0.5, G_MAXUINT);
+	return duration_milliseconds(seconds);
 }
 
 guint mpg123_get_file_duration(FILE *file)
@@ -837,7 +900,7 @@ guint mpg123_get_file_duration(FILE *file)
 	if (audio_start < 0 || audio_end <= audio_start ||
 	    fseek(file, audio_start, SEEK_SET))
 		return 0;
-	return scan_song_time(file, audio_end);
+	return scan_song_time(file, audio_start, audio_end);
 }
 
 static void get_song_info(char *filename, char **title_real, int *len_real)
