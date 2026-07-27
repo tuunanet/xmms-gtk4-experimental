@@ -1,0 +1,45 @@
+name: Set up compiler cache
+description: Restore and configure ccache for native builds
+
+inputs:
+  cache-namespace:
+    description: Distinguishes incompatible operating-system toolchains
+    required: true
+  compiler-wrapper-path:
+    description: Directory containing ccache compiler wrapper symlinks
+    required: false
+    default: /usr/lib/ccache
+  max-size:
+    description: Maximum size of the compiler cache
+    required: false
+    default: 200M
+
+runs:
+  using: composite
+  steps:
+    - name: Restore compiler cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ runner.temp }}/ccache
+        key: >-
+          ccache-${{ inputs.cache-namespace }}-${{ runner.arch }}-${{
+          hashFiles('**/*.c', '**/*.h', '**/Makefile.am', 'configure.in') }}
+        restore-keys: |
+          ccache-${{ inputs.cache-namespace }}-${{ runner.arch }}-
+
+    - name: Configure compiler cache
+      shell: bash
+      env:
+        CACHE_DIR: ${{ runner.temp }}/ccache
+        COMPILER_WRAPPER_PATH: ${{ inputs.compiler-wrapper-path }}
+        MAX_SIZE: ${{ inputs.max-size }}
+      run: |
+        set -eu
+        mkdir -p "$CACHE_DIR"
+        CCACHE_DIR="$CACHE_DIR" ccache --max-size "$MAX_SIZE"
+        CCACHE_DIR="$CACHE_DIR" ccache --zero-stats
+        echo "CCACHE_DIR=$CACHE_DIR" >> "$GITHUB_ENV"
+        echo "CCACHE_BASEDIR=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+        echo "CCACHE_COMPILERCHECK=content" >> "$GITHUB_ENV"
+        echo "CCACHE_NOHASHDIR=true" >> "$GITHUB_ENV"
+        echo "$COMPILER_WRAPPER_PATH" >> "$GITHUB_PATH"
