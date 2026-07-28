@@ -165,6 +165,9 @@ NoBorder {
 
 ### 2.3 Skin Installation
 
+For authors and developers, the hard file and layout requirements are documented
+in [Architecture: Skins](architecture/skins.md).
+
 XMMS will create a drawer called `~/.xmms/Skins/` in which you just unarchive
 the skins the same way as you do for WinAmp.
 
