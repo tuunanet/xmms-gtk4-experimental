@@ -2,9 +2,12 @@
 
 <!-- story: e01s02 -->
 
-**type:** feat  
-**risk:** P1  
-**context:** infrastructure  
+**type:** feat
+
+**risk:** P1
+
+**context:** infrastructure
+
 **bcps:** 3
 
 ## 1. Summary
@@ -80,7 +83,8 @@ Contributor documentation SHALL explain installation, local execution, finding t
 
 ### MODIFIED: Full-CI verification sequence
 
-**Before:** Full CI configures, builds, tests, checks distributions, and validates Debian packages without a C static-analysis gate.  
+**Before:** Full CI configures, builds, tests, checks distributions, and validates Debian packages without a C static-analysis gate.
+
 **After:** Full CI additionally runs the public C lint regression gate under a bounded step before release-oriented verification.
 
 ## 13. Design

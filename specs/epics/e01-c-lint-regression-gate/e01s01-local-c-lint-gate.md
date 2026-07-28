@@ -2,9 +2,12 @@
 
 <!-- story: e01s01 -->
 
-**type:** feat  
-**risk:** P0  
-**context:** infrastructure  
+**type:** feat
+
+**risk:** P0
+
+**context:** infrastructure
+
 **bcps:** 5
 
 ## 1. Summary
