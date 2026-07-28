@@ -54,3 +54,6 @@
 /xmms-[0-9]*/
 /xmms-[0-9]*.tar.*
 /deb-artifacts/
+
+# Agent / Repomix working packs (do not commit)
+.repomix/
