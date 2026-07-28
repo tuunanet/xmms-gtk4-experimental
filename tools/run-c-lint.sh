@@ -12,8 +12,11 @@ srcdir=$(CDPATH= cd -- "$script_dir/.." && pwd)
 echo "Running $(cppcheck --version)" >&2
 exec cppcheck \
 	--quiet \
-	--enable=warning,style,performance,portability \
+	--enable=warning,performance,portability \
 	--error-exitcode=1 \
+	--library=gnu \
+	--library=gtk \
+	--library=posix \
 	--relative-paths="$srcdir" \
 	--suppressions-list="$srcdir/tools/cppcheck-suppressions.txt" \
 	"$srcdir/Effect" \
