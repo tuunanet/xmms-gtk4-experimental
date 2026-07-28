@@ -1,0 +1,8 @@
+schema_version: 1
+status: unscoped
+initiative: null
+in_scope: []
+out_of_scope: []
+constraints:
+  - Preserve public plugin and remote-control compatibility unless explicitly approved otherwise.
+  - Preserve classic UI and skin behavior unless explicitly approved otherwise.

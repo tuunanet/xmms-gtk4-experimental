@@ -1,0 +1,21 @@
+schema_version: 1
+project: xmms-classic
+workflow_mode: team-pr
+active_flow: discover
+active_epic_id: null
+active_story_id: null
+active_bug_id: null
+git:
+  branch: chore/seed-bigpowers-conventions
+  head: null
+  worktree: /home/tuunanet/git/tuunanet/xmms-classic
+handoff:
+  status: ready
+  next_skill: scope-work
+  reason: Scope the C linter initiative.
+metrics:
+  story_start: null
+release:
+  last_tag: null
+  last_publish: null
+  target_version: null
