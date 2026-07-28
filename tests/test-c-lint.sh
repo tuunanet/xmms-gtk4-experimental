@@ -48,6 +48,8 @@ for argument in \
 	'--library=gnu' \
 	'--library=gtk' \
 	'--library=posix' \
+	'-DN_(String)=String' \
+	'-D_(String)=String' \
 	"--suppressions-list=$srcdir/tools/cppcheck-suppressions.txt" \
 	"$srcdir/xmms" \
 	"$srcdir/tests"
@@ -70,6 +72,31 @@ if "$srcdir/tools/run-c-lint.sh" >"$output_file" 2>&1; then
 else
 	cat "$output_file" >&2
 	not_ok "accepts the reviewed legacy baseline"
+fi
+
+fixture_root="$tmpdir/fixture-project"
+mkdir -p "$fixture_root/tools"
+for directory in Effect General Input Output Visualization libxmms tests wmxmms xmms
+do
+	mkdir -p "$fixture_root/$directory"
+done
+cp "$srcdir/tools/run-c-lint.sh" "$fixture_root/tools/run-c-lint.sh"
+: >"$fixture_root/tools/cppcheck-suppressions.txt"
+cat >"$fixture_root/xmms/new-diagnostic.c" <<'EOF'
+int main(void)
+{
+	int value;
+	return value;
+}
+EOF
+
+if "$fixture_root/tools/run-c-lint.sh" >"$output_file" 2>&1; then
+	not_ok "rejects a representative new diagnostic"
+elif grep -F '[uninitvar]' "$output_file" >/dev/null; then
+	ok "rejects a representative new diagnostic"
+else
+	cat "$output_file" >&2
+	not_ok "reports the representative new diagnostic"
 fi
 
 if test "$failures" -ne 0; then

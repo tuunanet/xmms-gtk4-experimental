@@ -50,6 +50,9 @@ require_absent_text()
 
 for file in \
 	.github/workflows/package-release.yml \
+	tests/test-c-lint.sh \
+	tools/cppcheck-suppressions.txt \
+	tools/run-c-lint.sh \
 	packaging/xmms.desktop \
 	packaging/debian/control \
 	packaging/debian/copyright \
@@ -66,6 +69,18 @@ require_text Makefile.am 'deb:' \
 	'exposes a top-level make deb target'
 require_text Makefile.am '$(MAKE) dist-gzip' \
 	'creates a source archive for local Debian builds'
+require_text Makefile.am '.PHONY: deb lint' \
+	'exposes lint as a phony top-level target'
+require_text Makefile.am 'lint:' \
+	'exposes the public C lint target'
+require_text Makefile.am 'tools/run-c-lint.sh' \
+	'runs C lint through the shared helper'
+require_text Makefile.in 'lint:' \
+	'ships the generated C lint target'
+require_text tests/Makefile 'test-c-lint:' \
+	'runs C lint contract tests from make check'
+require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
+	'distributes the C lint baseline'
 require_text Makefile.am 'tools/build-deb.sh' \
 	'builds Debian packages through the shared helper'
 require_text .github/workflows/ci.yml 'make deb' \
