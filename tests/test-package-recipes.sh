@@ -95,6 +95,14 @@ require_absent_text .github/workflows/ci.yml "- '!tools/**'" \
 	'keeps lint control tools build-affecting'
 require_absent_text .github/workflows/ci.yml "- '!tests/**'" \
 	'keeps lint contract tests build-affecting'
+require_text CONTRIBUTING.md 'make lint' \
+	'documents the local C lint command'
+require_text CONTRIBUTING.md 'suppression baseline' \
+	'documents controlled lint baseline maintenance'
+require_text docs/architecture/build-and-test.md 'Cppcheck' \
+	'documents the C lint architecture'
+require_text docs/architecture/build-and-test.md 'tools/cppcheck-suppressions.txt' \
+	'documents the lint baseline path'
 require_text .github/workflows/ci.yml 'make deb' \
 	'builds Debian packages before release candidates'
 require_text .github/workflows/release-candidate.yml 'make deb' \
