@@ -1,7 +1,7 @@
 schema_version: 1
 project: xmms-classic
 workflow_mode: team-pr
-active_flow: discover
+active_flow: verify
 active_epic_id: e01
 active_story_id: e01s01
 active_bug_id: null
@@ -11,8 +11,8 @@ git:
   worktree: /home/tuunanet/git/tuunanet/c-lint-gate
 handoff:
   status: ready
-  next_skill: develop-tdd
-  reason: Implement the approved Cppcheck suppression-baseline stories test-first.
+  next_skill: verify-work
+  reason: Run the multi-phase verification gate for the implemented C lint stories.
 metrics:
   story_start: null
 release:

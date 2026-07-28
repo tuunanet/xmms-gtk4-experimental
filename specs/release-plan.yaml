@@ -3,9 +3,9 @@ release:
   codename: C lint regression gate
   version: null
   bump_hint: patch
-  status: planning
+  status: in_progress
   semantic_release: true
-status: planning
+status: in_progress
 epics:
   - id: e01
     title: C lint regression gate
