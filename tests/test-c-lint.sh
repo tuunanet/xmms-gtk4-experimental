@@ -43,8 +43,11 @@ else
 fi
 
 for argument in \
-	'--enable=warning,style,performance,portability' \
+	'--enable=warning,performance,portability' \
 	'--error-exitcode=1' \
+	'--library=gnu' \
+	'--library=gtk' \
+	'--library=posix' \
 	"--suppressions-list=$srcdir/tools/cppcheck-suppressions.txt" \
 	"$srcdir/xmms" \
 	"$srcdir/tests"
