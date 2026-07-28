@@ -1,7 +1,7 @@
 schema_version: 1
-status: verification
+status: verified
 epics:
-  e01: verification
+  e01: verified
 stories:
-  e01s01: passing
-  e01s02: passing
+  e01s01: verified
+  e01s02: verified

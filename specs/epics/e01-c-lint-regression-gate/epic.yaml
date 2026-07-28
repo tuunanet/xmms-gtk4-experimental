@@ -3,19 +3,19 @@ id: e01
 title: C lint regression gate
 wsjf: 2.4
 total_bcps: 8
-status: verification
+status: verified
 stories:
   - id: e01s01
     title: Run a baseline-aware C lint gate locally
     bcps: 5
-    status: passing
+    status: verified
     delta: ADDED
     spec: e01s01-local-c-lint-gate.md
     tasks: e01s01-tasks.yaml
   - id: e01s02
     title: Enforce the C lint regression gate in pull requests
     bcps: 3
-    status: passing
+    status: verified
     delta: ADDED
     spec: e01s02-ci-c-lint-gate.md
     tasks: e01s02-tasks.yaml

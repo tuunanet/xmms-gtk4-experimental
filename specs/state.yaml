@@ -11,8 +11,8 @@ git:
   worktree: /home/tuunanet/git/tuunanet/c-lint-gate
 handoff:
   status: ready
-  next_skill: verify-work
-  reason: Run the multi-phase verification gate for the implemented C lint stories.
+  next_skill: audit-code
+  reason: Verification and user-confirmed manual UAT passed for both C lint stories.
 metrics:
   story_start: null
 release:
