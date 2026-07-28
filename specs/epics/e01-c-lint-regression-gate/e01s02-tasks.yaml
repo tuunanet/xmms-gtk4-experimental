@@ -1,0 +1,51 @@
+schema_version: 1
+story_id: e01s02
+title: Enforce the C lint regression gate in pull requests
+spec: e01s02-ci-c-lint-gate.md
+status: failing
+risk: P1
+bcps: 3
+tasks:
+  - id: t1
+    description: Extend policy tests to require the public target, distributed controls, Cppcheck installation, bounded lint step, and non-excluded lint paths.
+    verify: tests/test-package-recipes.sh "$PWD"
+    risk: P1
+    security: low
+    status: failing
+    allure:
+      severity: high
+      categories:
+        - CI policy
+        - regression
+  - id: t2
+    description: Install the supported analyzer and run make lint in existing full CI without changing aggregate required-check semantics.
+    verify: tests/test-package-recipes.sh "$PWD" && make lint
+    risk: P1
+    security: low
+    status: failing
+    allure:
+      severity: high
+      categories:
+        - GitHub Actions
+        - C lint
+  - id: t3
+    description: Document local usage, diagnostic triage, intentional suppressions, and controlled baseline refreshes.
+    verify: rg -n "make lint|Cppcheck|baseline|suppression" CONTRIBUTING.md docs/architecture/build-and-test.md
+    risk: P3
+    security: none
+    status: failing
+    allure:
+      severity: minor
+      categories:
+        - documentation
+  - id: t4
+    description: Run the complete build, Xvfb-backed tests, and source-distribution verification to preserve runtime and release behavior.
+    verify: make -j"$(nproc)" && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck
+    risk: P1
+    security: low
+    status: failing
+    allure:
+      severity: high
+      categories:
+        - compatibility
+        - release verification

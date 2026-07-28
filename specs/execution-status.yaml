@@ -1,4 +1,7 @@
 schema_version: 1
-status: idle
-epics: {}
-stories: {}
+status: ready
+epics:
+  e01: ready
+stories:
+  e01s01: failing
+  e01s02: failing

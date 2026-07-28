@@ -2,17 +2,17 @@ schema_version: 1
 project: xmms-classic
 workflow_mode: team-pr
 active_flow: discover
-active_epic_id: null
-active_story_id: null
+active_epic_id: e01
+active_story_id: e01s01
 active_bug_id: null
 git:
-  branch: chore/seed-bigpowers-conventions
-  head: null
-  worktree: /home/tuunanet/git/tuunanet/xmms-classic
+  branch: chore/c-lint-gate
+  head: 54e9a61
+  worktree: /home/tuunanet/git/tuunanet/c-lint-gate
 handoff:
   status: ready
-  next_skill: scope-work
-  reason: Scope the C linter initiative.
+  next_skill: develop-tdd
+  reason: Implement the approved Cppcheck suppression-baseline stories test-first.
 metrics:
   story_start: null
 release:

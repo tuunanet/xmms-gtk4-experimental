@@ -1,7 +1,26 @@
 schema_version: 1
 release:
-  codename: null
+  codename: C lint regression gate
   version: null
-  bump_hint: null
-status: unplanned
-epics: []
+  bump_hint: patch
+  status: planning
+  semantic_release: true
+status: planning
+epics:
+  - id: e01
+    title: C lint regression gate
+    capsule_dir: epics/e01-c-lint-regression-gate
+    wsjf: 2.4
+    bcps: 8
+    score:
+      business_value: 6
+      time_criticality: 5
+      risk_reduction: 8
+      job_size: 8
+bugs:
+  total: 0
+  fixed: 0
+  deferred: 0
+  wontfix: 0
+  open: 0
+  registry: specs/bugs/registry.yaml
