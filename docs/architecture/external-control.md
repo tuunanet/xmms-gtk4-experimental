@@ -47,7 +47,7 @@ flowchart TB
         GEN[General plugins]
         UI --> CORE
         SOCK --> CORE
-        GEN -->|xmms_remote_* via session| SOCK
+        GEN -->|"xmms_remote_* via session"| SOCK
     end
 
     subgraph OutOfProc["Other processes"]
@@ -55,7 +55,7 @@ flowchart TB
         SCR[scripts / other clients]
         WM --> LIB
         SCR --> LIB
-        LIB[libxmms xmms_remote_*]
+        LIB["libxmms xmms_remote_*"]
     end
 
     LIB -->|Unix socket| SOCK
@@ -137,7 +137,7 @@ Automake tree (`SUBDIRS` includes `wmxmms`). It is a small dockapp that:
 flowchart LR
     DOCK[wmxmms X11 dock window]
     POLL[timer / event loop]
-    API[xmms_remote_*]
+    API["xmms_remote_*"]
     XMMS[xmms controlsocket]
 
     DOCK --> POLL --> API --> XMMS
@@ -186,15 +186,15 @@ way—the shipped ones use the remote API).
 ```mermaid
 flowchart TB
     subgraph GP["Enabled General plugin"]
-        INIT[init: open device / add timeout]
+        INIT["init: open device / add timeout"]
         EVT[hardware event or gtk_timeout]
-        REM[xmms_remote_* (session)]
-        CFG[own keys in ~/.xmms/config]
+        REM["xmms_remote_* (session)"]
+        CFG["own keys in ~/.xmms/config"]
         INIT --> EVT --> REM
         INIT --> CFG
     end
 
-    REM --> SOCK[control socket → core]
+    REM --> SOCK["control socket → core"]
 ```
 
 **Song Change** is a good minimal template: `gtk_timeout_add` polls playlist

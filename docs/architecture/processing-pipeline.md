@@ -34,7 +34,7 @@ flowchart LR
 
     subgraph Decode["Input plugin thread"]
         IP[Input plugin<br/>decode / demux]
-        PCM[(PCM block)]
+        PCM["PCM block"]
     end
 
     subgraph Out["Output plugin"]
@@ -42,7 +42,7 @@ flowchart LR
         EP[Effect chain<br/>pseudo plugin]
         CVT[format / rate / ch<br/>conversion]
         VOL[optional volume<br/>e.g. ALSA soft vol]
-        HW[(Audio device<br/>or disk file)]
+        HW["Audio device / disk file"]
     end
 
     subgraph Vis["Visualization side-channel"]
@@ -340,7 +340,7 @@ Implications:
 ```mermaid
 flowchart LR
     EQW[Equalizer window]
-    CFG[cfg.equalizer_*]
+    CFG["cfg.equalizer_*"]
     ISE[input_set_eq]
     IP[InputPlugin.set_eq]
     DEC[decoder / synthesis]
@@ -373,8 +373,8 @@ flowchart TB
     end
 
     subgraph Shared["Shared state"]
-        VQ[(vis_list + vis_mutex)]
-        EL[(effect enabled_list + emutex)]
+        VQ["vis_list + vis_mutex"]
+        EL["effect enabled_list + emutex"]
         OPS[OutputPlugin / InputPlugin pointers]
         CFG2[cfg / playlist locks]
     end

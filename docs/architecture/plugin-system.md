@@ -57,8 +57,8 @@ flowchart TD
     C -->|no| D["BUILD_PLUGIN_DIR/{Input,Output,...}/.libs<br/>(uninstalled / in-tree run)"]
     C -->|yes| E["PLUGIN_DIR/{Output,Input,Effect,General,Visualization}"]
     D --> E
-    E --> F[scan_plugins: open each *.so]
-    F --> G[dlsym get_*plugin_info]
+    E --> F["scan_plugins: open each *.so"]
+    F --> G["dlsym get_*plugin_info"]
     G --> H[classify + prepend to type list]
     H --> I[sort lists by description]
     I --> J[restore enabled / current from config]
@@ -73,7 +73,7 @@ means a user-installed `libALSA.so` shadows the system one.
 
 ```mermaid
 flowchart TD
-    SO[*.so opened with RTLD_NOW] --> S1{get_iplugin_info?}
+    SO["*.so opened with RTLD_NOW"] --> S1{get_iplugin_info?}
     S1 -->|yes| IP[InputPlugin list]
     S1 -->|no| S2{get_oplugin_info?}
     S2 -->|yes| OP[OutputPlugin list]
@@ -83,7 +83,7 @@ flowchart TD
     S4 -->|yes| GP[GeneralPlugin list]
     S4 -->|no| S5{get_vplugin_info?}
     S5 -->|yes| VP[VisPlugin list]
-    S5 -->|no| X[dlclose — not a plugin]
+    S5 -->|no| X["dlclose — not a plugin"]
 ```
 
 After a successful Input load, the core **injects** helpers the plugin will
@@ -242,14 +242,14 @@ flowchart TB
     subgraph NewInput["New Input plugin"]
         A1[export get_iplugin_info]
         A2[implement is_our_file + play_file]
-        A3[in play_file thread:<br/>output->open_audio<br/>add_vis_pcm<br/>output->write_audio]
+        A3["in play_file thread:<br/>output->open_audio<br/>add_vis_pcm<br/>output->write_audio"]
         A1 --> A2 --> A3
     end
 
     subgraph NewOutput["New Output plugin"]
         B1[export get_oplugin_info]
         B2[implement open/write/buffer_free/times]
-        B3[in write path:<br/>get_current_effect_plugin<br/>mod_samples then h/w write]
+        B3["in write path:<br/>get_current_effect_plugin<br/>mod_samples then h/w write"]
         B1 --> B2 --> B3
     end
 
@@ -262,7 +262,7 @@ flowchart TB
 
     subgraph NewVis["New Vis plugin"]
         D1[export get_vplugin_info]
-        D2[set num_*_chs_wanted]
+        D2["set num_*_chs_wanted"]
         D3[implement render_pcm and/or render_freq]
         D1 --> D2 --> D3
     end

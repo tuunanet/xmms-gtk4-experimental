@@ -50,7 +50,7 @@ flowchart TB
     LIB --> DOCK
     BIN -.->|dlopen at runtime| PLUG
     MAKE --> CHK[make check]
-    CHK --> T[tests/*]
+    CHK --> T["tests/*"]
     MAKE --> DIST[make dist / distcheck]
     MAKE --> DEB[make deb]
 ```
@@ -107,9 +107,9 @@ full UI would be too heavy.
 flowchart LR
     MC[make check] --> UNIT[C g_test binaries]
     MC --> SH[shell scripts]
-    UNIT --> LIBT[libxmms pieces<br/>xentry, …]
-    UNIT --> CORET[xmms pieces<br/>pluginenum, util, outputplugin, …]
-    UNIT --> PLT[plugin pieces<br/>alsa pcm/volume, mpg123, …]
+    UNIT --> LIBT["libxmms pieces<br/>xentry, …"]
+    UNIT --> CORET["xmms pieces<br/>pluginenum, util, outputplugin, …"]
+    UNIT --> PLT["plugin pieces<br/>alsa pcm/volume, mpg123, …"]
     SH --> REL[release metadata]
     SH --> PKG[packaging recipes]
     SH --> LINK[plugin linkage smoke]
@@ -161,7 +161,7 @@ used in CI.
 flowchart LR
     SRC[source tree] --> DIST[make dist tarball]
     SRC --> DEB[make deb / tools/build-deb.sh]
-    DEB --> ART[deb-artifacts/*.deb]
+    DEB --> ART["deb-artifacts/*.deb"]
     ART --> LINT[lintian / package tests]
 ```
 

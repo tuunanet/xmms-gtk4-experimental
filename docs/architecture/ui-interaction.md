@@ -47,7 +47,7 @@ control socket session id.
 ```mermaid
 flowchart TB
     subgraph External["Outside the process"]
-        USER[User: mouse / keys]
+        USER["User: mouse / keys"]
         REMOTE["wmxmms / scripts<br/>libxmms xmms_remote_*"]
         WM[X11 / window manager]
     end
@@ -57,12 +57,12 @@ flowchart TB
         SKIN[Skin bitmaps + masks]
         WIDS[Custom Widget list<br/>buttons, sliders, text, vis]
         WINS[Top-level windows<br/>main / playlist / EQ / prefs / skin]
-        DOCK[dock.c — snap & move together]
-        IDLE[idle_func ~10 ms]
+        DOCK["dock.c — snap & move together"]
+        IDLE["idle_func ~10 ms"]
     end
 
     subgraph Core["Core services"]
-        CFG[("Config cfg<br/>~/.xmms/config")]
+        CFG["Config cfg<br/>~/.xmms/config"]
         PL[playlist.c model]
         IN[input.c glue]
         OUT[output.c glue]
@@ -180,16 +180,16 @@ flowchart TB
     end
 
     subgraph Widgets["Widget subclasses"]
-        PB[PButton — play, stop, …]
-        TB[TButton — shuffle, EQ visible, …]
-        HS[HSlider — volume, balance, seek]
-        TX[TextBox — title, time]
-        VS[Vis / SVis — analyzer, scope]
-        OTHER[numbers, menurow, playstatus, …]
+        PB["PButton — play, stop, …"]
+        TB["TButton — shuffle, EQ visible, …"]
+        HS["HSlider — volume, balance, seek"]
+        TX["TextBox — title, time"]
+        VS["Vis / SVis — analyzer, scope"]
+        OTHER["numbers, menurow, playstatus, …"]
     end
 
     subgraph Skin["skin.c"]
-        BMP[skin bitmaps SKIN_CBUTTONS, …]
+        BMP["skin bitmaps SKIN_CBUTTONS, …"]
         MASK[shape masks]
     end
 
@@ -227,12 +227,12 @@ Think of these modules as the **façade** between chrome and plugins:
 flowchart LR
     UI[UI callbacks / menus / idle_func]
 
-    UI --> PL[playlist_*]
-    UI --> IN[input_*]
-    UI --> OUT[output_* / set_current_output_plugin]
-    UI --> FX[enable_effect_plugin / …]
-    UI --> VIS[enable_vis_plugin / vis_*]
-    UI --> EQAPI[input_set_eq via equalizerwin_*]
+    UI --> PL["playlist_*"]
+    UI --> IN["input_*"]
+    UI --> OUT["output_* / set_current_output_plugin"]
+    UI --> FX["enable_effect_plugin / …"]
+    UI --> VIS["enable_vis_plugin / vis_*"]
+    UI --> EQAPI["input_set_eq via equalizerwin_*"]
     UI --> SK[load_skin / reload_skin]
     UI --> CFG[cfg fields + save_config]
 
@@ -405,7 +405,7 @@ protocol to a **Unix domain control socket** (not D-Bus).
 flowchart LR
     subgraph Clients["Clients"]
         CLI[wmxmms / scripts / other clients]
-        LIB[libxmms xmms_remote_*]
+        LIB["libxmms xmms_remote_*"]
         GEN[General plugins]
         VISP[Vis plugins optional]
     end
@@ -413,7 +413,7 @@ flowchart LR
     subgraph Process["xmms process"]
         RTH[ctrlsocket reader thread<br/>accept + read commands]
         SOCK[check_ctrlsocket in idle_func<br/>apply on GTK thread]
-        API[Same core APIs as UI<br/>playlist_play, input_*, cfg, show/hide]
+        API["Same core APIs as UI<br/>playlist_play, input_*, cfg, show/hide"]
         CHROME[Window show/hide / toggle bits]
     end
 

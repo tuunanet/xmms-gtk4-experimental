@@ -48,7 +48,7 @@ Playback only needs **`filename`**. Missing titles do not block `playlist_play`.
 ```mermaid
 flowchart LR
     ADD[Add files / load M3U] --> ENT[PlaylistEntry<br/>filename set]
-    ENT --> PLAY[playlist_play → input_play]
+    ENT --> PLAY["playlist_play → input_play"]
     ENT --> INFO[get-info thread]
     INFO -->|input_get_song_info| IP[Input plugins]
     IP --> ENT
@@ -69,7 +69,7 @@ flowchart TB
     T --> M{mode}
     M -->|get_info_on_load<br/>and scan active| L[Walk full playlist<br/>first entry still missing title/length]
     M -->|get_info_on_demand<br/>and playlist visible unshaded| V[Walk only visible rows<br/>from playlist top row]
-    M -->|else| S[sleep ~0.5–1 s]
+    M -->|else| S["sleep ~0.5–1 s"]
     L --> E[playlist_get_info_entry]
     V --> E
     E --> U[Optionally refresh playlistwin + mainwin title]
@@ -147,7 +147,7 @@ flowchart TB
 
     PF --> Local
     PF --> Net
-    Local --> DEC[decode → add_vis_pcm → write_audio]
+    Local --> DEC["decode → add_vis_pcm → write_audio"]
     RD --> DEC
     META -->|set_info_text / set_info| UI[main title]
 ```
