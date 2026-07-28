@@ -87,6 +87,14 @@ require_text Makefile.am 'tools/build-deb.sh' \
 	'builds Debian packages through the shared helper'
 require_text .github/workflows/ci.yml 'cppcheck \' \
 	'installs the supported C analyzer in full CI'
+require_text .github/workflows/release.yml 'cppcheck \' \
+	'installs the C analyzer for release tests'
+require_text .github/workflows/release-candidate.yml 'cppcheck \' \
+	'installs the C analyzer for release-candidate tests'
+require_text .github/workflows/package-release.yml 'cppcheck \' \
+	'installs the C analyzer for Debian package tests'
+require_text packaging/debian/control ' cppcheck,' \
+	'declares the C analyzer as a Debian build dependency'
 require_text .github/workflows/ci.yml 'name: Lint C sources' \
 	'runs C lint as a named CI step'
 require_text .github/workflows/ci.yml 'timeout-minutes: 5' \
