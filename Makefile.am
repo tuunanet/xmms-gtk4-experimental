@@ -22,6 +22,7 @@ EXTRA_DIST = \
 	CONTRIBUTORS.md \
 	README.md \
 	SECURITY.md \
+	docs/architecture/build-and-test.md \
 	docs/history/README.md \
 	docs/history/upstream-changelog.txt \
 	docs/history/upstream-faq.txt \
@@ -47,6 +48,7 @@ EXTRA_DIST = \
 	tests/test-alsa-volume.c \
 	tests/test-filebrowser.c \
 	tests/test-font-load.c \
+	tests/test-c-lint.sh \
 	tests/test-intl-generated-sources.sh \
 	tests/test-mpg123-file-duration.c \
 	tests/test-mpg123-stream-position.c \
@@ -59,6 +61,8 @@ EXTRA_DIST = \
 	tests/test-xentry.c \
 	tools/build-deb.sh \
 	tools/check-release-version.sh \
+	tools/cppcheck-suppressions.txt \
+	tools/run-c-lint.sh \
 	tools/extract-release-notes.sh \
 	xmms.m4
 
@@ -67,7 +71,10 @@ m4data_DATA = xmms.m4
 
 man_MANS = xmms.1 wmxmms.1
 
-.PHONY: deb
+.PHONY: deb lint
+
+lint:
+	$(SHELL) '$(top_srcdir)/tools/run-c-lint.sh'
 
 deb:
 	@archive='$(DEB_SOURCE_ARCHIVE)'; \

@@ -3,6 +3,7 @@ Section: sound
 Priority: optional
 Maintainer: XMMS Classic contributors <47913151+tuunanet@users.noreply.github.com>
 Build-Depends:
+ cppcheck,
  debhelper-compat (= 13),
  gettext,
  libasound2-dev [linux-any],

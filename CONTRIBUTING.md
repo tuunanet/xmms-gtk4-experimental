@@ -44,6 +44,28 @@ privileges; required build dependencies must already be installed.
 If a change affects UI or audio behavior, also describe the manual runtime
 testing performed in the pull request.
 
+## C static analysis
+
+Install Cppcheck, then run the same regression gate used by CI:
+
+```sh
+sudo apt-get install cppcheck
+make lint
+```
+
+Ubuntu 24.04's packaged Cppcheck is the authoritative CI environment. The gate
+analyzes maintained C sources and headers while excluding generated `intl/`
+sources. It enables defect-oriented warning, performance, and portability
+checks rather than style-only diagnostics.
+
+Fix new findings whenever practical. If a finding is confirmed as existing,
+intentional, or a false positive, add only a narrow
+`diagnostic-id:path:line` entry to the suppression baseline at
+`tools/cppcheck-suppressions.txt`, explain it in the pull request, and rerun
+`make lint`. Do not add project-wide diagnostic suppressions or refresh the
+baseline merely to make CI green. Baseline changes must receive the same review
+as source changes.
+
 Pull requests that only touch documentation and other non-build metadata still
 report the required `build-and-test` check, but CI skips the full configure,
 build, test, distcheck, and Debian package steps. Skipped paths currently
@@ -61,8 +83,8 @@ same ref (`cancel-in-progress`). The cancelled run’s required gate fails with
 
 - Follow the style of the surrounding C code; do not reformat unrelated lines.
 - Add a regression test for bug fixes when practical.
-- Treat compiler warnings as defects. Do not silence a warning without
-  explaining why it is safe.
+- Treat compiler and Cppcheck warnings as defects. Do not silence a diagnostic
+  without explaining why it is safe.
 - Add user-visible changes to the `Unreleased` section of
   [`CHANGELOG.md`](CHANGELOG.md).
 - Update documentation in the same pull request as the behavior it describes.

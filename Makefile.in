@@ -317,6 +317,7 @@ EXTRA_DIST = \
 	CONTRIBUTORS.md \
 	README.md \
 	SECURITY.md \
+	docs/architecture/build-and-test.md \
 	docs/history/README.md \
 	docs/history/upstream-changelog.txt \
 	docs/history/upstream-faq.txt \
@@ -342,6 +343,7 @@ EXTRA_DIST = \
 	tests/test-alsa-volume.c \
 	tests/test-filebrowser.c \
 	tests/test-font-load.c \
+	tests/test-c-lint.sh \
 	tests/test-intl-generated-sources.sh \
 	tests/test-mpg123-file-duration.c \
 	tests/test-mpg123-stream-position.c \
@@ -354,6 +356,8 @@ EXTRA_DIST = \
 	tests/test-xentry.c \
 	tools/build-deb.sh \
 	tools/check-release-version.sh \
+	tools/cppcheck-suppressions.txt \
+	tools/run-c-lint.sh \
 	tools/extract-release-notes.sh \
 	xmms.m4
 m4datadir = $(datadir)/aclocal
@@ -788,6 +792,9 @@ distcleancheck: distclean
 	  || { echo "ERROR: files left in build directory after distclean:" ; \
 	       $(distcleancheck_listfiles) ; \
 	       exit 1; } >&2
+lint:
+	$(SHELL) '$(top_srcdir)/tools/run-c-lint.sh'
+
 deb:
 	@archive='$(DEB_SOURCE_ARCHIVE)'; \
 	if test -z "$$archive"; then \
@@ -902,7 +909,7 @@ uninstall-man: uninstall-man1
 
 .PHONY: $(RECURSIVE_TARGETS) CTAGS GTAGS all all-am am--refresh check \
 	check-am check-local clean clean-generic clean-libtool clean-local clean-recursive \
-	ctags ctags-recursive deb dist dist-all dist-bzip2 dist-gzip \
+	ctags ctags-recursive deb lint dist dist-all dist-bzip2 dist-gzip \
 	dist-shar dist-tarZ dist-zip distcheck distclean \
 	distclean-generic distclean-hdr distclean-libtool \
 	distclean-recursive distclean-tags distcleancheck distdir \
