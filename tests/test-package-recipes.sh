@@ -83,6 +83,18 @@ require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
 require_text Makefile.am 'tools/build-deb.sh' \
 	'builds Debian packages through the shared helper'
+require_text .github/workflows/ci.yml 'cppcheck \' \
+	'installs the supported C analyzer in full CI'
+require_text .github/workflows/ci.yml 'name: Lint C sources' \
+	'runs C lint as a named CI step'
+require_text .github/workflows/ci.yml 'timeout-minutes: 5' \
+	'bounds the C lint CI step'
+require_text .github/workflows/ci.yml 'run: make lint' \
+	'reuses the public C lint target in CI'
+require_absent_text .github/workflows/ci.yml "- '!tools/**'" \
+	'keeps lint control tools build-affecting'
+require_absent_text .github/workflows/ci.yml "- '!tests/**'" \
+	'keeps lint contract tests build-affecting'
 require_text .github/workflows/ci.yml 'make deb' \
 	'builds Debian packages before release candidates'
 require_text .github/workflows/release-candidate.yml 'make deb' \
