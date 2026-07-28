@@ -5,3 +5,9 @@ epics:
 stories:
   e01s01: verified
   e01s02: verified
+gate_trace:
+  verdict: WAIVED
+  generated_at: "2026-07-28T14:18:59Z"
+  rationale: Deterministic trace tooling is unavailable; manual mapping covers both stories and live CI remains a pre-merge gate.
+  heuristic_ratio: null
+  downgrade_applied: false

@@ -1,7 +1,7 @@
 schema_version: 1
 project: xmms-classic
 workflow_mode: team-pr
-active_flow: verify
+active_flow: release
 active_epic_id: e01
 active_story_id: e01s01
 active_bug_id: null
@@ -11,8 +11,8 @@ git:
   worktree: /home/tuunanet/git/tuunanet/c-lint-gate
 handoff:
   status: ready
-  next_skill: commit-message
-  reason: Self-audit passed after validating both Cppcheck 2.13 and 2.19.
+  next_skill: release-branch
+  reason: Final release gates passed; open the team-pr pull request and require live CI before merge.
 metrics:
   story_start: null
 release:
