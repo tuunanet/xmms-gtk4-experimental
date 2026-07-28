@@ -65,6 +65,13 @@ else
 	ok "excludes generated intl sources"
 fi
 
+if "$srcdir/tools/run-c-lint.sh" >"$output_file" 2>&1; then
+	ok "accepts the reviewed legacy baseline"
+else
+	cat "$output_file" >&2
+	not_ok "accepts the reviewed legacy baseline"
+fi
+
 if test "$failures" -ne 0; then
 	echo "$failures C lint checks failed" >&2
 	exit 1
