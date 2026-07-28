@@ -182,9 +182,9 @@ change when installed from deb vs `make install`.
 
 ```mermaid
 flowchart TB
-    P[push / pull_request] --> CL[Classify changes]
-    CL -->|docs-only PR| SKIP[Skip full build<br/>build-and-test still green]
-    CL -->|source changes or manual| FULL[Full CI job]
+    P["push / pull_request"] --> CL[Classify changes]
+    CL -->|docs or meta only| SKIP["Skip full build<br/>build-and-test still green"]
+    CL -->|build-affecting paths or manual| FULL[Full CI job]
     FULL --> DEP[apt build deps + ccache]
     DEP --> CFG["./configure --disable-esd"]
     CFG --> BLD[make -j]
@@ -195,10 +195,21 @@ flowchart TB
 
 | Behavior | Detail |
 | --- | --- |
-| **Path filter** | Docs/README-only PRs skip configure/build/test/distcheck/deb |
+| **Path filter** | Full CI runs only if some changed path is “source”. Excluded: `docs/**`, top-level prose/legal markdown, `.gitignore` / `.gitattributes` / `.editorconfig`, and `.github` issue/PR templates. Workflow YAML and all code/build paths still trigger full CI. The classify job logs matching paths. |
 | **Required check** | Aggregate `build-and-test` job always runs and reflects skip vs full result |
+| **Concurrency** | `cancel-in-progress` on the same ref; a superseded run fails its gate with `cancelled`—use the latest commit’s checks |
 | **Display** | `xvfb-run` for GTK tests |
 | **Cache** | ccache via [`.github/actions/setup-ccache`](../../.github/actions/setup-ccache) |
+
+### Why this PR series exercised full CI
+
+Architecture documentation under `docs/` would normally skip `full-ci`. PR #44
+also touched `.gitignore` (ignore `.repomix/`). Under the older filter that only
+excluded `README.md` and `docs/**`, that single meta file forced a full
+configure/build/test/distcheck/deb cycle (~5 minutes) on every push, and each
+fix commit cancelled the previous run mid-build. Expanding the exclusion list
+avoids that cost for docs+metadata pull requests without weakening checks for
+real code or workflow changes.
 
 Other workflows (`release-candidate.yml`, `release.yml`, `package-release.yml`)
 handle versioned releases; see [releases.md](../releases.md).

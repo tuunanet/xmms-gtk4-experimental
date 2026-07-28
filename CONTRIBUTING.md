@@ -44,10 +44,18 @@ privileges; required build dependencies must already be installed.
 If a change affects UI or audio behavior, also describe the manual runtime
 testing performed in the pull request.
 
-Pull requests and pushes that only change `README.md` and/or files under
-`docs/` still report the required `build-and-test` check, but CI skips the
-full configure, build, test, distcheck, and Debian package steps for those
-change sets. Any other path keeps the full suite.
+Pull requests that only touch documentation and other non-build metadata still
+report the required `build-and-test` check, but CI skips the full configure,
+build, test, distcheck, and Debian package steps. Skipped paths currently
+include `docs/**`, top-level prose (`README.md`, `CHANGELOG.md`,
+`CONTRIBUTING.md`, `CONTRIBUTORS.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`,
+`COPYING`, `ABOUT-NLS`), editor/VCS metadata (`.gitignore`, `.gitattributes`,
+`.editorconfig`), and GitHub issue/PR templates under `.github/` (workflow
+YAML is **not** skipped). Any other path keeps the full suite.
+
+Pushing new commits while a run is in progress cancels the previous run on the
+same ref (`cancel-in-progress`). The cancelled run’s required gate fails with
+`cancelled`; that is expected—only the latest commit’s checks matter for merge.
 
 ## Project conventions
 
