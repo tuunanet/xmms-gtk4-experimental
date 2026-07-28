@@ -81,6 +81,8 @@ require_text tests/Makefile 'test-c-lint:' \
 	'runs C lint contract tests from make check'
 require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
+require_text Makefile.am 'docs/architecture/build-and-test.md' \
+	'distributes the C lint architecture guide'
 require_text Makefile.am 'tools/build-deb.sh' \
 	'builds Debian packages through the shared helper'
 require_text .github/workflows/ci.yml 'cppcheck \' \
