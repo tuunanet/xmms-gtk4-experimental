@@ -1,0 +1,3 @@
+# Reviewed XMMS Classic legacy diagnostics.
+# Format: diagnostic-id:relative/path.c:line
+# Keep suppressions narrow; new diagnostics must fail the lint gate.
