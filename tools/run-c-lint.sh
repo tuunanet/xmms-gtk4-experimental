@@ -17,6 +17,8 @@ exec cppcheck \
 	--library=gnu \
 	--library=gtk \
 	--library=posix \
+	'-DN_(String)=String' \
+	'-D_(String)=String' \
 	--relative-paths="$srcdir" \
 	--suppressions-list="$srcdir/tools/cppcheck-suppressions.txt" \
 	"$srcdir/Effect" \

@@ -4,6 +4,7 @@
 # Keep suppressions narrow; new diagnostics must fail the lint gate.
 
 leakNoVarFunctionCall:General/ir/configure.c:294 # legacy error
+preprocessorErrorDirective:Input/cdaudio/cdaudio.c:33 # legacy error
 deallocuse:Input/cdaudio/cdaudio.c:253 # legacy error
 nullPointer:Input/cdaudio/cddb.c:63 # legacy warning
 sprintfOverlappingData:Input/cdaudio/cddb.c:114 # legacy error
