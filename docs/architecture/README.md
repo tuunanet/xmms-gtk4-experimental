@@ -12,6 +12,7 @@ build/test layout.
 | [External control](external-control.md) | libxmms, wmxmms, General plugins, control socket clients |
 | [Playlist and streaming](playlist-and-streaming.md) | Get-info thread, lazy metadata, HTTP/Icecast inside Input plugins |
 | [Build and test](build-and-test.md) | Autotools layout, `make check`, packaging, CI |
+| [Skins](skins.md) | Hard requirements for WinAmp 2 / XMMS skin files (artists + developers) |
 
 Diagrams use [Mermaid](https://mermaid.js.org/) and render on GitHub and most
 Markdown previewers.
@@ -51,3 +52,4 @@ and the built-in analyzer/scope.**
 | Drive XMMS from another program | [External control](external-control.md) |
 | Understand playlist titles / HTTP URLs | [Playlist and streaming](playlist-and-streaming.md) |
 | Run tests or change the build | [Build and test](build-and-test.md), [CONTRIBUTING.md](../../CONTRIBUTING.md) |
+| Draw or package a skin | [Skins](skins.md), [manual §2.3](../manual.md#23-skin-installation) |

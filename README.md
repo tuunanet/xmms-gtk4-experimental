@@ -197,7 +197,7 @@ Run `./configure --help` for the full list.
 - **[Keyboard shortcuts](docs/manual.md#311-key-bindings)** — full key binding
   reference.
 - **[Architecture](docs/architecture/README.md)** — UI, processing pipeline,
-  plugins, external control, playlist/streaming, and build/test diagrams.
+  plugins, external control, playlist/streaming, build/test, and skin format.
 - **[CHANGELOG.md](CHANGELOG.md)** — curated release history for this fork.
 - **[Release process](docs/releases.md)** — candidate builds, manual testing,
   version tags, and draft GitHub Releases.

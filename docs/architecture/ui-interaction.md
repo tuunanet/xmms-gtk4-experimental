@@ -543,4 +543,5 @@ A simplified startup order when reading `main.c`:
 - [Plugin system](plugin-system.md) — how prefs-enabled modules get loaded  
 - [External control](external-control.md) — libxmms, wmxmms, General plugins  
 - [Playlist and streaming](playlist-and-streaming.md) — get-info thread and HTTP inputs  
+- [Skins](skins.md) — BMP/layout requirements for skinned chrome  
 - [User manual](../manual.md) — end-user description of the same windows  
