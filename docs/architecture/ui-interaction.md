@@ -376,16 +376,16 @@ the main thread and:
 
 ```mermaid
 flowchart TD
-    T[gtk timeout ~10ms] --> I[idle_func]
+    T["gtk timeout ~10ms"] --> I[idle_func]
     I --> P{playing?}
-    P -->|no| C[check_ctrlsocket / light UI]
+    P -->|no| C["check_ctrlsocket / light UI"]
     P -->|yes| G[input_get_time]
     G --> Eof{time?}
-    Eof -->|(-1) EOF| N[playlist_eof_reached]
-    Eof -->|(-2) error| X[output_failed + stop]
-    Eof -->|ms| U[update time widgets]
+    Eof -->|EOF -1| N[playlist_eof_reached]
+    Eof -->|error -2| X["output_failed + stop"]
+    Eof -->|ms position| U[update time widgets]
     U --> V[input_update_vis]
-    V --> R[vis plugins + skin analyzer/scope]
+    V --> R["vis plugins + skin analyzer/scope"]
     I --> C
     C --> D[draw dirty widgets]
 ```
