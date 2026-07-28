@@ -139,7 +139,7 @@ And build-and-test still reports success according to its existing contract
 ## 18. Implementation Steps
 
 1. Extend policy tests to require the public target, distributed controls, Cppcheck installation, named lint step, timeout, and non-excluded lint paths → verify: `tests/test-package-recipes.sh "$PWD"`
-2. Install Cppcheck and run `make lint` in the existing full-CI job without changing aggregate semantics → verify: `tests/test-package-recipes.sh "$PWD" && make lint`
+2. Install Cppcheck and run `make lint` in the existing full-CI job without changing aggregate semantics (ref: `4f295ef`) → verify: `tests/test-package-recipes.sh "$PWD" && make lint`
 3. Document contributor usage, triage, suppressions, and baseline refresh policy in both audience-specific documents → verify: `rg -n "make lint|Cppcheck|baseline|suppression" CONTRIBUTING.md docs/architecture/build-and-test.md`
 4. Run the complete local release-equivalent verification stack → verify: `make -j"$(nproc)" && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck`
 

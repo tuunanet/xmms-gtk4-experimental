@@ -11,8 +11,8 @@ git:
   worktree: /home/tuunanet/git/tuunanet/c-lint-gate
 handoff:
   status: ready
-  next_skill: audit-code
-  reason: Verification and user-confirmed manual UAT passed for both C lint stories.
+  next_skill: commit-message
+  reason: Self-audit passed after validating both Cppcheck 2.13 and 2.19.
 metrics:
   story_start: null
 release:

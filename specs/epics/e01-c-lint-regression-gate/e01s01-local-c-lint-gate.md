@@ -138,7 +138,7 @@ And exits non-zero without modifying the tree
 ## 18. Implementation Steps
 
 1. Add failing shell contract tests for source scope, prerequisite handling, baseline success, and representative diagnostic rejection → verify: `tests/test-c-lint.sh "$PWD"`
-2. Add the POSIX runner and reviewed Cppcheck suppression baseline using the confirmed native suppression design → verify: `tools/run-c-lint.sh`
+2. Add the POSIX runner and reviewed Cppcheck suppression baseline using the confirmed native suppression design (ref: `4f295ef`) → verify: `tools/run-c-lint.sh`
 3. Add `make lint` plus complete source-distribution entries to authoritative and shipped Automake files → verify: `make lint && tests/test-package-recipes.sh "$PWD"`
 4. Verify the lint controls work from the source distribution boundary → verify: `xvfb-run --auto-servernum make distcheck`
 
