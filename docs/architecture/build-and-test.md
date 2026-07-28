@@ -14,6 +14,7 @@ Primary sources:
 | Player + plugins | [`xmms/`](../../xmms), [`Input/`](../../Input), [`Output/`](../../Output), … |
 | Dock app | [`wmxmms/`](../../wmxmms) |
 | Tests | [`tests/`](../../tests), [`tests/Makefile`](../../tests/Makefile) |
+| C lint | [`tools/run-c-lint.sh`](../../tools/run-c-lint.sh), [`tools/cppcheck-suppressions.txt`](../../tools/cppcheck-suppressions.txt) |
 | Packaging | [`packaging/debian/`](../../packaging/debian), [`tools/build-deb.sh`](../../tools/build-deb.sh) |
 | CI | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) |
 | Release tools | [`tools/check-release-version.sh`](../../tools/check-release-version.sh), `extract-release-notes.sh` |
@@ -153,6 +154,25 @@ xvfb-run --auto-servernum make check
 `make distcheck` rebuilds from a tarball and re-runs checks—the stricter bar
 used in CI.
 
+### C static analysis
+
+`make lint` invokes Cppcheck through `tools/run-c-lint.sh`. The runner owns the
+maintained source-directory list, defect-oriented analyzer profile, library
+models, relative paths, and fail-closed exit status. Generated compatibility
+sources under `intl/` are deliberately outside this first C lint boundary.
+
+Existing diagnostics are recorded narrowly as `diagnostic-id:path:line` in
+`tools/cppcheck-suppressions.txt`. Unsuppressed diagnostics make Cppcheck and
+`make lint` exit non-zero. The baseline is review data, not generated build
+output: maintainers update individual entries only after triage, explain the
+change in the pull request, and reject broad project-wide suppressions. Ubuntu
+24.04's packaged Cppcheck is the authoritative CI version.
+
+`tests/test-c-lint.sh` verifies missing-tool errors, analyzer arguments, source
+scope, the accepted baseline, and rejection of a representative uninitialized
+variable. The test runs through `make check`; `tests/test-package-recipes.sh`
+also guards the distributed target and CI wiring.
+
 ---
 
 ## 4. Packaging
@@ -187,7 +207,8 @@ flowchart TB
     CL -->|build-affecting paths or manual| FULL[Full CI job]
     FULL --> DEP[apt build deps + ccache]
     DEP --> CFG["./configure --disable-esd"]
-    CFG --> BLD[make -j]
+    CFG --> LINT["make lint"]
+    LINT --> BLD[make -j]
     BLD --> TST["xvfb-run make check"]
     TST --> DC[make distcheck]
     DC --> DEB[make deb]
@@ -199,6 +220,7 @@ flowchart TB
 | **Required check** | Aggregate `build-and-test` job always runs and reflects skip vs full result |
 | **Concurrency** | `cancel-in-progress` on the same ref; a superseded run fails its gate with `cancelled`—use the latest commit’s checks |
 | **Display** | `xvfb-run` for GTK tests |
+| **C lint** | Full CI installs Cppcheck and runs `make lint` with a five-minute step timeout; C and lint-control paths remain build-affecting. |
 | **Cache** | ccache via [`.github/actions/setup-ccache`](../../.github/actions/setup-ccache) |
 
 ### Why this PR series exercised full CI
