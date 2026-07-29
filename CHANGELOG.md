@@ -32,6 +32,8 @@ the original XMMS 1.2 release line and includes the draft changes listed below.
   DEB-only for Ubuntu 24.04 LTS.
 
 ### Fixed
+- Restored GTK keyboard shortcuts by forwarding unhandled main-window key
+  events to the accelerator dispatcher.
 - Fixed `make deb` source archive assembly after the project-local reviewer and
   CI files were removed.
 - Allowed legacy GTK callback pointer conversions in Debian package builds so
