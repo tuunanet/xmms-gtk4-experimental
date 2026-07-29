@@ -1,0 +1,12 @@
+schema_version: 1
+phase: discover
+status: ready
+steps:
+  survey_context: completed
+  map_codebase: completed
+  seed_conventions: completed
+  scope_work: pending
+  research_first: pending
+  elaborate_spec: pending
+  plan_release: pending
+  slice_tasks: pending

@@ -1,0 +1,52 @@
+schema_version: 1
+story_id: e01s01
+title: Run a baseline-aware C lint gate locally
+spec: e01s01-local-c-lint-gate.md
+status: passing
+risk: P0
+bcps: 5
+tasks:
+  - id: t1
+    description: Add failing shell contract tests for maintained-source scope, prerequisite handling, clean-baseline success, and representative diagnostic failure.
+    verify: tests/test-c-lint.sh "$PWD"
+    risk: P0
+    security: low
+    status: passing
+    allure:
+      severity: critical
+      categories:
+        - C lint
+        - regression
+  - id: t2
+    description: Add the POSIX Cppcheck runner and narrow checked-in legacy suppression baseline using the confirmed native suppression format.
+    verify: tools/run-c-lint.sh
+    risk: P0
+    security: low
+    status: passing
+    allure:
+      severity: critical
+      categories:
+        - C lint
+        - static analysis
+  - id: t3
+    description: Expose the runner through make lint and distribute every lint control through authoritative and shipped Automake files.
+    verify: make lint && tests/test-package-recipes.sh "$PWD"
+    risk: P1
+    security: low
+    status: passing
+    allure:
+      severity: high
+      categories:
+        - Autotools
+        - source distribution
+  - id: t4
+    description: Prove the source archive contains and can execute the lint controls without changing existing build products.
+    verify: xvfb-run --auto-servernum make distcheck
+    risk: P1
+    security: low
+    status: passing
+    allure:
+      severity: high
+      categories:
+        - distcheck
+        - compatibility

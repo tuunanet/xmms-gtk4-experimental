@@ -1,0 +1,13 @@
+schema_version: 1
+status: draft
+terms:
+  - term: Input plugin
+    definition: A dynamically loaded module that recognizes media and produces PCM audio.
+  - term: Output plugin
+    definition: A dynamically loaded module that buffers and sends PCM audio to a device or file.
+  - term: Effect plugin
+    definition: An enabled module that transforms PCM in the output path.
+  - term: General plugin
+    definition: An integration module outside the PCM path.
+  - term: Visualization plugin
+    definition: A renderer consuming the time-aligned PCM or frequency side-channel.
