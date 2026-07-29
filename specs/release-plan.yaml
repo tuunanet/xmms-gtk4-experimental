@@ -12,7 +12,7 @@ epics:
     capsule_dir: epics/e03-gtk-migration-foundation
     wsjf: 5.4
     bcps: 16
-    status: planned
+    status: verified
     score:
       business_value: 8
       time_criticality: 9

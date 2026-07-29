@@ -1,18 +1,18 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: plan_work
+active_flow: verify
 active_epic_id: e03
-active_story_id: e03s01
+active_story_id: e03s03
 active_bug_id: null
 git:
   branch: plan/gtk-migration-foundation
-  head: ca6680b
+  head: 627b53a
   worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
 handoff:
-  status: awaiting_approval
-  next_skill: develop-tdd
-  reason: GTK migration foundation scope, impact assessment, ADR, prior-art research, slices, test architecture, and implementation tasks are drafted; implementation awaits plan approval.
+  status: ready
+  next_skill: verify-work
+  reason: All GTK migration foundation stories pass focused tests, isolated toolkit linkage checks, Preflight, lint, packaging contracts, and distcheck.
 metrics:
   story_start: 2026-07-29T17:00:00Z
 release:

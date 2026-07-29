@@ -4,7 +4,7 @@ title: Prove the first staged GTK migration slice
 wsjf: 5.4
 total_bcps: 16
 risk: P0
-status: in_progress
+status: verified
 adr:
   - ../../adr/ADR-0001-staged-gtk-migration.md
 stories:
@@ -28,7 +28,7 @@ stories:
     title: Prove the Play-button boundary in a separate GTK3 harness
     bcps: 8
     risk: P0
-    status: planned
+    status: verified
     delta: ADDED
     spec: e03s03-gtk3-play-button-proof.md
     tasks: e03s03-tasks.yaml

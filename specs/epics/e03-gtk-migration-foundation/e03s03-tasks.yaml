@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e03s03
 title: Prove the Play-button boundary in a separate GTK3 harness
-status: failing
+status: passing
 risk: P0
 bcps: 8
 tasks:
@@ -11,7 +11,7 @@ tasks:
     verify: "./configure --disable-esd && make -C tests test-gtk3-play-button-proof && ldd tests/test-gtk3-play-button-proof | grep -F 'libgtk-3.so' && ! ldd tests/test-gtk3-play-button-proof | grep -F 'libgtk-x11-2.0.so'"
     risk: P0
     security: low
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [gtk-migration, gtk3, build-boundary]
@@ -21,7 +21,7 @@ tasks:
     verify: "xvfb-run --auto-servernum tests/test-gtk3-play-button-proof"
     risk: P0
     security: none
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [gtk-migration, gtk3, rendering, interaction]
@@ -31,7 +31,7 @@ tasks:
     verify: "tests/test-package-recipes.sh \"$PWD\" && make lint && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck"
     risk: P0
     security: low
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [gtk-migration, ci, packaging, distribution]
@@ -41,7 +41,7 @@ tasks:
     verify: "rg -q 'GTK2.*GTK3.*GTK4' docs/architecture/ui-interaction.md && rg -q 'mixed.*GTK|GTK.*major' docs/architecture/plugin-system.md"
     risk: P1
     security: none
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: [gtk-migration, documentation, compatibility]

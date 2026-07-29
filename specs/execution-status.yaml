@@ -3,17 +3,17 @@ status: verified
 epics:
   e01: verified
   e02: verified
-  e03: in_progress
+  e03: verified
 stories:
   e01s01: verified
   e01s02: verified
   e02s01: verified
   e03s01: verified
   e03s02: verified
-  e03s03: planned
+  e03s03: verified
 gate_trace:
   verdict: pending
   generated_at: null
-  rationale: Local build, test, package, release, and distcheck gates pass; live pull-request CI remains pending.
+  rationale: Local GTK2/GTK3 linkage, build, lint, test, package, and distcheck gates pass; live pull-request CI remains pending.
   heuristic_ratio: null
   downgrade_applied: false

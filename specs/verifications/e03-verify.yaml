@@ -1,0 +1,45 @@
+schema_version: 1
+epic_id: e03
+status: passed
+verified_at: 2026-07-29T18:30:00Z
+stories:
+  e03s01: passed
+  e03s02: passed
+  e03s03: passed
+evidence:
+  - command: "xvfb-run --auto-servernum tests/test-pbutton-baseline"
+    result: passed
+    detail: Four GTK2 characterization cases lock sprite selection, hit boundaries, pointer transitions, and activation filtering.
+  - command: "tests/test-ui-control"
+    result: passed
+    detail: Four display-independent cases prove primary press, leave/re-entry, one-shot release activation, and deterministic draw commands.
+  - command: "xvfb-run --auto-servernum tests/test-gtk3-play-button-proof"
+    result: passed
+    detail: GTK3 proof renders normal and pressed pixels and activates the shared Play-button contract exactly once.
+  - command: "ldd tests/test-gtk3-play-button-proof | grep -F 'libgtk-3.so' && ! ldd tests/test-gtk3-play-button-proof | grep -F 'libgtk-x11-2.0.so'"
+    result: passed
+    detail: The proof links GTK3 and excludes GTK2 from its process.
+  - command: "./configure --disable-esd && make -j\"$(nproc)\""
+    result: passed
+    detail: Configure auto-detects GTK3 3.24.52 while the production player remains GTK2.
+  - command: "make lint"
+    result: passed
+    detail: The maintained C source gate accepts the new toolkit-neutral and GTK3 adapter modules.
+  - command: "xvfb-run --auto-servernum make check"
+    result: passed
+    detail: Full GTK2 suite plus the isolated GTK3 proof passes under Xvfb.
+  - command: "tests/test-package-recipes.sh \"$PWD\""
+    result: passed
+    detail: Configure, dependency, test, documentation, and distribution contracts include the migration proof.
+  - command: "xvfb-run --auto-servernum make distcheck"
+    result: passed
+    detail: xmms-0.0.1 source archive rebuilds, checks, installs, uninstalls, and distcleans with GTK3 proof enabled.
+compatibility:
+  production_toolkit: GTK2
+  proof_toolkit: GTK3
+  mixed_toolkit_process: false
+  plugin_abi_changed: false
+  libxmms_api_changed: false
+  control_socket_changed: false
+  config_paths_changed: false
+  skin_format_changed: false
