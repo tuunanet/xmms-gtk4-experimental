@@ -1,5 +1,5 @@
 schema_version: 1
-project: xmms-classic
+project: xmms-gtk4-experimental
 workflow_mode: team-pr
 active_flow: planning
 active_epic_id: e02
