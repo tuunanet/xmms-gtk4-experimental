@@ -99,6 +99,12 @@ require_text configure.in 'gtk+-3.0 >= 3.24' \
 	'detects the supported GTK3 bridge version'
 require_text packaging/debian/control 'libgtk-3-dev' \
 	'declares the GTK3 proof build dependency'
+require_text docs/architecture/ui-interaction.md 'GTK2 → GTK3 → GTK4' \
+	'documents the staged toolkit migration'
+require_text docs/architecture/plugin-system.md 'GTK-major linkage' \
+	'documents plugin toolkit compatibility'
+require_text docs/architecture/build-and-test.md 'test-gtk3-play-button-proof' \
+	'documents the isolated GTK3 proof gate'
 require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
 require_text Makefile.am 'docs/architecture/build-and-test.md' \
