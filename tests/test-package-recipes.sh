@@ -94,6 +94,16 @@ require_text .github/workflows/package-release.yml 'XMMS GTK4 Experimental' \
 	'uses fork branding in release metadata'
 require_absent_text .github/workflows/package-release.yml 'XMMS GTK2' \
 	'does not use the donor project branding'
+require_text docs/releases.md 'package-release.yml' \
+	'documents the generic release-package workflow'
+require_text docs/releases.md 'Linux Mint 22.3' \
+	'documents the Linux Mint release target'
+require_text docs/releases.md 'Ubuntu 26.04' \
+	'documents the Ubuntu release target'
+require_text docs/releases.md 'annotated `vVERSION` tag' \
+	'documents matching annotated-tag dispatch'
+require_text docs/architecture/build-and-test.md 'package-release.yml' \
+	'documents the checked-in release workflow'
 require_text Makefile.am 'deb:' \
 	'exposes a top-level make deb target'
 require_text Makefile.am '$(MAKE) dist-gzip' \
