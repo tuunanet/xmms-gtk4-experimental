@@ -46,6 +46,23 @@ XmmsUiControlResult xmms_ui_button_handle_pointer(XmmsUiButtonState *state,
 		return XMMS_UI_CONTROL_REDRAW;
 	}
 
+	if (event == XMMS_UI_POINTER_RELEASE)
+	{
+		XmmsUiControlResult result = XMMS_UI_CONTROL_NONE;
+
+		if (button != 1)
+			return result;
+
+		if (state->inside && state->pressed)
+		{
+			state->inside = FALSE;
+			result = XMMS_UI_CONTROL_REDRAW |
+				 XMMS_UI_CONTROL_ACTIVATE;
+		}
+		state->pressed = FALSE;
+		return result;
+	}
+
 	if (event != XMMS_UI_POINTER_PRESS || button != 1)
 		return XMMS_UI_CONTROL_NONE;
 
