@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e04s01
 title: Deliver draft Linux packages from an annotated release tag
-status: failing
+status: passing
 risk: P0
 bcps: 8
 tasks:
@@ -41,7 +41,7 @@ tasks:
     verify: "make lint && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck"
     risk: P0
     security: medium
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [release, verification, distribution]
