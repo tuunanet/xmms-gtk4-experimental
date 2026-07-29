@@ -1,0 +1,62 @@
+schema_version: 1
+feature_name: Direct GTK2-to-GTK4 migration
+problem_statement: >-
+  XMMS Classic depends on end-of-life GTK2 and GDK2 APIs throughout its skinned
+  desktop UI, reusable GTK helpers, and bundled plugin dialogs and visualizers.
+  The project needs a direct migration to GTK 4.22 that removes GTK2 completely
+  while preserving the classic X11 user experience and stable XMMS contracts.
+actors:
+  - XMMS users on Ubuntu 26.04 LTS and newer compatible Linux systems
+  - maintainers of the XMMS core and bundled plugins
+  - third-party plugin maintainers who can port GTK-facing source and recompile
+constraints:
+  - Target GTK 4.22 or newer and Ubuntu 26.04 LTS as the minimum baseline.
+  - Migrate directly from GTK2 to GTK4 without an intermediate GTK3 build.
+  - Remain X11-only and preserve shaped windows, absolute positioning, docking, shading, double-size mode, skin rendering, and established interactions.
+  - Remove GTK2 and GDK2 from source includes, build detection, runtime dependencies, bundled shared objects, packaging, CI, and release artifacts.
+  - Freeze every InputPlugin, OutputPlugin, EffectPlugin, GeneralPlugin, and VisPlugin struct layout, exported entry point, callback signature, lifecycle contract, and data shape.
+  - Preserve plugin discovery paths, basename precedence, enabled-plugin persistence, configuration paths, and configuration keys.
+  - Preserve GTK-independent libxmms APIs; permit documented source-level changes to GTK-facing helpers where GTK4 has no equivalent.
+  - Port and preserve every currently bundled optional plugin rather than retiring legacy backends during migration.
+  - Keep GTK operations on the main thread and preserve existing playback, locking, socket, and plugin-thread contracts.
+  - Deliver through a multi-PR epic with green build, test, distribution, packaging, and CI gates at every merge boundary.
+out_of_scope:
+  - Wayland support or a Wayland-compatible window-management redesign
+  - A GTK3 compatibility stage or intermediate GTK3 release
+  - Loading existing GTK2-linked plugin binaries without recompilation
+  - Redesigning the classic skin, window model, or user interactions
+  - Retiring bundled plugins or legacy optional backends
+  - Changing plugin ABIs, libxmms remote-control APIs, control-socket commands, configuration locations, or skin formats
+  - Unrelated playback, decoder, output, networking, or codec modernization
+key_decisions:
+  - decision: Use a direct GTK2-to-GTK4 migration.
+    rationale: The project accepts a coordinated cutover and does not want transitional GTK3 artifacts.
+  - decision: Require GTK 4.22 and Ubuntu 26.04 LTS as the minimum baseline.
+    rationale: Ubuntu 26.04 supplies GTK 4.22.2 and is the maintainer's target environment.
+  - decision: Keep the application X11-only.
+    rationale: Exact classic window positioning, docking, shaping, and related behavior takes precedence over Wayland support.
+  - decision: Preserve all plugin-family programming interfaces while requiring GTK-dependent plugins to be ported and recompiled.
+    rationale: Plugin authors should only need to migrate their GTK code, not redesign their XMMS integration; GTK2-linked binaries conflict with complete GTK2 removal.
+  - decision: Preserve GTK-independent libxmms APIs while allowing GTK-facing helper migration.
+    rationale: GTK2-only public types cannot always map exactly to GTK4, but remote control and non-UI integrations must remain stable.
+  - decision: Use a multi-PR epic without mixing GTK major versions in one process.
+    rationale: GTK-neutral preparation can reduce cutover risk while each merged state remains buildable and reviewable.
+  - decision: Use temporary separate GTK2 and GTK4 build configurations until final cutover.
+    rationale: Main remains releasable and migration slices receive normal CI without loading both GTK majors into one process.
+success_signals:
+  - XMMS and every bundled shared object build against GTK 4.22 on Ubuntu 26.04.
+  - Dynamic dependency inspection finds no GTK2 or GDK2 library in project executables or shared objects.
+  - Source, generated build inputs, Debian metadata, CI, and release automation contain no active GTK2 dependency.
+  - ABI checks prove every plugin struct layout, callback type, entry point, and core-injected field remains unchanged.
+  - Existing WinAmp/XMMS skins and classic X11 window behaviors pass automated or recorded visual interaction tests.
+  - Full build, lint, Xvfb tests, distcheck, Debian packaging, install, and smoke tests pass on the new baseline.
+references:
+  - specs/tech-architecture/tech-stack.md
+  - docs/architecture/ui-interaction.md
+  - docs/architecture/plugin-system.md
+  - docs/architecture/processing-pipeline.md
+  - xmms/plugin.h
+  - xmms/pluginenum.c
+  - xmms/visualization.c
+  - https://docs.gtk.org/gtk4/migrating-3to4.html
+  - https://packages.ubuntu.com/resolute/libgtk-4-dev

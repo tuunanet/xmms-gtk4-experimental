@@ -1,0 +1,41 @@
+story_id: e02s04
+title: Manage the playlist through its GTK4 X11 window
+status: failing
+bcps: 8
+risk: P0
+tasks:
+  - id: 1
+    description: Add GTK4 playlist contracts for rendering, selection, scrolling, queue state, keyboard control, popup actions, and resize geometry.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-playlist-window.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk4, playlist]}
+  - id: 2
+    description: Port playlist list drawing and pointer/keyboard dispatch while retaining model locks and fixed skin geometry.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-playlist-window.sh "$PWD" --interactions
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [playlist, threading, security-review]}
+  - id: 3
+    description: Port playlist menus, popups, drag-and-drop, resizing, shading, and persistence to GTK4/X11.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-playlist-window.sh "$PWD" --window-contracts
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [dnd, x11, persistence]}
+  - id: 4
+    description: Prove direct UI and control-socket playlist operations remain behaviorally identical.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-playlist-parity.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [playlist, remote-control]}
+  - id: 5
+    description: Keep both toolkit build modes green through the playlist slice.
+    verify: tests/test-gtk-build-modes.sh "$PWD" --story e02s04
+    risk: P1
+    security: low
+    status: failing
+    allure: {severity: high, categories: [dual-build, regression]}

@@ -1,0 +1,41 @@
+story_id: e02s03
+title: Run the classic main player as a GTK4 X11 window
+status: failing
+bcps: 8
+risk: P0
+tasks:
+  - id: 1
+    description: Add GTK4 main-window interaction contracts for transport, seek, volume, balance, menus, keyboard input, title, and time display.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-main-window.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk4, main-window]}
+  - id: 2
+    description: Adapt the custom widget dispatcher to GTK4 click, motion, scroll, and key controllers without changing hit regions or callbacks.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-widget-events.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [input, custom-widgets]}
+  - id: 3
+    description: Port the main window, menu actions, heartbeat, redraw scheduling, and shutdown lifecycle to GTK4 and GMainContext APIs.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-main-window.sh "$PWD" --full
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk4, lifecycle]}
+  - id: 4
+    description: Prove mouse and remote-control transport paths produce identical playback state under the GTK4 build.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-transport-parity.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [playback, remote-control]}
+  - id: 5
+    description: Keep the complete GTK2 release path and the claimed GTK4 main-player slice green.
+    verify: tests/test-gtk-build-modes.sh "$PWD" --story e02s03
+    risk: P1
+    security: low
+    status: failing
+    allure: {severity: high, categories: [dual-build, regression]}

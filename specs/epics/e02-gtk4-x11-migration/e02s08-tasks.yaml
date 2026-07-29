@@ -1,0 +1,41 @@
+story_id: e02s08
+title: Configure Effect and General plugins under GTK4
+status: failing
+bcps: 5
+risk: P0
+tasks:
+  - id: 1
+    description: Add fixture-driven GTK4 contracts for every bundled Effect and General about and configure UI.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-effect-general-plugin-uis.sh "$PWD"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [plugins, effect, general, security-review]}
+  - id: 2
+    description: Port all bundled Effect plugin GTK-facing source without changing sample transforms or EffectPlugin contracts.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-effect-general-plugin-uis.sh "$PWD" --family effect
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [plugins, effect]}
+  - id: 3
+    description: Port all bundled General plugin GTK-facing source without changing sessions, remote control, or GeneralPlugin contracts.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-effect-general-plugin-uis.sh "$PWD" --family general
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [plugins, general, remote-control]}
+  - id: 4
+    description: Build and inspect every available Effect and General shared object for ABI and single-toolkit dependency compliance.
+    verify: tests/test-plugin-abi.sh "$PWD" && tests/test-gtk-plugin-dependencies.sh "$PWD" effect general
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [plugin-abi, dependencies]}
+  - id: 5
+    description: Keep both toolkit modes and optional plugin classifications green.
+    verify: tests/test-gtk-build-modes.sh "$PWD" --story e02s08
+    risk: P1
+    security: low
+    status: failing
+    allure: {severity: high, categories: [dual-build, optional-plugins]}

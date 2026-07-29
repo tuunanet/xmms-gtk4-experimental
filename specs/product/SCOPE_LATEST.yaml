@@ -1,110 +1,159 @@
 schema_version: 1
 status: scoped
-initiative: c-lint-regression-gate
-core_value: Detect newly introduced C defects consistently without requiring an unsafe, repository-wide legacy cleanup.
+initiative: direct-gtk4-x11-migration
+core_value: Keep the classic XMMS desktop experience maintainable on a supported toolkit without breaking its plugin and playback contracts.
 summary: >-
-  Establish a repeatable linting capability for maintained C sources and headers, usable by contributors locally and enforced by continuous integration. The initiative will evaluate suitable analyzers before selecting one, record the existing diagnostic baseline, and reject newly introduced findings.
+  Migrate XMMS Classic directly from GTK2/GDK2 to GTK 4.22 on an Ubuntu 26.04
+  baseline. The final application remains explicitly X11-only so it can retain
+  the classic skinned multi-window model, including shaped windows, absolute
+  positioning, docking, shading, and double-size behavior.
 
-  This is a quality-gate change rather than a product behavior change. Existing findings remain visible and manageable, while adoption avoids broad source churn that could threaten compatibility or obscure future functional reviews.
+  The initiative is a multi-pull-request migration epic. It removes every
+  active GTK2 dependency from the core, reusable UI helpers, bundled plugins,
+  build system, tests, packages, CI, and release artifacts. Every plugin-family
+  programming interface remains frozen. GTK-dependent plugins are ported and
+  recompiled rather than loaded as historical GTK2 binaries.
 in_scope:
-  - story_id: e01s01
-    outcome: Select a maintained C analysis approach using documented compatibility, signal quality, reproducibility, and CI cost criteria.
-  - story_id: e01s01
-    outcome: Provide one documented local command that analyzes all maintained C sources and headers.
-  - story_id: e01s01
-    outcome: Record a reviewable baseline for existing findings and fail when a change introduces diagnostics beyond that baseline.
-  - story_id: e01s02
-    outcome: Add the regression gate to pull-request CI and account for its source, configuration, script, and baseline paths in workflow classification.
-  - story_id: e01s02
-    outcome: Document contributor usage, finding triage, intentional suppression, and controlled baseline updates.
-  - story_id: e01s02
-    outcome: Verify that lint adoption preserves the existing build, test suite, public interfaces, and release behavior.
+  - story_id: e02s01
+    outcome: Freeze executable plugin compatibility contracts and prove GTK4/X11 native shaping, positioning, drawing, and input feasibility before production migration.
+  - story_id: e02s02
+    outcome: Add isolated GTK2 and GTK4 build modes and establish Cairo-based classic skin rendering with pixel-golden coverage.
+  - story_id: e02s03
+    outcome: Run the classic main player transport, displays, menus, events, heartbeat, and remote-control behavior through a GTK4 X11 window.
+  - story_id: e02s04
+    outcome: Manage the complete playlist workflow through its GTK4 X11 window without changing the playlist model, locks, formats, or socket behavior.
+  - story_id: e02s05
+    outcome: Port the equalizer and deliver exact shape, movement, docking, grouping, shading, and double-size behavior through the contained X11 adapter.
+  - story_id: e02s06
+    outcome: Port preferences, asynchronous file and directory selection, remaining core dialogs, and GTK-facing libxmms helpers to GTK4.
+  - story_id: e02s07
+    outcome: Port every bundled Input and Output plugin UI to GTK4 while preserving interfaces, audio behavior, and optional backends.
+  - story_id: e02s08
+    outcome: Port every bundled Effect and General plugin UI to GTK4 while preserving interfaces, transforms, sessions, and external-control behavior.
+  - story_id: e02s09
+    outcome: Port every bundled visualization plugin to GTK4/X11 while preserving VisPlugin lifecycle, data shapes, timing, settings, and identifiers.
+  - story_id: e02s10
+    outcome: Remove GTK2 and temporary migration scaffolding and ship a GTK4-only Ubuntu 26.04 build, package, documentation set, and release gate.
 out_of_scope:
-  - item: Resolve every existing C diagnostic during initial adoption.
-    reason: Deferred because broad legacy cleanup increases behavioral and ABI risk and would obscure the lint infrastructure review.
-  - item: Lint shell, YAML, Markdown, Autotools input, or generated files.
-    reason: Deferred to separate language-specific initiatives so this scope has one measurable quality boundary.
-  - item: Introduce automatic source formatting or reformat existing C code.
-    reason: Excluded because formatting is distinct from defect analysis and would create unrelated code churn.
-  - item: Convert all compiler warnings into errors.
-    reason: Excluded because compiler policy is toolchain-dependent and does not provide a stable baseline mechanism by itself.
-  - item: Change runtime behavior, public plugin ABI, libxmms API, remote-control commands, configuration paths, skins, or GTK2 behavior.
-    reason: Excluded because this initiative supplies development-time analysis only.
+  - item: Wayland support or compositor-neutral window management.
+    reason: Exact classic positioning, docking, shaping, and multi-window behavior is prioritized and requires the X11 backend.
+  - item: An intermediate GTK3 build or release.
+    reason: The approved migration path is a direct GTK2-to-GTK4 effort.
+  - item: Loading precompiled GTK2-linked plugin binaries.
+    reason: Complete GTK2 removal is incompatible with loading those binaries; plugin sources may be ported and recompiled against the frozen XMMS interface.
+  - item: Redesigning the skin, window model, controls, menus, or established interactions.
+    reason: This is a toolkit migration, not a product redesign.
+  - item: Retiring bundled plugins or optional legacy backends.
+    reason: Plugin retirement requires separate compatibility review and approval.
+  - item: Changing plugin structs, exported plugin entry points, callback data, or lifecycle semantics.
+    reason: Third-party source compatibility is a non-negotiable public contract.
+  - item: Breaking GTK-independent libxmms APIs, control-socket commands, configuration paths, keys, or skin formats.
+    reason: These interfaces are independent of the toolkit migration and remain stable.
+  - item: Unrelated playback, decoder, output, network, codec, or Autotools replacement work.
+    reason: Broad modernization would increase migration risk without contributing to GTK2 removal.
 constraints:
   technical:
-    - Preserve Autotools as the build system and support the repository's current C and GTK2 code.
-    - Preserve public plugin ABI, libxmms API, socket commands, configuration paths, skins, and classic UI behavior.
-    - Do not require project-local external-agent wiring.
-    - Keep local and CI results deterministic from checked-in configuration and baseline data.
-    - Evaluate every new lint-related path against .github workflow triggers, filters, packaging, release automation, and ignore rules.
+    - Require GTK 4.22 or newer and retain GLib, POSIX threads, GNU Autotools, libtool, Linux, and X11.
+    - Require the GTK X11 backend and preserve direct X11 integration where GTK4 intentionally omits window-manager controls.
+    - Preserve all InputPlugin, OutputPlugin, EffectPlugin, GeneralPlugin, and VisPlugin binary layouts and source contracts.
+    - Preserve exported get_*plugin_info symbols, injected plugin fields, render data shapes, and callback ordering.
+    - Preserve WinAmp 2 and XMMS skin assets, masks, dimensions, hit testing, configuration, and observable behavior.
+    - Preserve GTK-independent libxmms APIs; document necessary source migrations for GTK-facing helpers.
+    - Port all currently bundled optional plugin UIs and visualization plugins.
+    - Keep GTK operations on the main thread and preserve existing audio, socket, visualization, and playlist lock boundaries.
+    - Do not mix GTK2 and GTK4 in one process.
+    - Permit temporary separate GTK2 and GTK4 build configurations only until the final cutover removes GTK2 and migration scaffolding.
   delivery:
-    - Deliver through a pull request against protected main using the team-pr workflow.
-    - Research candidate analyzers before selecting or installing a dependency.
-    - Avoid repository-wide remediation as a prerequisite for enabling the gate.
+    - Deliver as one epic composed of independently reviewed pull requests.
+    - Keep the GTK2 release build green while each separate GTK4 migration slice gains coverage, then remove the GTK2 mode at final cutover.
+    - Keep applicable build and verification gates green at every merge boundary.
+    - Start with compatibility tests and an X11 feasibility proof before committing to the full cutover shape.
+    - Evaluate changed and new paths against CI classification, release workflows, packaging manifests, source distribution, and ignore rules.
+    - Use Ubuntu 26.04 as the authoritative build, package, and CI baseline.
 success_criteria:
-  - A documented command analyzes the maintained C and header file set from a clean checkout.
-  - The initial checked-in baseline passes without requiring unrelated source changes.
-  - A representative newly introduced diagnostic makes the local lint command and CI gate fail.
-  - Removing that diagnostic restores a passing result without changing the baseline.
-  - CI runs when relevant C sources, lint configuration, lint scripts, or baseline files change.
-  - Existing build and xvfb-backed test commands remain green.
-  - Contributor documentation explains triage, suppressions, and baseline-update review expectations.
+  - A clean Ubuntu 26.04 environment configures and builds XMMS with GTK 4.22 or newer and no GTK2 development package.
+  - Source and generated build inputs contain no active GTK2 or GDK2 include, flag, package, or compatibility dependency.
+  - Dynamic dependency checks find no GTK2 or GDK2 SONAME in XMMS executables or bundled shared objects.
+  - Compile-time and runtime ABI tests prove all plugin-family structures, entry points, callbacks, and injected fields remain compatible.
+  - Existing bundled plugins are rebuilt, discovered, configured, enabled, disabled, and cleaned up through their unchanged interfaces.
+  - Existing skins render with preserved dimensions, masks, colors, control hit regions, and double-size behavior.
+  - X11 tests or recorded UAT prove shaping, positioning, docking, shading, popup behavior, keyboard and pointer input, and drag-and-drop.
+  - Playback, playlist, remote control, visualization timing, configuration persistence, and plugin loading remain behaviorally unchanged.
+  - make lint, the complete Xvfb test suite, distcheck, Debian package build, package install, and smoke tests pass on the new baseline.
+  - Contributor, architecture, build, packaging, and migration documentation describe GTK4 requirements and third-party plugin recompilation.
 references:
-  - CLAUDE.md
-  - CONVENTIONS.md
+  - specs/planning-context.yaml
   - specs/product/VISION_LATEST.yaml
   - specs/tech-architecture/tech-stack.md
+  - specs/tech-architecture/TEST_PLAN_LATEST.md
+  - specs/IMPACT_LATEST.md
+  - specs/adr/ADR-0001-gtk4-x11-native-window-adapter.md
+  - specs/adr/ADR-0002-temporary-dual-gtk-build.md
+  - docs/architecture/ui-interaction.md
+  - docs/architecture/plugin-system.md
+  - docs/architecture/processing-pipeline.md
   - docs/architecture/build-and-test.md
-  - .github/workflows/ci.yml
-research:
-  title: Prior Art
+  - xmms/plugin.h
+  - xmms/pluginenum.c
+  - https://docs.gtk.org/gtk4/
+  - https://packages.ubuntu.com/resolute/libgtk-4-dev
+prior_art:
   observed_context:
-    - The repository contains 181 C files and 100 headers, with no existing C analyzer integration.
-    - CI runs on Ubuntu 24.04, whose repository provides Cppcheck 2.13 and clang-tidy 18.
-    - Existing builds already enable selected GCC warnings, but diagnostics are not treated as a regression baseline.
-    - Neither Cppcheck nor clang-tidy is installed in the current development environment.
-    - The opensrc CLI is present but lacks the documented search command, so no cached analyzer source was available.
+    - 121 C and header files use GTK or GDK symbols; 59 are under xmms and 50 are distributed across bundled plugin families and libxmms.
+    - The custom skin stack uses GdkPixmap in 45 files, GdkGC in 41 files, legacy widget signals in 48 files, and direct widget window access in 28 files.
+    - Existing UI coverage is limited to entry, file-browser, font, popup-position, and partial plugin-loader tests.
+    - The repository's earlier GTK1-to-GTK2 history required multiple compatibility follow-ups, demonstrating that compile success alone did not preserve behavior.
+    - The opensrc CLI is installed but does not provide its documented search subcommand, so no cached GTK source was available.
+    - The Ubuntu 26.04 host supplies GTK 4.22.2 packages, but libgtk-4-dev is not yet installed locally.
   candidates:
-    - name: Cppcheck
-      source: https://cppcheck.sourceforge.io/manual.html
+    - name: GtkDrawingArea with Cairo surfaces
+      source: https://docs.gtk.org/gtk4/class.DrawingArea.html
+      verdict: adopt
+      fit: GTK4 provides a Cairo draw callback and queued redraw model suitable for preserving fixed-coordinate skin compositing after GdkPixmap and GdkGC removal.
+      risks:
+        - Pixel output, mask scaling, clipping, and redraw invalidation require golden tests.
+    - name: GTK4 event controllers and gestures
+      source: https://docs.gtk.org/gtk4/migrating-3to4.html#stop-using-gtkwidget-event-signals
+      verdict: adopt
+      fit: GtkGestureClick, GtkEventControllerMotion, GtkEventControllerKey, and GtkEventControllerScroll are the supported replacements for legacy widget event signals.
+      risks:
+        - Gesture claiming and propagation differ from raw GTK2 event dispatch and may change custom hit testing without contract tests.
+    - name: GMainContext and GTK4 application lifecycle
+      source: https://docs.gtk.org/gtk4/migrating-3to4.html#stop-using-gtk_main-and-related-apis
+      verdict: adopt
+      fit: GTK4 removes gtk_main and directs applications to GApplication or GMainContext APIs; either can retain the main-thread heartbeat and socket queue processing.
+      risks:
+        - Shutdown, plugin cleanup, and nested event-pumping behavior must be made explicit before replacement.
+    - name: GtkFileDialog
+      source: https://docs.gtk.org/gtk4/class.FileDialog.html
+      verdict: adopt
+      fit: GTK 4.22 provides asynchronous open, save, multiple-file, and folder-selection operations for replacing GtkFileSelection and directory browser UI.
+      risks:
+        - Existing synchronous callback assumptions require state and lifetime redesign at GTK-facing boundaries.
+    - name: GDK X11 surface access plus Xlib/XShape
+      source: https://docs.gtk.org/gdk4-x11/class.X11Surface.html
+      verdict: extend-with-contained-adapter
+      fit: Exact X11 positioning and shaping require a narrow backend adapter around native XIDs, Xlib, EWMH, and XShape because GTK4 intentionally removes backend-neutral move, restack, and shape controls.
+      risks:
+        - gdk_x11_surface_get_xid and several GDK X11 helpers are deprecated since GTK 4.18 without a supported replacement for these requirements.
+        - The adapter is intentionally backend-specific and must fail clearly when GDK_BACKEND is not X11.
+    - name: Preserve the existing custom widget hit-test model
+      source: xmms/widget.c
       verdict: extend
-      fit: >-
-        Designed for C and C++, tolerant of non-standard compiler extensions, cross-platform, available in Ubuntu 24.04, and able to consume direct paths or a compilation database. Its suppression lists, stable diagnostic identifiers, custom output templates, and error exit status support a thin checked-in regression-baseline layer without source edits.
+      fit: The classic controls are already toolkit-light data structures with fixed geometry and callbacks; adapting their draw and event boundaries avoids redesigning the skin or plugin core.
       risks:
-        - Diagnostics can change between analyzer versions, so CI must define the authoritative supported version and local tooling must report version mismatches clearly.
-        - A line-specific baseline needs controlled refreshes when existing findings move during legitimate edits.
-    - name: clang-tidy
-      source: https://clang.llvm.org/extra/clang-tidy/
-      verdict: reject-for-initial-adoption
-      fit: >-
-        Provides modular checks and Clang Static Analyzer diagnostics, but works best with a compilation database. This Autotools project would require build interception or substantial argument management, and clang-tidy has no direct checked-in suppression-list equivalent for baselining all existing diagnostics.
+        - Current structs store GdkPixmap and GdkGC directly, so ownership and rendering surfaces must be separated first.
+    - name: GTK3 intermediate migration
+      source: https://docs.gtk.org/gtk4/migrating-3to4.html
+      verdict: reject-by-decision
+      fit: GTK recommends preparing on GTK 3.24, but the approved scope explicitly requires a direct GTK2-to-GTK4 migration.
       risks:
-        - Adds LLVM tooling plus compilation-database generation to the local and CI path.
-        - Check availability and output vary substantially with LLVM versions.
-    - name: Bear compilation database generator
-      source: https://github.com/rizsotto/Bear
-      verdict: reject-as-unnecessary
-      fit: >-
-        Actively maintained and suitable when a build system cannot emit compile_commands.json, but it is only a supporting dependency for the more complex clang-tidy route and is unnecessary for direct Cppcheck analysis.
-    - name: GCC warning gate
-      source: docs/architecture/build-and-test.md
-      verdict: reject-as-primary-linter
-      fit: >-
-        Extending current warning flags would have minimal setup cost, but results depend on compiler version and configured build paths, and warning text does not provide a practical legacy baseline. Compiler warnings remain complementary evidence rather than the project linter.
-    - name: CodeChecker
-      source: https://codechecker.readthedocs.io/en/latest/usage/
-      verdict: reject-as-overweight
-      fit: >-
-        Supports analyzer result comparison and CI workflows, but requires compilation-database capture and a larger report-management stack than this repository needs for an initial regression gate.
-    - name: bigpowers wire-ci skill
-      source: /home/tuunanet/.pi/agent/npm/node_modules/bigpowers/.pi/skills/wire-ci/SKILL.md
-      verdict: extend-existing-ci-manually
-      fit: >-
-        Confirms CI wiring is the relevant lifecycle capability, but the repository already has tailored GitHub workflows and path classification. The lint plan should extend those workflows rather than replace them with a generated pipeline.
+        - Rejecting the intermediate stage increases cutover size and makes feasibility and compatibility harnesses mandatory.
   decision:
-    outcome: Extend Cppcheck with a checked-in configuration, legacy suppression baseline, repeatable local command, and pull-request CI gate.
+    outcome: Compose supported GTK4 drawing, event, dialog, and main-loop APIs with a narrowly isolated X11 native-window adapter and preserved XMMS custom-widget and plugin contracts.
     rationale:
-      - It provides the best C-specific signal with the fewest additional moving parts for a legacy Autotools repository.
-      - Ubuntu 24.04 supplies it directly, keeping CI installation small and conventional.
-      - Native diagnostic IDs and suppression lists align with blocking new findings while retaining visibility into legacy debt.
-      - It avoids source-level suppression churn and the compilation-database dependency required by clang-tidy.
+      - No maintained drop-in compatibility layer satisfies exact classic X11 behavior and complete GTK2 removal.
+      - Most playback and plugin contracts are already separated from concrete GTK types.
+      - A contained X11 adapter makes the deliberate backend restriction visible and testable.
+      - Compatibility-first preparation and a feasibility spike reduce risk before the coordinated GTK4 cutover.
+      - Temporary separate build modes keep main releasable and expose every migration slice to normal CI before GTK2 is removed.

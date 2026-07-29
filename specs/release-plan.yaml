@@ -1,22 +1,22 @@
 schema_version: 1
 release:
-  codename: C lint regression gate
+  codename: GTK4 X11 migration
   version: null
-  bump_hint: patch
-  status: in_progress
+  bump_hint: major
+  status: planning
   semantic_release: true
-status: in_progress
+status: planning
 epics:
-  - id: e01
-    title: C lint regression gate
-    capsule_dir: epics/e01-c-lint-regression-gate
-    wsjf: 2.4
-    bcps: 8
+  - id: e02
+    title: Direct GTK2-to-GTK4 X11 migration
+    capsule_dir: epics/e02-gtk4-x11-migration
+    wsjf: 2.15
+    bcps: 71
     score:
-      business_value: 6
-      time_criticality: 5
-      risk_reduction: 8
-      job_size: 8
+      business_value: 10
+      time_criticality: 8
+      risk_reduction: 10
+      job_size: 13
 bugs:
   total: 0
   fixed: 0

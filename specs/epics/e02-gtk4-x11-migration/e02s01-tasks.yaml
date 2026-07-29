@@ -1,0 +1,36 @@
+story_id: e02s01
+title: Prove GTK4 X11 feasibility and freeze compatibility contracts
+status: failing
+bcps: 5
+risk: P0
+tasks:
+  - id: 1
+    description: Add compile-time snapshots for every public plugin struct, callback, and exported entry point.
+    verify: tests/test-plugin-abi.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [plugin-abi, compatibility]}
+  - id: 2
+    description: Add an Ubuntu 26.04 GTK 4.22 X11 feasibility fixture for native XID access, XShape, movement, drawing, and input controllers.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-x11-feasibility.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk4, x11, feasibility]}
+  - id: 3
+    description: Add dependency and source inventories that detect unexpected GTK2 removal or plugin-contract drift during migration.
+    verify: tests/test-gtk-migration-contracts.sh "$PWD" --phase baseline
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [migration, regression]}
+  - id: 4
+    description: Document the proven X11 adapter boundary and block forward migration when any feasibility requirement is unmet.
+    verify: >-
+      tests/test-package-recipes.sh "$PWD" && grep -q 'Status: Accepted'
+      specs/adr/ADR-0001-gtk4-x11-native-window-adapter.md
+    risk: P1
+    security: none
+    status: failing
+    allure: {severity: high, categories: [architecture, documentation]}

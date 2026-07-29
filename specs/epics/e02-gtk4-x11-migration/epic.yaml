@@ -1,0 +1,77 @@
+id: e02
+title: Direct GTK2-to-GTK4 X11 migration
+wsjf: 2.15
+total_bcps: 71
+status: planning
+risk: P0
+stories:
+  - id: e02s01
+    title: Prove GTK4 X11 feasibility and freeze compatibility contracts
+    bcps: 5
+    status: todo
+    delta: ADDED
+    spec: e02s01-feasibility-and-contracts.md
+    tasks: e02s01-tasks.yaml
+  - id: e02s02
+    title: Add separate GTK4 build and skin rendering foundation
+    bcps: 8
+    status: todo
+    delta: MODIFIED
+    spec: e02s02-build-and-rendering-foundation.md
+    tasks: e02s02-tasks.yaml
+  - id: e02s03
+    title: Run the classic main player as a GTK4 X11 window
+    bcps: 8
+    status: todo
+    delta: MODIFIED
+    spec: e02s03-main-player.md
+    tasks: e02s03-tasks.yaml
+  - id: e02s04
+    title: Manage the playlist through its GTK4 X11 window
+    bcps: 8
+    status: todo
+    delta: MODIFIED
+    spec: e02s04-playlist-window.md
+    tasks: e02s04-tasks.yaml
+  - id: e02s05
+    title: Use the equalizer and docked window group under GTK4 X11
+    bcps: 8
+    status: todo
+    delta: MODIFIED
+    spec: e02s05-equalizer-and-docking.md
+    tasks: e02s05-tasks.yaml
+  - id: e02s06
+    title: Configure XMMS through GTK4 dialogs and helpers
+    bcps: 8
+    status: todo
+    delta: MODIFIED
+    spec: e02s06-dialogs-and-helpers.md
+    tasks: e02s06-tasks.yaml
+  - id: e02s07
+    title: Configure Input and Output plugins under GTK4
+    bcps: 5
+    status: todo
+    delta: MODIFIED
+    spec: e02s07-input-output-plugin-uis.md
+    tasks: e02s07-tasks.yaml
+  - id: e02s08
+    title: Configure Effect and General plugins under GTK4
+    bcps: 5
+    status: todo
+    delta: MODIFIED
+    spec: e02s08-effect-general-plugin-uis.md
+    tasks: e02s08-tasks.yaml
+  - id: e02s09
+    title: Run bundled visualization plugins under GTK4
+    bcps: 8
+    status: todo
+    delta: MODIFIED
+    spec: e02s09-visualization-plugins.md
+    tasks: e02s09-tasks.yaml
+  - id: e02s10
+    title: Ship GTK4-only XMMS on Ubuntu 26.04
+    bcps: 8
+    status: todo
+    delta: REMOVED
+    spec: e02s10-gtk4-only-cutover.md
+    tasks: e02s10-tasks.yaml

@@ -1,0 +1,41 @@
+story_id: e02s02
+title: Add separate GTK4 build and skin rendering foundation
+status: failing
+bcps: 8
+risk: P0
+tasks:
+  - id: 1
+    description: Add failing contracts for isolated GTK2 and GTK4 configure modes and prohibit linking both toolkits into one process.
+    verify: tests/test-gtk-build-modes.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [autotools, dependency-isolation]}
+  - id: 2
+    description: Add the temporary GTK4 build mode and Ubuntu 26.04 dependency detection while retaining the green GTK2 release mode.
+    verify: tests/test-gtk-build-modes.sh "$PWD" && tests/test-package-recipes.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk4, build]}
+  - id: 3
+    description: Move skin bitmap ownership and compositing behind Cairo-based rendering boundaries shared by both build modes.
+    verify: xvfb-run --auto-servernum tests/test-skin-rendering.sh "$PWD" --toolkit-matrix
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [skin, cairo, security-review]}
+  - id: 4
+    description: Add pixel-golden fixtures for default and representative classic skins at normal, shaded, and double size.
+    verify: tests/test-skin-goldens.sh "$PWD" --toolkit-matrix
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [skin, visual-regression]}
+  - id: 5
+    description: Run isolated GTK2 and GTK4 foundation builds in CI without changing the released default.
+    verify: tests/test-package-recipes.sh "$PWD" && tests/test-gtk-build-modes.sh "$PWD" --ci-contract
+    risk: P1
+    security: low
+    status: failing
+    allure: {severity: high, categories: [ci, migration]}

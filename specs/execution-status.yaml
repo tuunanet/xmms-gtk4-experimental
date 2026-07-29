@@ -1,13 +1,21 @@
 schema_version: 1
-status: verified
+status: planned
 epics:
-  e01: verified
+  e02: planned
 stories:
-  e01s01: verified
-  e01s02: verified
+  e02s01: todo
+  e02s02: todo
+  e02s03: todo
+  e02s04: todo
+  e02s05: todo
+  e02s06: todo
+  e02s07: todo
+  e02s08: todo
+  e02s09: todo
+  e02s10: todo
 gate_trace:
   verdict: WAIVED
-  generated_at: "2026-07-28T14:18:59Z"
-  rationale: Deterministic trace tooling is unavailable; manual mapping covers both stories and live CI remains a pre-merge gate.
+  generated_at: "2026-07-28T18:28:28Z"
+  rationale: Planning-only pull request; all e02 stories remain todo and intentionally have no implementation links or verification evidence yet. Capsule consistency, YAML, Agentic STE, and P0 scenario mapping were validated instead.
   heuristic_ratio: null
   downgrade_applied: false

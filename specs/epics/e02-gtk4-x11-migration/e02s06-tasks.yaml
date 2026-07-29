@@ -1,0 +1,41 @@
+story_id: e02s06
+title: Configure XMMS through GTK4 dialogs and helpers
+status: failing
+bcps: 8
+risk: P0
+tasks:
+  - id: 1
+    description: Add contracts for preferences, plugin lists, skin selection, file/folder selection, messages, about windows, and GTK-facing helper ownership.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-dialogs.sh "$PWD"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [dialogs, security-review]}
+  - id: 2
+    description: Port preferences, plugin management, actions, and remaining core dialogs to GTK4 widgets.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-preferences.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk4, preferences]}
+  - id: 3
+    description: Replace synchronous GTK2 file and directory selectors with explicit asynchronous GTK4 flows that preserve observable results.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-file-dialogs.sh "$PWD"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [file-dialog, async, security-review]}
+  - id: 4
+    description: Port GTK-facing libxmms helpers and publish source migration guidance while freezing GTK-independent APIs.
+    verify: tests/test-libxmms-api.sh "$PWD" && xvfb-run --auto-servernum tests/test-gtk4-libxmms-ui.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [libxmms, api-compatibility]}
+  - id: 5
+    description: Keep both toolkit build modes green through complete core-dialog parity.
+    verify: tests/test-gtk-build-modes.sh "$PWD" --story e02s06
+    risk: P1
+    security: low
+    status: failing
+    allure: {severity: high, categories: [dual-build, regression]}

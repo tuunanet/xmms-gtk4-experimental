@@ -1,18 +1,18 @@
 schema_version: 1
 project: xmms-classic
 workflow_mode: team-pr
-active_flow: release
-active_epic_id: e01
-active_story_id: e01s01
+active_flow: planning
+active_epic_id: e02
+active_story_id: e02s01
 active_bug_id: null
 git:
-  branch: chore/c-lint-gate
-  head: 54e9a61
-  worktree: /home/tuunanet/git/tuunanet/c-lint-gate
+  branch: plan/gtk4-migration
+  head: 73d8efd
+  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-migration-plan
 handoff:
   status: ready
-  next_skill: release-branch
-  reason: Final release gates passed; open the team-pr pull request and require live CI before merge.
+  next_skill: kickoff-branch
+  reason: GTK4 epic scope, impact, architecture decisions, test design, stories, and executable task plans are complete; review and merge this planning PR before starting e02s01 in a fresh worktree.
 metrics:
   story_start: null
 release:

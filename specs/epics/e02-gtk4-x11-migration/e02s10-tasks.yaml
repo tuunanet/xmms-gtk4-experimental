@@ -1,0 +1,41 @@
+story_id: e02s10
+title: Ship GTK4-only XMMS on Ubuntu 26.04
+status: failing
+bcps: 8
+risk: P0
+tasks:
+  - id: 1
+    description: Add final removal gates for GTK2 source, configure modes, packages, SONAMEs, documentation, and migration scaffolding.
+    verify: tests/test-gtk-migration-contracts.sh "$PWD" --phase final
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk2-removal, release]}
+  - id: 2
+    description: Remove the GTK2 build mode and make GTK 4.22 X11 the only supported configure and runtime path.
+    verify: tests/test-gtk-build-modes.sh "$PWD" --gtk4-only
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [gtk4, removal, security-review]}
+  - id: 3
+    description: Update Ubuntu 26.04 CI, Debian packaging, release automation, contributor guidance, and architecture documentation.
+    verify: tests/test-package-recipes.sh "$PWD" && tests/test-gtk-migration-contracts.sh "$PWD" --delivery
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [ci, packaging, documentation]}
+  - id: 4
+    description: Prove installed executables and every bundled shared object depend on GTK4/GDK4 and never GTK2/GDK2.
+    verify: tests/test-installed-gtk-dependencies.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [runtime-dependencies, packaging]}
+  - id: 5
+    description: Run release-equivalent build, lint, tests, visual/X11 UAT, distcheck, package build, install, and smoke verification.
+    verify: tools/verify-gtk4-release.sh "$PWD"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [release, uat, security-review]}

@@ -1,0 +1,41 @@
+story_id: e02s09
+title: Run bundled visualization plugins under GTK4
+status: failing
+bcps: 8
+risk: P0
+tasks:
+  - id: 1
+    description: Add a visualization fixture covering discovery, injected fields, lifecycle, disable callbacks, and PCM/frequency data shapes.
+    verify: xvfb-run --auto-servernum tests/test-visualization-plugin-contract.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [visualization, plugin-abi]}
+  - id: 2
+    description: Port Blur Scope and Simple Spectrum drawing and configuration to GTK4 while preserving render timing and settings.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-visualizations.sh "$PWD" --plugins blur-scope,sanalyzer
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [visualization, cairo]}
+  - id: 3
+    description: Port OpenGL Spectrum UI and X11/GLX lifecycle to GTK4 without changing VisPlugin or remote-control behavior.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-visualizations.sh "$PWD" --plugins opengl-spectrum
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [visualization, opengl, security-review]}
+  - id: 4
+    description: Prove visualization callbacks remain fast, main-thread-safe, and data-compatible across toolkit modes.
+    verify: xvfb-run --auto-servernum tests/test-visualization-timing.sh "$PWD" --toolkit-matrix
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [visualization, performance, threading]}
+  - id: 5
+    description: Build and inspect every visualization shared object for frozen ABI and single-toolkit dependencies.
+    verify: tests/test-plugin-abi.sh "$PWD" && tests/test-gtk-plugin-dependencies.sh "$PWD" visualization
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [visualization, dependencies]}

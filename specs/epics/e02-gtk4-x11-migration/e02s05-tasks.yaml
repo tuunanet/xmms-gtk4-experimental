@@ -1,0 +1,41 @@
+story_id: e02s05
+title: Use the equalizer and docked window group under GTK4 X11
+status: failing
+bcps: 8
+risk: P0
+tasks:
+  - id: 1
+    description: Add GTK4 equalizer contracts for bands, preamp, presets, volume mirroring, shading, and skin rendering.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-equalizer-window.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [gtk4, equalizer]}
+  - id: 2
+    description: Port equalizer controls and drawing while preserving InputPlugin set_eq behavior and configuration values.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-equalizer-parity.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [equalizer, plugin-contract]}
+  - id: 3
+    description: Implement the contained GTK4 X11 adapter for shaping, movement, docking, grouping, hints, and double-size geometry.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-x11-window-contracts.sh "$PWD"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [x11, docking, security-review]}
+  - id: 4
+    description: Prove all three skinned windows move, dock, shade, shape, persist, and restore as one classic window group.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-window-group.sh "$PWD"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [x11, uat]}
+  - id: 5
+    description: Keep both toolkit build modes green through complete skinned-window parity.
+    verify: tests/test-gtk-build-modes.sh "$PWD" --story e02s05
+    risk: P1
+    security: low
+    status: failing
+    allure: {severity: high, categories: [dual-build, regression]}

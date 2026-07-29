@@ -1,0 +1,41 @@
+story_id: e02s07
+title: Configure Input and Output plugins under GTK4
+status: failing
+bcps: 5
+risk: P0
+tasks:
+  - id: 1
+    description: Add fixture-driven GTK4 contracts for every bundled Input and Output about, configure, file-info, and error UI.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-io-plugin-uis.sh "$PWD"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [plugins, input, output, security-review]}
+  - id: 2
+    description: Port all bundled Input plugin GTK-facing source without changing InputPlugin or decoder behavior.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-io-plugin-uis.sh "$PWD" --family input
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [plugins, input]}
+  - id: 3
+    description: Port all bundled Output plugin GTK-facing source without changing OutputPlugin or device behavior.
+    verify: xvfb-run --auto-servernum tests/test-gtk4-io-plugin-uis.sh "$PWD" --family output
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [plugins, output]}
+  - id: 4
+    description: Build and inspect every available Input and Output shared object for ABI and single-toolkit dependency compliance.
+    verify: tests/test-plugin-abi.sh "$PWD" && tests/test-gtk-plugin-dependencies.sh "$PWD" input output
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [plugin-abi, dependencies]}
+  - id: 5
+    description: Keep both toolkit modes and optional backend classifications green.
+    verify: tests/test-gtk-build-modes.sh "$PWD" --story e02s07
+    risk: P1
+    security: low
+    status: failing
+    allure: {severity: high, categories: [dual-build, optional-plugins]}
