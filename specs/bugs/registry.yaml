@@ -8,3 +8,11 @@ bugs:
     scope: build-compatibility
     summary: GCC 15 default contributor build fails on legacy GTK2 callback pointer diagnostics.
     file: specs/bugs/BUG-2026-07-29T080737-gcc15-default-build.md
+  - bug_id: BUG-2026-07-29T060310
+    date: "2026-07-29"
+    severity: MEDIUM
+    priority: HIGH
+    status: open
+    scope: keyboard-shortcuts
+    summary: Main-window key handling consumes menu accelerators across classic windows.
+    file: specs/bugs/BUG-2026-07-29T060310-keyboard-shortcuts.md
