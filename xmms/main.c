@@ -1465,7 +1465,7 @@ gboolean mainwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
 			input_seek(CLAMP(input_get_time() + 5000, 0, playlist_get_current_length()) / 1000);
 		break;
 	default:
-	     break;
+		return FALSE;
 
 	}
 
