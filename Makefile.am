@@ -16,6 +16,8 @@ EXTRA_DIST = \
 	README.md \
 	SECURITY.md \
 	docs/architecture/build-and-test.md \
+	docs/architecture/plugin-system.md \
+	docs/architecture/ui-interaction.md \
 	docs/history/README.md \
 	docs/history/prior-fork-changelog.md \
 	docs/history/upstream-changelog.txt \
@@ -35,6 +37,7 @@ EXTRA_DIST = \
 	packaging/debian/xmms.docs \
 	packaging/debian/xmms.install \
 	packaging/xmms.desktop \
+	specs/adr/ADR-0001-staged-gtk-migration.md \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
 	tests/fixture-output-plugin.c \

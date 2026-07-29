@@ -105,6 +105,12 @@ require_text docs/architecture/plugin-system.md 'GTK-major linkage' \
 	'documents plugin toolkit compatibility'
 require_text docs/architecture/build-and-test.md 'test-gtk3-play-button-proof' \
 	'documents the isolated GTK3 proof gate'
+require_text Makefile.am 'docs/architecture/ui-interaction.md' \
+	'distributes the staged UI migration architecture'
+require_text Makefile.am 'docs/architecture/plugin-system.md' \
+	'distributes the plugin toolkit compatibility policy'
+require_text Makefile.am 'specs/adr/ADR-0001-staged-gtk-migration.md' \
+	'distributes the staged GTK migration decision'
 require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
 require_text Makefile.am 'docs/architecture/build-and-test.md' \
