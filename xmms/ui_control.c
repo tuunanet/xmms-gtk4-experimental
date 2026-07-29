@@ -31,6 +31,21 @@ XmmsUiControlResult xmms_ui_button_handle_pointer(XmmsUiButtonState *state,
 						 XmmsUiPointerEvent event,
 						 guint button, gint x, gint y)
 {
+	if (event == XMMS_UI_POINTER_MOTION)
+	{
+		gboolean inside;
+
+		if (!state->pressed)
+			return XMMS_UI_CONTROL_NONE;
+
+		inside = xmms_ui_button_contains(state, x, y);
+		if (inside == state->inside)
+			return XMMS_UI_CONTROL_NONE;
+
+		state->inside = inside;
+		return XMMS_UI_CONTROL_REDRAW;
+	}
+
 	if (event != XMMS_UI_POINTER_PRESS || button != 1)
 		return XMMS_UI_CONTROL_NONE;
 
