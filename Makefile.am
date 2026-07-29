@@ -49,7 +49,9 @@ EXTRA_DIST = \
 	tests/test-outputplugin.c \
 	tests/test-package-recipes.sh \
 	tests/test-pbutton-baseline.c \
+	tests/test-ui-control.c \
 	tests/test-plugin-linkage.sh \
+	xmms/ui_control.h \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \
 	tests/test-release-tools.sh \

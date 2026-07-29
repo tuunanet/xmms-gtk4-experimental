@@ -8,12 +8,13 @@ LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
 	./test-popup-position
 	./test-pbutton-baseline
+	./test-ui-control
 	./test-pluginenum
 	./test-outputplugin
 	./test-alsa-pcm-state
@@ -43,6 +44,9 @@ test-pbutton-baseline: CFLAGS += -ffunction-sections -fdata-sections
 test-pbutton-baseline: LDFLAGS += -Wl,--gc-sections
 test-pbutton-baseline: $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbutton.c $(top_srcdir)/xmms/pbutton.h $(top_srcdir)/xmms/widget.c $(top_srcdir)/xmms/widget.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbutton.c $(top_srcdir)/xmms/widget.c $(LDLIBS) -lpthread
+
+test-ui-control: $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-ui-control.c $(LDLIBS)
 
 test-pluginenum: CFLAGS += -ffunction-sections -fdata-sections -DBUILD_PLUGIN_DIR=\"$(CURDIR)/test-plugins\" -DPLUGIN_DIR=\"/nonexistent\" -DPLUGINSUBS='"Output","Input"'
 test-pluginenum: LDFLAGS += -Wl,--gc-sections
@@ -97,4 +101,4 @@ test-release-tools:
 	$(srcdir)/test-release-tools.sh $(top_srcdir)
 
 clean:
-	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins
