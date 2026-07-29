@@ -1,4 +1,4 @@
-# XMMS Classic
+# XMMS GTK4 Experimental
 
 > A community-maintained preservation fork of XMMS 1.2.11, keeping the classic
 > player usable on modern Linux systems.
@@ -24,7 +24,7 @@ plugin architecture for input, output, effect, general, and visualization
 plugins. It supports MP3, Ogg Vorbis, WAV, module formats (MOD, XM, S3M, IT and
 others via libmikmod), CD audio, and HTTP/Icecast/Shoutcast streaming.
 
-XMMS Classic is based on the last upstream release, **XMMS 1.2.11**, and
+XMMS GTK4 Experimental is based on the last upstream release, **XMMS 1.2.11**, and
 currently uses the **GTK2 / GLib2** port of the original GTK1 codebase so that
 it continues to compile and run on contemporary Linux distributions.
 The `xmms` executable, source-package name, configuration paths, and plugin
@@ -75,7 +75,7 @@ history for fuller attribution.
 > ℹ️ The original `http://www.xmms.org` website, its bug tracker
 > (`bugs.xmms.org`), and the historical `@xmms.org` contact addresses are no
 > longer active. For this fork, please use the
-> [GitHub issue tracker](https://github.com/tuunanet/xmms-classic/issues)
+> [GitHub issue tracker](https://github.com/tuunanet/xmms-gtk4-experimental/issues)
 > instead.
 
 ---
@@ -97,7 +97,7 @@ The complete feature list is in the [user manual](docs/manual.md#5-features).
 
 ## Installing a release package
 
-The [GitHub Releases](https://github.com/tuunanet/xmms-classic/releases)
+The [GitHub Releases](https://github.com/tuunanet/xmms-gtk4-experimental/releases)
 provide native x86-64 packages alongside the source archive:
 
 - DEB packages target Ubuntu 24.04 LTS (`amd64`).
@@ -108,7 +108,7 @@ manager:
 
 ```sh
 # Ubuntu 24.04 LTS
-sudo apt install ./xmms_1.2.12-1.ubuntu24.04_amd64.deb
+sudo apt install ./xmms_0.0.1-1.ubuntu24.04_amd64.deb
 ```
 
 The optional `libxmms-dev` DEB contains headers and linker files for plugin
@@ -235,7 +235,7 @@ behavior—are the priority.
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) for the build, test, commit, and pull
 request workflow. Use the structured
-[GitHub issue forms](https://github.com/tuunanet/xmms-classic/issues/new/choose)
+[GitHub issue forms](https://github.com/tuunanet/xmms-gtk4-experimental/issues/new/choose)
 for bug reports and compatibility proposals.
 
 ---

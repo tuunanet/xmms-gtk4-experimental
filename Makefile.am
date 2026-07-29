@@ -8,11 +8,6 @@ EXTRA_DIST = \
 	.editorconfig \
 	.gitattributes \
 	.gitignore \
-	.github/dependabot.yml \
-	.github/ISSUE_TEMPLATE/bug_report.yml \
-	.github/ISSUE_TEMPLATE/config.yml \
-	.github/ISSUE_TEMPLATE/feature_request.yml \
-	.github/pull_request_template.md \
 	CHANGELOG.md \
 	CODE_OF_CONDUCT.md \
 	CONTRIBUTING.md \
@@ -22,6 +17,7 @@ EXTRA_DIST = \
 	SECURITY.md \
 	docs/architecture/build-and-test.md \
 	docs/history/README.md \
+	docs/history/prior-fork-changelog.md \
 	docs/history/upstream-changelog.txt \
 	docs/history/upstream-faq.txt \
 	docs/history/upstream-release-notes.txt \
@@ -48,7 +44,6 @@ EXTRA_DIST = \
 	tests/test-font-load.c \
 	tests/test-c-lint.sh \
 	tests/test-intl-generated-sources.sh \
-	tests/test-keyboard-shortcuts.c \
 	tests/test-mpg123-file-duration.c \
 	tests/test-mpg123-stream-position.c \
 	tests/test-outputplugin.c \

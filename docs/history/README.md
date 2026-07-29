@@ -1,8 +1,12 @@
 # Upstream project history
 
-These files preserve documentation from the original XMMS project (1997–2007).
-They are historical records, not current project guidance.
+These files preserve documentation from the original XMMS project (1997–2007)
+and earlier stages of this fork. They are historical records, not current
+project guidance.
 
+- [`prior-fork-changelog.md`](prior-fork-changelog.md) — release narrative from
+  the XMMS Classic stage before the experimental GTK4 fork adopted version
+  0.0.1.
 - [`upstream-changelog.txt`](upstream-changelog.txt) — detailed chronological
   development log, converted from ISO-8859-1 to UTF-8.
 - [`upstream-release-notes.txt`](upstream-release-notes.txt) — release highlights
@@ -14,4 +18,4 @@ They are historical records, not current project guidance.
 
 For current information, use the main [`README.md`](../../README.md),
 [`CHANGELOG.md`](../../CHANGELOG.md), and
-[GitHub Issues](https://github.com/tuunanet/xmms-classic/issues).
+[GitHub Issues](https://github.com/tuunanet/xmms-gtk4-experimental/issues).

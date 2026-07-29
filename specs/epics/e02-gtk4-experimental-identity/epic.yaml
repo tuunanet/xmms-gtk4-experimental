@@ -1,0 +1,17 @@
+schema_version: 1
+id: e02
+title: Establish GTK4 experimental identity
+wsjf: 5.0
+total_bcps: 5
+status: verified
+stories:
+  - id: e02s01
+    title: Rebrand current project surfaces and reset the release baseline
+    bcps: 5
+    status: verified
+    delta: RENAMED
+    spec: e02s01-rebrand-and-version.md
+    tasks: e02s01-tasks.yaml
+references:
+  scope: ../../product/SCOPE_LATEST.yaml
+  impact: ../../IMPACT_LATEST.md

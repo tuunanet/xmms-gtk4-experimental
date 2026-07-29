@@ -1,21 +1,21 @@
 schema_version: 1
-project: xmms-classic
+project: xmms-gtk4-experimental
 workflow_mode: team-pr
 active_flow: release
-active_epic_id: e01
-active_story_id: e01s01
+active_epic_id: e02
+active_story_id: e02s01
 active_bug_id: null
 git:
-  branch: chore/c-lint-gate
-  head: 54e9a61
-  worktree: /home/tuunanet/git/tuunanet/c-lint-gate
+  branch: chore/rebrand-gtk4-experimental
+  head: 247c1eb
+  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
 handoff:
   status: ready
   next_skill: release-branch
-  reason: Final release gates passed; open the team-pr pull request and require live CI before merge.
+  reason: Rebrand, version reset, and discovered baseline fixes pass local build, test, package, release, and distcheck gates.
 metrics:
-  story_start: null
+  story_start: 2026-07-29T11:14:55Z
 release:
   last_tag: null
   last_publish: null
-  target_version: null
+  target_version: 0.0.1

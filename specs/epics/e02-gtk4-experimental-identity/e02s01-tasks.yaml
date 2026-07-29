@@ -1,0 +1,35 @@
+schema_version: 1
+story_id: e02s01
+title: Rebrand current project surfaces and reset the release baseline
+spec: e02s01-rebrand-and-version.md
+status: passing
+risk: P0
+bcps: 5
+tasks:
+  - id: t1
+    description: Archive prior fork-specific changelog prose and replace current project branding and repository URLs across documentation, metadata, packaging, tests, and agent guidance.
+    verify: "test -z \"$(rg -il --hidden --glob '!.git/**' --glob '!docs/history/**' 'xmms[- _]class[i]c' .)\" && rg -q 'xmms-gtk4-experimental' README.md"
+    risk: P0
+    security: none
+    status: passing
+    allure:
+      severity: critical
+      categories: [branding, documentation, packaging]
+  - id: t2
+    description: Set the authoritative and shipped Autotools release version to 0.0.1 and align changelog and release examples.
+    verify: "grep -Fq 'AM_INIT_AUTOMAKE([xmms], [0.0.1])' configure.in && ./configure --disable-esd >/dev/null && grep -Fq '#define VERSION \"0.0.1\"' config.h"
+    risk: P0
+    security: none
+    status: passing
+    allure:
+      severity: critical
+      categories: [autotools, release]
+  - id: t3
+    description: Verify package metadata, release tooling, source distribution, and the complete build/test suite under the new identity.
+    verify: "tests/test-package-recipes.sh \"$PWD\" && tests/test-release-tools.sh \"$PWD\" && make -j\"$(nproc)\" && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck"
+    risk: P0
+    security: none
+    status: passing
+    allure:
+      severity: critical
+      categories: [packaging, regression, distcheck]

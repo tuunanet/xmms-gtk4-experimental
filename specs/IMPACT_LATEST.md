@@ -1,70 +1,37 @@
-# Impact Assessment: C lint regression gate
+# Impact assessment: project rebrand and version reset
 
 ## Target
 
-The change will extend these existing integration surfaces:
+Current project branding, repository URLs, release version metadata, packaging descriptions, release documentation, and the stale keyboard-shortcut test wiring.
 
-- `Makefile.am` — authoritative top-level Automake source and public contributor targets.
-- `.github/workflows/ci.yml` — pull-request path classification and required build/test orchestration.
-- `tests/test-package-recipes.sh` — executable assertions over workflow and distribution policy.
-- `CONTRIBUTING.md` and `docs/architecture/build-and-test.md` — contributor and architecture contracts for local and CI verification.
+## Dependents (8 groups)
 
-It will add a Cppcheck runner, checked-in configuration/baseline, and focused shell tests without changing runtime modules.
-
-## Purpose, Callers, and Contracts
-
-### `Makefile.am`
-
-- **Purpose:** Defines top-level distribution contents, recursive build behavior, tests, cleanup, and public maintenance targets.
-- **Callers:** Automake-generated `Makefile`, contributors invoking `make`, CI jobs, `make distcheck`, and Debian packaging.
-- **Contracts:** Existing targets retain behavior; new distributed lint files are present in source archives; `make lint` does not alter build products or require a configured runtime build.
-
-### `.github/workflows/ci.yml`
-
-- **Purpose:** Classifies pull-request paths and supplies the protected branch's aggregate `build-and-test` result.
-- **Callers:** GitHub pull requests, pushes to `main`, manual dispatches, and branch protection.
-- **Contracts:** The aggregate required check always reports; documentation-only changes can still skip expensive runtime checks; C and lint-control changes cannot bypass lint; jobs remain bounded by timeouts.
-
-### `tests/test-package-recipes.sh`
-
-- **Purpose:** Guards repository-level build, packaging, and workflow policy through portable shell assertions.
-- **Callers:** `tests/Makefile`, `make check`, `make distcheck`, and CI.
-- **Contracts:** POSIX `sh`, deterministic file/text checks, aggregated failures, and no network or elevated privileges.
-
-## Dependents
-
-1. Generated top-level `Makefile` behavior depends on `Makefile.am`.
-2. `make check` and `make distcheck` invoke `tests/test-package-recipes.sh` through `tests/Makefile`.
-3. Every pull request and push to `main` depends on `.github/workflows/ci.yml` classification and aggregation.
-4. Debian and source-distribution jobs depend on `EXTRA_DIST` completeness.
-5. Contributors depend on `CONTRIBUTING.md` for supported local commands.
-6. Architecture maintainers depend on `docs/architecture/build-and-test.md` for CI topology and path-filter behavior.
-7. `.github/actions/setup-ccache/action.yml` hashes C, headers, Automake inputs, and `configure.in`; linting must not invalidate its compilation-cache contract unnecessarily.
+- `configure.in` and shipped `configure`: configure-time package version and generated `VERSION` macros.
+- `CHANGELOG.md` and release tools: release-note extraction and version consistency checks.
+- `Makefile.am`, shipped `Makefile.in`, and `tests/Makefile`: source distribution and regression orchestration.
+- `packaging/` and `tools/build-deb.sh`: Debian metadata, desktop display name, and generated package changelog.
+- `README.md`, contributor/manual/release docs, and architecture docs: public project identity and repository links.
+- `CLAUDE.md`, `CONVENTIONS.md`, and `specs/`: agent guidance, project state, vision, and planning identity.
+- `tests/test-package-recipes.sh`: packaging display-name contract.
+- GitHub workflow and release path classification: absent from the flattened root; no checked-in workflow file can require an update in this change.
 
 ## Affected Stories
 
-- **e01s01:** Run a baseline-aware C lint gate locally.
-- **e01s02:** Enforce the C lint regression gate in pull requests.
-
-No previously shipped runtime story or public interface is modified.
+- BUG-2026-07-29T111455: restore a green baseline after intentional test-source removal.
+- Story e02s01: expose one consistent new project identity and initial version across all current surfaces.
 
 ## Test Coverage
 
-- `tests/test-c-lint.sh` will cover source discovery, accepted legacy baseline, missing/wrong tool prerequisites, and rejection of a representative new diagnostic.
-- `tests/test-package-recipes.sh` will cover the public `make lint` target, distribution inclusion, CI installation/execution, and path-classification policy.
-- `make lint` will provide analyzer-level end-to-end evidence.
-- `make -j"$(nproc)" && xvfb-run --auto-servernum make check` will guard existing build and behavior.
-- `make distcheck` will verify source-archive completeness and out-of-tree operation.
+- `tests/test-release-tools.sh`: release metadata and extraction behavior.
+- `tests/test-package-recipes.sh`: packaging and desktop metadata.
+- `make check`: build/test manifest consistency.
+- `make distcheck`: shipped generated metadata and source archive completeness.
+- Gap: prose branding has no dedicated test; repository-wide searches provide deterministic verification.
 
-### Gaps
+## Risk: Medium
 
-- GitHub's hosted runner and path-filter action cannot be reproduced perfectly offline; text-contract tests reduce but do not eliminate that integration risk.
-- Cppcheck diagnostic output can drift across versions; CI's Ubuntu 24.04 package is the authoritative baseline environment.
+The runtime ABI remains untouched, but version and branding fan out across generated Autotools files, packaging, release tooling, and many public documents.
 
-## Risk: High
+## Recommended action
 
-The change does not touch runtime code, but CI classification and the required aggregate check affect every pull request, while top-level Automake distribution rules affect release artifacts.
-
-## Recommended Action
-
-Proceed test-first. Establish failing shell assertions before adding the runner or workflow job, keep lint independent from runtime artifacts, run `make distcheck`, and require live PR checks before merge.
+Proceed with two atomic commits: first remove the stale test wiring and prove the baseline; then rebrand current surfaces, archive prior fork-specific changelog prose under `docs/history/`, set version `0.0.1`, and run release/package/full distribution gates.

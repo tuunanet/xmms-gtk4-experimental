@@ -1,6 +1,6 @@
-# XMMS Classic — Architecture
+# XMMS GTK4 Experimental — Architecture
 
-This directory documents the internal architecture of XMMS Classic: UI, audio
+This directory documents the internal architecture of XMMS GTK4 Experimental: UI, audio
 pipeline, plugins, external control, playlist/streaming side paths, and
 build/test layout.
 

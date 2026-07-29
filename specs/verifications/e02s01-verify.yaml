@@ -1,0 +1,27 @@
+schema_version: 1
+story_id: e02s01
+status: passed
+verified_at: 2026-07-29T16:30:00Z
+evidence:
+  - command: "rg -ni --hidden --glob '!.git/**' --glob '!docs/history/**' 'xmms[- _]class[i]c' ."
+    result: passed
+    detail: No inherited fork identity remains outside historical documentation.
+  - command: "tools/check-release-version.sh 0.0.1"
+    result: passed
+    detail: Authoritative version, shipped configure script, and changelog agree.
+  - command: "tests/test-package-recipes.sh \"$PWD\" && tests/test-release-tools.sh \"$PWD\""
+    result: passed
+    detail: Packaging identity and release metadata contracts pass.
+  - command: "make -j\"$(nproc)\" && xvfb-run --auto-servernum make check"
+    result: passed
+    detail: Clean GCC 15 build and complete Xvfb-backed regression suite pass after callback boundary fixes.
+  - command: "xvfb-run --auto-servernum make distcheck"
+    result: passed
+    detail: Source archive xmms-0.0.1.tar.gz was built, rebuilt, tested, installed, uninstalled, and distcleaned successfully.
+compatibility:
+  executable: xmms
+  source_package: xmms
+  development_package: libxmms-dev
+  config_directory: ~/.xmms
+  plugin_abi_changed: false
+  libxmms_api_changed: false
