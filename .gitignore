@@ -44,6 +44,7 @@
 /tests/test-xentry
 /tests/test-filebrowser
 /tests/test-font-load
+/tests/test-keyboard-shortcuts
 /tests/test-mpg123-file-duration
 /tests/test-mpg123-stream-position
 /tests/test-popup-position
