@@ -16,7 +16,7 @@ Primary sources:
 | Tests | [`tests/`](../../tests), [`tests/Makefile`](../../tests/Makefile) |
 | C lint | [`tools/run-c-lint.sh`](../../tools/run-c-lint.sh), [`tools/cppcheck-suppressions.txt`](../../tools/cppcheck-suppressions.txt) |
 | Packaging | [`packaging/debian/`](../../packaging/debian), [`tools/build-deb.sh`](../../tools/build-deb.sh) |
-| CI | [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) |
+| Release packaging | [`.github/workflows/package-release.yml`](../../.github/workflows/package-release.yml) |
 | Release tools | [`tools/check-release-version.sh`](../../tools/check-release-version.sh), `extract-release-notes.sh` |
 
 ---
@@ -213,45 +213,33 @@ change when installed from deb vs `make install`.
 
 ---
 
-## 5. CI pipeline (GitHub Actions)
+## 5. Release-packaging workflow (GitHub Actions)
 
-[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) on `ubuntu-24.04`:
+[`.github/workflows/package-release.yml`](../../.github/workflows/package-release.yml)
+is a manual-only release workflow, not push/pull-request CI. A maintainer
+supplies a version while dispatching the workflow from the matching annotated
+`vVERSION` tag. The validation job rejects another ref, a lightweight tag,
+metadata disagreement, or a tag not contained in `main`.
 
 ```mermaid
 flowchart TB
-    P["push / pull_request"] --> CL[Classify changes]
-    CL -->|docs or meta only| SKIP["Skip full build<br/>build-and-test still green"]
-    CL -->|build-affecting paths or manual| FULL[Full CI job]
-    FULL --> DEP[apt build deps + ccache]
-    DEP --> CFG["./configure --disable-esd"]
-    CFG --> LINT["make lint"]
-    LINT --> BLD[make -j]
-    BLD --> TST["xvfb-run make check"]
-    TST --> DC[make distcheck]
-    DC --> DEB[make deb]
+    TAG["annotated vVERSION tag"] --> VAL[Validate release metadata]
+    VAL --> MINT[Linux Mint 22.3 package]
+    VAL --> UBUNTU[Ubuntu 26.04 package]
+    MINT --> VERIFY[Verify checksums and assemble assets]
+    UBUNTU --> VERIFY
+    VERIFY --> DRAFT[Create or resume draft release]
 ```
 
 | Behavior | Detail |
 | --- | --- |
-| **Path filter** | Full CI runs only if some changed path is “source”. Excluded: `docs/**`, top-level prose/legal markdown, `.gitignore` / `.gitattributes` / `.editorconfig`, and `.github` issue/PR templates. Workflow YAML and all code/build paths still trigger full CI. The classify job logs matching paths. |
-| **Required check** | Aggregate `build-and-test` job always runs and reflects skip vs full result |
-| **Concurrency** | `cancel-in-progress` on the same ref; a superseded run fails its gate with `cancelled`—use the latest commit’s checks |
-| **Display** | `xvfb-run` for GTK tests |
-| **C lint** | Full CI installs Cppcheck and runs `make lint` with a five-minute step timeout; C and lint-control paths remain build-affecting. |
-| **Cache** | ccache via [`.github/actions/setup-ccache`](../../.github/actions/setup-ccache) |
+| **Targets** | Linux Mint 22.3 and Ubuntu 26.04, each in a pinned container image on an Ubuntu 24.04 runner. |
+| **Dependencies** | The package environment installs GTK2, `libgtk-3-dev`, Cppcheck, Debian packaging tools, and Xvfb before building from the source archive. |
+| **Verification** | Each target builds `xmms` and `libxmms-dev`, inspects metadata, installs both packages, and verifies its SHA-256 manifests. |
+| **Permissions** | Default workflow permission is `contents: read`; only the final draft-release job receives `contents: write`. |
+| **Publication** | The workflow creates or resumes an unpublished draft only and refuses to modify a published release. |
 
-### Why this PR series exercised full CI
-
-Architecture documentation under `docs/` would normally skip `full-ci`. PR #44
-also touched `.gitignore` (ignore `.repomix/`). Under the older filter that only
-excluded `README.md` and `docs/**`, that single meta file forced a full
-configure/build/test/distcheck/deb cycle (~5 minutes) on every push, and each
-fix commit cancelled the previous run mid-build. Expanding the exclusion list
-avoids that cost for docs+metadata pull requests without weakening checks for
-real code or workflow changes.
-
-Other workflows (`release-candidate.yml`, `release.yml`, `package-release.yml`)
-handle versioned releases; see [releases.md](../releases.md).
+See [releases.md](../releases.md) for dispatch and manual draft-review steps.
 
 ---
 
