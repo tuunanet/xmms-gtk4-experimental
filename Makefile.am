@@ -17,6 +17,7 @@ EXTRA_DIST = \
 	SECURITY.md \
 	docs/architecture/build-and-test.md \
 	docs/history/README.md \
+	docs/history/prior-fork-changelog.md \
 	docs/history/upstream-changelog.txt \
 	docs/history/upstream-faq.txt \
 	docs/history/upstream-release-notes.txt \

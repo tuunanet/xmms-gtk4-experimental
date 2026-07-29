@@ -1,110 +1,46 @@
 schema_version: 1
 status: scoped
-initiative: c-lint-regression-gate
-core_value: Detect newly introduced C defects consistently without requiring an unsafe, repository-wide legacy cleanup.
+initiative: gtk4-experimental-identity
+core_value: Establish XMMS GTK4 Experimental as a distinct fork with a clean 0.0.1 release baseline without breaking inherited runtime compatibility contracts.
 summary: >-
-  Establish a repeatable linting capability for maintained C sources and headers, usable by contributors locally and enforced by continuous integration. The initiative will evaluate suitable analyzers before selecting one, record the existing diagnostic baseline, and reject newly introduced findings.
+  Replace the inherited project branding and repository links with XMMS GTK4 Experimental, while moving prior fork-specific release narrative into the historical documentation area. Reset the project release version to 0.0.1 so future work starts from a clearly independent version line.
 
-  This is a quality-gate change rather than a product behavior change. Existing findings remain visible and manageable, while adoption avoids broad source churn that could threaten compatibility or obscure future functional reviews.
+  Runtime compatibility identifiers remain stable: executable, Debian binary package, libxmms API, plugin ABI, control protocol, and user configuration paths continue to use their inherited xmms names.
 in_scope:
-  - story_id: e01s01
-    outcome: Select a maintained C analysis approach using documented compatibility, signal quality, reproducibility, and CI cost criteria.
-  - story_id: e01s01
-    outcome: Provide one documented local command that analyzes all maintained C sources and headers.
-  - story_id: e01s01
-    outcome: Record a reviewable baseline for existing findings and fail when a change introduces diagnostics beyond that baseline.
-  - story_id: e01s02
-    outcome: Add the regression gate to pull-request CI and account for its source, configuration, script, and baseline paths in workflow classification.
-  - story_id: e01s02
-    outcome: Document contributor usage, finding triage, intentional suppression, and controlled baseline updates.
-  - story_id: e01s02
-    outcome: Verify that lint adoption preserves the existing build, test suite, public interfaces, and release behavior.
+  - story_id: e02s01
+    outcome: Current documentation, packaging descriptions, project metadata, and repository links consistently identify XMMS GTK4 Experimental.
+  - story_id: e02s01
+    outcome: Prior fork-specific release narrative is retained only under docs/history.
+  - story_id: e02s01
+    outcome: Authoritative and shipped Autotools version metadata reports 0.0.1.
+  - story_id: e02s01
+    outcome: Package and release contract tests reflect the new identity and version baseline.
 out_of_scope:
-  - item: Resolve every existing C diagnostic during initial adoption.
-    reason: Deferred because broad legacy cleanup increases behavioral and ABI risk and would obscure the lint infrastructure review.
-  - item: Lint shell, YAML, Markdown, Autotools input, or generated files.
-    reason: Deferred to separate language-specific initiatives so this scope has one measurable quality boundary.
-  - item: Introduce automatic source formatting or reformat existing C code.
-    reason: Excluded because formatting is distinct from defect analysis and would create unrelated code churn.
-  - item: Convert all compiler warnings into errors.
-    reason: Excluded because compiler policy is toolchain-dependent and does not provide a stable baseline mechanism by itself.
-  - item: Change runtime behavior, public plugin ABI, libxmms API, remote-control commands, configuration paths, skins, or GTK2 behavior.
-    reason: Excluded because this initiative supplies development-time analysis only.
+  - item: Rename the xmms executable, Debian binary package, libxmms library/API, plugin ABI, socket protocol, or ~/.xmms paths.
+    reason: These are compatibility-sensitive runtime contracts and the requested project rebrand does not require breaking them.
+  - item: Complete the GTK4 migration.
+    reason: This change establishes identity and versioning only; toolkit migration is planned separately.
+  - item: Rewrite original upstream XMMS history files.
+    reason: Archived source material must remain historically accurate.
 constraints:
   technical:
-    - Preserve Autotools as the build system and support the repository's current C and GTK2 code.
-    - Preserve public plugin ABI, libxmms API, socket commands, configuration paths, skins, and classic UI behavior.
-    - Do not require project-local external-agent wiring.
-    - Keep local and CI results deterministic from checked-in configuration and baseline data.
-    - Evaluate every new lint-related path against .github workflow triggers, filters, packaging, release automation, and ignore rules.
+    - Update authoritative Autotools inputs and their checked-in generated counterparts together.
+    - Preserve inherited runtime and plugin compatibility identifiers.
+    - Keep references to the inherited fork identity only in docs/history.
+    - Evaluate new history paths against distribution manifests, release tooling, ignore rules, and CI classification.
   delivery:
-    - Deliver through a pull request against protected main using the team-pr workflow.
-    - Research candidate analyzers before selecting or installing a dependency.
-    - Avoid repository-wide remediation as a prerequisite for enabling the gate.
+    - Deliver through a pull request from a feature branch.
+    - Keep the discovered baseline fix in a separate Conventional Commit.
 success_criteria:
-  - A documented command analyzes the maintained C and header file set from a clean checkout.
-  - The initial checked-in baseline passes without requiring unrelated source changes.
-  - A representative newly introduced diagnostic makes the local lint command and CI gate fail.
-  - Removing that diagnostic restores a passing result without changing the baseline.
-  - CI runs when relevant C sources, lint configuration, lint scripts, or baseline files change.
-  - Existing build and xvfb-backed test commands remain green.
-  - Contributor documentation explains triage, suppressions, and baseline-update review expectations.
+  - No mention of the inherited fork identity or its former repository slug remains outside docs/history.
+  - Current repository URLs use tuunanet/xmms-gtk4-experimental.
+  - Configure reports package version 0.0.1.
+  - Runtime compatibility identifiers remain unchanged.
+  - Build, package, release, test, and distribution gates pass.
 references:
   - CLAUDE.md
   - CONVENTIONS.md
-  - specs/product/VISION_LATEST.yaml
+  - specs/IMPACT_LATEST.md
+  - specs/bugs/BUG-2026-07-29T111455-stale-keyboard-shortcut-test.md
   - specs/tech-architecture/tech-stack.md
   - docs/architecture/build-and-test.md
-  - .github/workflows/ci.yml
-research:
-  title: Prior Art
-  observed_context:
-    - The repository contains 181 C files and 100 headers, with no existing C analyzer integration.
-    - CI runs on Ubuntu 24.04, whose repository provides Cppcheck 2.13 and clang-tidy 18.
-    - Existing builds already enable selected GCC warnings, but diagnostics are not treated as a regression baseline.
-    - Neither Cppcheck nor clang-tidy is installed in the current development environment.
-    - The opensrc CLI is present but lacks the documented search command, so no cached analyzer source was available.
-  candidates:
-    - name: Cppcheck
-      source: https://cppcheck.sourceforge.io/manual.html
-      verdict: extend
-      fit: >-
-        Designed for C and C++, tolerant of non-standard compiler extensions, cross-platform, available in Ubuntu 24.04, and able to consume direct paths or a compilation database. Its suppression lists, stable diagnostic identifiers, custom output templates, and error exit status support a thin checked-in regression-baseline layer without source edits.
-      risks:
-        - Diagnostics can change between analyzer versions, so CI must define the authoritative supported version and local tooling must report version mismatches clearly.
-        - A line-specific baseline needs controlled refreshes when existing findings move during legitimate edits.
-    - name: clang-tidy
-      source: https://clang.llvm.org/extra/clang-tidy/
-      verdict: reject-for-initial-adoption
-      fit: >-
-        Provides modular checks and Clang Static Analyzer diagnostics, but works best with a compilation database. This Autotools project would require build interception or substantial argument management, and clang-tidy has no direct checked-in suppression-list equivalent for baselining all existing diagnostics.
-      risks:
-        - Adds LLVM tooling plus compilation-database generation to the local and CI path.
-        - Check availability and output vary substantially with LLVM versions.
-    - name: Bear compilation database generator
-      source: https://github.com/rizsotto/Bear
-      verdict: reject-as-unnecessary
-      fit: >-
-        Actively maintained and suitable when a build system cannot emit compile_commands.json, but it is only a supporting dependency for the more complex clang-tidy route and is unnecessary for direct Cppcheck analysis.
-    - name: GCC warning gate
-      source: docs/architecture/build-and-test.md
-      verdict: reject-as-primary-linter
-      fit: >-
-        Extending current warning flags would have minimal setup cost, but results depend on compiler version and configured build paths, and warning text does not provide a practical legacy baseline. Compiler warnings remain complementary evidence rather than the project linter.
-    - name: CodeChecker
-      source: https://codechecker.readthedocs.io/en/latest/usage/
-      verdict: reject-as-overweight
-      fit: >-
-        Supports analyzer result comparison and CI workflows, but requires compilation-database capture and a larger report-management stack than this repository needs for an initial regression gate.
-    - name: bigpowers wire-ci skill
-      source: /home/tuunanet/.pi/agent/npm/node_modules/bigpowers/.pi/skills/wire-ci/SKILL.md
-      verdict: extend-existing-ci-manually
-      fit: >-
-        Confirms CI wiring is the relevant lifecycle capability, but the repository already has tailored GitHub workflows and path classification. The lint plan should extend those workflows rather than replace them with a generated pipeline.
-  decision:
-    outcome: Extend Cppcheck with a checked-in configuration, legacy suppression baseline, repeatable local command, and pull-request CI gate.
-    rationale:
-      - It provides the best C-specific signal with the fewest additional moving parts for a legacy Autotools repository.
-      - Ubuntu 24.04 supplies it directly, keeping CI installation small and conventional.
-      - Native diagnostic IDs and suppression lists align with blocking new findings while retaining visibility into legacy debt.
-      - It avoids source-level suppression churn and the compilation-database dependency required by clang-tidy.

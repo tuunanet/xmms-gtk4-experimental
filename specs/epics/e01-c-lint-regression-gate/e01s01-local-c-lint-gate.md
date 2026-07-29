@@ -16,7 +16,7 @@ Add one repeatable `make lint` entry point that scans maintained C code with Cpp
 
 ## 2. User
 
-XMMS Classic contributors and maintainers running quality checks before opening a pull request.
+XMMS GTK4 Experimental contributors and maintainers running quality checks before opening a pull request.
 
 ## 3. Problem
 

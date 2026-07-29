@@ -1,12 +1,12 @@
-# Skin format requirements (WinAmp 2 / XMMS Classic)
+# Skin format requirements (WinAmp 2 / XMMS GTK4 Experimental)
 
 This is the **hard requirements** reference for building skins that work in
-XMMS Classic. It is written for:
+XMMS GTK4 Experimental. It is written for:
 
 - **Artists / designers** who want to draw a new skin  
 - **Developers** who need to know how the loader and UI sample those bitmaps  
 
-XMMS Classic implements the classic **WinAmp 2.x** skin layout. A skin that
+XMMS GTK4 Experimental implements the classic **WinAmp 2.x** skin layout. A skin that
 works in WinAmp 2 classic mode is expected to work here, with the file set and
 quirks documented below.
 

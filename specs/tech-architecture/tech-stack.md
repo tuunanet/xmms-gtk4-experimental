@@ -1,4 +1,4 @@
-# XMMS Classic Project Context
+# XMMS GTK4 Experimental Project Context
 
 > Derived from the repository on 2026-07-28. This is a map of the architecture
 > and observed conventions, not a redesign proposal. The authoritative public
@@ -7,7 +7,7 @@
 
 ## Product and compatibility posture
 
-XMMS Classic is a community-maintained preservation fork of XMMS 1.2.11. It
+XMMS GTK4 Experimental is a community-maintained preservation fork of XMMS 1.2.11. It
 keeps the classic player usable on modern Linux while preserving historical
 identifiers, configuration paths, plugin interfaces, UI behavior, and skin
 compatibility. Modernization work therefore has a stronger compatibility

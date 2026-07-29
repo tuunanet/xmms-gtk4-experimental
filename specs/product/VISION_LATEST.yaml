@@ -1,8 +1,9 @@
 schema_version: 1
-status: draft
-project: xmms-classic
-vision: Keep the classic XMMS audio player usable on modern Linux while preserving historical compatibility.
+status: active
+project: xmms-gtk4-experimental
+vision: Evolve the classic XMMS experience in a new GTK4-focused experimental fork while preserving compatibility deliberately where it remains valuable.
 principles:
-  - Preserve classic behavior and interfaces.
-  - Modernize compatibility without rewriting product identity.
+  - Give the fork an independent product identity and pre-1.0 release line.
+  - Plan compatibility breaks explicitly rather than introducing them accidentally.
+  - Keep historical provenance in dedicated history documentation.
   - Require regression evidence for behavior changes.

@@ -1,4 +1,4 @@
-# XMMS Classic — Claude Code
+# XMMS GTK4 Experimental — Claude Code
 
 Read `CONVENTIONS.md` before any GitHub or Git operation.
 Read `specs/` before planning or implementation.
@@ -6,7 +6,7 @@ Read `specs/` before planning or implementation.
 <!-- BEGIN bigpowers:project -->
 ## Project
 
-XMMS Classic is a community-maintained preservation fork of XMMS 1.2.11.
+XMMS GTK4 Experimental is a community-maintained preservation fork of XMMS 1.2.11.
 Keep the classic audio player usable on modern Linux.
 
 Stack: C, GTK2, GLib2, POSIX threads, GNU Autotools, libtool, Linux, and X11.

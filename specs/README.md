@@ -1,6 +1,6 @@
 # Specs
 
-All planning documents for XMMS Classic live here.
+All planning documents for XMMS GTK4 Experimental live here.
 
 ## Sources of truth
 
