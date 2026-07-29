@@ -40,3 +40,29 @@ None at confidence 8 or higher.
 - Reviewer `bash` is policy-restricted rather than OS-sandboxed. A malicious or compromised reviewer could target ignored files or restore modified content before status comparison.
 - Parallel sessions multiply provider usage and cost.
 - Model output may contain inaccurate findings or prompt-injected instructions; the parent must validate evidence and enforce the AND gate.
+
+---
+
+## Keyboard shortcut fix — 2026-07-29
+
+- Branch: `fix/keyboard-shortcuts`
+- Base: `origin/main`
+- Reviewed implementation head: `d43a936`
+- Scope: GTK2 key-event delegation and the isolated X11 regression test
+
+### Verdict
+
+PASS — no reportable findings with confidence 8 or higher.
+
+### Assessment
+
+The only production change returns unrecognized key events to GTK2's existing
+accelerator dispatcher. It introduces no new data parsing, command execution,
+file access, network access, authentication boundary, secrets, or unsafe
+deserialization. The X11 process-launching code is confined to the test suite,
+uses fixed developer-authored arguments, isolates HOME and TMPDIR, and cleans
+its generated runtime directory.
+
+### Findings
+
+None.

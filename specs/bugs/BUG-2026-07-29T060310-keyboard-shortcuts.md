@@ -101,7 +101,7 @@ thread, and retain the historical shortcut definitions and callbacks unchanged.
 - [x] The focused GTK regression tests pass under Xvfb.
 - [x] `make lint` passes.
 - [x] `make -j"$(nproc)" && xvfb-run --auto-servernum make check` passes.
-- [ ] Manual runtime checks cover Ctrl+P, Ctrl+Q, X/C/V, and arrow keys.
+- [x] Manual runtime checks cover Ctrl+P, Ctrl+Q, X/C/V, and arrow keys.
 - [x] Source and test paths continue to trigger the existing full CI workflow; no workflow path-filter change is required.
 
 ## Resolution

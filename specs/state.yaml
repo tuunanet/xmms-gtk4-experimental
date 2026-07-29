@@ -7,20 +7,22 @@ active_story_id: null
 active_bug_id: BUG-2026-07-29T060310
 git:
   branch: fix/keyboard-shortcuts
-  head: 0c875aa
+  head: d43a936
   worktree: /home/tuunanet/git/tuunanet/keyboard-shortcuts
 handoff:
   status: ready
-  next_skill: verify-work
-  reason: RED/GREEN cycle and full local Preflight passed; complete verification and manual acceptance.
+  next_skill: request-review
+  reason: Verification evidence and code audit passed; request an independent review before release.
 metrics:
   story_start: 2026-07-29T060310Z
 bug_cycle:
-  current_step: verify-work
+  current_step: request-review
   completed_steps:
     - investigate-bug
     - kickoff-branch
     - develop-tdd
+    - verify-work
+    - audit-code
 release:
   last_tag: null
   last_publish: null
