@@ -13,6 +13,17 @@
 #define WINDOW_WAIT_ATTEMPTS 100
 #define WINDOW_WAIT_DELAY_US 20000
 
+static gint unexpected_x_error;
+
+static int record_x_error(Display *display, XErrorEvent *event)
+{
+	(void) display;
+	if (event->error_code != BadWindow)
+		unexpected_x_error = event->error_code;
+
+	return 0;
+}
+
 static Window find_mapped_window(Display *display, Window window,
 				 const gchar *title)
 {
@@ -161,6 +172,7 @@ static void test_main_window_activates_menu_shortcuts(void)
 
 	display = XOpenDisplay(NULL);
 	g_assert_nonnull(display);
+	XSetErrorHandler(record_x_error);
 	main_window = wait_for_window(display, "XMMS");
 	if (main_window != None)
 	{
@@ -180,6 +192,7 @@ static void test_main_window_activates_menu_shortcuts(void)
 	remove_tree(runtime_directory);
 	g_free(runtime_directory);
 
+	g_assert_cmpint(unexpected_x_error, ==, 0);
 	g_assert_cmpuint(main_window, !=, None);
 	g_assert_cmpuint(preferences_window, !=, None);
 	g_assert_true(exited);
