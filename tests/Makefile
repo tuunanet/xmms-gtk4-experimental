@@ -5,21 +5,32 @@ top_builddir ?= $(top_srcdir)
 CPPFLAGS += -I$(top_builddir) -I$(top_builddir)/xmms -I$(top_srcdir) -I$(top_srcdir)/libxmms -I$(top_srcdir)/xmms
 BASE_CFLAGS := $(CFLAGS)
 BASE_LDLIBS := $(LDLIBS)
-GTK3_CFLAGS ?= $(shell pkg-config --cflags gtk+-3.0)
-GTK3_LIBS ?= $(shell pkg-config --libs gtk+-3.0)
+GTK3_PROOF_ENABLED ?= $(shell pkg-config --exists 'gtk+-3.0 >= 3.24' && echo yes || echo no)
+GTK3_CFLAGS ?= $(shell pkg-config --cflags 'gtk+-3.0 >= 3.24')
+GTK3_LIBS ?= $(shell pkg-config --libs 'gtk+-3.0 >= 3.24')
 CFLAGS += $(shell pkg-config --cflags gtk+-2.0)
 LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
+ifeq ($(GTK3_PROOF_ENABLED),yes)
+GTK3_CHECK_TARGET = test-gtk3-play-button-proof
+endif
+
 .PHONY: check clean test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-gtk3-play-button-proof test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
 	./test-popup-position
 	./test-pbutton-baseline
 	./test-ui-control
-	./test-gtk3-play-button-proof
+	@if test "$(GTK3_PROOF_ENABLED)" = yes; then \
+		./test-gtk3-play-button-proof; \
+		if command -v ldd >/dev/null 2>&1; then \
+			ldd ./test-gtk3-play-button-proof | grep -F 'libgtk-3.so' >/dev/null; \
+			! ldd ./test-gtk3-play-button-proof | grep -F 'libgtk-x11-2.0.so' >/dev/null; \
+		fi; \
+	fi
 	./test-pluginenum
 	./test-outputplugin
 	./test-alsa-pcm-state

@@ -810,7 +810,9 @@ check-local:
 	@top_srcdir=`cd $(top_srcdir) && pwd`; top_builddir=`pwd`; \
 	$(MAKE) -C tests -f "$$top_srcdir/tests/Makefile" \
 		srcdir="$$top_srcdir/tests" top_srcdir="$$top_srcdir" \
-		top_builddir="$$top_builddir" check
+		top_builddir="$$top_builddir" \
+		GTK3_PROOF_ENABLED='@GTK3_PROOF_ENABLED@' \
+		GTK3_CFLAGS='@GTK3_CFLAGS@' GTK3_LIBS='@GTK3_LIBS@' check
 
 clean-local:
 	@if test -d tests; then \
