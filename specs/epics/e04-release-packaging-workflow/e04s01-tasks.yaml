@@ -1,0 +1,47 @@
+schema_version: 1
+story_id: e04s01
+title: Deliver draft Linux packages from an annotated release tag
+status: failing
+risk: P0
+bcps: 8
+tasks:
+  - id: t1
+    scenarios: [SC-e04s01-P0-01, SC-e04s01-P0-03]
+    description: Port the donor manual release workflow as .github/workflows/package-release.yml, retaining tag/version validation, pinned actions, target isolation, checksum verification, draft-only release mutation, and least-privilege permissions.
+    verify: "tests/test-package-recipes.sh \"$PWD\""
+    risk: P0
+    security: high
+    status: failing
+    allure:
+      severity: critical
+      categories: [release, github-actions, permissions, artifacts]
+  - id: t2
+    scenarios: [SC-e04s01-P0-02]
+    description: Adapt donor package metadata and dependencies for XMMS GTK4 Experimental, including libgtk-3-dev for the enabled GTK3 proof, while retaining both donor target package builds and smoke tests.
+    verify: "tests/test-package-recipes.sh \"$PWD\" && xvfb-run --auto-servernum make check"
+    risk: P0
+    security: medium
+    status: failing
+    allure:
+      severity: critical
+      categories: [release, packaging, gtk3, matrix]
+  - id: t3
+    scenarios: [SC-e04s01-P1-01]
+    description: Replace stale release-workflow documentation with the generic workflow name, matching-tag dispatch procedure, target matrix, artifact checks, and draft-only publication policy.
+    verify: "tests/test-package-recipes.sh \"$PWD\" && rg -q 'package-release.yml' docs/releases.md"
+    risk: P1
+    security: none
+    status: failing
+    allure:
+      severity: high
+      categories: [release, documentation]
+  - id: t4
+    scenarios: [SC-e04s01-P0-01, SC-e04s01-P0-02, SC-e04s01-P0-03, SC-e04s01-P1-01]
+    description: Run local source, lint, regression, package-contract, and distribution gates without committing build products.
+    verify: "make lint && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck"
+    risk: P0
+    security: medium
+    status: failing
+    allure:
+      severity: critical
+      categories: [release, verification, distribution]

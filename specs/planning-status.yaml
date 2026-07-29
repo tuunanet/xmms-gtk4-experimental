@@ -1,17 +1,18 @@
 schema_version: 1
-phase: build
-status: completed
+phase: plan
+status: approved
 steps:
   survey_context: completed
   scope_work: completed
   assess_impact: completed
   research_first: completed
-  elaborate_spec: completed
+  elaborate_spec: not_needed
   plan_release: completed
   slice_tasks: completed
   plan_tests: completed
   plan_work: completed
 notes:
-  - ADR-0001 records the user-approved GTK-major plugin UI policy.
-  - The approved e03 plan is implemented and handed to verify-work.
-  - Repository has no plan-consistency-check script; capsule consistency was validated manually.
+  - User requested only the donor's manual release-packaging workflow under a generic filename.
+  - Prior art is ../xmms-gtk2/.github/workflows/package-linux-mint.yml and official GitHub Actions workflow syntax documentation.
+  - Repository has no plan-consistency-check script; YAML and story/task/scenario consistency require manual validation.
+  - User approved implementation on 2026-07-29.

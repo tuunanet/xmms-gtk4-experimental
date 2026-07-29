@@ -1,20 +1,20 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: release
-active_epic_id: e03
-active_story_id: e03s03
+active_flow: develop_tdd
+active_epic_id: e04
+active_story_id: e04s01
 active_bug_id: null
 git:
-  branch: plan/gtk-migration-foundation
-  head: 955c5ef
-  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
+  branch: ci/release-packaging
+  head: 58c4f24
+  worktree: /home/tuunanet/git/tuunanet/ci-release-packaging
 handoff:
   status: ready
-  next_skill: release-branch
-  reason: User-confirmed UAT, P0 verification, security review, NFR gate, and self-audit pass; traceability is waived because the repository lacks the required gate scripts.
+  next_skill: develop-tdd
+  reason: User approved e04 implementation; begin red-green workflow-contract slices on the isolated CI branch.
 metrics:
-  story_start: 2026-07-29T17:00:00Z
+  story_start: 2026-07-29T22:55:00Z
 release:
   last_tag: null
   last_publish: null

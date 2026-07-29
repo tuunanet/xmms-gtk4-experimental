@@ -1,0 +1,17 @@
+schema_version: 1
+id: e04
+title: Port generic release-packaging workflow
+wsjf: 8.0
+total_bcps: 8
+risk: P0
+status: planned
+adr: []
+stories:
+  - id: e04s01
+    title: Deliver draft Linux packages from an annotated release tag
+    bcps: 8
+    risk: P0
+    status: planned
+    delta: ADDED
+    spec: e04s01-generic-release-packaging.md
+    tasks: e04s01-tasks.yaml
