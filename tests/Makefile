@@ -3,18 +3,23 @@ top_srcdir ?= ..
 top_builddir ?= $(top_srcdir)
 
 CPPFLAGS += -I$(top_builddir) -I$(top_builddir)/xmms -I$(top_srcdir) -I$(top_srcdir)/libxmms -I$(top_srcdir)/xmms
+BASE_CFLAGS := $(CFLAGS)
+BASE_LDLIBS := $(LDLIBS)
+GTK3_CFLAGS ?= $(shell pkg-config --cflags gtk+-3.0)
+GTK3_LIBS ?= $(shell pkg-config --libs gtk+-3.0)
 CFLAGS += $(shell pkg-config --cflags gtk+-2.0)
 LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
 .PHONY: check clean test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-gtk3-play-button-proof test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
 	./test-popup-position
 	./test-pbutton-baseline
 	./test-ui-control
+	./test-gtk3-play-button-proof
 	./test-pluginenum
 	./test-outputplugin
 	./test-alsa-pcm-state
@@ -47,6 +52,9 @@ test-pbutton-baseline: $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbut
 
 test-ui-control: $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(LDLIBS)
+
+test-gtk3-play-button-proof: $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h $(top_srcdir)/xmms/ui_gtk3_control.h
+	$(CC) $(CPPFLAGS) $(BASE_CFLAGS) $(GTK3_CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(BASE_LDLIBS) $(GTK3_LIBS)
 
 test-pluginenum: CFLAGS += -ffunction-sections -fdata-sections -DBUILD_PLUGIN_DIR=\"$(CURDIR)/test-plugins\" -DPLUGIN_DIR=\"/nonexistent\" -DPLUGINSUBS='"Output","Input"'
 test-pluginenum: LDFLAGS += -Wl,--gc-sections
@@ -101,4 +109,4 @@ test-release-tools:
 	$(srcdir)/test-release-tools.sh $(top_srcdir)
 
 clean:
-	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-gtk3-play-button-proof test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins

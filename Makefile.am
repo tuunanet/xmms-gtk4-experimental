@@ -42,6 +42,7 @@ EXTRA_DIST = \
 	tests/test-alsa-volume.c \
 	tests/test-filebrowser.c \
 	tests/test-font-load.c \
+	tests/test-gtk3-play-button-proof.c \
 	tests/test-c-lint.sh \
 	tests/test-intl-generated-sources.sh \
 	tests/test-mpg123-file-duration.c \
@@ -60,6 +61,7 @@ EXTRA_DIST = \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
 	tools/extract-release-notes.sh \
+	xmms/ui_gtk3_control.h \
 	xmms.m4
 
 m4datadir = $(datadir)/aclocal
