@@ -2,10 +2,31 @@ schema_version: 1
 epic_id: e03
 status: passed
 verified_at: 2026-07-29T18:30:00Z
+verifier: verify-work
 stories:
   e03s01: passed
   e03s02: passed
   e03s03: passed
+terminal_verdict:
+  command: "xvfb-run --auto-servernum make distcheck"
+  exit_code: 0
+  captured_at: 2026-07-29T18:25:00Z
+  note: Single contiguous run completed with xmms-0.0.1 archives ready for distribution.
+manual:
+  status: passed
+  confirmed_by: user
+  steps:
+    - step: Exercise Play press, pointer leave, pointer re-entry, and release in the GTK2 player.
+      expected: Pressed feedback follows the pointer and a release inside activates once.
+      actual: User confirmed the behavior passed.
+      passed: true
+    - step: Run the GTK3 proof under Xvfb.
+      expected: Both TAP cases pass.
+      actual: Automated verification passed.
+      passed: true
+gaps:
+  closed: true
+  count: 0
 evidence:
   - command: "xvfb-run --auto-servernum tests/test-pbutton-baseline"
     result: passed
