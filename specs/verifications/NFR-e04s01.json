@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "story_id": "e04s01",
+  "status": "pass",
+  "dimensions": {
+    "performance": {
+      "status": "pass",
+      "evidence": "Target packaging runs independently in a fail-fast-disabled matrix; no production runtime path changes."
+    },
+    "reliability": {
+      "status": "pass",
+      "evidence": "Static contracts and full lint, Xvfb make check, and distcheck pass; target OS, architecture, libc, package metadata, installation, and checksums fail closed."
+    },
+    "operability": {
+      "status": "pass",
+      "evidence": "The generic workflow name, exact annotated-tag dispatch, target matrix, artifacts, and draft-review procedure are documented."
+    }
+  },
+  "security_review": "specs/security/REVIEW.md",
+  "gaps": [
+    "GitHub-hosted package execution and draft-release creation require a future annotated release tag after the workflow reaches main."
+  ]
+}

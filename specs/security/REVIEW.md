@@ -1,25 +1,28 @@
-# Security review: e03 GTK migration foundation
+# Security review: e04 release-packaging workflow
 
-- **Reviewed head:** `955c5ef`
-- **Merge base:** `ca6680b`
-- **Scope:** `git diff ca6680b...955c5ef`
+- **Reviewed range:** `58c4f24...0ca0faa`
 - **Result:** PASS
 - **Unresolved HIGH findings (confidence >= 8):** 0
 
-## Data-flow assessment
+## Trust and data-flow assessment
 
-- GTK2 and GTK3 pointer coordinates flow only into integer rectangle hit testing and sprite destination commands. They do not reach filesystem, shell, network, protocol, allocation-size, or privilege sinks.
-- The GTK3 draw adapter consumes an in-process `GdkPixbuf` and fixed draw-command geometry. It performs Cairo clipping and painting only.
-- The GTK3 proof processes generated in-memory pixels and synthetic GTK events; it does not read skin archives, user configuration, plugins, sockets, or audio devices.
-- Configure invokes the maintainer-controlled `pkg-config` executable with a static package expression (`gtk+-3.0 >= 3.24`). No untrusted text is interpolated into a shell command.
-- Debian metadata adds a distribution-provided development package and does not vendor code or introduce download scripts.
-
-## Compatibility and isolation controls
-
-- `ldd` verification requires `libgtk-3.so` and rejects `libgtk-x11-2.0.so` in the GTK3 proof process.
-- The production player remains linked to GTK2 only.
-- Plugin vtables, plugin entry points, `libxmms`, control socket, configuration paths, and skin format are unchanged.
+- The workflow has only a manual `workflow_dispatch` trigger. It does not run
+  on pull requests, pushes, or untrusted fork input.
+- The maintainer-provided version is quoted at shell boundaries and validated by
+  `tools/check-release-version.sh` before it names package or release assets.
+- The workflow additionally requires the matching annotated `vVERSION` tag,
+  validates that tag's target against `GITHUB_SHA`, and requires main ancestry.
+- Default token permission is `contents: read`; only the final job receives
+  `contents: write` to create or update an unpublished draft release.
+- A pre-existing published release is rejected. Artifact manifests are checked
+  before upload and again before draft-release attachment.
+- Third-party actions are pinned to reviewed commit SHAs. Build dependencies are
+  system packages installed within isolated target containers.
 
 ## Findings
 
-No reportable SQL injection, XSS, SSRF, command injection, authentication bypass, unsafe deserialization, path traversal, IDOR, cryptographic, secret-exposure, template-injection, or NoSQL-injection finding was identified at confidence 8 or higher.
+No reportable injection, authorization bypass, secret exposure, unsafe
+artifact handling, path traversal, or published-release mutation finding was
+identified at confidence 8 or higher. `gh release upload --clobber` is limited
+to an already-confirmed draft release; it is required to resume a failed draft
+run and is guarded by the published-release rejection.

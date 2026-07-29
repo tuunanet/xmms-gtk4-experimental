@@ -1,12 +1,12 @@
 schema_version: 1
 status: verified
 epics:
-  e04: planned
+  e04: uat_pending
   e01: verified
   e02: verified
   e03: verified
 stories:
-  e04s01: planned
+  e04s01: uat_pending
   e01s01: verified
   e01s02: verified
   e02s01: verified

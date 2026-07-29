@@ -12,7 +12,7 @@ epics:
     capsule_dir: epics/e04-release-packaging-workflow
     wsjf: 8.0
     bcps: 8
-    status: planned
+    status: uat_pending
     score:
       business_value: 9
       time_criticality: 10

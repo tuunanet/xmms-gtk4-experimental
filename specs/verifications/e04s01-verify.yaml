@@ -1,0 +1,43 @@
+schema_version: 1
+story_id: e04s01
+status: automated_pass_manual_pending
+verified_at: 2026-07-29T23:30:00Z
+verifier: verify-work
+terminal_verdict:
+  command: "xvfb-run --auto-servernum make distcheck"
+  exit_code: 0
+  captured_at: 2026-07-29T23:25:00Z
+  note: Single contiguous run rebuilt, tested, installed, uninstalled, and distcleaned xmms-0.0.1 with the release-workflow source-distribution contract.
+phases:
+  build:
+    passed: true
+    command: "make -j\"$(nproc)\""
+  lint:
+    passed: true
+    command: "make lint"
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum make check"
+  distribution:
+    passed: true
+    command: "xvfb-run --auto-servernum make distcheck"
+  package_contract:
+    passed: true
+    command: "tests/test-package-recipes.sh \"$PWD\""
+manual:
+  status: pending_post_merge_tag_dispatch
+  steps:
+    - Push an annotated vVERSION tag from main after release preparation is approved.
+    - Dispatch Linux packages and release on that tag with the matching VERSION input.
+    - Confirm both target package jobs finish, inspect the draft assets and SHA256SUMS, and decide whether to publish manually.
+gaps:
+  closed: false
+  reason: The guarded workflow can only be integration-tested on an annotated release tag after it exists on main.
+compatibility:
+  runtime_behavior_changed: false
+  plugin_abi_changed: false
+  libxmms_api_changed: false
+  control_socket_changed: false
+  config_paths_changed: false
+  skin_format_changed: false
+  package_names_preserved: true
