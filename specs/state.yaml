@@ -7,19 +7,20 @@ active_story_id: null
 active_bug_id: BUG-2026-07-29T060310
 git:
   branch: fix/keyboard-shortcuts
-  head: 5836a9a
+  head: 0c875aa
   worktree: /home/tuunanet/git/tuunanet/keyboard-shortcuts
 handoff:
   status: ready
-  next_skill: develop-tdd
-  reason: Baseline Preflight passed; implement the approved keyboard accelerator fix with TDD.
+  next_skill: verify-work
+  reason: RED/GREEN cycle and full local Preflight passed; complete verification and manual acceptance.
 metrics:
   story_start: 2026-07-29T060310Z
 bug_cycle:
-  current_step: develop-tdd
+  current_step: verify-work
   completed_steps:
     - investigate-bug
     - kickoff-branch
+    - develop-tdd
 release:
   last_tag: null
   last_publish: null

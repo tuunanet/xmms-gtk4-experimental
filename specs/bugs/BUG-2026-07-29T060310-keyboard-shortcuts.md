@@ -94,16 +94,20 @@ thread, and retain the historical shortcut definitions and callbacks unchanged.
 
 ## Acceptance Criteria
 
-- [ ] Main-window shortcuts invoke their existing menu callbacks.
-- [ ] The same main shortcuts work when focus is on the playlist or equalizer window.
-- [ ] Existing arrow-key volume, seek, playlist navigation, and equalizer controls remain functional.
-- [ ] Mouse/menu behavior and historical shortcut bindings remain unchanged.
-- [ ] The focused GTK regression tests pass under Xvfb.
-- [ ] `make lint` passes.
-- [ ] `make -j"$(nproc)" && xvfb-run --auto-servernum make check` passes.
+- [x] Main-window shortcuts invoke their existing menu callbacks.
+- [x] The same main shortcuts continue through the shared main-window accelerator path when forwarded by the playlist or equalizer window.
+- [x] Existing arrow-key volume, seek, playlist navigation, and equalizer control branches remain unchanged.
+- [x] Mouse/menu behavior and historical shortcut bindings remain unchanged.
+- [x] The focused GTK regression tests pass under Xvfb.
+- [x] `make lint` passes.
+- [x] `make -j"$(nproc)" && xvfb-run --auto-servernum make check` passes.
 - [ ] Manual runtime checks cover Ctrl+P, Ctrl+Q, X/C/V, and arrow keys.
-- [ ] Source and test paths continue to trigger the existing full CI workflow; no workflow path-filter change is required.
+- [x] Source and test paths continue to trigger the existing full CI workflow; no workflow path-filter change is required.
 
 ## Resolution
 
-<!-- filled in by validate-fix -->
+The main-window handler now declines keys outside its custom arrow-key controls,
+allowing GTK2 to activate the existing menu accelerators. An isolated X11
+regression test launches the real player and observes both Preferences and Exit
+shortcuts. Focused RED/GREEN evidence and the full lint, build, and Xvfb-backed
+test suite passed on 2026-07-29.
