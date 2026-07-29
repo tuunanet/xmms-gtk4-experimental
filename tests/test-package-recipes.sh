@@ -130,6 +130,10 @@ require_text tests/Makefile 'test-gtk3-play-button-proof:' \
 	'runs the isolated GTK3 Play-button proof from make check'
 require_text Makefile.am 'tests/test-gtk3-play-button-proof.c' \
 	'distributes the isolated GTK3 Play-button proof'
+require_text Makefile.am '.github/workflows/package-release.yml' \
+	'distributes the generic release-package workflow'
+require_text Makefile.in '.github/workflows/package-release.yml' \
+	'ships the generic release-package workflow manifest entry'
 require_text configure.in '--disable-gtk3-proof' \
 	'exposes an explicit GTK3 proof configure policy'
 require_text configure.in 'gtk+-3.0 >= 3.24' \
