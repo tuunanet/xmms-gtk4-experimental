@@ -47,7 +47,7 @@ None at confidence 8 or higher.
 
 - Branch: `fix/keyboard-shortcuts`
 - Base: `origin/main`
-- Reviewed implementation head: `d43a936`
+- Reviewed implementation head: `1c79db4`
 - Scope: GTK2 key-event delegation and the isolated X11 regression test
 
 ### Verdict

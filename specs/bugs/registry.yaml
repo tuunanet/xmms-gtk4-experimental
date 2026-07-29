@@ -12,7 +12,7 @@ bugs:
     date: "2026-07-29"
     severity: MEDIUM
     priority: HIGH
-    status: open
+    status: fixed
     scope: keyboard-shortcuts
     summary: Main-window key handling consumes menu accelerators across classic windows.
     file: specs/bugs/BUG-2026-07-29T060310-keyboard-shortcuts.md

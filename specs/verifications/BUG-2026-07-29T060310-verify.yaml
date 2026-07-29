@@ -1,6 +1,7 @@
 bug_id: BUG-2026-07-29T060310
 verified_at: "2026-07-29T071500Z"
 verifier: verify-work
+reviewed_implementation_head: 1c79db4
 risk: P1
 phases:
   smoke:
