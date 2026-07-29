@@ -1,8 +1,0 @@
-schema_version: 1
-status: draft
-project: xmms-classic
-vision: Keep the classic XMMS audio player usable on modern Linux while preserving historical compatibility.
-principles:
-  - Preserve classic behavior and interfaces.
-  - Modernize compatibility without rewriting product identity.
-  - Require regression evidence for behavior changes.
