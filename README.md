@@ -3,12 +3,10 @@
 > A community-maintained preservation fork of XMMS 1.2.11, keeping the classic
 > player usable on modern Linux systems.
 
-[![CI](https://github.com/tuunanet/xmms-classic/actions/workflows/ci.yml/badge.svg)](https://github.com/tuunanet/xmms-classic/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)
 ![Language](https://img.shields.io/badge/language-C-555555)
 ![Toolkit](https://img.shields.io/badge/toolkit-GTK2-729fcf)
 ![Platform](https://img.shields.io/badge/platform-Linux-4c9e2f)
-![Status](https://img.shields.io/badge/status-maintained%20fork-8f4f9f)
 
 ![The classic XMMS interface](docs/images/xmms.png)
 
