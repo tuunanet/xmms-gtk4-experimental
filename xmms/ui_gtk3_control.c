@@ -20,3 +20,22 @@ void xmms_ui_gtk3_draw_command(cairo_t *cr, GdkPixbuf *sprites,
 	cairo_paint(cr);
 	cairo_restore(cr);
 }
+
+XmmsUiControlResult xmms_ui_gtk3_handle_event(XmmsUiButtonState *state,
+					     const GdkEvent *event)
+{
+	switch (event->type)
+	{
+	case GDK_BUTTON_PRESS:
+		return xmms_ui_button_handle_pointer(state, XMMS_UI_POINTER_PRESS,
+			event->button.button, event->button.x, event->button.y);
+	case GDK_BUTTON_RELEASE:
+		return xmms_ui_button_handle_pointer(state, XMMS_UI_POINTER_RELEASE,
+			event->button.button, event->button.x, event->button.y);
+	case GDK_MOTION_NOTIFY:
+		return xmms_ui_button_handle_pointer(state, XMMS_UI_POINTER_MOTION,
+			0, event->motion.x, event->motion.y);
+	default:
+		return XMMS_UI_CONTROL_NONE;
+	}
+}
