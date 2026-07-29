@@ -1,2 +1,10 @@
 schema_version: 1
-bugs: []
+bugs:
+  - bug_id: BUG-2026-07-29T080737
+    date: "2026-07-29"
+    severity: medium
+    priority: P1
+    status: open
+    scope: build-compatibility
+    summary: GCC 15 default contributor build fails on legacy GTK2 callback pointer diagnostics.
+    file: specs/bugs/BUG-2026-07-29T080737-gcc15-default-build.md

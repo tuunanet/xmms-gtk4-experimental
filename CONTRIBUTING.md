@@ -79,6 +79,28 @@ Pushing new commits while a run is in progress cancels the previous run on the
 same ref (`cancel-in-progress`). The cancelled run’s required gate fails with
 `cancelled`; that is expected—only the latest commit’s checks matter for merge.
 
+## Local dual-agent review
+
+Maintainers using Pi can run the project-local dual-blind review gate before a
+pull request. Start Pi from a trusted checkout; Pi installs the exact package
+version declared in `.pi/settings.json` into the ignored `.pi/npm/` cache.
+Review the package source before approving a new version.
+
+After `audit-code` passes, invoke:
+
+```text
+/dual-review
+```
+
+Pi asks for explicit approval before running the repository-controlled
+`xmms-reviewer-a` and `xmms-reviewer-b` roles. The prompt starts both isolated
+reviewers in parallel with identical briefs and passes only when both report
+zero must-fix findings and scores of at least 94. Do not enable unconfirmed
+project agents or commit package caches, credentials, sessions, or reports.
+
+The static wiring contract runs through `make check`. Model-backed review stays
+local and interactive; CI does not receive model credentials.
+
 ## Project conventions
 
 - Follow the style of the surrounding C code; do not reformat unrelated lines.

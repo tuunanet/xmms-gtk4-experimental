@@ -6,9 +6,9 @@ CPPFLAGS += -I$(top_builddir) -I$(top_builddir)/xmms -I$(top_srcdir) -I$(top_src
 CFLAGS += $(shell pkg-config --cflags gtk+-2.0)
 LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
-.PHONY: check clean test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
+.PHONY: check clean test-c-lint test-intl-generated-sources test-package-recipes test-project-agent-wiring test-plugin-linkage test-release-tools
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-project-agent-wiring test-plugin-linkage test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
@@ -83,6 +83,9 @@ test-intl-generated-sources:
 
 test-package-recipes:
 	$(srcdir)/test-package-recipes.sh $(top_srcdir)
+
+test-project-agent-wiring:
+	$(srcdir)/test-project-agent-wiring.sh $(top_srcdir)
 
 test-plugin-linkage:
 	$(srcdir)/test-plugin-linkage.sh $(top_builddir)

@@ -1,110 +1,92 @@
 schema_version: 1
 status: scoped
-initiative: c-lint-regression-gate
-core_value: Detect newly introduced C defects consistently without requiring an unsafe, repository-wide legacy cleanup.
+initiative: project-local-dual-review
+core_value: Give XMMS Classic changes two independent, repository-aware Pi reviews before pull-request delivery.
 summary: >-
-  Establish a repeatable linting capability for maintained C sources and headers, usable by contributors locally and enforced by continuous integration. The initiative will evaluate suitable analyzers before selecting one, record the existing diagnostic baseline, and reject newly introduced findings.
+  Add trusted project-local reviewer definitions and a repeatable dual-review entry point for the existing bigpowers request-review gate. Reviewers will run in isolated local Pi sessions, receive identical self-contained briefs, and return independent findings before either report influences remediation.
 
-  This is a quality-gate change rather than a product behavior change. Existing findings remain visible and manageable, while adoption avoids broad source churn that could threaten compatibility or obscure future functional reviews.
+  This is development infrastructure only. It does not change XMMS runtime behavior, build dependencies, installed package contents, or public compatibility contracts.
 in_scope:
-  - story_id: e01s01
-    outcome: Select a maintained C analysis approach using documented compatibility, signal quality, reproducibility, and CI cost criteria.
-  - story_id: e01s01
-    outcome: Provide one documented local command that analyzes all maintained C sources and headers.
-  - story_id: e01s01
-    outcome: Record a reviewable baseline for existing findings and fail when a change introduces diagnostics beyond that baseline.
-  - story_id: e01s02
-    outcome: Add the regression gate to pull-request CI and account for its source, configuration, script, and baseline paths in workflow classification.
-  - story_id: e01s02
-    outcome: Document contributor usage, finding triage, intentional suppression, and controlled baseline updates.
-  - story_id: e01s02
-    outcome: Verify that lint adoption preserves the existing build, test suite, public interfaces, and release behavior.
+  - story_id: e02s01
+    outcome: Declare a pinned project-local subagent package that supports two parallel isolated Pi review sessions.
+  - story_id: e02s01
+    outcome: Provide two repository-controlled reviewer roles with the same read-and-verify rubric and no edit or write tools.
+  - story_id: e02s01
+    outcome: Provide one documented project prompt that constructs the dual-blind AND gate required by request-review.
+  - story_id: e02s01
+    outcome: Keep automatically installed project package contents out of version control.
+  - story_id: e02s01
+    outcome: Run the static wiring contract through make check and include the inspectable reviewer configuration in source distributions.
+  - story_id: e02s01
+    outcome: Verify package discovery, reviewer discovery, isolation, independent reports, and unchanged repository contents.
+  - story_id: e02s01
+    outcome: Update project instructions to record that project-local external-agent wiring is enabled.
 out_of_scope:
-  - item: Resolve every existing C diagnostic during initial adoption.
-    reason: Deferred because broad legacy cleanup increases behavioral and ABI risk and would obscure the lint infrastructure review.
-  - item: Lint shell, YAML, Markdown, Autotools input, or generated files.
-    reason: Deferred to separate language-specific initiatives so this scope has one measurable quality boundary.
-  - item: Introduce automatic source formatting or reformat existing C code.
-    reason: Excluded because formatting is distinct from defect analysis and would create unrelated code churn.
-  - item: Convert all compiler warnings into errors.
-    reason: Excluded because compiler policy is toolchain-dependent and does not provide a stable baseline mechanism by itself.
-  - item: Change runtime behavior, public plugin ABI, libxmms API, remote-control commands, configuration paths, skins, or GTK2 behavior.
-    reason: Excluded because this initiative supplies development-time analysis only.
+  - item: Run reviewers automatically in GitHub Actions.
+    reason: Deferred because project reviewers require model credentials and explicit trust approval; live CI remains focused on deterministic build and test gates.
+  - item: Give reviewer agents edit or write tools.
+    reason: Excluded to preserve separation between review and remediation.
+  - item: Replace human pull-request review or branch protection.
+    reason: Excluded because local agent review is an additional quality gate, not repository authorization.
+  - item: Require different model providers for Reviewer A and Reviewer B.
+    reason: Deferred because context isolation is required, while provider diversity depends on each maintainer's authenticated model catalog.
+  - item: Add general-purpose implementation, planning, or recursive delegation agents.
+    reason: Excluded to keep the trusted project prompt surface limited to the approved dual-review use case.
 constraints:
   technical:
-    - Preserve Autotools as the build system and support the repository's current C and GTK2 code.
-    - Preserve public plugin ABI, libxmms API, socket commands, configuration paths, skins, and classic UI behavior.
-    - Do not require project-local external-agent wiring.
-    - Keep local and CI results deterministic from checked-in configuration and baseline data.
-    - Evaluate every new lint-related path against .github workflow triggers, filters, packaging, release automation, and ignore rules.
+    - Pin the reviewed subagent package version in project settings.
+    - Preserve interactive confirmation for repository-controlled project agents.
+    - Keep child working directories inside the trusted workspace.
+    - Do not commit package caches, credentials, sessions, generated dependencies, or model output.
+    - Reviewer definitions may inspect files and run verification commands but must not edit repository content.
+    - Evaluate every new .pi path against workflow classification, packaging manifests, release automation, and ignore rules.
   delivery:
-    - Deliver through a pull request against protected main using the team-pr workflow.
-    - Research candidate analyzers before selecting or installing a dependency.
-    - Avoid repository-wide remediation as a prerequisite for enabling the gate.
+    - Deliver through a separate pull request against protected main using the team-pr workflow.
+    - Require end-to-end manual acceptance before enabling the wiring for the pending keyboard-shortcuts review.
 success_criteria:
-  - A documented command analyzes the maintained C and header file set from a clean checkout.
-  - The initial checked-in baseline passes without requiring unrelated source changes.
-  - A representative newly introduced diagnostic makes the local lint command and CI gate fail.
-  - Removing that diagnostic restores a passing result without changing the baseline.
-  - CI runs when relevant C sources, lint configuration, lint scripts, or baseline files change.
-  - Existing build and xvfb-backed test commands remain green.
-  - Contributor documentation explains triage, suppressions, and baseline-update review expectations.
+  - Pi discovers the pinned project package and both project-local reviewer definitions from a clean checkout.
+  - One invocation starts Reviewer A and Reviewer B concurrently with identical task briefs and isolated contexts.
+  - Each reviewer returns an independent categorized report, verification result, score, and PASS or FAIL verdict.
+  - Interactive use requires explicit approval before repository-controlled reviewers execute.
+  - A dual-review smoke test leaves tracked and untracked repository state unchanged except for pre-existing build artifacts.
+  - The normal XMMS build and xvfb-backed test suite remain green.
 references:
   - CLAUDE.md
   - CONVENTIONS.md
   - specs/product/VISION_LATEST.yaml
   - specs/tech-architecture/tech-stack.md
   - docs/architecture/build-and-test.md
-  - .github/workflows/ci.yml
+  - /home/tuunanet/.pi/agent/npm/node_modules/bigpowers/.pi/skills/request-review/SKILL.md
+  - /home/tuunanet/.nvm/versions/node/v26.4.0/lib/node_modules/@earendil-works/pi-coding-agent/docs/packages.md
+  - /home/tuunanet/.nvm/versions/node/v26.4.0/lib/node_modules/@earendil-works/pi-coding-agent/docs/prompt-templates.md
 research:
   title: Prior Art
-  observed_context:
-    - The repository contains 181 C files and 100 headers, with no existing C analyzer integration.
-    - CI runs on Ubuntu 24.04, whose repository provides Cppcheck 2.13 and clang-tidy 18.
-    - Existing builds already enable selected GCC warnings, but diagnostics are not treated as a regression baseline.
-    - Neither Cppcheck nor clang-tidy is installed in the current development environment.
-    - The opensrc CLI is present but lacks the documented search command, so no cached analyzer source was available.
   candidates:
-    - name: Cppcheck
-      source: https://cppcheck.sourceforge.io/manual.html
-      verdict: extend
-      fit: >-
-        Designed for C and C++, tolerant of non-standard compiler extensions, cross-platform, available in Ubuntu 24.04, and able to consume direct paths or a compilation database. Its suppression lists, stable diagnostic identifiers, custom output templates, and error exit status support a thin checked-in regression-baseline layer without source edits.
+    - name: Official Pi subagent example
+      source: /home/tuunanet/.nvm/versions/node/v26.4.0/lib/node_modules/@earendil-works/pi-coding-agent/examples/extensions/subagent
+      verdict: reject-vendoring
+      fit: Supports project-agent discovery, isolated child processes, parallel execution, confirmation, cancellation, and usage reporting.
       risks:
-        - Diagnostics can change between analyzer versions, so CI must define the authoritative supported version and local tooling must report version mismatches clearly.
-        - A line-specific baseline needs controlled refreshes when existing findings move during legitimate edits.
-    - name: clang-tidy
-      source: https://clang.llvm.org/extra/clang-tidy/
-      verdict: reject-for-initial-adoption
-      fit: >-
-        Provides modular checks and Clang Static Analyzer diagnostics, but works best with a compilation database. This Autotools project would require build interception or substantial argument management, and clang-tidy has no direct checked-in suppression-list equivalent for baselining all existing diagnostics.
+        - Vendoring the example would add approximately 1140 lines of extension code for a configuration task.
+        - Copied code would drift from the installed Pi runtime.
+    - name: "@aprimediet/minion@2.3.1"
+      source: https://www.npmjs.com/package/@aprimediet/minion
+      verdict: reject
+      fit: Supports project overrides and parallel child processes with a small package surface.
       risks:
-        - Adds LLVM tooling plus compilation-database generation to the local and CI path.
-        - Check availability and output vary substantially with LLVM versions.
-    - name: Bear compilation database generator
-      source: https://github.com/rizsotto/Bear
-      verdict: reject-as-unnecessary
-      fit: >-
-        Actively maintained and suitable when a build system cannot emit compile_commands.json, but it is only a supporting dependency for the more complex clang-tidy route and is unnecessary for direct Cppcheck analysis.
-    - name: GCC warning gate
-      source: docs/architecture/build-and-test.md
-      verdict: reject-as-primary-linter
-      fit: >-
-        Extending current warning flags would have minimal setup cost, but results depend on compiler version and configured build paths, and warning text does not provide a practical legacy baseline. Compiler warnings remain complementary evidence rather than the project linter.
-    - name: CodeChecker
-      source: https://codechecker.readthedocs.io/en/latest/usage/
-      verdict: reject-as-overweight
-      fit: >-
-        Supports analyzer result comparison and CI workflows, but requires compilation-database capture and a larger report-management stack than this repository needs for an initial regression gate.
-    - name: bigpowers wire-ci skill
-      source: /home/tuunanet/.pi/agent/npm/node_modules/bigpowers/.pi/skills/wire-ci/SKILL.md
-      verdict: extend-existing-ci-manually
-      fit: >-
-        Confirms CI wiring is the relevant lifecycle capability, but the repository already has tailored GitHub workflows and path classification. The lint plan should extend those workflows rather than replace them with a generated pipeline.
+        - Inspected event reduction uses a JSON event field that differs from the current official Pi example, creating compatibility uncertainty.
+    - name: "@bacnh85/pi-subagent@0.12.2"
+      source: https://www.npmjs.com/package/@bacnh85/pi-subagent
+      verdict: adopt
+      fit: Provides isolated in-process Pi SDK sessions, parallel execution, project-agent discovery, trusted confirmation, bounded timeouts, workspace containment, tool validation, and parent-model fallback.
+      slopcheck: "[SUS] User-approved on 2026-07-29. Published peer metadata supports @earendil-works/pi-* >=0.80.0 <0.83.0 and installed Pi is 0.82.1; README contains a stale narrower compatibility sentence, so end-to-end verification is mandatory."
+      risks:
+        - Pi extensions execute with full local access and therefore require source review, version pinning, and explicit project trust.
+        - Parallel reviewers multiply model usage.
+        - Package documentation and metadata must be checked together until the stale compatibility sentence is corrected upstream.
   decision:
-    outcome: Extend Cppcheck with a checked-in configuration, legacy suppression baseline, repeatable local command, and pull-request CI gate.
+    outcome: Adopt the pinned pi-subagent package and configure only the two approved project reviewer roles.
     rationale:
-      - It provides the best C-specific signal with the fewest additional moving parts for a legacy Autotools repository.
-      - Ubuntu 24.04 supplies it directly, keeping CI installation small and conventional.
-      - Native diagnostic IDs and suppression lists align with blocking new findings while retaining visibility into legacy debt.
-      - It avoids source-level suppression churn and the compilation-database dependency required by clang-tidy.
+      - It provides stronger trust-boundary controls than the official example while avoiding a large vendored extension.
+      - Its published peer range covers the installed Pi version.
+      - Project settings install the exact pinned version after trust approval, making setup reproducible for maintainers.

@@ -50,7 +50,12 @@ require_absent_text()
 
 for file in \
 	.github/workflows/package-release.yml \
+	.pi/agents/xmms-reviewer-a.md \
+	.pi/agents/xmms-reviewer-b.md \
+	.pi/prompts/dual-review.md \
+	.pi/settings.json \
 	tests/test-c-lint.sh \
+	tests/test-project-agent-wiring.sh \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
 	packaging/xmms.desktop \
@@ -81,6 +86,32 @@ require_text tests/Makefile 'test-c-lint:' \
 	'runs C lint contract tests from make check'
 require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
+for resource in \
+	.pi/agents/xmms-reviewer-a.md \
+	.pi/agents/xmms-reviewer-b.md \
+	.pi/prompts/dual-review.md \
+	.pi/settings.json
+do
+	require_text Makefile.am "$resource" \
+		"distributes $resource from the authoritative build metadata"
+	require_text Makefile.in "$resource" \
+		"distributes $resource from the shipped build metadata"
+done
+for manifest in packaging/debian/xmms.install packaging/debian/libxmms-dev.install
+do
+	require_absent_text "$manifest" '.pi/' \
+		"keeps project-agent resources out of $manifest"
+done
+require_text Makefile.am 'CLAUDE.md' \
+	'distributes project instructions required by local reviewers'
+require_text Makefile.am 'CONVENTIONS.md' \
+	'distributes repository conventions required by local reviewers'
+require_text Makefile.am '.gitignore' \
+	'distributes ignore contracts checked by project-agent tests'
+require_text Makefile.am 'tests/test-project-agent-wiring.sh' \
+	'distributes the project-agent contract test'
+require_text tests/Makefile 'test-project-agent-wiring:' \
+	'runs project-agent contract checks from make check'
 require_text Makefile.am 'docs/architecture/build-and-test.md' \
 	'distributes the C lint architecture guide'
 require_text Makefile.am 'tools/build-deb.sh' \

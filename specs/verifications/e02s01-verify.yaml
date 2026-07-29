@@ -1,0 +1,135 @@
+schema_version: 1
+story_id: e02s01
+verified_at: "2026-07-29T08:52:28Z"
+verdict: PASS
+dual_review: passed
+manual_acceptance: passed
+implementation_head: 0ff8a11
+manual_uat:
+  operator: user
+  results:
+    - step: Start Pi from the feature worktree and approve project trust.
+      result: passed
+      evidence: Pi opened and listed @bacnh85/pi-subagent@0.12.2 as an active extension.
+    - step: Invoke /dual-review against origin/main.
+      result: passed
+      evidence: Pi displayed an interactive confirmation naming exactly xmms-reviewer-a and xmms-reviewer-b and the project .pi/agents source path.
+    - step: Approve both repository-controlled agents and wait for completion.
+      result: passed
+      evidence: Both isolated project agents completed in each parallel review round.
+    - step: Observe the final dual-review gate.
+      result: passed
+      evidence: Round 2 returned AND-gate PASS after Round 1 findings were remediated.
+review:
+  rounds: 2
+  round_1:
+    reviewer_a:
+      score: 80
+      must_fix: 0
+      should_fix: 2
+      verdict: FAIL
+    reviewer_b:
+      score: 72.7
+      must_fix: 1
+      should_fix: 2
+      verdict: FAIL
+    remediation_commit: 0ff8a11
+  round_2:
+    reviewer_a:
+      score: 100
+      must_fix: 0
+      should_fix: 0
+      verdict: PASS
+    reviewer_b:
+      score: 100
+      must_fix: 0
+      should_fix: 0
+      verdict: PASS
+    parallel_sessions: 2
+    status_snapshot_bytes: 340
+    status_snapshot_sha256: 3055ad4cabdac249ddbc68047fe2a2bf5dce2f6216139800e8658ba34cd56b76
+    status_before: |2
+       M .pi/prompts/dual-review.md
+       M specs/epics/e02-project-local-dual-review/e02s01-tasks.yaml
+       M specs/epics/e02-project-local-dual-review/epic.yaml
+       M specs/execution-status.yaml
+       M specs/release-plan.yaml
+       M specs/state.yaml
+       M specs/verifications/AUDIT-e02-e02s01.md
+       M tests/test-package-recipes.sh
+       M tests/test-project-agent-wiring.sh
+    status_after: |2
+       M .pi/prompts/dual-review.md
+       M specs/epics/e02-project-local-dual-review/e02s01-tasks.yaml
+       M specs/epics/e02-project-local-dual-review/epic.yaml
+       M specs/execution-status.yaml
+       M specs/release-plan.yaml
+       M specs/state.yaml
+       M specs/verifications/AUDIT-e02-e02s01.md
+       M tests/test-package-recipes.sh
+       M tests/test-project-agent-wiring.sh
+    status_visible_comparison: unchanged
+    residual_limit: Status comparison does not prove ignored content was untouched or that content was not changed and restored.
+final_evidence_review:
+  rounds: 2
+  round_1:
+    reviewer_a:
+      score: 92.9
+      must_fix: 0
+      should_fix: 1
+      verdict: FAIL
+    reviewer_b:
+      score: 100
+      must_fix: 0
+      should_fix: 0
+      verdict: PASS
+    remediation: Persisted exact command provenance, status preimages, and new-path delivery classification.
+  round_2:
+    reviewer_a:
+      score: 100
+      must_fix: 0
+      should_fix: 0
+      verdict: PASS
+    reviewer_b:
+      score: 100
+      must_fix: 0
+      should_fix: 0
+      verdict: PASS
+    status_snapshot_bytes: 374
+    status_snapshot_sha256: 8a6956b85239d6a7287b9f23ad8f890c016ed21c5881db5f45e6c44446f8c814
+    status_visible_comparison: unchanged
+    focused_assertions: 128
+    focused_output_sha256: ca9e28434a78735515d8e801d76a48eabf74ad77e34e4d39ffb5ee2fe6b0daa5
+  and_gate: passed
+verification:
+  evidence_recorded_at: "2026-07-29T08:52:28Z"
+  command_runs:
+    - name: focused_contracts
+      command: 'tests/test-project-agent-wiring.sh "$PWD" && tests/test-package-recipes.sh "$PWD"'
+      completed_at: "2026-07-29T09:08:22Z"
+      exit_code: 0
+      output_lines: 128
+      output_sha256: ca9e28434a78735515d8e801d76a48eabf74ad77e34e4d39ffb5ee2fe6b0daa5
+      output_excerpt: All assertions reported "ok"; no failures were emitted.
+    - name: local_quality_gate
+      command: 'make -j"$(nproc)" && xvfb-run --auto-servernum make check && make lint'
+      exit_code: 0
+      output_excerpt: Build completed, all g_test and shell checks passed, and Cppcheck 2.19.0 reported no unsuppressed diagnostics.
+    - name: source_distribution
+      command: 'xvfb-run --auto-servernum make distcheck DISTCHECK_CONFIGURE_FLAGS="CFLAGS=-Wno-error=incompatible-pointer-types"'
+      exit_code: 0
+      output_excerpt: Distcheck completed and produced the source archive after running the distributed checks.
+    - name: diff_check
+      command: git diff --check
+      exit_code: 0
+      output_excerpt: No output.
+  focused_contracts: passed
+  build: passed
+  make_check: passed
+  lint: passed
+  distcheck: passed
+  distcheck_configuration: CFLAGS=-Wno-error=incompatible-pointer-types propagated with DISTCHECK_CONFIGURE_FLAGS for the separately logged GCC 15 compatibility defect.
+  diff_check: passed
+notes:
+  - A stale generated config.status from the preceding review run initially rejected po-directories; rerunning the documented configure step restored a valid build tree.
+  - Generated translation updates produced by build verification were restored byte-for-byte and are not part of the change.

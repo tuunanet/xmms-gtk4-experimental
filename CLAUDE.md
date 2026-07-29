@@ -98,5 +98,5 @@ Read `docs/architecture/` for subsystem diagrams and maintainer guidance.
 - Use the `team-pr` workflow mode.
 - Treat remote `main` as protected.
 - Merge every change through a pull request.
-- Project-local external-agent wiring is disabled.
+- Project-local external-agent wiring is enabled.
 <!-- END bigpowers:learned-preferences -->

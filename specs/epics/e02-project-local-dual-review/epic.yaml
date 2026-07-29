@@ -1,0 +1,17 @@
+schema_version: 1
+id: e02
+title: Project-local dual review
+wsjf: 3.0
+total_bcps: 5
+status: verified
+stories:
+  - id: e02s01
+    title: Enable project-local dual review
+    bcps: 5
+    status: verified
+    delta: ADDED
+    spec: e02s01-enable-project-local-dual-review.md
+    tasks: e02s01-tasks.yaml
+references:
+  scope: ../../product/SCOPE_LATEST.yaml
+  impact: ../../IMPACT_LATEST.md

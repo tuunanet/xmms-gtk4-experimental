@@ -1,26 +1,26 @@
 schema_version: 1
 release:
-  codename: C lint regression gate
+  codename: Project-local dual review
   version: null
-  bump_hint: patch
-  status: in_progress
+  bump_hint: minor
+  status: verified
   semantic_release: true
-status: in_progress
+status: verified
 epics:
-  - id: e01
-    title: C lint regression gate
-    capsule_dir: epics/e01-c-lint-regression-gate
-    wsjf: 2.4
-    bcps: 8
+  - id: e02
+    title: Project-local dual review
+    capsule_dir: epics/e02-project-local-dual-review
+    wsjf: 3.0
+    bcps: 5
     score:
-      business_value: 6
-      time_criticality: 5
+      business_value: 7
+      time_criticality: 6
       risk_reduction: 8
-      job_size: 8
+      job_size: 7
 bugs:
-  total: 0
+  total: 1
   fixed: 0
   deferred: 0
   wontfix: 0
-  open: 0
+  open: 1
   registry: specs/bugs/registry.yaml

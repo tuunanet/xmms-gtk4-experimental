@@ -1,0 +1,67 @@
+schema_version: 1
+story_id: e02s01
+title: Enable project-local dual review
+spec: e02s01-enable-project-local-dual-review.md
+status: passing
+risk: P0
+bcps: 5
+tasks:
+  - id: t1
+    description: Add failing contract checks for the pinned package declaration, generated-cache exclusion, reviewer definitions, and dual-review prompt.
+    verify: tests/test-project-agent-wiring.sh "$PWD"
+    risk: P0
+    security: high
+    status: passing
+    allure:
+      severity: critical
+      categories:
+        - agent infrastructure
+        - supply chain
+        - security review
+  - id: t2
+    description: Add the pinned project package settings, ignore generated project package contents, and define the two non-editing reviewer roles.
+    verify: tests/test-project-agent-wiring.sh "$PWD" && git check-ignore -q .pi/npm/example
+    risk: P0
+    security: high
+    status: passing
+    allure:
+      severity: critical
+      categories:
+        - agent infrastructure
+        - trust boundary
+        - security review
+  - id: t3
+    description: Add the dual-review prompt and project instructions that implement the request-review parallel AND gate.
+    verify: tests/test-project-agent-wiring.sh "$PWD" && rg -q 'external-agent wiring is enabled' CLAUDE.md
+    risk: P1
+    security: medium
+    status: passing
+    allure:
+      severity: high
+      categories:
+        - agent workflow
+        - request review
+        - security review
+  - id: t4
+    description: Install and exercise the pinned package with two isolated project reviewers, then compare status-visible repository contents before and after each review round.
+    verify: "test -f specs/verifications/e02s01-verify.yaml && grep -q 'dual_review: passed' specs/verifications/e02s01-verify.yaml"
+    risk: P0
+    security: high
+    status: passing
+    allure:
+      severity: critical
+      categories:
+        - end-to-end
+        - isolation
+        - security review
+  - id: t5
+    description: Run the unchanged XMMS local quality gate.
+    verify: make -j"$(nproc)" && xvfb-run --auto-servernum make check
+    risk: P1
+    security: low
+    status: passing
+    allure:
+      severity: high
+      categories:
+        - regression
+        - compatibility

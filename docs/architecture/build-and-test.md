@@ -139,6 +139,7 @@ tested without the full codec stack.
 | --- | --- |
 | `test-intl-generated-sources.sh` | i18n/generated source consistency |
 | `test-package-recipes.sh` | Debian packaging expectations |
+| `test-project-agent-wiring.sh` | Pinned local reviewer package, role parity, tool restrictions, and dual-review gate contract |
 | `test-plugin-linkage.sh` | Built plugins link sanely |
 | `test-release-tools.sh` | `check-release-version` / changelog extraction |
 
@@ -167,6 +168,12 @@ Existing diagnostics are recorded narrowly as `diagnostic-id:path:line` in
 output: maintainers update individual entries only after triage, explain the
 change in the pull request, and reject broad project-wide suppressions. Ubuntu
 24.04's packaged Cppcheck is the authoritative CI version.
+
+Project-local Pi review configuration lives under `.pi/`. The pinned subagent
+package is installed only after project trust into ignored `.pi/npm/` contents;
+its two reviewer roles run locally and interactively, never in CI. The checked-in
+settings, agents, prompt, and static contract test are source-distributed so the
+review contract can be inspected before trust approval.
 
 `tests/test-c-lint.sh` verifies missing-tool errors, analyzer arguments, source
 scope, the accepted baseline, and rejection of a representative uninitialized

@@ -1,12 +1,13 @@
 schema_version: 1
-phase: discover
+phase: build
 status: ready
 steps:
   survey_context: completed
   map_codebase: completed
   seed_conventions: completed
-  scope_work: pending
-  research_first: pending
-  elaborate_spec: pending
-  plan_release: pending
-  slice_tasks: pending
+  scope_work: completed
+  research_first: completed
+  elaborate_spec: completed
+  plan_release: completed
+  slice_tasks: completed
+  plan_work: completed

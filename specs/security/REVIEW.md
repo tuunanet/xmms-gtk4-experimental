@@ -1,38 +1,42 @@
 # Security Review
 
-- Generated: 2026-07-28T14:30:24Z
-- Branch: `chore/c-lint-gate`
+- Generated: 2026-07-29T08:52:28Z
+- Branch: `chore/project-agent-reviewers`
 - Base: `origin/main`
-- Reviewed implementation head: `9cb078d`
-- Scope: Cppcheck runner, suppression baseline, shell tests, Autotools targets, CI workflow, documentation, and lifecycle specifications
+- Reviewed implementation head: `0ff8a11`
+- Scope: pinned Pi package settings, project reviewer definitions, dual-review prompt, shell contracts, source-distribution wiring, documentation, and lifecycle specifications
 
 ## Verdict
 
-PASS — no reportable findings with confidence 8 or higher.
+PASS — no reportable vulnerability with confidence 8 or higher.
 
 ## Threat Model
 
-- **Inputs:** Trusted checked-out C sources, checked-in suppression entries, contributor `PATH`, and CI's Ubuntu package repository.
-- **Trust boundaries:** Shell execution of the `cppcheck` executable and GitHub-hosted package installation.
-- **Sensitive assets:** Branch-protection result integrity; no application secrets, user data, or runtime credentials are involved.
-- **Failure mode:** An unsuppressed diagnostic or missing analyzer exits non-zero and blocks the gate.
+- **Inputs:** Trusted repository configuration, maintainer-supplied review focus, repository files, verification commands selected from reviewed specifications, and model-generated reviewer output.
+- **Trust boundaries:** Project trust approval; npm package installation; local Pi extension execution; reviewer `bash` execution; model output returned to the parent session.
+- **Sensitive assets:** Contributor workstation files, Git working-tree integrity, model credentials held by Pi, and pull-request quality-gate integrity.
+- **Failure modes:** Malicious package code, repository prompt manipulation, reviewer shell mutation, missing or partial reports, model prompt injection, or an AND gate that accepts incomplete evidence.
 
 ## Assessment
 
-- `tools/run-c-lint.sh` quotes derived paths, performs no network access, and executes one expected analyzer from `PATH`.
-- `tests/test-c-lint.sh` uses `mktemp`, quotes cleanup paths, and confines destructive cleanup to its generated temporary directory.
-- CI, release, release-candidate, and package workflows retain read-only permissions and install Cppcheck through the existing Ubuntu package channel.
-- Debian declares Cppcheck only as a source-package build dependency because `dh_auto_test` executes the lint contracts; runtime packages do not depend on it.
-- All 90 union-baseline suppressions are diagnostic-, file-, and line-specific; no global diagnostic-ID suppression can silently hide repository-wide defects.
-- The authoritative Cppcheck 2.13.0 and local Cppcheck 2.19.0 both pass; version-specific findings remain narrowly scoped.
-- No credentials, private keys, tokens, unsafe deserialization, attacker-controlled runtime sinks, or privilege escalation were introduced.
-- Runtime code, plugin ABI, `libxmms` API, socket commands, configuration paths, skins, and GTK2 behavior are unchanged.
+- `.pi/settings.json` pins exactly `@bacnh85/pi-subagent@0.12.2`; npm audit reported zero known vulnerabilities.
+- The approved package source was inspected before adoption. Published peer metadata covers installed Pi 0.82.1; the stale README compatibility sentence is explicitly documented and end-to-end execution is required.
+- Project settings do not enable `allowUnconfirmedProjectAgents` or `allowExternalCwd`. Interactive project-agent approval and workspace containment remain package defaults.
+- Reviewer frontmatter omits `edit`, `write`, and recursive `subagent` tools. `bash` remains intentionally available for independent verification and is constrained by the higher-priority reviewer system prompt.
+- The dual-review prompt uses one parallel call, identical task text, two isolated roles, wait-for-both handling, a five-round cap, and an AND gate requiring zero must-fix findings plus scores of at least 94.
+- Potentially sensitive untracked content fails closed before dispatch rather than being copied into a model brief.
+- Status comparison detects ordinary tracked-path and untracked-path changes but is not a filesystem sandbox. The prompt and story now state that ignored writes and mutate-then-restore behavior remain residual trusted-agent risks.
+- Child reports are treated as untrusted model output and do not authorize merge or arbitrary execution.
+- No secrets, credentials, tokens, direct GitHub API calls, unsafe deserialization, attacker-controlled shell interpolation, or privilege escalation were introduced.
+- `.pi/npm/`, model output, sessions, package caches, and build artifacts are excluded from commits; inspectable settings and reviewer contracts are source-distributed.
 
 ## Findings
 
-None.
+None at confidence 8 or higher.
 
 ## Residual Risks
 
-- A compromised executable earlier on a contributor's `PATH` could run in place of Cppcheck; this is standard local toolchain trust and CI uses a controlled package installation.
-- Analyzer-version drift can change diagnostics; Ubuntu 24.04 CI is authoritative and baseline changes require review.
+- The pinned extension executes with contributor privileges after project trust. Version updates require renewed source review and explicit pin changes.
+- Reviewer `bash` is policy-restricted rather than OS-sandboxed. A malicious or compromised reviewer could target ignored files or restore modified content before status comparison.
+- Parallel sessions multiply provider usage and cost.
+- Model output may contain inaccurate findings or prompt-injected instructions; the parent must validate evidence and enforce the AND gate.

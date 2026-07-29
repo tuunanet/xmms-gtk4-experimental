@@ -1,20 +1,20 @@
 schema_version: 1
 project: xmms-classic
 workflow_mode: team-pr
-active_flow: release
-active_epic_id: e01
-active_story_id: e01s01
+active_flow: release_branch
+active_epic_id: e02
+active_story_id: e02s01
 active_bug_id: null
 git:
-  branch: chore/c-lint-gate
-  head: 54e9a61
-  worktree: /home/tuunanet/git/tuunanet/c-lint-gate
+  branch: chore/project-agent-reviewers
+  head: 0ff8a11
+  worktree: /home/tuunanet/git/tuunanet/project-agent-reviewers
 handoff:
   status: ready
   next_skill: release-branch
-  reason: Final release gates passed; open the team-pr pull request and require live CI before merge.
+  reason: Interactive UAT, full verification, audit, security review, and final dual review all pass with two 100-point reviewers and no findings.
 metrics:
-  story_start: null
+  story_start: "2026-07-29T07:34:36Z"
 release:
   last_tag: null
   last_publish: null

@@ -258,6 +258,14 @@ runtime failures, and keep GTK reporting on the main thread.
 - Locking is local and manual rather than enforced by types; nearby code is
   the primary source for lock ordering and lifecycle rules.
 
+### Agent-assisted review
+
+Repository-local Pi configuration under `.pi/` supplies an optional maintainer
+quality gate. A pinned `@bacnh85/pi-subagent` package discovers two non-editing
+XMMS reviewer roles and runs them in isolated local SDK sessions. Project trust
+and interactive agent approval remain mandatory; model-backed review does not
+run in CI or affect XMMS runtime and packaging dependencies.
+
 ### Observability
 
 Observability is desktop-oriented and unstructured:
@@ -272,8 +280,8 @@ regression tests, and reproduction against specific plugins/devices.
 
 ## Testing strategy
 
-`make check` currently orchestrates ten focused C executables and four shell
-checks.
+`make check` currently orchestrates ten focused C executables and six shell
+checks, including static C lint and project-agent wiring contracts.
 
 - C tests use GLib `g_test_*` and assertions.
 - Several tests compile selected production `.c` files directly with section

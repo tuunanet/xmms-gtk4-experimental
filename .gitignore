@@ -43,6 +43,8 @@
 /wmxmms.1
 /tests/test-xentry
 /tests/test-filebrowser
+/tests/test-font-load
+/tests/test-mpg123-file-duration
 /tests/test-mpg123-stream-position
 /tests/test-popup-position
 /tests/test-pluginenum
@@ -55,5 +57,6 @@
 /xmms-[0-9]*.tar.*
 /deb-artifacts/
 
-# Agent / Repomix working packs (do not commit)
+# Agent / Repomix generated contents (do not commit)
+/.pi/npm/
 .repomix/
