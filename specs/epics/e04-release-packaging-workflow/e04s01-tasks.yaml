@@ -11,7 +11,7 @@ tasks:
     verify: "tests/test-package-recipes.sh \"$PWD\""
     risk: P0
     security: high
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [release, github-actions, permissions, artifacts]
@@ -21,7 +21,7 @@ tasks:
     verify: "tests/test-package-recipes.sh \"$PWD\" && xvfb-run --auto-servernum make check"
     risk: P0
     security: medium
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [release, packaging, gtk3, matrix]

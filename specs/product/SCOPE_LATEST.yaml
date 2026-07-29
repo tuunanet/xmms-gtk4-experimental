@@ -39,7 +39,7 @@ success_criteria:
   - The workflow creates or resumes only a draft release and never silently publishes or overwrites a published release.
   - Repository tests and release documentation assert the generic workflow filename, fork branding, GTK3 dependency, and release safety contract.
 prior_art:
-  - candidate: ../xmms-gtk2/.github/workflows/package-linux-mint.yml
+  - candidate: ../xmms-gtk2/.github/workflows/release-linux-packages.yml
     verdict: adopt-and-adapt
     notes: Proven manually dispatched Linux Mint 22.3 plus Ubuntu 26.04 package matrix, checksum, package smoke-test, and draft-release flow; rename and adapt branding/dependencies for this fork.
   - candidate: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
