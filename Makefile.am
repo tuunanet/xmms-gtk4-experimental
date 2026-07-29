@@ -8,21 +8,12 @@ EXTRA_DIST = \
 	.editorconfig \
 	.gitattributes \
 	.gitignore \
-	.pi/agents/xmms-reviewer-a.md \
-	.pi/agents/xmms-reviewer-b.md \
-	.pi/prompts/dual-review.md \
-	.pi/settings.json \
 	.github/dependabot.yml \
 	.github/ISSUE_TEMPLATE/bug_report.yml \
 	.github/ISSUE_TEMPLATE/config.yml \
 	.github/ISSUE_TEMPLATE/feature_request.yml \
 	.github/pull_request_template.md \
-	.github/workflows/ci.yml \
-	.github/workflows/package-release.yml \
-	.github/workflows/release-candidate.yml \
-	.github/workflows/release.yml \
 	CHANGELOG.md \
-	CLAUDE.md \
 	CODE_OF_CONDUCT.md \
 	CONTRIBUTING.md \
 	CONVENTIONS.md \
@@ -61,7 +52,6 @@ EXTRA_DIST = \
 	tests/test-mpg123-stream-position.c \
 	tests/test-outputplugin.c \
 	tests/test-package-recipes.sh \
-	tests/test-project-agent-wiring.sh \
 	tests/test-plugin-linkage.sh \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \

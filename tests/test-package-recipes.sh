@@ -49,13 +49,7 @@ require_absent_text()
 }
 
 for file in \
-	.github/workflows/package-release.yml \
-	.pi/agents/xmms-reviewer-a.md \
-	.pi/agents/xmms-reviewer-b.md \
-	.pi/prompts/dual-review.md \
-	.pi/settings.json \
 	tests/test-c-lint.sh \
-	tests/test-project-agent-wiring.sh \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
 	packaging/xmms.desktop \
@@ -86,56 +80,12 @@ require_text tests/Makefile 'test-c-lint:' \
 	'runs C lint contract tests from make check'
 require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
-for resource in \
-	.pi/agents/xmms-reviewer-a.md \
-	.pi/agents/xmms-reviewer-b.md \
-	.pi/prompts/dual-review.md \
-	.pi/settings.json
-do
-	require_text Makefile.am "$resource" \
-		"distributes $resource from the authoritative build metadata"
-	require_text Makefile.in "$resource" \
-		"distributes $resource from the shipped build metadata"
-done
-for manifest in packaging/debian/xmms.install packaging/debian/libxmms-dev.install
-do
-	require_absent_text "$manifest" '.pi/' \
-		"keeps project-agent resources out of $manifest"
-done
-require_text Makefile.am 'CLAUDE.md' \
-	'distributes project instructions required by local reviewers'
-require_text Makefile.am 'CONVENTIONS.md' \
-	'distributes repository conventions required by local reviewers'
-require_text Makefile.am '.gitignore' \
-	'distributes ignore contracts checked by project-agent tests'
-require_text Makefile.am 'tests/test-project-agent-wiring.sh' \
-	'distributes the project-agent contract test'
-require_text tests/Makefile 'test-project-agent-wiring:' \
-	'runs project-agent contract checks from make check'
 require_text Makefile.am 'docs/architecture/build-and-test.md' \
 	'distributes the C lint architecture guide'
 require_text Makefile.am 'tools/build-deb.sh' \
 	'builds Debian packages through the shared helper'
-require_text .github/workflows/ci.yml 'cppcheck \' \
-	'installs the supported C analyzer in full CI'
-require_text .github/workflows/release.yml 'cppcheck \' \
-	'installs the C analyzer for release tests'
-require_text .github/workflows/release-candidate.yml 'cppcheck \' \
-	'installs the C analyzer for release-candidate tests'
-require_text .github/workflows/package-release.yml 'cppcheck \' \
-	'installs the C analyzer for Debian package tests'
 require_text packaging/debian/control ' cppcheck,' \
 	'declares the C analyzer as a Debian build dependency'
-require_text .github/workflows/ci.yml 'name: Lint C sources' \
-	'runs C lint as a named CI step'
-require_text .github/workflows/ci.yml 'timeout-minutes: 5' \
-	'bounds the C lint CI step'
-require_text .github/workflows/ci.yml 'run: make lint' \
-	'reuses the public C lint target in CI'
-require_absent_text .github/workflows/ci.yml "- '!tools/**'" \
-	'keeps lint control tools build-affecting'
-require_absent_text .github/workflows/ci.yml "- '!tests/**'" \
-	'keeps lint contract tests build-affecting'
 require_text CONTRIBUTING.md 'make lint' \
 	'documents the local C lint command'
 require_text CONTRIBUTING.md 'suppression baseline' \
@@ -144,53 +94,6 @@ require_text docs/architecture/build-and-test.md 'Cppcheck' \
 	'documents the C lint architecture'
 require_text docs/architecture/build-and-test.md 'tools/cppcheck-suppressions.txt' \
 	'documents the lint baseline path'
-require_text .github/workflows/ci.yml 'make deb' \
-	'builds Debian packages before release candidates'
-require_text .github/workflows/release-candidate.yml 'make deb' \
-	'builds candidate Debian packages through the public target'
-require_text .github/workflows/release-candidate.yml \
-	'sha256sum "$archive" *.deb' \
-	'includes Debian packages in candidate checksums'
-require_text .github/workflows/release-candidate.yml \
-	'sudo apt-get install -y "$runtime" "$devel"' \
-	'installs candidate Debian packages before upload'
-require_text .github/workflows/package-release.yml 'make deb' \
-	'reuses the public target for final Debian packages'
-require_text .github/workflows/package-release.yml 'workflow_dispatch:' \
-	'requires manual package publication'
-require_text .github/workflows/package-release.yml 'runs-on: ubuntu-24.04' \
-	'builds DEBs on the declared Ubuntu target'
-require_absent_text .github/workflows/package-release.yml 'container: fedora:42' \
-	'does not build RPM packages'
-require_absent_text .github/workflows/package-release.yml 'build-rpm' \
-	'does not define an RPM package job'
-require_text .github/workflows/package-release.yml 'runtime=$(realpath' \
-	'installs Debian artifacts by explicit local paths'
-require_text .github/workflows/package-release.yml \
-	'rm -rf "$source_dir/packaging"' \
-	'replaces bundled recipes without nesting directories'
-require_text .github/workflows/package-release.yml \
-	'must be an unpublished draft release' \
-	'requires packages to be attached before publication'
-require_text .github/workflows/package-release.yml \
-	'Draft releases and their assets are only visible to tokens with write' \
-	'grants draft validation the permission needed to read unpublished assets'
-require_text .github/workflows/package-release.yml \
-	'Refusing to replace existing release asset' \
-	'protects draft package assets from replacement'
-require_text .github/workflows/package-release.yml "tr '~' '.'" \
-	'uses GitHub-safe Debian asset names'
-require_text .github/workflows/package-release.yml \
-	'/usr/lib/x86_64-linux-gnu/xmms/Input/libmpg123.so' \
-	'checks installed Debian MP3 plugin linkage'
-require_text .github/workflows/package-release.yml \
-	"grep 'undefined symbol: .*_ZGV'" \
-	'rejects unresolved vector math symbols in packaged MP3 plugins'
-require_absent_text .github/workflows/package-release.yml \
-	'must be a published stable release' \
-	'does not require an already immutable release'
-require_absent_text .github/workflows/package-release.yml '--clobber' \
-	'never clobbers release package assets'
 require_text packaging/xmms.desktop 'Name=XMMS Classic' \
 	'uses current branding in the desktop entry'
 require_text packaging/xmms.desktop 'Exec=xmms %U' \
