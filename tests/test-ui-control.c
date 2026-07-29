@@ -40,6 +40,26 @@ static void test_pressed_pointer_tracks_leave_and_reentry(void)
 	g_assert_cmpint(result, ==, XMMS_UI_CONTROL_NONE);
 }
 
+static void test_primary_release_inside_activates_once(void)
+{
+	XmmsUiButtonState state;
+	XmmsUiControlResult result;
+
+	xmms_ui_button_init(&state, 39, 88, 23, 18);
+	xmms_ui_button_handle_pointer(&state, XMMS_UI_POINTER_PRESS, 1, 40, 89);
+
+	result = xmms_ui_button_handle_pointer(&state, XMMS_UI_POINTER_RELEASE,
+					       1, 40, 89);
+	g_assert_false(state.pressed);
+	g_assert_false(state.inside);
+	g_assert_true((result & XMMS_UI_CONTROL_REDRAW) != 0);
+	g_assert_true((result & XMMS_UI_CONTROL_ACTIVATE) != 0);
+
+	result = xmms_ui_button_handle_pointer(&state, XMMS_UI_POINTER_RELEASE,
+					       1, 40, 89);
+	g_assert_cmpint(result, ==, XMMS_UI_CONTROL_NONE);
+}
+
 int main(int argc, char **argv)
 {
 	g_test_init(&argc, &argv, NULL);
@@ -47,5 +67,7 @@ int main(int argc, char **argv)
 			test_primary_press_inside_requests_redraw);
 	g_test_add_func("/ui-control/pointer-leave-reentry",
 			test_pressed_pointer_tracks_leave_and_reentry);
+	g_test_add_func("/ui-control/primary-release-activation",
+			test_primary_release_inside_activates_once);
 	return g_test_run();
 }
