@@ -53,8 +53,8 @@ test-pbutton-baseline: $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbut
 test-ui-control: $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(LDLIBS)
 
-test-gtk3-play-button-proof: $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h $(top_srcdir)/xmms/ui_gtk3_control.h
-	$(CC) $(CPPFLAGS) $(BASE_CFLAGS) $(GTK3_CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(BASE_LDLIBS) $(GTK3_LIBS)
+test-gtk3-play-button-proof: $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h $(top_srcdir)/xmms/ui_gtk3_control.c $(top_srcdir)/xmms/ui_gtk3_control.h
+	$(CC) $(CPPFLAGS) $(BASE_CFLAGS) $(GTK3_CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_gtk3_control.c $(BASE_LDLIBS) $(GTK3_LIBS)
 
 test-pluginenum: CFLAGS += -ffunction-sections -fdata-sections -DBUILD_PLUGIN_DIR=\"$(CURDIR)/test-plugins\" -DPLUGIN_DIR=\"/nonexistent\" -DPLUGINSUBS='"Output","Input"'
 test-pluginenum: LDFLAGS += -Wl,--gc-sections
