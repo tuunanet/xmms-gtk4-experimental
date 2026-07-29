@@ -48,7 +48,6 @@ EXTRA_DIST = \
 	tests/test-font-load.c \
 	tests/test-c-lint.sh \
 	tests/test-intl-generated-sources.sh \
-	tests/test-keyboard-shortcuts.c \
 	tests/test-mpg123-file-duration.c \
 	tests/test-mpg123-stream-position.c \
 	tests/test-outputplugin.c \

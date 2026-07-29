@@ -4,6 +4,7 @@
 # Autotools configuration output
 /Makefile
 **/Makefile
+!/tests/Makefile
 /config.h
 /libxmms/config.h
 /config.log
