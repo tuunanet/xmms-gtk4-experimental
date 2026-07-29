@@ -1,12 +1,23 @@
 schema_version: 1
 release:
-  codename: GTK4 experimental identity
+  codename: GTK migration foundation
   version: 0.0.1
   bump_hint: none
-  status: in_progress
+  status: planning
   semantic_release: true
-status: in_progress
+status: planning
 epics:
+  - id: e03
+    title: Prove the first staged GTK migration slice
+    capsule_dir: epics/e03-gtk-migration-foundation
+    wsjf: 5.4
+    bcps: 16
+    status: planned
+    score:
+      business_value: 8
+      time_criticality: 9
+      risk_reduction: 10
+      job_size: 5
   - id: e02
     title: Establish GTK4 experimental identity
     capsule_dir: epics/e02-gtk4-experimental-identity

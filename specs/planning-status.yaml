@@ -1,12 +1,16 @@
 schema_version: 1
 phase: plan
-status: ready
+status: awaiting_approval
 steps:
   survey_context: completed
-  assess_impact: completed
   scope_work: completed
-  research_first: skipped
+  assess_impact: completed
+  research_first: completed
   elaborate_spec: completed
   plan_release: completed
   slice_tasks: completed
+  plan_tests: completed
   plan_work: completed
+notes:
+  - ADR-0001 records the user-approved GTK-major plugin UI policy.
+  - Repository has no plan-consistency-check script; capsule consistency was validated manually.

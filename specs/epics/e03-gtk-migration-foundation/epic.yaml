@@ -1,0 +1,34 @@
+schema_version: 1
+id: e03
+title: Prove the first staged GTK migration slice
+wsjf: 5.4
+total_bcps: 16
+risk: P0
+status: planned
+adr:
+  - ../../adr/ADR-0001-staged-gtk-migration.md
+stories:
+  - id: e03s01
+    title: Lock Play-button skin and interaction behavior
+    bcps: 3
+    risk: P1
+    status: planned
+    delta: ADDED
+    spec: e03s01-play-button-baseline.md
+    tasks: e03s01-tasks.yaml
+  - id: e03s02
+    title: Route the GTK2 Play button through a toolkit-neutral boundary
+    bcps: 5
+    risk: P0
+    status: planned
+    delta: MODIFIED
+    spec: e03s02-gtk2-play-button-boundary.md
+    tasks: e03s02-tasks.yaml
+  - id: e03s03
+    title: Prove the Play-button boundary in a separate GTK3 harness
+    bcps: 8
+    risk: P0
+    status: planned
+    delta: ADDED
+    spec: e03s03-gtk3-play-button-proof.md
+    tasks: e03s03-tasks.yaml

@@ -1,20 +1,20 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: release
-active_epic_id: e02
-active_story_id: e02s01
+active_flow: plan_work
+active_epic_id: e03
+active_story_id: e03s01
 active_bug_id: null
 git:
-  branch: chore/rebrand-gtk4-experimental
-  head: 247c1eb
+  branch: plan/gtk-migration-foundation
+  head: ca6680b
   worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
 handoff:
-  status: ready
-  next_skill: release-branch
-  reason: Rebrand, version reset, and discovered baseline fixes pass local build, test, package, release, and distcheck gates.
+  status: awaiting_approval
+  next_skill: develop-tdd
+  reason: GTK migration foundation scope, impact assessment, ADR, prior-art research, slices, test architecture, and implementation tasks are drafted; implementation awaits plan approval.
 metrics:
-  story_start: 2026-07-29T11:14:55Z
+  story_start: 2026-07-29T17:00:00Z
 release:
   last_tag: null
   last_publish: null
