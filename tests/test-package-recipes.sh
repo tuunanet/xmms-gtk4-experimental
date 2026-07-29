@@ -50,6 +50,7 @@ require_absent_text()
 
 for file in \
 	tests/test-c-lint.sh \
+	tests/test-gtk3-play-button-proof.c \
 	tests/test-pbutton-baseline.c \
 	tests/test-ui-control.c \
 	tools/cppcheck-suppressions.txt \
@@ -88,6 +89,16 @@ require_text tests/Makefile 'test-ui-control:' \
 	'runs the toolkit-neutral control tests from make check'
 require_text Makefile.am 'tests/test-ui-control.c' \
 	'distributes the toolkit-neutral control tests'
+require_text tests/Makefile 'test-gtk3-play-button-proof:' \
+	'runs the isolated GTK3 Play-button proof from make check'
+require_text Makefile.am 'tests/test-gtk3-play-button-proof.c' \
+	'distributes the isolated GTK3 Play-button proof'
+require_text configure.in '--disable-gtk3-proof' \
+	'exposes an explicit GTK3 proof configure policy'
+require_text configure.in 'gtk+-3.0 >= 3.24' \
+	'detects the supported GTK3 bridge version'
+require_text packaging/debian/control 'libgtk-3-dev' \
+	'declares the GTK3 proof build dependency'
 require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
 require_text Makefile.am 'docs/architecture/build-and-test.md' \
