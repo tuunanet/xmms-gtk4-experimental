@@ -49,6 +49,7 @@ require_absent_text()
 }
 
 for file in \
+	.github/workflows/package-release.yml \
 	tests/test-c-lint.sh \
 	tests/test-gtk3-play-button-proof.c \
 	tests/test-pbutton-baseline.c \
@@ -67,6 +68,32 @@ do
 	require_file "$file"
 done
 
+require_text .github/workflows/package-release.yml 'workflow_dispatch:' \
+	'exposes a manual release-package dispatch'
+require_text .github/workflows/package-release.yml 'version:' \
+	'requires a release version input'
+require_text .github/workflows/package-release.yml 'refs/tags/v${VERSION}' \
+	'guards the matching release tag'
+require_text .github/workflows/package-release.yml 'git cat-file -t' \
+	'requires an annotated release tag'
+require_text .github/workflows/package-release.yml 'target_id: linuxmint' \
+	'packages the Linux Mint target'
+require_text .github/workflows/package-release.yml 'target_id: ubuntu' \
+	'packages the Ubuntu target'
+require_text .github/workflows/package-release.yml 'libgtk-3-dev' \
+	'installs the GTK3 proof dependency'
+require_text .github/workflows/package-release.yml 'contents: write' \
+	'limits release mutation to an explicit write permission'
+require_text .github/workflows/package-release.yml 'sha256sum --check SHA256SUMS' \
+	'verifies release asset checksums'
+require_text .github/workflows/package-release.yml 'gh release create' \
+	'creates a GitHub release through the CLI'
+require_text .github/workflows/package-release.yml '--draft' \
+	'creates an unpublished draft release'
+require_text .github/workflows/package-release.yml 'XMMS GTK4 Experimental' \
+	'uses fork branding in release metadata'
+require_absent_text .github/workflows/package-release.yml 'XMMS GTK2' \
+	'does not use the donor project branding'
 require_text Makefile.am 'deb:' \
 	'exposes a top-level make deb target'
 require_text Makefile.am '$(MAKE) dist-gzip' \
