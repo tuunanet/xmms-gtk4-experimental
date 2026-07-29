@@ -28,7 +28,8 @@ Primary compatibility surfaces:
 ### Language and runtime
 
 - Predominantly C with GLib scalar/container types and manual memory ownership.
-- GTK+ 2 and GLib 2 are required; `configure.in` declares a minimum of 2.0.0.
+- GTK+ 2 and GLib 2 remain required by the production player; `configure.in` declares a minimum of 2.0.0.
+- GTK+ 3 >= 3.24 is auto-detected for a separately linked Play-button migration proof and can be disabled explicitly for legacy build environments.
 - POSIX threads provide decoder, output, playlist-metadata, and control-socket
   concurrency.
 - X11 integration covers the desktop UI, docking, session management, and
@@ -65,6 +66,7 @@ Required or foundational:
 
 - C compiler (GCC or Clang)
 - GTK+ 2, GLib 2 with gthread
+- GTK+ 3 >= 3.24 for the enabled migration-proof gate; it is not linked into the production GTK2 process
 - POSIX threads
 - libtool/dynamic-loader support
 - X11 libraries used by GTK and optional session/video integrations
@@ -272,14 +274,15 @@ regression tests, and reproduction against specific plugins/devices.
 
 ## Testing strategy
 
-`make check` currently orchestrates ten focused C executables and four shell
-checks.
+`make check` currently orchestrates thirteen focused C executables and five shell
+checks when the GTK3 migration proof is enabled.
 
 - C tests use GLib `g_test_*` and assertions.
 - Several tests compile selected production `.c` files directly with section
   garbage collection, keeping tests small without starting the full player.
 - Fixture Input/Output shared objects validate build-tree plugin discovery.
 - GTK geometry and font tests need an X11 display; CI uses Xvfb.
+- Play-button migration tests lock GTK2 behavior, exercise toolkit-neutral state without a display, and prove GTK3 rendering/activation in a separate executable whose linkage rejects GTK2.
 - ALSA and mpg123 tests target extracted state/position or fallback behavior.
 - Shell tests cover generated i18n sources, plugin linkage, packaging recipes,
   and release tooling.

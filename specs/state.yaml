@@ -2,19 +2,19 @@ schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
 active_flow: release
-active_epic_id: e02
-active_story_id: e02s01
+active_epic_id: e03
+active_story_id: e03s03
 active_bug_id: null
 git:
-  branch: chore/rebrand-gtk4-experimental
-  head: 247c1eb
+  branch: plan/gtk-migration-foundation
+  head: 955c5ef
   worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
 handoff:
   status: ready
   next_skill: release-branch
-  reason: Rebrand, version reset, and discovered baseline fixes pass local build, test, package, release, and distcheck gates.
+  reason: User-confirmed UAT, P0 verification, security review, NFR gate, and self-audit pass; traceability is waived because the repository lacks the required gate scripts.
 metrics:
-  story_start: 2026-07-29T11:14:55Z
+  story_start: 2026-07-29T17:00:00Z
 release:
   last_tag: null
   last_publish: null

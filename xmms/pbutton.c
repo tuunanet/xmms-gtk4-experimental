@@ -16,81 +16,91 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 #include "xmms.h"
+#include "ui_control.h"
+
+static void pbutton_get_control_state(const PButton *button,
+				      XmmsUiButtonState *state)
+{
+	xmms_ui_button_init(state, button->pb_widget.x, button->pb_widget.y,
+			    button->pb_widget.width, button->pb_widget.height);
+	state->visible = button->pb_widget.visible;
+	state->pressed = button->pb_pressed;
+	state->inside = button->pb_inside;
+}
+
+static void pbutton_apply_control_result(PButton *button,
+					 const XmmsUiButtonState *state,
+					 XmmsUiControlResult result)
+{
+	button->pb_pressed = state->pressed;
+	button->pb_inside = state->inside;
+
+	if (result & XMMS_UI_CONTROL_REDRAW)
+		draw_widget(button);
+	if ((result & XMMS_UI_CONTROL_ACTIVATE) && button->pb_push_cb)
+		button->pb_push_cb();
+}
 
 void pbutton_draw(Widget * w)
 {
 	PButton *button = (PButton *) w;
-	GdkPixmap *obj;
+	XmmsUiButtonState state;
+	XmmsUiButtonSprites sprites;
+	XmmsUiDrawCommand command;
 
-	if (button->pb_allow_draw)
-	{
-		obj = button->pb_widget.parent;
+	if (!button->pb_allow_draw)
+		return;
 
-		if (button->pb_pressed && button->pb_inside)
-		{
-			skin_draw_pixmap(obj, button->pb_widget.gc,
-					 button->pb_skin_index2, button->pb_px,
-					 button->pb_py, button->pb_widget.x,
-					 button->pb_widget.y,
-					 button->pb_widget.width,
-					 button->pb_widget.height);
-		}
-		else
-		{
-			skin_draw_pixmap(obj, button->pb_widget.gc,
-					 button->pb_skin_index1,
-					 button->pb_nx, button->pb_ny,
-					 button->pb_widget.x, button->pb_widget.y,
-					 button->pb_widget.width,
-					 button->pb_widget.height);
-		}
-	}
+	pbutton_get_control_state(button, &state);
+	sprites.normal_sprite_id = button->pb_skin_index1;
+	sprites.normal_x = button->pb_nx;
+	sprites.normal_y = button->pb_ny;
+	sprites.pressed_sprite_id = button->pb_skin_index2;
+	sprites.pressed_x = button->pb_px;
+	sprites.pressed_y = button->pb_py;
+	xmms_ui_button_get_draw_command(&state, &sprites, &command);
+
+	skin_draw_pixmap(button->pb_widget.parent, button->pb_widget.gc,
+			 (SkinIndex) command.sprite_id,
+			 command.source_x, command.source_y,
+			 command.destination_x, command.destination_y,
+			 command.width, command.height);
 }
 
 void pbutton_button_press_cb(GtkWidget * widget, GdkEventButton * event, gpointer data)
 {
 	PButton *button = data;
+	XmmsUiButtonState state;
+	XmmsUiControlResult result;
 
-	if (event->button != 1)
-		return;
-	if (inside_widget(event->x, event->y, &button->pb_widget))
-	{
-		button->pb_pressed = 1;
-		button->pb_inside = 1;
-		draw_widget(button);
-	}
+	pbutton_get_control_state(button, &state);
+	result = xmms_ui_button_handle_pointer(&state, XMMS_UI_POINTER_PRESS,
+					       event->button, event->x, event->y);
+	pbutton_apply_control_result(button, &state, result);
 }
 
 void pbutton_button_release_cb(GtkWidget * widget, GdkEventButton * event, gpointer data)
 {
 	PButton *button = data;
+	XmmsUiButtonState state;
+	XmmsUiControlResult result;
 
-	if (event->button != 1)
-		return;
-	if (button->pb_inside && button->pb_pressed)
-	{
-		button->pb_inside = 0;
-		draw_widget(button);
-		if (button->pb_push_cb)
-			button->pb_push_cb();
-	}
-	if (button->pb_pressed)
-		button->pb_pressed = 0;
+	pbutton_get_control_state(button, &state);
+	result = xmms_ui_button_handle_pointer(&state, XMMS_UI_POINTER_RELEASE,
+					       event->button, event->x, event->y);
+	pbutton_apply_control_result(button, &state, result);
 }
 
 void pbutton_motion_cb(GtkWidget * widget, GdkEventMotion * event, gpointer data)
 {
 	PButton *button = data;
-	int inside;
+	XmmsUiButtonState state;
+	XmmsUiControlResult result;
 
-	if (!button->pb_pressed)
-		return;
-	inside = inside_widget(event->x, event->y, &button->pb_widget);
-	if (inside != button->pb_inside)
-	{
-		button->pb_inside = inside;
-		draw_widget(button);
-	}
+	pbutton_get_control_state(button, &state);
+	result = xmms_ui_button_handle_pointer(&state, XMMS_UI_POINTER_MOTION,
+					       0, event->x, event->y);
+	pbutton_apply_control_result(button, &state, result);
 }
 
 void pbutton_set_skin_index(PButton *b, SkinIndex si)

@@ -70,7 +70,8 @@ See [plugin-system.md](plugin-system.md) for search order and basename shadowing
 
 | Flag / probe | Effect |
 | --- | --- |
-| GTK2 / GLib2 | Required UI toolkit |
+| GTK2 / GLib2 | Required production UI toolkit |
+| GTK3 >= 3.24 | Isolated migration proof; auto-detected, or controlled with `--enable-gtk3-proof` / `--disable-gtk3-proof` |
 | ALSA | `Output/alsa` (default preference on modern Linux) |
 | `--disable-esd` | Skip ESD output (common in CI) |
 | Vorbis / MikMod / OpenGL | Optional Input / Vis plugins |
@@ -124,6 +125,9 @@ flowchart LR
 | `test-filebrowser` | file browser helpers in `xmms/util.c` |
 | `test-font-load` | font fallback helpers |
 | `test-popup-position` | menu/popup coordinate helpers (needs X11) |
+| `test-pbutton-baseline` | GTK2 Play-button sprite, hit-boundary, pointer-state, and callback parity |
+| `test-ui-control` | display-independent control state and sprite-command contract |
+| `test-gtk3-play-button-proof` | separately linked GTK3 rendering and activation proof; link check rejects GTK2 |
 | `test-pluginenum` | plugin scan/classify with **fixture** `.so` under `tests/test-plugins` |
 | `test-outputplugin` | ALSA path discovery helpers in `outputplugin.c` |
 | `test-alsa-pcm-state` / `test-alsa-volume` | ALSA output internals |
@@ -154,6 +158,12 @@ xvfb-run --auto-servernum make check
 
 `make distcheck` rebuilds from a tarball and re-runs checks—the stricter bar
 used in CI.
+
+When GTK3 development files are available, `test-gtk3-play-button-proof`
+builds with target-specific GTK3 flags and `make check` verifies with `ldd`
+that it links `libgtk-3` and not `libgtk-x11-2.0`. GTK3 and GTK2 are never
+linked into the same test process. Debian build environments declare
+`libgtk-3-dev`; legacy builds can use `--disable-gtk3-proof` explicitly.
 
 ### C static analysis
 

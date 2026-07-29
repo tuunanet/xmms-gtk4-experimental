@@ -1,0 +1,37 @@
+schema_version: 1
+story_id: e03s01
+title: Lock Play-button skin and interaction behavior
+status: passing
+risk: P1
+bcps: 3
+tasks:
+  - id: t1
+    scenarios: [SC-e03s01-P1-01, SC-e03s01-P1-04]
+    description: Add a source-slice g_test harness that captures the current PButton draw requests and callback dispatch without changing production behavior.
+    verify: "xvfb-run --auto-servernum make -C tests test-pbutton-baseline && xvfb-run --auto-servernum tests/test-pbutton-baseline"
+    risk: P1
+    security: none
+    status: passing
+    allure:
+      severity: high
+      categories: [gtk-migration, unit, skin-parity]
+  - id: t2
+    scenarios: [SC-e03s01-P1-02, SC-e03s01-P1-03]
+    description: Cover normal and pressed sprite rectangles, inclusive/exclusive hit boundaries, pointer leave/re-entry, non-primary buttons, and one-shot callback activation.
+    verify: "xvfb-run --auto-servernum tests/test-pbutton-baseline -p /pbutton"
+    risk: P1
+    security: none
+    status: passing
+    allure:
+      severity: high
+      categories: [gtk-migration, interaction, skin-parity]
+  - id: t3
+    scenarios: [SC-e03s01-P1-01, SC-e03s01-P1-02, SC-e03s01-P1-03, SC-e03s01-P1-04]
+    description: Wire the baseline test into make check, clean targets, source distribution, and package manifest contracts.
+    verify: "tests/test-package-recipes.sh \"$PWD\" && xvfb-run --auto-servernum make check"
+    risk: P1
+    security: none
+    status: passing
+    allure:
+      severity: high
+      categories: [gtk-migration, build, distribution]

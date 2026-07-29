@@ -9,6 +9,7 @@ Build-Depends:
  libasound2-dev [linux-any],
  libgl-dev,
  libgtk2.0-dev,
+ libgtk-3-dev,
  libmikmod-dev,
  libsm-dev,
  libvorbis-dev,

@@ -27,6 +27,20 @@ Primary sources:
 | Remote control | [`xmms/controlsocket.c`](../../xmms/controlsocket.c), [`libxmms/xmmsctrl.h`](../../libxmms/xmmsctrl.h) |
 | Idle / refresh loop | `idle_func()` in [`xmms/main.c`](../../xmms/main.c) |
 
+### Toolkit migration status
+
+The approved migration path is **GTK2 → GTK3 → GTK4** (see
+[ADR-0001](../../specs/adr/ADR-0001-staged-gtk-migration.md)). The production
+player remains GTK2 during the foundation phase. A toolkit-neutral control
+state and sprite-command boundary now carries the Play-button path, and a
+separately linked GTK3 proof consumes that same boundary. This is a migration
+tracer, not a second player: it does not start playback, load plugins, open the
+control socket, or read user configuration.
+
+The GTK2 and GTK3 paths deliberately live in separate executables. Later
+window slices must retain that process boundary until the production toolkit
+switch is approved.
+
 ---
 
 ## 1. Big picture: UI is a client of the core

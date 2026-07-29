@@ -75,6 +75,27 @@ AC_CHECK_HEADER([pthread.h],,[AC_MSG_ERROR([*** POSIX threads support not instal
 
 AM_PATH_GLIB_2_0([2.0.0],,[AC_MSG_ERROR([*** GLIB >= 2.0.0 not installed - please install first ***])])
 AM_PATH_GTK_2_0([2.0.0],,[AC_MSG_ERROR([*** GTK+ >= 2.0.0 not installed - please install first ***])],[gthread])
+
+AC_ARG_ENABLE([gtk3-proof],
+[  --disable-gtk3-proof  disable the isolated GTK3 migration proof],
+[enable_gtk3_proof="$enableval"], [enable_gtk3_proof=auto])
+GTK3_PROOF_ENABLED=no
+GTK3_CFLAGS=
+GTK3_LIBS=
+if test "x$enable_gtk3_proof" != "xno" && test "x$PKG_CONFIG" != "xno" &&
+   $PKG_CONFIG --exists "gtk+-3.0 >= 3.24"; then
+	GTK3_PROOF_ENABLED=yes
+	GTK3_CFLAGS=`$PKG_CONFIG --cflags "gtk+-3.0 >= 3.24"`
+	GTK3_LIBS=`$PKG_CONFIG --libs "gtk+-3.0 >= 3.24"`
+elif test "x$enable_gtk3_proof" = "xyes"; then
+	AC_MSG_ERROR([*** GTK+ 3 >= 3.24 not installed - install libgtk-3-dev or use --disable-gtk3-proof ***])
+elif test "x$enable_gtk3_proof" = "xauto"; then
+	AC_MSG_WARN([GTK+ 3 >= 3.24 not found; isolated GTK3 migration proof disabled])
+fi
+AC_SUBST([GTK3_PROOF_ENABLED])
+AC_SUBST([GTK3_CFLAGS])
+AC_SUBST([GTK3_LIBS])
+
 AC_PATH_PROG([XMMS_PATH],[xmms],[no])
 
 
@@ -674,6 +695,7 @@ echo "  Build ALSA plugin:          $have_alsa"
 echo "  Build mikmod plugin:        $have_mikmod"
 echo "  Build Ogg Vorbis plugin:    $have_oggvorbis"
 echo "  Build OpenGL plugins:       $have_opengl"
+echo "  Build GTK3 proof:           $GTK3_PROOF_ENABLED"
 echo "  Pthread flag:               $PTHREAD_LIBS"
 echo "  Use one plugin dir:         $enable_one_plugin_dir"
 echo "  Allow user plugin dir:      $enable_user_plugin_dir"

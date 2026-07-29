@@ -3,16 +3,34 @@ top_srcdir ?= ..
 top_builddir ?= $(top_srcdir)
 
 CPPFLAGS += -I$(top_builddir) -I$(top_builddir)/xmms -I$(top_srcdir) -I$(top_srcdir)/libxmms -I$(top_srcdir)/xmms
+BASE_CFLAGS := $(CFLAGS)
+BASE_LDLIBS := $(LDLIBS)
+GTK3_PROOF_ENABLED ?= $(shell pkg-config --exists 'gtk+-3.0 >= 3.24' && echo yes || echo no)
+GTK3_CFLAGS ?= $(shell pkg-config --cflags 'gtk+-3.0 >= 3.24')
+GTK3_LIBS ?= $(shell pkg-config --libs 'gtk+-3.0 >= 3.24')
 CFLAGS += $(shell pkg-config --cflags gtk+-2.0)
 LDLIBS += $(shell pkg-config --libs gtk+-2.0)
 
+ifeq ($(GTK3_PROOF_ENABLED),yes)
+GTK3_CHECK_TARGET = test-gtk3-play-button-proof
+endif
+
 .PHONY: check clean test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-package-recipes test-plugin-linkage test-release-tools
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
 	./test-popup-position
+	./test-pbutton-baseline
+	./test-ui-control
+	@if test "$(GTK3_PROOF_ENABLED)" = yes; then \
+		./test-gtk3-play-button-proof; \
+		if command -v ldd >/dev/null 2>&1; then \
+			ldd ./test-gtk3-play-button-proof | grep -F 'libgtk-3.so' >/dev/null; \
+			! ldd ./test-gtk3-play-button-proof | grep -F 'libgtk-x11-2.0.so' >/dev/null; \
+		fi; \
+	fi
 	./test-pluginenum
 	./test-outputplugin
 	./test-alsa-pcm-state
@@ -37,6 +55,17 @@ test-popup-position: CFLAGS += -ffunction-sections -fdata-sections
 test-popup-position: LDFLAGS += -Wl,--gc-sections
 test-popup-position: $(srcdir)/test-popup-position.c $(top_srcdir)/xmms/util.c $(top_srcdir)/xmms/util.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-popup-position.c $(top_srcdir)/xmms/util.c $(LDLIBS)
+
+test-pbutton-baseline: CFLAGS += -ffunction-sections -fdata-sections
+test-pbutton-baseline: LDFLAGS += -Wl,--gc-sections
+test-pbutton-baseline: $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbutton.c $(top_srcdir)/xmms/pbutton.h $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h $(top_srcdir)/xmms/widget.c $(top_srcdir)/xmms/widget.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbutton.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/widget.c $(LDLIBS) -lpthread
+
+test-ui-control: $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(LDLIBS)
+
+test-gtk3-play-button-proof: $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h $(top_srcdir)/xmms/ui_gtk3_control.c $(top_srcdir)/xmms/ui_gtk3_control.h
+	$(CC) $(CPPFLAGS) $(BASE_CFLAGS) $(GTK3_CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-gtk3-play-button-proof.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_gtk3_control.c $(BASE_LDLIBS) $(GTK3_LIBS)
 
 test-pluginenum: CFLAGS += -ffunction-sections -fdata-sections -DBUILD_PLUGIN_DIR=\"$(CURDIR)/test-plugins\" -DPLUGIN_DIR=\"/nonexistent\" -DPLUGINSUBS='"Output","Input"'
 test-pluginenum: LDFLAGS += -Wl,--gc-sections
@@ -91,4 +120,4 @@ test-release-tools:
 	$(srcdir)/test-release-tools.sh $(top_srcdir)
 
 clean:
-	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins
+	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-gtk3-play-button-proof test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins

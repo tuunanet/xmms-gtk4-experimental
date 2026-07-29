@@ -1,0 +1,37 @@
+schema_version: 1
+story_id: e03s02
+title: Route the GTK2 Play button through a toolkit-neutral boundary
+status: passing
+risk: P0
+bcps: 5
+tasks:
+  - id: t1
+    scenarios: [SC-e03s02-P0-01]
+    description: Introduce the smallest toolkit-neutral Play-button state, pointer-input, and sprite draw-command contract, with no GTK/GDK types in its public header.
+    verify: "! rg -n 'Gtk|Gdk' xmms/ui_control.h && make -C tests test-ui-control && tests/test-ui-control"
+    risk: P0
+    security: none
+    status: passing
+    allure:
+      severity: critical
+      categories: [gtk-migration, architecture, unit]
+  - id: t2
+    scenarios: [SC-e03s02-P0-02]
+    description: Drive the existing GTK2 PButton callbacks and drawing adapter through the new contract while preserving all e03s01 observations.
+    verify: "xvfb-run --auto-servernum make -C tests test-pbutton-baseline test-ui-control && xvfb-run --auto-servernum tests/test-pbutton-baseline && tests/test-ui-control"
+    risk: P0
+    security: none
+    status: passing
+    allure:
+      severity: critical
+      categories: [gtk-migration, gtk2, regression]
+  - id: t3
+    scenarios: [SC-e03s02-P0-03]
+    description: Prove the production GTK2 player, plugin fixtures, packaging contracts, and source archive remain unchanged at their observable boundaries.
+    verify: "make -j\"$(nproc)\" && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck"
+    risk: P0
+    security: none
+    status: passing
+    allure:
+      severity: critical
+      categories: [gtk-migration, integration, distribution]
