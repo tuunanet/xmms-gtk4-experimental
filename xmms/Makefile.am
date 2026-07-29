@@ -28,6 +28,7 @@ playlist.c playlist.h \
 controlsocket.c controlsocket.h \
 dock.c dock.h \
 widget.c widget.h \
+ui_control.c ui_control.h \
 sbutton.c sbutton.h \
 pbutton.c pbutton.h \
 tbutton.c tbutton.h \

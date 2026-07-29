@@ -45,8 +45,8 @@ test-pbutton-baseline: LDFLAGS += -Wl,--gc-sections
 test-pbutton-baseline: $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbutton.c $(top_srcdir)/xmms/pbutton.h $(top_srcdir)/xmms/widget.c $(top_srcdir)/xmms/widget.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-pbutton-baseline.c $(top_srcdir)/xmms/pbutton.c $(top_srcdir)/xmms/widget.c $(LDLIBS) -lpthread
 
-test-ui-control: $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-ui-control.c $(LDLIBS)
+test-ui-control: $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(top_srcdir)/xmms/ui_control.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-ui-control.c $(top_srcdir)/xmms/ui_control.c $(LDLIBS)
 
 test-pluginenum: CFLAGS += -ffunction-sections -fdata-sections -DBUILD_PLUGIN_DIR=\"$(CURDIR)/test-plugins\" -DPLUGIN_DIR=\"/nonexistent\" -DPLUGINSUBS='"Output","Input"'
 test-pluginenum: LDFLAGS += -Wl,--gc-sections

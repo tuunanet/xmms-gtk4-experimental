@@ -58,7 +58,8 @@ am_xmms_OBJECTS = bmp.$(OBJEXT) skin.$(OBJEXT) util.$(OBJEXT) \
 	fullscreen.$(OBJEXT) pluginenum.$(OBJEXT) outputplugin.$(OBJEXT) \
 	playlist.$(OBJEXT) \
 	controlsocket.$(OBJEXT) dock.$(OBJEXT) widget.$(OBJEXT) \
-	sbutton.$(OBJEXT) pbutton.$(OBJEXT) tbutton.$(OBJEXT) \
+	ui_control.$(OBJEXT) sbutton.$(OBJEXT) pbutton.$(OBJEXT) \
+	tbutton.$(OBJEXT) \
 	textbox.$(OBJEXT) menurow.$(OBJEXT) hslider.$(OBJEXT) \
 	monostereo.$(OBJEXT) vis.$(OBJEXT) svis.$(OBJEXT) \
 	number.$(OBJEXT) playstatus.$(OBJEXT) playlist_list.$(OBJEXT) \
@@ -330,6 +331,7 @@ playlist.c playlist.h \
 controlsocket.c controlsocket.h \
 dock.c dock.h \
 widget.c widget.h \
+ui_control.c ui_control.h \
 sbutton.c sbutton.h \
 pbutton.c pbutton.h \
 tbutton.c tbutton.h \
@@ -490,6 +492,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svis.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tbutton.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/textbox.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ui_control.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/urldecode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vis.Po@am__quote@
