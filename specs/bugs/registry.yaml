@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-07-29T231000
+    date: 2026-07-29
+    severity: high
+    priority: P0
+    scope: source-distribution
+    summary: Source archive omits the checked-in release workflow required by package contracts.
+    file: specs/bugs/BUG-2026-07-29T231000-release-workflow-source-distribution.md
+    status: fixed
   - bug_id: BUG-2026-07-29T111455
     date: 2026-07-29
     severity: high

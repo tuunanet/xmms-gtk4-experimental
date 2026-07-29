@@ -1,10 +1,12 @@
 schema_version: 1
 status: verified
 epics:
+  e04: uat_pending
   e01: verified
   e02: verified
   e03: verified
 stories:
+  e04s01: uat_pending
   e01s01: verified
   e01s02: verified
   e02s01: verified
@@ -12,8 +14,8 @@ stories:
   e03s02: verified
   e03s03: verified
 gate_trace:
-  verdict: waived
-  generated_at: 2026-07-29T21:30:00Z
-  rationale: The repository has no trace-stories, blind-spot, completeness-critic, or gate-trace runner scripts. Manual refutation found explicit e03s03 task-to-scenario-to-test evidence and no missing P0 verification; existing manual blind-spot evidence reports zero high-severity gaps. Live pull-request CI remains pending.
+  verdict: pending
+  generated_at: null
+  rationale: e04 release-packaging workflow planning is in progress.
   heuristic_ratio: null
   downgrade_applied: false

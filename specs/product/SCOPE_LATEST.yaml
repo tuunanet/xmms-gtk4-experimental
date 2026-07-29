@@ -1,79 +1,53 @@
 schema_version: 1
-status: scoped
-initiative: gtk-migration-foundation
-core_value: Create a verified compatibility and UI boundary foundation that lets XMMS move from GTK2 toward GTK4 without destabilizing playback or classic skin behavior.
+feature_name: generic-release-packaging-workflow
+core_value: Maintainers can manually build, verify, and stage reproducible Linux release packages for an annotated XMMS GTK4 Experimental tag.
 summary: >-
-  Establish the first bounded migration increment for replacing the obsolete GTK2 user-interface stack. The increment defines which historical contracts survive the toolkit transition, captures observable UI behavior before it changes, and creates a narrow boundary through which one skinned UI slice can later move independently of the playback engine.
-
-  The future GTK4 player may preserve the plugin vtable and exported entry-point contracts, but plugins containing GTK2 user-interface code must be rebuilt or ported; loading GTK2-linked plugin dialogs into the GTK4 process is not a supported compatibility requirement. This initiative prepares that transition while keeping the current GTK2 player green throughout the work.
+  Port the proven multi-distribution release-packaging workflow from the sibling
+  xmms-gtk2 repository under a generic workflow name. The fork needs a
+  reviewable GitHub Actions path that validates the selected release tag,
+  builds source and Debian packages for its declared targets, verifies the
+  resulting artifacts, and creates or resumes a draft GitHub Release without
+  publishing it.
 in_scope:
-  - planning_output: ADR-0001
-    outcome: Maintainers have an approved compatibility matrix and migration decision covering GTK versions, plugin UI linkage, runtime identifiers, and preserved public contracts.
-  - story_id: e03s01
-    outcome: Representative Play-button skin rendering and interaction behavior has automated baselines suitable for detecting migration regressions.
-  - story_id: e03s02
-    outcome: The production GTK2 Play-button path uses a toolkit-neutral state and draw-command boundary without observable behavior changes.
-  - story_id: e03s03
-    outcome: A separate experimental GTK3 harness renders and activates the Play control through the same boundary without linking GTK2 and GTK3 into one process.
-  - story_id: e03s03
-    outcome: Current GTK2 builds, tests, packaging, and source distributions remain green after the migration seam and optional GTK3 proof are introduced.
+  - id: e04
+    item: A manually dispatched, generically named release-packaging workflow that accepts a SemVer version and only operates on its matching annotated tag.
+  - id: e04
+    item: Linux Mint 22.3 and Ubuntu 26.04 package matrix ported from the donor, with fork branding and the GTK3 development prerequisite required by the migration proof.
+  - id: e04
+    item: Artifact metadata, checksums, package installation smoke tests, and draft-release assembly protected by least-privilege GitHub token permissions.
+  - id: e04
+    item: Static repository tests and release documentation synchronized with the ported workflow contract.
 out_of_scope:
-  - item: Switch the production xmms executable to GTK3 or GTK4 in this initiative.
-    reason: Deferred until the compatibility contract, regression baselines, and first UI boundary are proven.
-  - item: Port the playlist, equalizer, preferences, file chooser, visualization, or bundled plugin dialogs.
-    reason: These are later vertical migration increments with separate behavior and risk profiles.
-  - item: Load third-party plugins linked to GTK2 into the future GTK4 process.
-    reason: GTK2 and GTK4 UI code are not an in-process compatibility target; UI-bearing plugins must be rebuilt or ported.
-  - item: Change plugin vtable layouts, exported get_*plugin_info symbols, libxmms APIs, control-socket framing, command values, or ~/.xmms paths.
-    reason: The foundation does not require breaking these public contracts.
-  - item: Replace Autotools, the audio pipeline, playlist model, worker-thread design, or control socket.
-    reason: These systems do not need replacement to establish the UI migration boundary.
-  - item: Redesign the classic interface or skin format.
-    reason: Visual modernization is distinct from toolkit migration; WinAmp 2/XMMS skin behavior remains the reference.
+  - item: Push or pull-request CI.
+    reason: The requested donor workflow is a manual release-packaging pipeline, not continuous integration.
+  - item: Dependabot, issue templates, and pull-request templates from the donor repository.
+    reason: The user requested only the release-packaging workflow.
+  - item: Automatic publication, tag creation, or modification of an existing published release.
+    reason: Publication remains an explicit maintainer decision and immutable releases must not be replaced.
+  - item: New package targets, changed Debian recipes, or a migration away from Autotools.
+    reason: The port must retain the donor target matrix and consume the existing packaging contract.
 constraints:
-  technical:
-    - Keep all GTK operations on the main thread.
-    - Preserve WinAmp 2/XMMS skin dimensions, source rectangles, masks, doublesize behavior, and hit targets.
-    - Preserve current playback and remote-control behavior through existing core APIs.
-    - Keep the current GTK2 application buildable until a later migration gate explicitly replaces it.
-    - Treat GTK-linked plugin compatibility separately from the stable plugin vtable and entry-point contracts.
-    - Update authoritative Autotools inputs and checked-in generated distribution files together when build definitions change.
-  delivery:
-    - Use focused g_test regression coverage and Xvfb for GTK-dependent verification.
-    - Deliver each implementation increment through a feature branch and pull request.
-    - Run full Preflight for every increment and distcheck for build or distribution changes.
+  - Keep the workflow filename distro-neutral because it builds more than one distribution.
+  - Preserve the fork's xmms runtime package names while using XMMS GTK4 Experimental branding in release metadata.
+  - Restrict default workflow permissions to contents read; grant contents write only to the draft-release job.
+  - Pin third-party GitHub Actions to the donor's reviewed commit SHAs.
+  - Require libgtk-3-dev in the workflow build dependencies so the enabled GTK3 proof is exercised.
 success_criteria:
-  - An accepted ADR records the staged GTK2-to-GTK3-to-GTK4 strategy and plugin UI compatibility policy.
-  - Automated tests detect changes to representative skin rendering geometry and control hit behavior.
-  - A first skinned-control path uses the migration boundary with no observable behavior regression.
-  - No public plugin, libxmms, socket, configuration, executable, package, or skin-format contract changes unintentionally.
-  - The GTK2 build, full Xvfb-backed test suite, packaging checks, and source-distribution gate pass.
-research_title: Prior Art
+  - .github/workflows/package-release.yml is manually dispatchable with a required SemVer version input.
+  - The workflow rejects a ref that is not the matching annotated vVERSION tag and validates release metadata before packaging.
+  - Both donor Linux targets build, inspect, install, and checksum xmms and libxmms-dev DEBs using the fork's existing package tooling.
+  - The workflow creates or resumes only a draft release and never silently publishes or overwrites a published release.
+  - Repository tests and release documentation assert the generic workflow filename, fork branding, GTK3 dependency, and release safety contract.
 prior_art:
-  - candidate: Official GTK2-to-GTK4 migration sequence
-    source: https://docs.gtk.org/gtk4/migrating-2to4.html
+  - candidate: ../xmms-gtk2/.github/workflows/release-linux-packages.yml
+    verdict: adopt-and-adapt
+    notes: Proven manually dispatched Linux Mint 22.3 plus Ubuntu 26.04 package matrix, checksum, package smoke-test, and draft-release flow; rename and adapt branding/dependencies for this fork.
+  - candidate: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
     verdict: adopt
-    notes: GTK explicitly directs GTK2 applications to migrate to GTK3 first and then follow the GTK3-to-GTK4 guide.
-  - candidate: Cairo-backed GTK3 drawing bridge
-    source: https://docs.gtk.org/gtk3/migrating-2to3.html
-    verdict: adopt
-    notes: GTK3 removes GdkPixmap and GDK drawing APIs in favor of Cairo surfaces, matching the largest current UI dependency cluster.
-  - candidate: GTK3 event-controller preparation
-    source: https://docs.gtk.org/gtk4/migrating-3to4.html
-    verdict: adopt
-    notes: GTK4 replaces event signals with event controllers and gestures, many of which are available in GTK3 for staged preparation.
-  - candidate: Existing repository rendering abstraction
-    source: xmms/widget.h and xmms/skin.h
-    verdict: extend
-    notes: The custom Widget and skin facades already centralize hit testing and sprite selection, but expose GTK2 drawing and event types directly.
-  - candidate: New third-party rendering framework
-    source: local repository and installed package review
-    verdict: build
-    notes: No existing internal abstraction or applicable project skill was found; Cairo and GdkPixbuf are already transitive platform dependencies and avoid adding a new framework.
+    notes: GitHub documents workflow_dispatch inputs and the permissions key; use minimum GITHUB_TOKEN privilege by job.
 references:
-  - specs/product/VISION_LATEST.yaml
-  - specs/tech-architecture/tech-stack.md
-  - docs/architecture/ui-interaction.md
-  - docs/architecture/skins.md
-  - docs/architecture/plugin-system.md
-  - xmms/plugin.h
+  - docs/releases.md
+  - docs/architecture/build-and-test.md
+  - tools/build-deb.sh
+  - packaging/debian/rules
+  - specs/adr/ADR-0001-staged-gtk-migration.md

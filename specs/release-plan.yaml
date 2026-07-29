@@ -7,6 +7,17 @@ release:
   semantic_release: true
 status: planning
 epics:
+  - id: e04
+    title: Port generic release-packaging workflow
+    capsule_dir: epics/e04-release-packaging-workflow
+    wsjf: 8.0
+    bcps: 8
+    status: uat_pending
+    score:
+      business_value: 9
+      time_criticality: 10
+      risk_reduction: 10
+      job_size: 4
   - id: e03
     title: Prove the first staged GTK migration slice
     capsule_dir: epics/e03-gtk-migration-foundation

@@ -5,6 +5,7 @@ SUBDIRS = intl libxmms xmms Output Input Effect General Visualization wmxmms po
 bin_SCRIPTS = xmms-config
 
 EXTRA_DIST = \
+	.github/workflows/package-release.yml \
 	.editorconfig \
 	.gitattributes \
 	.gitignore \

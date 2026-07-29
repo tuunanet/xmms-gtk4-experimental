@@ -49,6 +49,7 @@ require_absent_text()
 }
 
 for file in \
+	.github/workflows/package-release.yml \
 	tests/test-c-lint.sh \
 	tests/test-gtk3-play-button-proof.c \
 	tests/test-pbutton-baseline.c \
@@ -67,6 +68,42 @@ do
 	require_file "$file"
 done
 
+require_text .github/workflows/package-release.yml 'workflow_dispatch:' \
+	'exposes a manual release-package dispatch'
+require_text .github/workflows/package-release.yml 'version:' \
+	'requires a release version input'
+require_text .github/workflows/package-release.yml 'refs/tags/v${VERSION}' \
+	'guards the matching release tag'
+require_text .github/workflows/package-release.yml 'git cat-file -t' \
+	'requires an annotated release tag'
+require_text .github/workflows/package-release.yml 'target_id: linuxmint' \
+	'packages the Linux Mint target'
+require_text .github/workflows/package-release.yml 'target_id: ubuntu' \
+	'packages the Ubuntu target'
+require_text .github/workflows/package-release.yml 'libgtk-3-dev' \
+	'installs the GTK3 proof dependency'
+require_text .github/workflows/package-release.yml 'contents: write' \
+	'limits release mutation to an explicit write permission'
+require_text .github/workflows/package-release.yml 'sha256sum --check SHA256SUMS' \
+	'verifies release asset checksums'
+require_text .github/workflows/package-release.yml 'gh release create' \
+	'creates a GitHub release through the CLI'
+require_text .github/workflows/package-release.yml '--draft' \
+	'creates an unpublished draft release'
+require_text .github/workflows/package-release.yml 'XMMS GTK4 Experimental' \
+	'uses fork branding in release metadata'
+require_absent_text .github/workflows/package-release.yml 'XMMS GTK2' \
+	'does not use the donor project branding'
+require_text docs/releases.md 'package-release.yml' \
+	'documents the generic release-package workflow'
+require_text docs/releases.md 'Linux Mint 22.3' \
+	'documents the Linux Mint release target'
+require_text docs/releases.md 'Ubuntu 26.04' \
+	'documents the Ubuntu release target'
+require_text docs/releases.md 'annotated `vVERSION` tag' \
+	'documents matching annotated-tag dispatch'
+require_text docs/architecture/build-and-test.md 'package-release.yml' \
+	'documents the checked-in release workflow'
 require_text Makefile.am 'deb:' \
 	'exposes a top-level make deb target'
 require_text Makefile.am '$(MAKE) dist-gzip' \
@@ -93,6 +130,10 @@ require_text tests/Makefile 'test-gtk3-play-button-proof:' \
 	'runs the isolated GTK3 Play-button proof from make check'
 require_text Makefile.am 'tests/test-gtk3-play-button-proof.c' \
 	'distributes the isolated GTK3 Play-button proof'
+require_text Makefile.am '.github/workflows/package-release.yml' \
+	'distributes the generic release-package workflow'
+require_text Makefile.in '.github/workflows/package-release.yml' \
+	'ships the generic release-package workflow manifest entry'
 require_text configure.in '--disable-gtk3-proof' \
 	'exposes an explicit GTK3 proof configure policy'
 require_text configure.in 'gtk+-3.0 >= 3.24' \
