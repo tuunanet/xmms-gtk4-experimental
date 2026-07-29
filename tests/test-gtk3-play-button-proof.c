@@ -40,6 +40,14 @@ static guint32 surface_pixel(cairo_surface_t *surface, gint x, gint y)
 	return ((guint32 *) (data + y * stride))[x];
 }
 
+static guint activation_count;
+
+static void apply_control_result(XmmsUiControlResult result)
+{
+	if (result & XMMS_UI_CONTROL_ACTIVATE)
+		activation_count++;
+}
+
 static void test_gtk3_renders_shared_play_button_commands(void)
 {
 	XmmsUiButtonState state;
@@ -74,11 +82,44 @@ static void test_gtk3_renders_shared_play_button_commands(void)
 	g_object_unref(sprites);
 }
 
+static void test_gtk3_activates_shared_play_button_once(void)
+{
+	XmmsUiButtonState state;
+	GdkEvent *press;
+	GdkEvent *release;
+
+	xmms_ui_button_init(&state, 39, 88, 23, 18);
+	activation_count = 0;
+
+	press = gdk_event_new(GDK_BUTTON_PRESS);
+	press->button.button = 1;
+	press->button.x = 40;
+	press->button.y = 89;
+	apply_control_result(xmms_ui_gtk3_handle_event(&state, press));
+	g_assert_true(state.pressed);
+
+	release = gdk_event_new(GDK_BUTTON_RELEASE);
+	release->button.button = 1;
+	release->button.x = 40;
+	release->button.y = 89;
+	apply_control_result(xmms_ui_gtk3_handle_event(&state, release));
+	g_assert_cmpuint(activation_count, ==, 1);
+	g_assert_false(state.pressed);
+
+	apply_control_result(xmms_ui_gtk3_handle_event(&state, release));
+	g_assert_cmpuint(activation_count, ==, 1);
+
+	gdk_event_free(press);
+	gdk_event_free(release);
+}
+
 int main(int argc, char **argv)
 {
 	gtk_init(&argc, &argv);
 	g_test_init(&argc, &argv, NULL);
 	g_test_add_func("/gtk3-proof/render-play-button",
 			test_gtk3_renders_shared_play_button_commands);
+	g_test_add_func("/gtk3-proof/activate-play-button",
+			test_gtk3_activates_shared_play_button_once);
 	return g_test_run();
 }

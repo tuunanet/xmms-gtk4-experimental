@@ -14,5 +14,7 @@
 
 void xmms_ui_gtk3_draw_command(cairo_t *cr, GdkPixbuf *sprites,
 			       const XmmsUiDrawCommand *command);
+XmmsUiControlResult xmms_ui_gtk3_handle_event(XmmsUiButtonState *state,
+					     const GdkEvent *event);
 
 #endif
