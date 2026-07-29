@@ -20,7 +20,7 @@ stories:
     title: Route the GTK2 Play button through a toolkit-neutral boundary
     bcps: 5
     risk: P0
-    status: planned
+    status: verified
     delta: MODIFIED
     spec: e03s02-gtk2-play-button-boundary.md
     tasks: e03s02-tasks.yaml

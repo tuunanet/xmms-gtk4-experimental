@@ -9,7 +9,7 @@ stories:
   e01s02: verified
   e02s01: verified
   e03s01: verified
-  e03s02: planned
+  e03s02: verified
   e03s03: planned
 gate_trace:
   verdict: pending

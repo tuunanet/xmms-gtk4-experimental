@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e03s02
 title: Route the GTK2 Play button through a toolkit-neutral boundary
-status: failing
+status: passing
 risk: P0
 bcps: 5
 tasks:
@@ -11,7 +11,7 @@ tasks:
     verify: "! rg -n 'Gtk|Gdk' xmms/ui_control.h && make -C tests test-ui-control && tests/test-ui-control"
     risk: P0
     security: none
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [gtk-migration, architecture, unit]
@@ -21,7 +21,7 @@ tasks:
     verify: "xvfb-run --auto-servernum make -C tests test-pbutton-baseline test-ui-control && xvfb-run --auto-servernum tests/test-pbutton-baseline && tests/test-ui-control"
     risk: P0
     security: none
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [gtk-migration, gtk2, regression]
@@ -31,7 +31,7 @@ tasks:
     verify: "make -j\"$(nproc)\" && xvfb-run --auto-servernum make check && xvfb-run --auto-servernum make distcheck"
     risk: P0
     security: none
-    status: failing
+    status: passing
     allure:
       severity: critical
       categories: [gtk-migration, integration, distribution]

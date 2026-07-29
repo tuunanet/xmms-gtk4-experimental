@@ -51,6 +51,7 @@ require_absent_text()
 for file in \
 	tests/test-c-lint.sh \
 	tests/test-pbutton-baseline.c \
+	tests/test-ui-control.c \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
 	packaging/xmms.desktop \
@@ -83,6 +84,10 @@ require_text tests/Makefile 'test-pbutton-baseline:' \
 	'runs Play-button migration baselines from make check'
 require_text Makefile.am 'tests/test-pbutton-baseline.c' \
 	'distributes the Play-button migration baseline'
+require_text tests/Makefile 'test-ui-control:' \
+	'runs the toolkit-neutral control tests from make check'
+require_text Makefile.am 'tests/test-ui-control.c' \
+	'distributes the toolkit-neutral control tests'
 require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 	'distributes the C lint baseline'
 require_text Makefile.am 'docs/architecture/build-and-test.md' \
