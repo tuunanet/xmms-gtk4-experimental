@@ -4,7 +4,7 @@ title: Prove the first staged GTK migration slice
 wsjf: 5.4
 total_bcps: 16
 risk: P0
-status: planned
+status: in_progress
 adr:
   - ../../adr/ADR-0001-staged-gtk-migration.md
 stories:
@@ -12,7 +12,7 @@ stories:
     title: Lock Play-button skin and interaction behavior
     bcps: 3
     risk: P1
-    status: planned
+    status: verified
     delta: ADDED
     spec: e03s01-play-button-baseline.md
     tasks: e03s01-tasks.yaml

@@ -3,12 +3,12 @@ status: verified
 epics:
   e01: verified
   e02: verified
-  e03: planned
+  e03: in_progress
 stories:
   e01s01: verified
   e01s02: verified
   e02s01: verified
-  e03s01: planned
+  e03s01: verified
   e03s02: planned
   e03s03: planned
 gate_trace:

@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e03s01
 title: Lock Play-button skin and interaction behavior
-status: failing
+status: passing
 risk: P1
 bcps: 3
 tasks:
@@ -11,7 +11,7 @@ tasks:
     verify: "xvfb-run --auto-servernum make -C tests test-pbutton-baseline && xvfb-run --auto-servernum tests/test-pbutton-baseline"
     risk: P1
     security: none
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: [gtk-migration, unit, skin-parity]
@@ -21,7 +21,7 @@ tasks:
     verify: "xvfb-run --auto-servernum tests/test-pbutton-baseline -p /pbutton"
     risk: P1
     security: none
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: [gtk-migration, interaction, skin-parity]
@@ -31,7 +31,7 @@ tasks:
     verify: "tests/test-package-recipes.sh \"$PWD\" && xvfb-run --auto-servernum make check"
     risk: P1
     security: none
-    status: failing
+    status: passing
     allure:
       severity: high
       categories: [gtk-migration, build, distribution]

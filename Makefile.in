@@ -343,6 +343,7 @@ EXTRA_DIST = \
 	tests/test-mpg123-stream-position.c \
 	tests/test-outputplugin.c \
 	tests/test-package-recipes.sh \
+	tests/test-pbutton-baseline.c \
 	tests/test-plugin-linkage.sh \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \
