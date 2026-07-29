@@ -46,10 +46,23 @@ typedef struct
 	gint height;
 } XmmsUiDrawCommand;
 
+typedef struct
+{
+	gint normal_sprite_id;
+	gint normal_x;
+	gint normal_y;
+	gint pressed_sprite_id;
+	gint pressed_x;
+	gint pressed_y;
+} XmmsUiButtonSprites;
+
 void xmms_ui_button_init(XmmsUiButtonState *state, gint x, gint y,
 			 gint width, gint height);
 XmmsUiControlResult xmms_ui_button_handle_pointer(XmmsUiButtonState *state,
 						 XmmsUiPointerEvent event,
 						 guint button, gint x, gint y);
+void xmms_ui_button_get_draw_command(const XmmsUiButtonState *state,
+				     const XmmsUiButtonSprites *sprites,
+				     XmmsUiDrawCommand *command);
 
 #endif
