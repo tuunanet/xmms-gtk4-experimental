@@ -110,7 +110,7 @@ manager:
 
 ```sh
 # Ubuntu 24.04 LTS
-sudo apt install ./xmms_1.3.2-1.ubuntu24.04_amd64.deb
+sudo apt install ./xmms_1.2.12-1.ubuntu24.04_amd64.deb
 ```
 
 The optional `libxmms-dev` DEB contains headers and linker files for plugin

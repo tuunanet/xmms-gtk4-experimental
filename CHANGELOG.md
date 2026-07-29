@@ -15,21 +15,21 @@ for XMMS Classic.
 
 ## [Unreleased]
 
-### Removed
-- Removed RPM packaging recipes, the Fedora package workflow job, and the
-  legacy Autotools-generated `xmms.spec` files. Official native packages are
-  DEB-only for Ubuntu 24.04 LTS.
+## [1.2.12] - 2026-07-29
 
-## [1.3.2] - 2026-07-27
-
-XMMS Classic 1.3.2 supersedes the unpublished 1.3.1 draft and is intended to
-be the first published XMMS Classic release. It includes the 1.3.1 changes
-listed below plus the native-package fixes in this entry.
+XMMS Classic 1.2.12 replaces the unpublished 1.3.1 and 1.3.2 draft versions
+and is intended to be the first published XMMS Classic release. It continues
+the original XMMS 1.2 release line and includes the draft changes listed below.
 
 ### Added
 - Added a top-level `make deb` target and made pull-request and release-candidate
   CI build and verify Debian packages through it. Candidate artifacts now
   include install-tested runtime and development DEBs with checksums.
+
+### Removed
+- Removed RPM packaging recipes, the Fedora package workflow job, and the
+  legacy Autotools-generated `xmms.spec` files. Official native packages are
+  DEB-only for Ubuntu 24.04 LTS.
 
 ### Fixed
 - Allowed legacy GTK callback pointer conversions in Debian package builds so
