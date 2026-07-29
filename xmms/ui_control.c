@@ -73,3 +73,19 @@ XmmsUiControlResult xmms_ui_button_handle_pointer(XmmsUiButtonState *state,
 	state->inside = TRUE;
 	return XMMS_UI_CONTROL_REDRAW;
 }
+
+void xmms_ui_button_get_draw_command(const XmmsUiButtonState *state,
+				     const XmmsUiButtonSprites *sprites,
+				     XmmsUiDrawCommand *command)
+{
+	gboolean pressed = state->pressed && state->inside;
+
+	command->sprite_id = pressed ? sprites->pressed_sprite_id :
+					 sprites->normal_sprite_id;
+	command->source_x = pressed ? sprites->pressed_x : sprites->normal_x;
+	command->source_y = pressed ? sprites->pressed_y : sprites->normal_y;
+	command->destination_x = state->x;
+	command->destination_y = state->y;
+	command->width = state->width;
+	command->height = state->height;
+}
