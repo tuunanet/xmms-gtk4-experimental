@@ -8,3 +8,11 @@ bugs:
     summary: Stale keyboard-shortcut test wiring blocks make check after intentional source removal.
     file: specs/bugs/BUG-2026-07-29T111455-stale-keyboard-shortcut-test.md
     status: fixed
+  - bug_id: BUG-2026-07-29T160826
+    date: 2026-07-29
+    severity: high
+    priority: P0
+    scope: input-vorbis-build
+    summary: GCC 15 rejects three uncast GTK2 signal callback registrations in the Vorbis plugin.
+    file: specs/bugs/BUG-2026-07-29T160826-vorbis-gtk-callback-build.md
+    status: fixed
