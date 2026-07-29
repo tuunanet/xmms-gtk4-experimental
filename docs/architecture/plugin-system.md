@@ -46,6 +46,20 @@ That function returns a pointer to a static vtable struct (`InputPlugin`,
 `OutputPlugin`, …). The core fills bookkeeping fields (`handle`, `filename`,
 and several callbacks) after load.
 
+### GTK-major linkage policy
+
+The C vtable layouts and exported entry points remain compatibility contracts,
+but they do not guarantee toolkit compatibility. Plugin `about`, `configure`,
+file-info, and visualization implementations may link GTK and execute inside
+the player process. Loading a GTK2-linked module into a future GTK3 or GTK4
+player would create unsafe mixed GTK-major linkage.
+
+Accordingly, the staged migration preserves plugin ABI shapes where possible
+but requires UI-bearing plugins to be rebuilt or ported for the player's
+active GTK major. The GTK3 migration proof never loads plugins, and the
+production GTK2 player continues to load existing GTK2 plugins until a later
+explicit toolkit-switch gate.
+
 ---
 
 ## 2. Discovery and load order
