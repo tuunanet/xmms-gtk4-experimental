@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e05s02
 title: Establish a Meson end-to-end build slice
-status: failing
+status: passing
 risk: P0
 bcps: 8
 tasks:
@@ -27,5 +27,5 @@ tasks:
     verify: "tools/verify-build-parity.sh build-meson"
     risk: P0
     security: none
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [parity, compatibility]}
