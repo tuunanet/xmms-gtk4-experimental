@@ -16,6 +16,8 @@ gtk3_dep = dependency(
   version: '>=3.24',
   required: get_option('gtk3-proof'),
 )
+zlib_dep = dependency('zlib')
+alsa_dep = dependency('alsa')
 
 xmms_conf = configuration_data()
 xmms_conf.set_quoted('PACKAGE', 'xmms')
@@ -50,6 +52,7 @@ endif
 configure_file(output: 'config.h', configuration: xmms_conf)
 
 xmms_include_dir = include_directories('.')
+xmms_i18n_include_dir = include_directories('xmms')
 xmms_compile_args = [
   '-DDATA_DIR="' + get_option('prefix') / get_option('datadir') / 'xmms"',
   '-DPLUGIN_DIR="' + get_option('prefix') / get_option('libdir') / 'xmms"',
@@ -62,3 +65,8 @@ subdir('libxmms')
 subdir('xmms')
 subdir('wmxmms')
 subdir('tests')
+subdir('Input/mpg123')
+subdir('Output/alsa')
+subdir('Effect/echo_plugin')
+subdir('General/song_change')
+subdir('Visualization/sanalyzer')
