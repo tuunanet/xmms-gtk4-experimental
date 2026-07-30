@@ -12,5 +12,6 @@ mpg123_module = shared_module(
   dependencies: [glib_dep, gtk2_dep, threads_dep, zlib_dep, libxmms_dep,
                  cc.find_library('m')],
   include_directories: [xmms_include_dir, xmms_i18n_include_dir],
-  install: false,
+  install: true,
+  install_dir: xmms_plugin_dir / 'Input',
 )

@@ -5,5 +5,7 @@ wmxmms = executable(
                  dependency('x11')],
   include_directories: xmms_include_dir,
   c_args: xmms_compile_args,
-  install: false,
+  install: true,
 )
+
+install_data('wmxmms.xpm', install_dir: get_option('datadir') / 'xmms')

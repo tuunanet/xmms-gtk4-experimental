@@ -71,6 +71,7 @@ configure_file(output: 'config.h', configuration: xmms_conf)
 
 xmms_include_dir = include_directories('.')
 xmms_i18n_include_dir = include_directories('xmms')
+xmms_plugin_dir = get_option('libdir') / 'xmms'
 xmms_compile_args = [
   '-DDATA_DIR="' + get_option('prefix') / get_option('datadir') / 'xmms"',
   '-DPLUGIN_DIR="' + get_option('prefix') / get_option('libdir') / 'xmms"',
@@ -79,6 +80,28 @@ xmms_compile_args = [
   '-DLOCALEDIR="' + get_option('prefix') / get_option('localedir') + '"',
 ]
 
+xmms_config = configuration_data()
+xmms_config.set('prefix', get_option('prefix'))
+xmms_config.set('exec_prefix', get_option('prefix'))
+xmms_config.set('datarootdir', get_option('prefix') / get_option('datadir'))
+xmms_config.set('datadir', get_option('prefix') / get_option('datadir'))
+xmms_config.set('PACKAGE', 'xmms')
+xmms_config.set('VERSION', meson.project_version())
+xmms_config.set('includedir', get_option('prefix') / get_option('includedir'))
+xmms_config.set('libdir', get_option('prefix') / get_option('libdir'))
+xmms_config.set('GTK_LIBS', '$(pkg-config --libs gtk+-2.0)')
+xmms_config.set('GTK_CFLAGS', '$(pkg-config --cflags gtk+-2.0)')
+xmms_config.set('plugindir', get_option('prefix') / xmms_plugin_dir)
+xmms_config.set('VISUALIZATION_PLUGIN_DIR', 'Visualization')
+xmms_config.set('INPUT_PLUGIN_DIR', 'Input')
+xmms_config.set('OUTPUT_PLUGIN_DIR', 'Output')
+xmms_config.set('EFFECT_PLUGIN_DIR', 'Effect')
+xmms_config.set('GENERAL_PLUGIN_DIR', 'General')
+configure_file(input: 'xmms-config.in', output: 'xmms-config', configuration: xmms_config, install: true, install_dir: get_option('bindir'), install_mode: 'rwxr-xr-x')
+
+foreach locale : ['af', 'az', 'be', 'bg', 'bs', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en', 'en_GB', 'eo', 'es', 'et', 'eu', 'fi', 'fr', 'ga', 'gl', 'hr', 'hu', 'id', 'it', 'ja', 'ka', 'ko', 'lt', 'lv', 'mk', 'ms', 'nn', 'nl', 'no', 'pl', 'pt', 'pt_BR', 'ro', 'ru', 'sk', 'sl', 'sq', 'sr', 'sr@Latn', 'sv', 'tg', 'th', 'tr', 'uk', 'uz', 'vi', 'wa', 'zh_CN', 'zh_TW']
+  install_data('po/' + locale + '.gmo', install_dir: get_option('localedir') / locale / 'LC_MESSAGES', rename: 'xmms.mo')
+endforeach
 subdir('libxmms')
 subdir('xmms')
 subdir('wmxmms')

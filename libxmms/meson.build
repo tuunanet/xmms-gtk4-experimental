@@ -17,7 +17,14 @@ libxmms = shared_library(
   include_directories: xmms_include_dir,
   version: '4.1.3',
   soversion: '4',
-  install: false,
+  install: true,
+  install_dir: get_option('libdir'),
+)
+
+install_headers(
+  'configfile.h', 'xmmsctrl.h', 'dirbrowser.h', 'util.h', 'formatter.h',
+  'titlestring.h',
+  subdir: 'xmms',
 )
 libxmms_dep = declare_dependency(
   link_with: libxmms,

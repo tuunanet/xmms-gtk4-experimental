@@ -25,5 +25,7 @@ xmms = executable(
   include_directories: [xmms_include_dir, include_directories('.')],
   c_args: xmms_compile_args,
   export_dynamic: true,
-  install: false,
+  install: true,
 )
+
+install_headers('plugin.h', 'fullscreen.h', subdir: 'xmms')

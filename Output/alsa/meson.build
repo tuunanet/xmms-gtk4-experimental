@@ -4,5 +4,6 @@ alsa_module = shared_module(
         'init.c'),
   dependencies: [glib_dep, gtk2_dep, threads_dep, alsa_dep],
   include_directories: [xmms_include_dir, xmms_i18n_include_dir],
-  install: false,
+  install: true,
+  install_dir: xmms_plugin_dir / 'Output',
 )
