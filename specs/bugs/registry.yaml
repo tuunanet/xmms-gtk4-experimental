@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-07-30T100559
+    date: 2026-07-30
+    severity: medium
+    priority: P1
+    scope: source-distribution
+    summary: Legacy manifest regeneration requires unavailable Automake 1.9.6 macro compatibility.
+    file: specs/bugs/BUG-2026-07-30T100559-automake-regeneration-version-mismatch.md
+    status: deferred-e05s03
   - bug_id: BUG-2026-07-30T094819
     date: 2026-07-30
     severity: high
