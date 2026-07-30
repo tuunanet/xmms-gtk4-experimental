@@ -5,7 +5,6 @@ repo_root=${1:?usage: $0 REPO_ROOT}
 build_dir=$(mktemp -d "${TMPDIR:-/tmp}/xmms-meson-test-contract.XXXXXX")
 trap 'rm -rf "$build_dir"' EXIT HUP INT TERM
 
-rm -f "$repo_root/xmms/i18n.h"
 meson setup "$build_dir" "$repo_root" --wrap-mode=nodownload >/dev/null
 
 registered_tests=$(meson test -C "$build_dir" --list | sed 's/^[^:]*://')

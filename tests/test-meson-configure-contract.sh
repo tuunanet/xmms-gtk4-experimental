@@ -29,12 +29,29 @@ meson configure "$build_dir" | grep -F 'gtk3-proof' >/dev/null \
 	|| fail "reports the GTK3 proof option"
 test -f "$build_dir/config.h" || fail "generates config.h"
 test -f "$build_dir/xmms/i18n.h" || fail "generates i18n.h"
-grep -F '#define ENABLE_NLS' "$build_dir/xmms/i18n.h" >/dev/null \
-	|| fail "enables gettext in the Meson i18n header"
+grep -F '#define ENABLE_NLS 1' "$build_dir/xmms/i18n.h" >/dev/null \
+	|| fail "defines gettext support numerically in the Meson i18n header"
 grep -F '#define DEV_DSP "/dev/dsp"' "$build_dir/config.h" >/dev/null \
 	|| fail "configures the default OSS DSP path"
 grep -F '#define DEV_MIXER "/dev/mixer"' "$build_dir/config.h" >/dev/null \
 	|| fail "configures the default OSS mixer path"
+
+collision_source="$build_dir/source-with-autotools-header"
+collision_build_dir="$build_dir/collision-build"
+mkdir "$collision_source"
+git -C "$repo_root" archive --format=tar HEAD | tar -x -C "$collision_source"
+cat > "$collision_source/xmms/i18n.h" <<'EOF'
+#define ENABLE_NLS 1
+#define gettext(String) (String)
+EOF
+meson setup "$collision_build_dir" "$collision_source" --wrap-mode=nodownload >/dev/null
+${CC:-cc} -DHAVE_CONFIG_H \
+	-I"$collision_build_dir" -I"$collision_build_dir/xmms" \
+	-I"$collision_source/xmms" \
+	$(pkg-config --cflags gtk+-2.0 glib-2.0) \
+	-c "$collision_source/xmms/main.c" \
+	-o "$collision_build_dir/main.o" \
+	|| fail "compiles with a retained Autotools gettext header"
 
 esd_build_dir="$build_dir/esd"
 if pkg-config --exists esound; then

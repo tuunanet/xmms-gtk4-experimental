@@ -1,4 +1,4 @@
-shared_module(
+esd_module = shared_module(
   'esdout',
   files('esd.c', 'mixer.c', 'about.c', 'configure.c', 'audio.c', 'init.c'),
   dependencies: [gtk2_dep, threads_dep, esd_dep],

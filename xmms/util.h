@@ -20,7 +20,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "i18n.h"
+#include <i18n.h>
 
 #define XMMS_LEGACY_PLAYLIST_FONT "-adobe-helvetica-bold-r-*-*-10-*"
 #define XMMS_LEGACY_MAINWIN_FONT "-adobe-helvetica-medium-r-*-*-8-*"
