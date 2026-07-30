@@ -5,7 +5,7 @@
 
 ![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue)
 ![Language](https://img.shields.io/badge/language-C-555555)
-![Toolkit](https://img.shields.io/badge/toolkit-GTK2-729fcf)
+![Toolkit](https://img.shields.io/badge/toolkit-GTK2%20%E2%86%92%20GTK4-729fcf)
 ![Platform](https://img.shields.io/badge/platform-Linux-4c9e2f)
 
 ![The classic XMMS interface](docs/images/xmms.png)
@@ -24,11 +24,14 @@ plugin architecture for input, output, effect, general, and visualization
 plugins. It supports MP3, Ogg Vorbis, WAV, module formats (MOD, XM, S3M, IT and
 others via libmikmod), CD audio, and HTTP/Icecast/Shoutcast streaming.
 
-XMMS GTK4 Experimental is based on the last upstream release, **XMMS 1.2.11**, and
-currently uses the **GTK2 / GLib2** port of the original GTK1 codebase so that
-it continues to compile and run on contemporary Linux distributions.
-The `xmms` executable, source-package name, configuration paths, and plugin
-interfaces retain their historical identifiers for compatibility.
+XMMS GTK4 Experimental is based on the last upstream release, **XMMS 1.2.11**.
+Its target is a GTK4-based player, reached through a deliberate **GTK2 → GTK3
+→ GTK4** migration that preserves classic behavior and compatibility.
+
+The production player currently uses GTK2 / GLib2. A separately linked GTK3
+Play-button proof establishes the first migration seam; GTK4 is not yet the
+production UI. The `xmms` executable, source-package name, configuration
+paths, and plugin interfaces retain their historical identifiers.
 
 ---
 
@@ -48,8 +51,10 @@ Repository history falls into three periods:
 
 Current maintenance priorities include:
 
-- Completing and hardening GTK2 compatibility while preserving classic UI
-  behavior
+- Advancing the staged GTK2 → GTK3 → GTK4 UI migration while preserving classic
+  UI behavior and skin compatibility
+- Keeping the current GTK2 player buildable and usable until its GTK3 and GTK4
+  successors achieve equivalent behavior
 - Fixing **GCC 15** build blockers and modern compiler warnings
 - Defaulting audio output to **ALSA** on modern Linux (OSS as a legacy option)
 - Fixing plugin discovery and ALSA playback and volume behavior
@@ -100,15 +105,17 @@ The complete feature list is in the [user manual](docs/manual.md#5-features).
 The [GitHub Releases](https://github.com/tuunanet/xmms-gtk4-experimental/releases)
 provide native x86-64 packages alongside the source archive:
 
-- DEB packages target Ubuntu 24.04 LTS (`amd64`).
+- DEB packages target Linux Mint 22.3 and Ubuntu 26.04 (`amd64`).
 
-Download the runtime package and its `PACKAGES-SHA256SUMS` file from the
-release, verify the checksum, then install it with the distribution package
-manager:
+Download the runtime package and `SHA256SUMS` from the release, verify the
+checksum, then install the package matching your distribution:
 
 ```sh
-# Ubuntu 24.04 LTS
-sudo apt install ./xmms_0.0.1-1.ubuntu24.04_amd64.deb
+# Linux Mint 22.3
+sudo apt install ./xmms_0.0.1-1.linuxmint22.3_amd64.deb
+
+# Ubuntu 26.04
+sudo apt install ./xmms_0.0.1-1.ubuntu26.04_amd64.deb
 ```
 
 The optional `libxmms-dev` DEB contains headers and linker files for plugin
@@ -128,9 +135,12 @@ XMMS uses the GNU Autotools build system. This repository ships a pre-generated
 
 - A C compiler (GCC or Clang)
 - `pkg-config`
-- **GTK+ ≥ 2.0** and **GLib ≥ 2.0** (with `gthread`)
+- **GTK+ ≥ 2.0** and **GLib ≥ 2.0** (with `gthread`) for the current production player
+- **GTK+ 3 ≥ 3.24** for the separately linked migration proof (when enabled)
 - POSIX threads (`pthread`)
 - `zlib`
+
+GTK4 is the migration target, not yet a production build dependency.
 
 **Optional (enable additional plugins):**
 
@@ -160,8 +170,8 @@ sudo make install
 This installs the `xmms` binary to `<prefix>/bin` and plugins to
 `<prefix>/lib/xmms/`.
 
-On Ubuntu 24.04, after installing the Debian package build dependencies, build
-and verify binary packages from the current source with:
+On a supported Debian-family build host, after installing the package build
+dependencies, build and verify binary packages from the current source with:
 
 ```sh
 make deb
