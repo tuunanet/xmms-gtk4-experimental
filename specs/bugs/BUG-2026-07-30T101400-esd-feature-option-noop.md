@@ -78,4 +78,7 @@ not change the plugin ABI, playback implementation, or default
 
 ## Resolution
 
-<!-- filled in by validate-fix -->
+Wired the feature to the system `esound` dependency and the established ESD
+shared module. Forced enable now fails when eSound is absent; when available,
+the configuration contract requires `libesdout.so` and `get_oplugin_info`.
+Default Meson output and baseline parity contracts pass.
