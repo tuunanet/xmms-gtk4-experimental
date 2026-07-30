@@ -1,1 +1,1 @@
-opengl_spectrum_module = shared_module('ogl_spectrum', files('opengl_spectrum.c', 'configure.c'), dependencies: [gtk2_dep, opengl_dep], include_directories: [xmms_include_dir, xmms_i18n_include_dir], c_args: xmms_compile_args, install: false)
+opengl_spectrum_module = shared_module('ogl_spectrum', files('opengl_spectrum.c', 'configure.c'), dependencies: [gtk2_dep, opengl_dep], include_directories: [xmms_include_dir, xmms_i18n_include_dir], c_args: xmms_compile_args, install: true, install_dir: xmms_plugin_dir / 'Visualization')
