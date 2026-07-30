@@ -23,7 +23,7 @@ git -C "$repo_root" diff --cached --quiet || fail 'working tree has staged chang
 
 meson setup "$dist_build" "$repo_root" --wrap-mode=nodownload >/dev/null
 meson dist -C "$dist_build" >/dev/null
-archive=$(find "$dist_build/meson-dist" -maxdepth 1 -type f -name 'xmms-*.tar.*' | head -n 1)
+archive=$(find "$dist_build/meson-dist" -maxdepth 1 -type f \( -name 'xmms-*.tar.xz' -o -name 'xmms-*.tar.gz' \) | head -n 1)
 test -n "$archive" || fail 'meson dist did not produce a source archive'
 
 mkdir "$extract_root"
