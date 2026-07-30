@@ -179,3 +179,5 @@ test('release-tools', find_program('test-release-tools.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-test-suite-contract', find_program('test-meson-test-suite-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
+test('meson-dist-contract', find_program('test-meson-dist-contract.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root())

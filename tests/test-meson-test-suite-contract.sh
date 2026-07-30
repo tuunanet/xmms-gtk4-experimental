@@ -32,7 +32,8 @@ for expected_test in \
   plugin-linkage \
   meson-output-contract \
   release-tools \
-  meson-test-suite-contract
+  meson-test-suite-contract \
+  meson-dist-contract
 do
   printf '%s\n' "$registered_tests" | grep -Fx "$expected_test" >/dev/null || {
     printf '%s\n' "missing Meson test registration: $expected_test" >&2
