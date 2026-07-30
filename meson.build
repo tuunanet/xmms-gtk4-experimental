@@ -18,6 +18,7 @@ gtk3_dep = dependency(
 )
 zlib_dep = dependency('zlib')
 alsa_dep = dependency('alsa')
+mikmod_dep = dependency('libmikmod', required: get_option('mikmod'))
 
 xmms_conf = configuration_data()
 xmms_conf.set_quoted('PACKAGE', 'xmms')
@@ -70,3 +71,6 @@ subdir('Output/alsa')
 subdir('Effect/echo_plugin')
 subdir('General/song_change')
 subdir('Visualization/sanalyzer')
+if mikmod_dep.found()
+  subdir('Input/mikmod')
+endif

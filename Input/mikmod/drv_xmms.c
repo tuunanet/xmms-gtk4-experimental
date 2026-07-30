@@ -117,7 +117,7 @@ static BOOL xmms_Reset(void)
 	return VC_Init();
 }
 
-static void xmms_CommandLine(CHAR * commandLine)
+static void xmms_CommandLine(const CHAR *commandLine)
 {
 }
 
