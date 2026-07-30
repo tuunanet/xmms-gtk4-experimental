@@ -32,4 +32,22 @@ grep -F '#define DEV_DSP "/dev/dsp"' "$build_dir/config.h" >/dev/null \
 	|| fail "configures the default OSS DSP path"
 grep -F '#define DEV_MIXER "/dev/mixer"' "$build_dir/config.h" >/dev/null \
 	|| fail "configures the default OSS mixer path"
+
+esd_build_dir="$build_dir/esd"
+if pkg-config --exists esound; then
+	meson setup "$esd_build_dir" "$repo_root" --wrap-mode=nodownload \
+		-Desd=enabled >/dev/null
+	meson compile -C "$esd_build_dir" >/dev/null
+	test -f "$esd_build_dir/Output/esd/libesdout.so" \
+		|| fail "builds ESD when force-enabled"
+	nm -D --defined-only "$esd_build_dir/Output/esd/libesdout.so" \
+		| grep -E '[[:space:]]get_oplugin_info$' >/dev/null \
+		|| fail "preserves the ESD plugin entry point"
+else
+	if meson setup "$esd_build_dir" "$repo_root" --wrap-mode=nodownload \
+		-Desd=enabled >/dev/null 2>&1; then
+		fail "fails force-enabled ESD without its system dependency"
+	fi
+fi
+
 echo "ok - configures the no-download Meson option contract"
