@@ -4,7 +4,42 @@ SUBDIRS = intl libxmms xmms Output Input Effect General Visualization wmxmms po
 
 bin_SCRIPTS = xmms-config
 
-EXTRA_DIST = \
+MESON_DIST = \
+	meson.build \
+	meson_options.txt \
+	libxmms/meson.build \
+	xmms/meson.build \
+	wmxmms/meson.build \
+	Effect/echo_plugin/meson.build \
+	Effect/stereo_plugin/meson.build \
+	Effect/voice/meson.build \
+	General/ir/meson.build \
+	General/joystick/meson.build \
+	General/song_change/meson.build \
+	Input/cdaudio/meson.build \
+	Input/mikmod/meson.build \
+	Input/mpg123/meson.build \
+	Input/tonegen/meson.build \
+	Input/vorbis/meson.build \
+	Input/wav/meson.build \
+	Output/OSS/meson.build \
+	Output/alsa/meson.build \
+	Output/disk_writer/meson.build \
+	Output/esd/meson.build \
+	Visualization/blur_scope/meson.build \
+	Visualization/opengl_spectrum/meson.build \
+	Visualization/sanalyzer/meson.build \
+	tests/meson.build \
+	tests/test-meson-configure-contract.sh \
+	tests/test-meson-dist-contract.sh \
+	tests/test-meson-test-suite-contract.sh \
+	tests/verify-meson-install-layout.sh \
+	tests/test-outputplugin-plugins/Output/alsa/.libs/meson.build \
+	tests/test-plugins/Input/fixture/.libs/meson.build \
+	tests/test-plugins/Output/fixture/.libs/meson.build \
+	tools/verify-meson-dist.sh
+
+EXTRA_DIST = $(MESON_DIST) \
 	.github/workflows/package-release.yml \
 	.editorconfig \
 	.gitattributes \

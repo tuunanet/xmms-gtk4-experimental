@@ -1,4 +1,10 @@
-configure_file(input: 'i18n.meson.h.in', output: 'i18n.h', copy: true)
+configure_file(
+  input: 'i18n.meson.h.in',
+  output: 'i18n.h',
+  copy: true,
+  install: true,
+  install_dir: get_option('includedir') / 'xmms',
+)
 
 xmms_sources = files(
   'bmp.c', 'skin.c', 'util.c', 'output.c', 'fft.c', 'input.c', 'effect.c',
