@@ -39,7 +39,11 @@ grep -F '#define DEV_MIXER "/dev/mixer"' "$build_dir/config.h" >/dev/null \
 collision_source="$build_dir/source-with-autotools-header"
 collision_build_dir="$build_dir/collision-build"
 mkdir "$collision_source"
-git -C "$repo_root" archive --format=tar HEAD | tar -x -C "$collision_source"
+if git -C "$repo_root" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+	git -C "$repo_root" archive --format=tar HEAD | tar -x -C "$collision_source"
+else
+	(cd "$repo_root" && tar -cf - .) | tar -xf - -C "$collision_source"
+fi
 cat > "$collision_source/xmms/i18n.h" <<'EOF'
 #define ENABLE_NLS 1
 #define gettext(String) (String)
