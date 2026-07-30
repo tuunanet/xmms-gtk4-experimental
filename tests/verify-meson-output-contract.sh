@@ -58,4 +58,4 @@ if ldd "$build_dir/tests/test-gtk3-play-button-proof" | grep -F 'libgtk-x11-2.0.
 	fail "keeps GTK2 out of the GTK3 proof"
 fi
 
-echo "ok - preserves core, plugin-family, and isolated GTK3 Meson outputs"
+echo "ok - preserves full supported plugin and isolated GTK3 Meson outputs"

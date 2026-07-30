@@ -1,0 +1,1 @@
+shared_module('vorbis', files('vorbis.c', 'configure.c', 'http.c', 'fileinfo.c', 'vcedit.c'), dependencies: [gtk2_dep, threads_dep, vorbis_dep, vorbisfile_dep, ogg_dep], include_directories: [xmms_include_dir, xmms_i18n_include_dir], install: false)
