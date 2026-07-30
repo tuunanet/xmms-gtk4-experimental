@@ -11,7 +11,7 @@ tasks:
     verify: "meson setup build-meson --wrap-mode=nodownload && meson configure build-meson"
     risk: P0
     security: medium
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [configuration, supply-chain]}
   - id: t2
     scenarios: [SC-e05s02-P0-01]

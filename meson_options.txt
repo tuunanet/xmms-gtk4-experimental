@@ -1,0 +1,28 @@
+option('one-plugin-dir', type: 'boolean', value: false,
+       description: 'Build all plugins in one directory')
+option('user-plugin-dir', type: 'boolean', value: true,
+       description: 'Allow per-user plugin directories')
+option('dev-dsp', type: 'string', value: '/dev/dsp',
+       description: 'OSS DSP device path')
+option('dev-mixer', type: 'string', value: '/dev/mixer',
+       description: 'OSS mixer device path')
+option('cdda-device', type: 'string', value: '',
+       description: 'Default CDDA device path')
+option('cdda-dir', type: 'string', value: '',
+       description: 'Default CDDA directory path')
+option('gtk3-proof', type: 'feature', value: 'auto',
+       description: 'Build the isolated GTK3 migration proof')
+option('opengl', type: 'feature', value: 'auto',
+       description: 'Build OpenGL visualization plugins')
+option('esd', type: 'feature', value: 'auto',
+       description: 'Build the EsounD output plugin')
+option('mikmod', type: 'feature', value: 'auto',
+       description: 'Build the MikMod input plugin')
+option('vorbis', type: 'feature', value: 'auto',
+       description: 'Build the Ogg Vorbis input plugin')
+option('simd', type: 'boolean', value: false,
+       description: 'Build x86 SIMD code')
+option('ipv6', type: 'boolean', value: false,
+       description: 'Enable IPv6 support')
+option('oss', type: 'feature', value: 'enabled',
+       description: 'Build the OSS output plugin')
