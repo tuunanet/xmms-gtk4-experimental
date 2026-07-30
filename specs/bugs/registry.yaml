@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-07-30T143100
+    date: 2026-07-30
+    severity: medium
+    priority: P0
+    scope: meson-gettext-configuration
+    summary: Meson leaves gettext stubs active, colliding with retained-build translation declarations.
+    file: specs/bugs/BUG-2026-07-30T143100-meson-gettext-header-collision.md
+    status: investigating
   - bug_id: BUG-2026-07-30T101400
     date: 2026-07-30
     severity: medium
