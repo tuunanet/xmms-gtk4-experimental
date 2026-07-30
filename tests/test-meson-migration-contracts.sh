@@ -43,9 +43,17 @@ printf '%s\n' '#!/bin/sh' 'echo 1.3.2' > "$policy_tmpdir/bin/meson"
 printf '%s\n' '#!/bin/sh' 'echo 1.6' > "$policy_tmpdir/bin/ninja"
 chmod +x "$policy_tmpdir/bin/meson" "$policy_tmpdir/bin/ninja"
 PATH="$policy_tmpdir/bin:/usr/bin:/bin" "$policy_checker" --check-tools
-if PATH="/usr/bin:/bin" "$policy_checker" --check-tools >/dev/null 2>&1; then
+missing_tool_dir="$contract_tmpdir/missing-tool-bin"
+mkdir -p "$missing_tool_dir"
+ln -s "$(command -v dirname)" "$missing_tool_dir/dirname"
+ln -s "$(command -v python3)" "$missing_tool_dir/python3"
+missing_tool_log="$contract_tmpdir/missing-tool.log"
+if PATH="$missing_tool_dir" "$policy_checker" --check-tools \
+	>"$missing_tool_log" 2>&1; then
 	fail "fails fast when Meson is unavailable"
 fi
+grep -F "install system package 'meson'" "$missing_tool_log" >/dev/null \
+	|| fail "explains how to install missing Meson"
 "$policy_checker" --setup-args | grep -Fx -- '--wrap-mode=nodownload' >/dev/null \
 	|| fail "requires Meson no-download setup mode"
 echo "ok - enforces system-only Meson and Ninja tooling"
