@@ -10,7 +10,7 @@ epics:
 stories:
   e05s01: verified
   e05s02: verified
-  e05s03: planned
+  e05s03: implementing
   e05s04: planned
   e05s05: planned
   e05s06: planned
