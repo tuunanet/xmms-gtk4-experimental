@@ -1,18 +1,18 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: develop_tdd
+active_flow: verify_work
 active_epic_id: e05
 active_story_id: e05s03
 active_bug_id: null
 git:
   branch: feat/meson-parity-distribution
-  head: 253a084
+  head: 11f60e7
   worktree: /home/tuunanet/git/tuunanet/meson-parity-distribution
 handoff:
-  status: implementing
-  next_skill: develop-tdd
-  reason: e05s02 merged through PR #9; implement e05s03 test, install, gettext, and source-distribution parity in this isolated worktree.
+  status: verifying
+  next_skill: verify-work
+  reason: e05s03 implementation is complete; run its P0 verification, audit, independent review, and team PR gates before starting e05s04.
 metrics:
   story_start: 2026-07-30T10:33:34Z
 release:
