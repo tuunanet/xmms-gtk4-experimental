@@ -7,6 +7,7 @@ project(
 )
 
 cc = meson.get_compiler('c')
+add_project_arguments('-DHAVE_CONFIG_H', language: 'c')
 glib_dep = dependency('glib-2.0', version: '>=2.0.0')
 gtk2_dep = dependency('gtk+-2.0', version: '>=2.0.0')
 threads_dep = dependency('threads')
@@ -17,6 +18,11 @@ gtk3_dep = dependency(
 )
 
 xmms_conf = configuration_data()
+xmms_conf.set_quoted('PACKAGE', 'xmms')
+xmms_conf.set_quoted('VERSION', meson.project_version())
+if cc.has_header('unistd.h')
+  xmms_conf.set('HAVE_UNISTD_H', 1)
+endif
 xmms_conf.set_quoted('DEV_DSP', get_option('dev-dsp'))
 xmms_conf.set_quoted('DEV_MIXER', get_option('dev-mixer'))
 if get_option('cdda-device') != ''
@@ -42,3 +48,17 @@ if gtk3_dep.found()
 endif
 
 configure_file(output: 'config.h', configuration: xmms_conf)
+
+xmms_include_dir = include_directories('.')
+xmms_compile_args = [
+  '-DDATA_DIR="' + get_option('prefix') / get_option('datadir') / 'xmms"',
+  '-DPLUGIN_DIR="' + get_option('prefix') / get_option('libdir') / 'xmms"',
+  '-DBUILD_PLUGIN_DIR="."',
+  '-DPLUGINSUBS=0',
+  '-DLOCALEDIR="' + get_option('prefix') / get_option('localedir') + '"',
+]
+
+subdir('libxmms')
+subdir('xmms')
+subdir('wmxmms')
+subdir('tests')
