@@ -11,7 +11,7 @@ tasks:
     verify: "xvfb-run --auto-servernum meson test -C build-meson --print-errorlogs"
     risk: P0
     security: none
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [tests, gtk, plugins]}
   - id: t2
     scenarios: [SC-e05s03-P0-02]
