@@ -16,12 +16,39 @@ require_file()
 
 require_file xmms/xmms
 require_file wmxmms/wmxmms
+require_export()
+{
+	module=$1
+	symbol=$2
+	require_file "$module"
+	nm -D --defined-only "$build_dir/$module" \
+		| grep -E "[[:space:]]${symbol}$" >/dev/null \
+		|| fail "$module exports $symbol"
+}
+
 require_file libxmms/libxmms.so.4.1.3
-require_file Input/mpg123/libmpg123.so
-require_file Output/alsa/libALSA.so
-require_file Effect/echo_plugin/libecho.so
-require_file General/song_change/libsong_change.so
-require_file Visualization/sanalyzer/libsanalyzer.so
+for contract in \
+	Input/mpg123/libmpg123.so:get_iplugin_info \
+	Input/wav/libwav.so:get_iplugin_info \
+	Input/tonegen/libtonegen.so:get_iplugin_info \
+	Input/cdaudio/libcdaudio.so:get_iplugin_info \
+	Input/vorbis/libvorbis.so:get_iplugin_info \
+	Input/mikmod/libmikmod.so:get_iplugin_info \
+	Output/alsa/libALSA.so:get_oplugin_info \
+	Output/OSS/libOSS.so:get_oplugin_info \
+	Output/disk_writer/libdisk_writer.so:get_oplugin_info \
+	Effect/echo_plugin/libecho.so:get_eplugin_info \
+	Effect/voice/libvoice.so:get_eplugin_info \
+	Effect/stereo_plugin/libstereo.so:get_eplugin_info \
+	General/song_change/libsong_change.so:get_gplugin_info \
+	General/ir/libir.so:get_gplugin_info \
+	General/joystick/libjoy.so:get_gplugin_info \
+	Visualization/sanalyzer/libsanalyzer.so:get_vplugin_info \
+	Visualization/blur_scope/libbscope.so:get_vplugin_info \
+	Visualization/opengl_spectrum/libogl_spectrum.so:get_vplugin_info
+ do
+	require_export "${contract%%:*}" "${contract#*:}"
+done
 require_file tests/test-gtk3-play-button-proof
 
 if ! ldd "$build_dir/tests/test-gtk3-play-button-proof" | grep -F 'libgtk-3.so' >/dev/null; then
