@@ -63,6 +63,7 @@ for path in \
   "$libdir/libxmms.so.4.1.3" \
   "$includedir/xmms/plugin.h" \
   "$includedir/xmms/xmmsctrl.h" \
+  "$includedir/xmms/i18n.h" \
   "$libdir/xmms/Input/libmpg123.so" \
   "$libdir/xmms/Input/libwav.so" \
   "$libdir/xmms/Input/libtonegen.so" \
@@ -88,6 +89,11 @@ require_if_built OSS "$libdir/xmms/Output/libOSS.so"
 require_if_built esdout "$libdir/xmms/Output/libesdout.so"
 require_if_built joy "$libdir/xmms/General/libjoy.so"
 require_if_built ogl_spectrum "$libdir/xmms/Visualization/libogl_spectrum.so"
+
+printf '%s\n' '#include <xmms/util.h>' | \
+  ${CC:-cc} -x c -fsyntax-only -I"$install_root/$includedir" \
+  $(pkg-config --cflags gtk+-2.0 glib-2.0) - \
+  || fail 'installs a self-contained libxmms public header set'
 
 xmms_config="$install_root/$bindir/xmms-config"
 test -x "$xmms_config" || fail 'installs an executable xmms-config'
