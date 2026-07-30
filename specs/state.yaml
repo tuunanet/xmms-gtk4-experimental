@@ -1,18 +1,21 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: verify_work
+active_flow: fix_bug
 active_epic_id: e05
 active_story_id: e05s03
-active_bug_id: null
+active_bug_id: BUG-2026-07-30T143100
+bug_cycle:
+  current_step: 3
+  completed_steps: [1, 2]
 git:
   branch: feat/meson-parity-distribution
   head: 11f60e7
   worktree: /home/tuunanet/git/tuunanet/meson-parity-distribution
 handoff:
-  status: verifying
-  next_skill: verify-work
-  reason: e05s03 implementation is complete; run its P0 verification, audit, independent review, and team PR gates before starting e05s04.
+  status: fixing
+  next_skill: develop-tdd
+  reason: Fix BUG-2026-07-30T143100 before resuming the blocked e05s03 P0 verification gate.
 metrics:
   story_start: 2026-07-30T10:33:34Z
 release:
