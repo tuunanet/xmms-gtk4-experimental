@@ -1,0 +1,62 @@
+schema_version: 1
+story_id: e05s02
+status: passed
+verified_at: 2026-07-30T10:11:24Z
+verifier: verify-work
+terminal_verdict:
+  command: "xvfb-run --auto-servernum make check"
+  exit_code: 0
+  captured_at: 2026-07-30T10:11:24Z
+  note: "Single contiguous legacy regression run after clean Meson setup, compilation, output contract, parity, GTK3 proof, and lint gates."
+phases:
+  smoke:
+    passed: true
+    command: "rm -rf build-meson && meson setup build-meson --wrap-mode=nodownload"
+    note: "Fresh out-of-tree configuration resolved only system dependencies."
+  configure:
+    passed: true
+    command: "meson configure build-meson"
+  build:
+    passed: true
+    command: "meson compile -C build-meson"
+  output_contract:
+    passed: true
+    command: "tests/verify-meson-output-contract.sh build-meson"
+  parity:
+    passed: true
+    command: "tools/verify-build-parity.sh build-meson"
+  gtk3_proof:
+    passed: true
+    command: "xvfb-run --auto-servernum build-meson/tests/test-gtk3-play-button-proof"
+  lint:
+    passed: true
+    command: "make lint"
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum make check"
+  security:
+    passed: true
+    report: "specs/security/REVIEW-e05s02.md"
+  blind_spot_check:
+    passed: false
+    status: unavailable
+    reason: "This preservation fork does not contain the bigpowers structural-check scripts; no substitute was claimed."
+  completeness_critic:
+    passed: false
+    status: unavailable
+    reason: "This preservation fork does not contain the bigpowers completeness-critic script; no substitute was claimed."
+manual:
+  status: not_required
+  rationale: "The story changes build tooling only. Automated clean setup, target output/linkage, ABI-export, parity, and legacy Xvfb proofs cover its observable contracts; no player runtime behavior changed."
+compatibility:
+  runtime_behavior_changed: false
+  plugin_abi_changed: false
+  libxmms_api_changed: false
+  control_socket_changed: false
+  config_paths_changed: false
+  skin_format_changed: false
+  package_names_preserved: true
+gaps:
+  closed: true
+  deferred:
+    - "BUG-2026-07-30T100559: e05s03 owns Meson source-distribution migration because Automake 1.9.6 regeneration is unavailable."
