@@ -40,6 +40,9 @@ EXTRA_DIST = \
 	packaging/xmms.desktop \
 	specs/adr/ADR-0001-staged-gtk-migration.md \
 	specs/adr/ADR-0002-meson-tooling-migration.md \
+	specs/execution-status.yaml \
+	specs/release-plan.yaml \
+	specs/state.yaml \
 	specs/tech-architecture/e05-legacy-build-baseline.json \
 	specs/tech-architecture/e05-meson-toolchain-policy.json \
 	tests/Makefile \

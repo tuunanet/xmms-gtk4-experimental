@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-07-30T023000
+    date: 2026-07-30
+    severity: high
+    priority: P0
+    scope: source-distribution
+    summary: Source archives omit lifecycle YAML inputs required by the Meson migration contract test.
+    file: specs/bugs/BUG-2026-07-30T023000-lifecycle-state-source-distribution.md
+    status: fixed
   - bug_id: BUG-2026-07-29T231000
     date: 2026-07-29
     severity: high
