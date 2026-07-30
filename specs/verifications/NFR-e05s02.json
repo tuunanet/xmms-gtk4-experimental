@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "story_id": "e05s02",
-  "status": "superseded",
+  "status": "pass",
   "dimensions": {
     "performance": {
       "status": "pass",
@@ -9,7 +9,7 @@
     },
     "reliability": {
       "status": "pass",
-      "evidence": "A clean no-download Meson tree compiles all supported modules; the parity contract includes a negative missing-output check; the full legacy Xvfb suite passes."
+      "evidence": "A clean no-download Meson tree compiles all supported modules; parity includes a negative missing-output check; forced ESD enable fails safely without eSound; the full legacy Xvfb suite passes."
     },
     "operability": {
       "status": "pass",
@@ -18,7 +18,6 @@
   },
   "security_review": "specs/security/REVIEW-e05s02.md",
   "gaps": [
-    "BUG-2026-07-30T101400: forced ESD enable was not wired to a dependency or output target.",
     "Legacy Automake 1.9.6 manifest regeneration is unavailable on the supported host; BUG-2026-07-30T100559 defers source-manifest migration to e05s03, where Meson owns distribution."
   ]
 }

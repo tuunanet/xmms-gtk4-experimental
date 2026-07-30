@@ -10,9 +10,9 @@ git:
   head: 7f9975b
   worktree: /home/tuunanet/git/tuunanet/meson-end-to-end-build
 handoff:
-  status: ready_for_verification
-  next_skill: verify-work
-  reason: ESD feature parity is fixed and all e05s02 tasks pass; rerun full verification before review.
+  status: verified
+  next_skill: audit-code
+  reason: e05s02 P0 verification is re-evidenced after ESD parity repair; audit the full Meson build graph before review.
 metrics:
   story_start: 2026-07-30T08:56:01Z
 release:
