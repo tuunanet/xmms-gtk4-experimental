@@ -41,6 +41,15 @@ do
   }
 done
 
+for source_mutating_test in meson-configure-contract build-parity-contract meson-test-suite-contract
+do
+  grep -A 1 "test('$source_mutating_test'" "$repo_root/tests/meson.build" \
+    | grep -F 'is_parallel: false' >/dev/null || {
+      printf '%s\n' "source-mutating Meson test is not serialized: $source_mutating_test" >&2
+      exit 1
+    }
+done
+
 meson compile -C "$build_dir" test-xentry >/dev/null 2>&1 || {
   printf '%s\n' 'registered Meson xentry test does not compile' >&2
   exit 1
