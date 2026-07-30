@@ -11,8 +11,8 @@ git:
   worktree: /home/tuunanet/git/tuunanet/meson-end-to-end-build
 handoff:
   status: verified
-  next_skill: audit-code
-  reason: e05s02 P0 verification is re-evidenced after ESD parity repair; audit the full Meson build graph before review.
+  next_skill: request-review
+  reason: e05s02 P0 verification and self-audit pass after ESD parity repair; obtain an independent review before the team’s final PR decision.
 metrics:
   story_start: 2026-07-30T08:56:01Z
 release:
