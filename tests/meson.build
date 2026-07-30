@@ -14,7 +14,7 @@ subdir('test-outputplugin-plugins/Output/alsa/.libs')
 test_xentry = executable(
   'test-xentry',
   files('test-xentry.c', '../libxmms/xentry.c'),
-  dependencies: glib_dep,
+  dependencies: [glib_dep, gtk2_dep],
   include_directories: test_include_dirs,
   install: false,
 )
