@@ -1,18 +1,18 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: fix_bug
+active_flow: develop_tdd
 active_epic_id: e05
 active_story_id: e05s02
-active_bug_id: BUG-2026-07-30T094819
+active_bug_id: null
 git:
   branch: feat/meson-end-to-end-build
   head: 7f9975b
   worktree: /home/tuunanet/git/tuunanet/meson-end-to-end-build
 handoff:
-  status: bug_investigated
+  status: implementing
   next_skill: develop-tdd
-  reason: Installing required Meson exposed a non-hermetic missing-tool fixture; repair this red project gate before closing the lifecycle and MikMod fixes.
+  reason: MikMod callback compatibility and the two lifecycle/tool-policy test defects are verified fixed; resume e05s02 t2 remaining plugin targets.
 metrics:
   story_start: 2026-07-30T08:56:01Z
 release:
