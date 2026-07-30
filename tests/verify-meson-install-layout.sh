@@ -39,7 +39,7 @@ require_file()
   test -f "$install_root/$1" || fail "installs $1"
 }
 
-require_if_enabled()
+require_if_built()
 {
   target_name=$1
   install_path=$2
@@ -47,7 +47,7 @@ require_if_enabled()
 import json
 import sys
 name = sys.argv[1]
-raise SystemExit(not any(target["name"] == name and target["installed"]
+raise SystemExit(not any(target["name"] == name
                          for target in json.load(sys.stdin)))
 ' "$target_name"; then
     require_file "$install_path"
@@ -81,13 +81,13 @@ do
   require_file "$path"
 done
 
-require_if_enabled cdaudio "$libdir/xmms/Input/libcdaudio.so"
-require_if_enabled vorbis "$libdir/xmms/Input/libvorbis.so"
-require_if_enabled mikmod "$libdir/xmms/Input/libmikmod.so"
-require_if_enabled OSS "$libdir/xmms/Output/libOSS.so"
-require_if_enabled esdout "$libdir/xmms/Output/libesdout.so"
-require_if_enabled joy "$libdir/xmms/General/libjoy.so"
-require_if_enabled ogl_spectrum "$libdir/xmms/Visualization/libogl_spectrum.so"
+require_if_built cdaudio "$libdir/xmms/Input/libcdaudio.so"
+require_if_built vorbis "$libdir/xmms/Input/libvorbis.so"
+require_if_built mikmod "$libdir/xmms/Input/libmikmod.so"
+require_if_built OSS "$libdir/xmms/Output/libOSS.so"
+require_if_built esdout "$libdir/xmms/Output/libesdout.so"
+require_if_built joy "$libdir/xmms/General/libjoy.so"
+require_if_built ogl_spectrum "$libdir/xmms/Visualization/libogl_spectrum.so"
 
 xmms_config="$install_root/$bindir/xmms-config"
 test -x "$xmms_config" || fail 'installs an executable xmms-config'

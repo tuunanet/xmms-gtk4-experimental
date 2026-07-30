@@ -45,8 +45,7 @@ else
 	(cd "$repo_root" && tar -cf - .) | tar -xf - -C "$collision_source"
 fi
 cat > "$collision_source/xmms/i18n.h" <<'EOF'
-#define ENABLE_NLS 1
-#define gettext(String) (String)
+#error Meson must select its generated i18n.h before retained Autotools output
 EOF
 meson setup "$collision_build_dir" "$collision_source" --wrap-mode=nodownload >/dev/null
 ${CC:-cc} -DHAVE_CONFIG_H \
