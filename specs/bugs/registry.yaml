@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-07-30T101400
+    date: 2026-07-30
+    severity: medium
+    priority: P0
+    scope: meson-feature-parity
+    summary: Forced ESD enable succeeds without resolving eSound or building the legacy output module.
+    file: specs/bugs/BUG-2026-07-30T101400-esd-feature-option-noop.md
+    status: investigated
   - bug_id: BUG-2026-07-30T100559
     date: 2026-07-30
     severity: medium
