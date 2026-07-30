@@ -17,6 +17,11 @@ require_file()
 require_file xmms/xmms
 require_file wmxmms/wmxmms
 require_file libxmms/libxmms.so.4.1.3
+require_file Input/mpg123/libmpg123.so
+require_file Output/alsa/libALSA.so
+require_file Effect/echo_plugin/libecho.so
+require_file General/song_change/libsong_change.so
+require_file Visualization/sanalyzer/libsanalyzer.so
 require_file tests/test-gtk3-play-button-proof
 
 if ! ldd "$build_dir/tests/test-gtk3-play-button-proof" | grep -F 'libgtk-3.so' >/dev/null; then
@@ -26,4 +31,4 @@ if ldd "$build_dir/tests/test-gtk3-play-button-proof" | grep -F 'libgtk-x11-2.0.
 	fail "keeps GTK2 out of the GTK3 proof"
 fi
 
-echo "ok - preserves core and isolated GTK3 Meson outputs"
+echo "ok - preserves core, plugin-family, and isolated GTK3 Meson outputs"
