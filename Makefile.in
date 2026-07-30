@@ -360,6 +360,7 @@ EXTRA_DIST = \
 	tools/check-release-version.sh \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
+	tools/validate-lifecycle-state.py \
 	tools/extract-release-notes.sh \
 	xmms/ui_gtk3_control.c \
 	xmms/ui_gtk3_control.h \

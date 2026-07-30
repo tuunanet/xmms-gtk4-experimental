@@ -1,18 +1,18 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: plan_work
+active_flow: develop_tdd
 active_epic_id: e05
 active_story_id: e05s01
 active_bug_id: null
 git:
-  branch: plan/meson-tooling-migration
-  head: beb3e1b98746e7b514fed9b0afd236fcea28eee5
-  worktree: /home/tuunanet/git/tuunanet/meson-tooling-migration
+  branch: feat/meson-baseline-contracts
+  head: 15fca74
+  worktree: /home/tuunanet/git/tuunanet/meson-baseline-contracts
 handoff:
-  status: awaiting_plan_approval
+  status: implementing
   next_skill: develop-tdd
-  reason: The user confirmed the Meson migration charter. e05 plan artifacts await review before implementation begins with e05s01 baseline/state reconciliation.
+  reason: The user approved e05 implementation. e05s01 is recording verified release evidence and the legacy build baseline before Meson build work begins.
 metrics:
   story_start: 2026-07-30T02:15:00Z
 release:

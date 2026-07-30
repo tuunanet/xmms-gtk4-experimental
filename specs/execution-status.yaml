@@ -2,7 +2,7 @@ schema_version: 1
 status: planning
 epics:
   e05: planned
-  e04: uat_pending
+  e04: verified
   e01: verified
   e02: verified
   e03: verified
@@ -13,7 +13,7 @@ stories:
   e05s04: planned
   e05s05: planned
   e05s06: planned
-  e04s01: uat_pending
+  e04s01: verified
   e01s01: verified
   e01s02: verified
   e02s01: verified

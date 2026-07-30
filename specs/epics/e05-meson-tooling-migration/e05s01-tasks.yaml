@@ -11,7 +11,7 @@ tasks:
     verify: "python3 tools/validate-lifecycle-state.py specs/state.yaml specs/execution-status.yaml specs/release-plan.yaml"
     risk: P1
     security: low
-    status: failing
+    status: passing
     allure: {severity: high, categories: [lifecycle, release]}
   - id: t2
     scenarios: [SC-e05s01-P1-01]

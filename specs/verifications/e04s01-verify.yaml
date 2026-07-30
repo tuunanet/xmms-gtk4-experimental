@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e04s01
-status: automated_pass_manual_pending
-verified_at: 2026-07-29T23:30:00Z
+status: passed
+verified_at: 2026-07-30T01:20:00Z
 verifier: verify-work
 terminal_verdict:
   command: "xvfb-run --auto-servernum make distcheck"
@@ -25,14 +25,13 @@ phases:
     passed: true
     command: "tests/test-package-recipes.sh \"$PWD\""
 manual:
-  status: pending_post_merge_tag_dispatch
-  steps:
-    - Push an annotated vVERSION tag from main after release preparation is approved.
-    - Dispatch Linux packages and release on that tag with the matching VERSION input.
-    - Confirm both target package jobs finish, inspect the draft assets and SHA256SUMS, and decide whether to publish manually.
+  status: passed
+  github_run: https://github.com/tuunanet/xmms-gtk4-experimental/actions/runs/30467100044
+  tag: v0.0.1
+  result: Both Linux Mint 22.3 and Ubuntu 26.04 package jobs and draft-release assembly passed; downloaded SHA256SUMS verified every draft asset.
 gaps:
-  closed: false
-  reason: The guarded workflow can only be integration-tested on an annotated release tag after it exists on main.
+  closed: true
+  reason: The manual annotated-tag dispatch completed and created an unpublished pre-release draft for maintainer review.
 compatibility:
   runtime_behavior_changed: false
   plugin_abi_changed: false
