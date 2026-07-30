@@ -39,6 +39,21 @@ require_file()
   test -f "$install_root/$1" || fail "installs $1"
 }
 
+require_if_enabled()
+{
+  target_name=$1
+  install_path=$2
+  if meson introspect --targets "$build_dir" | python3 -c '
+import json
+import sys
+name = sys.argv[1]
+raise SystemExit(not any(target["name"] == name and target["installed"]
+                         for target in json.load(sys.stdin)))
+' "$target_name"; then
+    require_file "$install_path"
+  fi
+}
+
 meson install -C "$build_dir" --destdir "$stage_dir" >/dev/null
 
 for path in \
@@ -51,26 +66,28 @@ for path in \
   "$libdir/xmms/Input/libmpg123.so" \
   "$libdir/xmms/Input/libwav.so" \
   "$libdir/xmms/Input/libtonegen.so" \
-  "$libdir/xmms/Input/libcdaudio.so" \
-  "$libdir/xmms/Input/libvorbis.so" \
-  "$libdir/xmms/Input/libmikmod.so" \
   "$libdir/xmms/Output/libALSA.so" \
-  "$libdir/xmms/Output/libOSS.so" \
   "$libdir/xmms/Output/libdisk_writer.so" \
   "$libdir/xmms/Effect/libecho.so" \
   "$libdir/xmms/Effect/libvoice.so" \
   "$libdir/xmms/Effect/libstereo.so" \
   "$libdir/xmms/General/libsong_change.so" \
   "$libdir/xmms/General/libir.so" \
-  "$libdir/xmms/General/libjoy.so" \
   "$libdir/xmms/Visualization/libsanalyzer.so" \
   "$libdir/xmms/Visualization/libbscope.so" \
-  "$libdir/xmms/Visualization/libogl_spectrum.so" \
   "$datadir/xmms/wmxmms.xpm" \
   "$localedir/de/LC_MESSAGES/xmms.mo"
 do
   require_file "$path"
 done
+
+require_if_enabled cdaudio "$libdir/xmms/Input/libcdaudio.so"
+require_if_enabled vorbis "$libdir/xmms/Input/libvorbis.so"
+require_if_enabled mikmod "$libdir/xmms/Input/libmikmod.so"
+require_if_enabled OSS "$libdir/xmms/Output/libOSS.so"
+require_if_enabled esdout "$libdir/xmms/Output/libesdout.so"
+require_if_enabled joy "$libdir/xmms/General/libjoy.so"
+require_if_enabled ogl_spectrum "$libdir/xmms/Visualization/libogl_spectrum.so"
 
 xmms_config="$install_root/$bindir/xmms-config"
 test -x "$xmms_config" || fail 'installs an executable xmms-config'

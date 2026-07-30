@@ -142,21 +142,36 @@ meson_output_contract_targets = [
   mpg123_module,
   wav_module,
   tonegen_module,
-  cdaudio_module,
-  vorbis_module,
-  mikmod_module,
   alsa_module,
-  oss_module,
   disk_writer_module,
   echo_module,
   voice_module,
   stereo_module,
   song_change_module,
   ir_module,
-  joystick_module,
   sanalyzer_module,
   blur_scope_module,
-  opengl_spectrum_module,
 ]
+if cc.has_header('linux/cdrom.h')
+  meson_output_contract_targets += cdaudio_module
+endif
+if vorbis_dep.found()
+  meson_output_contract_targets += vorbis_module
+endif
+if mikmod_dep.found()
+  meson_output_contract_targets += mikmod_module
+endif
+if not get_option('oss').disabled()
+  meson_output_contract_targets += oss_module
+endif
+if esd_dep.found()
+  meson_output_contract_targets += esd_module
+endif
+if cc.has_header('linux/joystick.h')
+  meson_output_contract_targets += joystick_module
+endif
+if opengl_dep.found()
+  meson_output_contract_targets += opengl_spectrum_module
+endif
 
 subdir('tests')
