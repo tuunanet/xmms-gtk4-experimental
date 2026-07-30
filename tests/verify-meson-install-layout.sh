@@ -76,10 +76,14 @@ for path in \
   "$libdir/xmms/General/libir.so" \
   "$libdir/xmms/Visualization/libsanalyzer.so" \
   "$libdir/xmms/Visualization/libbscope.so" \
-  "$datadir/xmms/wmxmms.xpm" \
-  "$localedir/de/LC_MESSAGES/xmms.mo"
+  "$datadir/xmms/wmxmms.xpm"
 do
   require_file "$path"
+done
+
+for locale in $(tr '\n' ' ' < "$(dirname "$0")/../po/LINGUAS")
+do
+  require_file "$localedir/$locale/LC_MESSAGES/xmms.mo"
 done
 
 require_if_built cdaudio "$libdir/xmms/Input/libcdaudio.so"
