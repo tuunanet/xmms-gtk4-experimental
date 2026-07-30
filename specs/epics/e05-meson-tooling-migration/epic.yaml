@@ -4,7 +4,7 @@ title: Replace Autotools with Meson tooling
 wsjf: 3.1
 total_bcps: 42
 risk: P0
-status: planned
+status: implementing
 adr:
   - ADR-0001-staged-gtk-migration.md
 stories:
@@ -12,7 +12,7 @@ stories:
     title: Capture release baseline and Meson migration contracts
     bcps: 5
     risk: P1
-    status: planned
+    status: verified
     delta: ADDED
     spec: e05s01-baseline-and-contracts.md
     tasks: e05s01-tasks.yaml

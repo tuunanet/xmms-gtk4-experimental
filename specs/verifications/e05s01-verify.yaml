@@ -1,0 +1,34 @@
+schema_version: 1
+story_id: e05s01
+status: passed
+verified_at: 2026-07-30T03:00:00Z
+verifier: verify-work
+terminal_verdict:
+  command: "xvfb-run --auto-servernum make distcheck"
+  exit_code: 0
+  captured_at: 2026-07-30T02:58:00Z
+  note: The clean source archive rebuilt, ran the full test suite including lifecycle, baseline, and system-tool policy contracts, installed, uninstalled, and distcleaned successfully.
+phases:
+  lint:
+    passed: true
+    command: "make lint"
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum make check"
+  distribution:
+    passed: true
+    command: "xvfb-run --auto-servernum make distcheck"
+  focused_contracts:
+    passed: true
+    command: "tests/test-meson-migration-contracts.sh \"$PWD\""
+manual:
+  status: not_required
+  rationale: The story adds repository-local policy, baseline, and lifecycle validators; the completed e04 tagged release run supplies the recorded external evidence.
+compatibility:
+  runtime_behavior_changed: false
+  plugin_abi_changed: false
+  libxmms_api_changed: false
+  control_socket_changed: false
+  config_paths_changed: false
+  skin_format_changed: false
+  package_names_preserved: true

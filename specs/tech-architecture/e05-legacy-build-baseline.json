@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "captured_from": "v0.0.1 release baseline",
+  "legacy_toolchain": "autotools-libtool",
+  "source_manifests": [
+    "configure.in",
+    "libxmms/configure.in",
+    "Makefile.am",
+    "libxmms/Makefile.am"
+  ],
+  "generated_artifacts": [
+    "configure",
+    "Makefile.in",
+    "libxmms/configure",
+    "libxmms/Makefile.in"
+  ],
+  "configuration": {
+    "required_pkg_config_modules": ["glib-2.0", "gtk+-2.0"],
+    "options": [
+      "one-plugin-dir",
+      "user-plugin-dir",
+      "gtk3-proof",
+      "opengl",
+      "esd",
+      "mikmod",
+      "vorbis",
+      "simd",
+      "ipv6",
+      "oss"
+    ]
+  },
+  "outputs": {
+    "executables": ["xmms", "wmxmms"],
+    "library": "libxmms",
+    "plugin_families": ["Input", "Output", "Effect", "General", "Visualization"],
+    "isolated_gtk3_proof": "tests/test-gtk3-play-button-proof"
+  },
+  "test_contract": {
+    "orchestrator": "make check",
+    "shell_contracts": [
+      "tests/test-package-recipes.sh",
+      "tests/test-plugin-linkage.sh",
+      "tests/test-release-tools.sh"
+    ]
+  },
+  "install_contract": {
+    "plugin_directory": "lib/xmms",
+    "man_pages": ["xmms.1", "wmxmms.1"],
+    "translations": "po"
+  },
+  "delivery_contract": {
+    "source_distribution": "make distcheck",
+    "debian_build": "make deb",
+    "packages": ["xmms", "libxmms-dev"],
+    "release_targets": ["linuxmint22.3", "ubuntu26.04"],
+    "release_workflow": ".github/workflows/package-release.yml",
+    "publication": "draft-only"
+  }
+}

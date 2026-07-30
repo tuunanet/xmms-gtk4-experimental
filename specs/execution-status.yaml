@@ -1,14 +1,14 @@
 schema_version: 1
-status: planning
+status: implementing
 epics:
-  e05: planned
+  e05: implementing
   e06: planned
-  e04: uat_pending
+  e04: verified
   e01: verified
   e02: verified
   e03: verified
 stories:
-  e05s01: planned
+  e05s01: verified
   e05s02: planned
   e05s03: planned
   e05s04: planned
@@ -17,7 +17,7 @@ stories:
   e06s01: planned
   e06s02: planned
   e06s03: planned
-  e04s01: uat_pending
+  e04s01: verified
   e01s01: verified
   e01s02: verified
   e02s01: verified

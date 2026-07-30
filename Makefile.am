@@ -39,6 +39,12 @@ EXTRA_DIST = \
 	packaging/debian/xmms.install \
 	packaging/xmms.desktop \
 	specs/adr/ADR-0001-staged-gtk-migration.md \
+	specs/adr/ADR-0002-meson-tooling-migration.md \
+	specs/execution-status.yaml \
+	specs/release-plan.yaml \
+	specs/state.yaml \
+	specs/tech-architecture/e05-legacy-build-baseline.json \
+	specs/tech-architecture/e05-meson-toolchain-policy.json \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
 	tests/fixture-output-plugin.c \
@@ -51,6 +57,7 @@ EXTRA_DIST = \
 	tests/test-intl-generated-sources.sh \
 	tests/test-mpg123-file-duration.c \
 	tests/test-mpg123-stream-position.c \
+	tests/test-meson-migration-contracts.sh \
 	tests/test-outputplugin.c \
 	tests/test-package-recipes.sh \
 	tests/test-pbutton-baseline.c \
@@ -64,6 +71,9 @@ EXTRA_DIST = \
 	tools/check-release-version.sh \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
+	tools/validate-lifecycle-state.py \
+	tools/verify-build-baseline.sh \
+	tools/verify-meson-toolchain-policy.sh \
 	tools/extract-release-notes.sh \
 	xmms/ui_gtk3_control.c \
 	xmms/ui_gtk3_control.h \
