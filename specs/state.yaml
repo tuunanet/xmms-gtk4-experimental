@@ -1,21 +1,21 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: verify
-active_epic_id: e04
-active_story_id: e04s01
+active_flow: plan_work
+active_epic_id: e05
+active_story_id: e05s01
 active_bug_id: null
 git:
-  branch: ci/release-packaging
-  head: 0ca0faa
-  worktree: /home/tuunanet/git/tuunanet/ci-release-packaging
+  branch: plan/meson-tooling-migration
+  head: beb3e1b98746e7b514fed9b0afd236fcea28eee5
+  worktree: /home/tuunanet/git/tuunanet/meson-tooling-migration
 handoff:
-  status: awaiting_post_merge_uat
-  next_skill: verify-work
-  reason: Local workflow contracts, lint, Xvfb suite, and distcheck pass. GitHub Actions integration requires an annotated release tag after package-release.yml reaches main.
+  status: awaiting_plan_approval
+  next_skill: develop-tdd
+  reason: The user confirmed the Meson migration charter. e05 plan artifacts await review before implementation begins with e05s01 baseline/state reconciliation.
 metrics:
-  story_start: 2026-07-29T22:55:00Z
+  story_start: 2026-07-30T02:15:00Z
 release:
-  last_tag: null
-  last_publish: null
+  last_tag: v0.0.1
+  last_publish: draft-prerelease
   target_version: 0.0.1

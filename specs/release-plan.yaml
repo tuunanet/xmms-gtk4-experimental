@@ -1,12 +1,23 @@
 schema_version: 1
 release:
-  codename: GTK migration foundation
+  codename: Meson tooling migration
   version: 0.0.1
   bump_hint: none
   status: planning
   semantic_release: true
 status: planning
 epics:
+  - id: e05
+    title: Replace Autotools with Meson tooling
+    capsule_dir: epics/e05-meson-tooling-migration
+    wsjf: 3.5
+    bcps: 42
+    status: planned
+    score:
+      business_value: 10
+      time_criticality: 8
+      risk_reduction: 10
+      job_size: 8
   - id: e04
     title: Port generic release-packaging workflow
     capsule_dir: epics/e04-release-packaging-workflow
