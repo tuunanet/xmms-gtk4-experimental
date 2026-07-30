@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e05s02
 title: Establish a Meson end-to-end build slice
-status: passing
+status: failing
 risk: P0
 bcps: 8
 tasks:
@@ -11,7 +11,7 @@ tasks:
     verify: "meson setup build-meson --wrap-mode=nodownload && meson configure build-meson"
     risk: P0
     security: medium
-    status: passing
+    status: failing
     allure: {severity: critical, categories: [configuration, supply-chain]}
   - id: t2
     scenarios: [SC-e05s02-P0-01]

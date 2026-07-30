@@ -1,18 +1,18 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: develop_tdd
+active_flow: fix_bug
 active_epic_id: e05
 active_story_id: e05s02
-active_bug_id: null
+active_bug_id: BUG-2026-07-30T101400
 git:
   branch: feat/meson-end-to-end-build
   head: 7f9975b
   worktree: /home/tuunanet/git/tuunanet/meson-end-to-end-build
 handoff:
-  status: verified
-  next_skill: audit-code
-  reason: e05s02 full verification is evidenced; audit its Meson build graph before review. The obsolete Automake regeneration blocker remains triaged for approved e05s03 ownership.
+  status: bug_investigated
+  next_skill: develop-tdd
+  reason: Audit reproduced ESD forced-enable as a no-op; complete its scoped feature-parity fix before re-running e05s02 verification.
 metrics:
   story_start: 2026-07-30T08:56:01Z
 release:
