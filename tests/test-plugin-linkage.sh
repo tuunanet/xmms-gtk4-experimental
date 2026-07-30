@@ -3,6 +3,9 @@ set -eu
 
 top_builddir=${1:-..}
 plugin=$top_builddir/Input/mpg123/.libs/libmpg123.so
+if test ! -f "$plugin"; then
+	plugin=$top_builddir/Input/mpg123/libmpg123.so
+fi
 failures=0
 
 ok()

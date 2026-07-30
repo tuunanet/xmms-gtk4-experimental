@@ -1,4 +1,4 @@
-shared_module(
+sanalyzer_module = shared_module(
   'sanalyzer',
   files('spectrum.c'),
   dependencies: gtk2_dep,

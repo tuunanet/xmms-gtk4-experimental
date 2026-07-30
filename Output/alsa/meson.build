@@ -1,4 +1,4 @@
-shared_module(
+alsa_module = shared_module(
   'ALSA',
   files('alsa.c', 'about.c', 'audio.c', 'pcm-state.c', 'configure.c',
         'init.c'),

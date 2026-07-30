@@ -82,7 +82,6 @@ xmms_compile_args = [
 subdir('libxmms')
 subdir('xmms')
 subdir('wmxmms')
-subdir('tests')
 subdir('Input/mpg123')
 subdir('Output/alsa')
 subdir('Effect/echo_plugin')
@@ -112,3 +111,29 @@ subdir('Visualization/blur_scope')
 if opengl_dep.found()
   subdir('Visualization/opengl_spectrum')
 endif
+
+meson_output_contract_targets = [
+  libxmms,
+  xmms,
+  wmxmms,
+  mpg123_module,
+  wav_module,
+  tonegen_module,
+  cdaudio_module,
+  vorbis_module,
+  mikmod_module,
+  alsa_module,
+  oss_module,
+  disk_writer_module,
+  echo_module,
+  voice_module,
+  stereo_module,
+  song_change_module,
+  ir_module,
+  joystick_module,
+  sanalyzer_module,
+  blur_scope_module,
+  opengl_spectrum_module,
+]
+
+subdir('tests')
