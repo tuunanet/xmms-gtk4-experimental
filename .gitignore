@@ -36,6 +36,15 @@
 .deps/
 .libs/
 
+# Meson source definitions for legacy-layout test fixtures. The generated
+# fixture modules below these paths remain ignored by the artifact rules above.
+!tests/test-plugins/Input/fixture/.libs/
+!tests/test-plugins/Input/fixture/.libs/meson.build
+!tests/test-plugins/Output/fixture/.libs/
+!tests/test-plugins/Output/fixture/.libs/meson.build
+!tests/test-outputplugin-plugins/Output/alsa/.libs/
+!tests/test-outputplugin-plugins/Output/alsa/.libs/meson.build
+
 # Built programs and generated scripts/manual pages
 /xmms/xmms
 /wmxmms/wmxmms
