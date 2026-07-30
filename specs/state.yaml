@@ -1,21 +1,18 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: fix_bug
+active_flow: verify_work
 active_epic_id: e05
 active_story_id: e05s03
-active_bug_id: BUG-2026-07-30T143100
-bug_cycle:
-  current_step: 3
-  completed_steps: [1, 2]
+active_bug_id: null
 git:
   branch: feat/meson-parity-distribution
-  head: 11f60e7
+  head: 4c6e969
   worktree: /home/tuunanet/git/tuunanet/meson-parity-distribution
 handoff:
-  status: fixing
-  next_skill: develop-tdd
-  reason: Fix BUG-2026-07-30T143100 before resuming the blocked e05s03 P0 verification gate.
+  status: verifying
+  next_skill: request-review
+  reason: Complete the final independent-review gate after the e05s03 Meson parity verification.
 metrics:
   story_start: 2026-07-30T10:33:34Z
 release:
