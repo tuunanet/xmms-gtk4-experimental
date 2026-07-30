@@ -1,6 +1,6 @@
 # Security review: e05s02 Meson end-to-end build
 
-- **Reviewed range:** `7f9975b...d99bfed`
+- **Reviewed range:** `7f9975b...d9add8c`
 - **Result:** PASS
 - **Unresolved HIGH findings (confidence >= 8):** 0
 
@@ -12,6 +12,9 @@
 - The parity verifier invokes Meson with an argument vector rather than a shell
   command and parses its JSON introspection with the Python standard library.
   The supplied build directory is not interpolated into a shell evaluator.
+- The ESD feature resolves only through the system `esound` dependency; forced
+  enable fails before compilation when that package is unavailable, while the
+  default auto feature degrades by omitting only that optional output module.
 - The output, MikMod, and policy contract scripts use fixed module inventories
   and quote filesystem paths. They neither process network input nor elevate
   privileges.

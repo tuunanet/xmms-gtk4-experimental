@@ -20,7 +20,7 @@ stories:
     title: Establish a Meson end-to-end build slice
     bcps: 8
     risk: P0
-    status: implementing
+    status: verified
     delta: ADDED
     spec: e05s02-meson-end-to-end-build.md
     tasks: e05s02-tasks.yaml

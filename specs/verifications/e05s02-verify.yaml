@@ -1,12 +1,12 @@
 schema_version: 1
 story_id: e05s02
-status: superseded
-verified_at: 2026-07-30T10:11:24Z
+status: passed
+verified_at: 2026-07-30T10:20:25Z
 verifier: verify-work
 terminal_verdict:
   command: "xvfb-run --auto-servernum make check"
   exit_code: 0
-  captured_at: 2026-07-30T10:11:24Z
+  captured_at: 2026-07-30T10:20:25Z
   note: "Single contiguous legacy regression run after clean Meson setup, compilation, output contract, parity, GTK3 proof, and lint gates."
 phases:
   smoke:
@@ -15,7 +15,7 @@ phases:
     note: "Fresh out-of-tree configuration resolved only system dependencies."
   configure:
     passed: true
-    command: "meson configure build-meson"
+    command: "meson configure build-meson && tests/test-meson-configure-contract.sh \"$PWD\""
   build:
     passed: true
     command: "meson compile -C build-meson"
@@ -57,8 +57,6 @@ compatibility:
   skin_format_changed: false
   package_names_preserved: true
 gaps:
-  closed: false
-  discovered:
-    - "BUG-2026-07-30T101400: forced ESD enable was not wired to a dependency or output target."
+  closed: true
   deferred:
     - "BUG-2026-07-30T100559: e05s03 owns Meson source-distribution migration because Automake 1.9.6 regeneration is unavailable."
