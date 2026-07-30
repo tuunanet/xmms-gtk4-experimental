@@ -25,8 +25,8 @@ stories:
   e03s02: verified
   e03s03: verified
 gate_trace:
-  verdict: pending
-  generated_at: null
-  rationale: e05 Meson migration planning is in progress; traceability will be regenerated after implementation evidence exists.
+  verdict: WAIVED
+  generated_at: 2026-07-30T10:20:25Z
+  rationale: Traceability scripts and matrix are absent from this preservation fork; e05s02 has explicit task verification, audit, security, and NFR evidence, but no heuristic coverage result can be computed.
   heuristic_ratio: null
   downgrade_applied: false
