@@ -47,10 +47,10 @@ EOF
 meson setup "$collision_build_dir" "$collision_source" --wrap-mode=nodownload >/dev/null
 ${CC:-cc} -DHAVE_CONFIG_H \
 	-I"$collision_build_dir" -I"$collision_build_dir/xmms" \
-	-I"$collision_source/xmms" \
+	-I"$collision_source" -I"$collision_source/xmms" \
 	$(pkg-config --cflags gtk+-2.0 glib-2.0) \
-	-c "$collision_source/xmms/main.c" \
-	-o "$collision_build_dir/main.o" \
+	-c "$collision_source/xmms/ui_control.c" \
+	-o "$collision_build_dir/ui_control.o" \
 	|| fail "compiles with a retained Autotools gettext header"
 
 esd_build_dir="$build_dir/esd"
