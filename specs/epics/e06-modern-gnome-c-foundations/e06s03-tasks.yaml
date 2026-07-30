@@ -1,0 +1,23 @@
+schema_version: 1
+story_id: e06s03
+title: Add changed-file GNOME C formatting preflight
+status: planned
+risk: P1
+bcps: 5
+tasks:
+  - id: t1
+    scenarios: [SC-e06s03-P1-01]
+    description: Add path-scoped clang-format configuration that applies GNOME two-space style only to approved modern C/H paths.
+    verify: "tests/test-gnome-c-foundations.sh \"$PWD\" --format-scope"
+    risk: P1
+    security: none
+    status: planned
+    allure: {severity: normal, categories: [formatting, compatibility]}
+  - id: t2
+    scenarios: [SC-e06s03-P1-01]
+    description: Add a non-mutating changed-file formatter check to canonical Meson preflight and CI with fail-fast system-package diagnostics.
+    verify: "tools/preflight.sh --format-check"
+    risk: P1
+    security: low
+    status: planned
+    allure: {severity: normal, categories: [tooling, supply-chain]}

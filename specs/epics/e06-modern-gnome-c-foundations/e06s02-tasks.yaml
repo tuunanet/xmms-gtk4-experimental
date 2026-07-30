@@ -1,0 +1,23 @@
+schema_version: 1
+story_id: e06s02
+title: Enforce directional subsystem dependencies
+status: planned
+risk: P1
+bcps: 5
+tasks:
+  - id: t1
+    scenarios: [SC-e06s02-P1-01]
+    description: Define the allowed UI, domain, storage, rendering, and source/plugin dependency graph plus explicit historical allowlist entries.
+    verify: "tests/test-gnome-c-foundations.sh \"$PWD\" --dependency-contract"
+    risk: P1
+    security: none
+    status: planned
+    allure: {severity: normal, categories: [architecture, boundaries]}
+  - id: t2
+    scenarios: [SC-e06s02-P1-01]
+    description: Add a deterministic source-level edge checker and run it from Meson preflight without modifying legacy edges outside the allowlist.
+    verify: "tools/preflight.sh --dependency-contract"
+    risk: P1
+    security: low
+    status: planned
+    allure: {severity: normal, categories: [tooling, regression]}

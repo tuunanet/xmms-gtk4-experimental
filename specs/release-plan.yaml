@@ -18,6 +18,18 @@ epics:
       time_criticality: 8
       risk_reduction: 10
       job_size: 8
+  - id: e06
+    title: Establish modern GNOME C foundations
+    capsule_dir: epics/e06-modern-gnome-c-foundations
+    depends_on: [e05]
+    wsjf: 2.0
+    bcps: 15
+    status: planned
+    score:
+      business_value: 5
+      time_criticality: 3
+      risk_reduction: 8
+      job_size: 8
   - id: e04
     title: Port generic release-packaging workflow
     capsule_dir: epics/e04-release-packaging-workflow
