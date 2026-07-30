@@ -41,6 +41,7 @@ EXTRA_DIST = \
 	specs/adr/ADR-0001-staged-gtk-migration.md \
 	specs/adr/ADR-0002-meson-tooling-migration.md \
 	specs/tech-architecture/e05-legacy-build-baseline.json \
+	specs/tech-architecture/e05-meson-toolchain-policy.json \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
 	tests/fixture-output-plugin.c \
@@ -69,6 +70,7 @@ EXTRA_DIST = \
 	tools/run-c-lint.sh \
 	tools/validate-lifecycle-state.py \
 	tools/verify-build-baseline.sh \
+	tools/verify-meson-toolchain-policy.sh \
 	tools/extract-release-notes.sh \
 	xmms/ui_gtk3_control.c \
 	xmms/ui_gtk3_control.h \

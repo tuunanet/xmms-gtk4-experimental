@@ -7,7 +7,7 @@ epics:
   e02: verified
   e03: verified
 stories:
-  e05s01: planned
+  e05s01: passing
   e05s02: planned
   e05s03: planned
   e05s04: planned

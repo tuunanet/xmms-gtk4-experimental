@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "dependency_source": "system-pkg-config-only",
+  "meson": {
+    "command": "meson",
+    "minimum_version": "1.3.2",
+    "system_package": "meson",
+    "evidence": "https://packages.ubuntu.com/noble/all/meson"
+  },
+  "ninja": {
+    "command": "ninja",
+    "minimum_version": "1.6",
+    "system_package": "ninja-build",
+    "evidence": "https://packages.ubuntu.com/noble/all/meson"
+  },
+  "meson_setup_arguments": ["--wrap-mode=nodownload"],
+  "forbidden": [
+    "pip bootstrap",
+    "WrapDB downloads",
+    "Meson subprojects",
+    "implicit network dependency resolution"
+  ]
+}
