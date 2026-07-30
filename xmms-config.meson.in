@@ -23,13 +23,8 @@ include_dir="@includedir@"
 xmms_include_dir="@includedir@/@PACKAGE@"
 lib_dir="@libdir@"
 
-#if ( (gtk-config --version) > /dev/null 2>&1)  then
-#   gtk_libs=`gtk-config --libs`
-#   gtk_cflags=`gtk-config --cflags`
-#else
-   gtk_libs="@GTK_LIBS@"
-   gtk_cflags="@GTK_CFLAGS@"
-#fi
+gtk_libs="@GTK_LIBS@"
+gtk_cflags="@GTK_CFLAGS@"
 
 plugin_dir="@plugindir@"
 visualization_plugin_dir="@plugindir@/@VISUALIZATION_PLUGIN_DIR@"
@@ -145,6 +140,14 @@ fi
 
 if test "$echo_exec_prefix" = "yes"; then
     echo $exec_prefix
+fi
+
+if test "$echo_cflags" = "yes"; then
+    gtk_cflags=`pkg-config --cflags gtk+-2.0`
+fi
+
+if test "$echo_libs" = "yes"; then
+    gtk_libs=`pkg-config --libs gtk+-2.0`
 fi
 
 if test "$include_dir" != "/usr/include"; then    cflags="-I$include_dir -I$xmms_include_dir $gtk_cflags"

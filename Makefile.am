@@ -7,6 +7,7 @@ bin_SCRIPTS = xmms-config
 MESON_DIST = \
 	meson.build \
 	meson_options.txt \
+	xmms-config.meson.in \
 	libxmms/meson.build \
 	xmms/meson.build \
 	wmxmms/meson.build \
