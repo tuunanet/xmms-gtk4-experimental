@@ -1,18 +1,18 @@
 schema_version: 1
 project: xmms-gtk4-experimental
 workflow_mode: team-pr
-active_flow: develop_tdd
+active_flow: fix_bug
 active_epic_id: e05
 active_story_id: e05s02
-active_bug_id: null
+active_bug_id: BUG-2026-07-30T093448
 git:
   branch: feat/meson-end-to-end-build
   head: 7f9975b
   worktree: /home/tuunanet/git/tuunanet/meson-end-to-end-build
 handoff:
-  status: implementing
+  status: bug_investigated
   next_skill: develop-tdd
-  reason: e05s02 starts the Meson core build graph while Autotools remains the parity and official release baseline.
+  reason: e05s02 exposed a stale const-incorrect libmikmod callback; the verified low-risk fix plan must complete before the full plugin graph proceeds.
 metrics:
   story_start: 2026-07-30T08:56:01Z
 release:

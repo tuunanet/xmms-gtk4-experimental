@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-07-30T093448
+    date: 2026-07-30
+    severity: high
+    priority: P0
+    scope: input-mikmod-build
+    summary: Modern libmikmod rejects the stale mutable command-line callback signature when Meson enables the plugin.
+    file: specs/bugs/BUG-2026-07-30T093448-mikmod-callback-signature.md
+    status: investigated
   - bug_id: BUG-2026-07-30T023000
     date: 2026-07-30
     severity: high
