@@ -1,0 +1,33 @@
+# Audit: e05s03 Meson parity and distribution
+
+**Reviewed range:** `origin/main...269931c`
+**Result:** PASS
+
+## Checklist
+
+- [x] Scope is limited to Meson test registration, staged installation, clean source-distribution verification, and regressions discovered by those gates.
+- [x] The Meson graph retains system/pkg-config dependencies and `--wrap-mode=nodownload`; no download, subproject, credential, publication, or network capability was added.
+- [x] Install rules preserve the `xmms` runtime binary, `libxmms`, public headers, enabled plugin modules, icon, `xmms-config`, and locale catalogue layout. The staged-install contract verifies them from a temporary DESTDIR.
+- [x] The distribution verifier operates in a temporary directory, selects only the archive (not a checksum sidecar), extracts it, and proves configuration, build, Xvfb tests, and staged installation.
+- [x] The gettext fix isolates Meson configuration from retained Autotools output. `ENABLE_NLS` is numeric for legacy `#if ENABLE_NLS` consumers, with a retained-header collision regression test.
+- [x] Source-mutating contracts are marked non-parallel, eliminating the `xmms/i18n.h` create/remove race without imposing execution ordering on independent tests.
+- [x] Full Meson suite passed: `xvfb-run --auto-servernum meson test -C build-meson --print-errorlogs` — 25/25.
+- [x] Clean archive verification passed: `tools/verify-meson-dist.sh` — build, 25/25 Xvfb tests, and staged installation.
+- [x] Security review found no unaddressed HIGH-confidence finding. No user-controlled input reaches shell execution; new paths are build-system controlled.
+- [x] No plugin ABI, libxmms API, control socket, configuration path, skin format, Debian package name, or release-publication behavior changed.
+
+## Tool availability
+
+The repository has no `scripts/bp-churn-rank.sh`; the optional churn heuristic could not run. This does not replace the complete diff and security review above.
+
+## Fowler smell review
+
+No Mysterious Name, Feature Envy, Data Clumps, Primitive Obsession, Message Chains, Middle Man, dead code, or commented-out code was introduced. Repeated plugin declarations remain declarative Meson target metadata. The distribution and install verifiers each retain one focused responsibility.
+
+## Red flags
+
+None. The unavailable optional churn-ranking tool is explicitly recorded rather than treated as a pass.
+
+## Next gate
+
+Request an independent review before PR delivery.
