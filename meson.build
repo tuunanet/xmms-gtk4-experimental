@@ -23,6 +23,7 @@ vorbisfile_dep = dependency('vorbisfile', required: get_option('vorbis'))
 ogg_dep = dependency('ogg', required: get_option('vorbis'))
 mikmod_dep = dependency('libmikmod', required: get_option('mikmod'))
 opengl_dep = dependency('gl', required: get_option('opengl'))
+esd_dep = dependency('esound', required: get_option('esd'))
 
 xmms_conf = configuration_data()
 xmms_conf.set_quoted('PACKAGE', 'xmms')
@@ -58,6 +59,9 @@ if get_option('ipv6')
 endif
 if get_option('oss').enabled()
   xmms_conf.set('HAVE_OSS', 1)
+endif
+if esd_dep.found() and cc.has_function('esd_get_latency', dependencies: esd_dep)
+  xmms_conf.set('HAVE_ESD_GET_LATENCY', 1)
 endif
 if gtk3_dep.found()
   xmms_conf.set('GTK3_PROOF_ENABLED', 1)
@@ -95,6 +99,9 @@ if mikmod_dep.found()
 endif
 if not get_option('oss').disabled()
   subdir('Output/OSS')
+endif
+if esd_dep.found()
+  subdir('Output/esd')
 endif
 subdir('Output/disk_writer')
 subdir('Effect/voice')
