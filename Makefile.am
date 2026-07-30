@@ -39,6 +39,8 @@ EXTRA_DIST = \
 	packaging/debian/xmms.install \
 	packaging/xmms.desktop \
 	specs/adr/ADR-0001-staged-gtk-migration.md \
+	specs/adr/ADR-0002-meson-tooling-migration.md \
+	specs/tech-architecture/e05-legacy-build-baseline.json \
 	tests/Makefile \
 	tests/fixture-input-plugin.c \
 	tests/fixture-output-plugin.c \
@@ -66,6 +68,7 @@ EXTRA_DIST = \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
 	tools/validate-lifecycle-state.py \
+	tools/verify-build-baseline.sh \
 	tools/extract-release-notes.sh \
 	xmms/ui_gtk3_control.c \
 	xmms/ui_gtk3_control.h \
