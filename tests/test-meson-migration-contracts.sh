@@ -11,6 +11,15 @@ fail()
 
 lifecycle_checker="$repo_root/tools/validate-lifecycle-state.py"
 [ -x "$lifecycle_checker" ] || fail "provides lifecycle validation for the completed release dispatch"
+contract_tmpdir=$(mktemp -d)
+trap 'rm -rf "$contract_tmpdir"' EXIT HUP INT TERM
+advanced_state="$contract_tmpdir/state.yaml"
+sed 's/^active_story_id:.*/active_story_id: e05s99/' \
+	"$repo_root/specs/state.yaml" > "$advanced_state"
+"$lifecycle_checker" \
+	"$advanced_state" \
+	"$repo_root/specs/execution-status.yaml" \
+	"$repo_root/specs/release-plan.yaml"
 "$lifecycle_checker" \
 	"$repo_root/specs/state.yaml" \
 	"$repo_root/specs/execution-status.yaml" \
@@ -28,8 +37,7 @@ policy_checker="$repo_root/tools/verify-meson-toolchain-policy.sh"
 [ -x "$policy_checker" ] || fail "provides a Meson system-tool policy verifier"
 "$policy_checker"
 
-policy_tmpdir=$(mktemp -d)
-trap 'rm -rf "$policy_tmpdir"' EXIT HUP INT TERM
+policy_tmpdir="$contract_tmpdir/policy"
 mkdir -p "$policy_tmpdir/bin"
 printf '%s\n' '#!/bin/sh' 'echo 1.3.2' > "$policy_tmpdir/bin/meson"
 printf '%s\n' '#!/bin/sh' 'echo 1.6' > "$policy_tmpdir/bin/ninja"
