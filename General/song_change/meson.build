@@ -1,4 +1,4 @@
-shared_module(
+song_change_module = shared_module(
   'song_change',
   files('song_change.c'),
   dependencies: [gtk2_dep, threads_dep],

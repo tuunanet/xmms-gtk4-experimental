@@ -1,4 +1,4 @@
-shared_module(
+echo_module = shared_module(
   'echo',
   files('echo.c', 'gui.c'),
   dependencies: gtk2_dep,

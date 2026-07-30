@@ -6,7 +6,7 @@ mpg123_sources = files(
   'unicode.c', 'decode.c', 'dct64.c',
 )
 
-shared_module(
+mpg123_module = shared_module(
   'mpg123',
   mpg123_sources,
   dependencies: [glib_dep, gtk2_dep, threads_dep, zlib_dep, libxmms_dep,

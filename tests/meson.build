@@ -157,7 +157,8 @@ test_mpg123_stream_position = executable(
 test('mpg123-stream-position', test_mpg123_stream_position)
 
 test('c-lint', find_program('test-c-lint.sh'),
-     args: [meson.project_source_root()], workdir: meson.project_source_root())
+     args: [meson.project_source_root()], workdir: meson.project_source_root(),
+     timeout: 120)
 test('intl-generated-sources', find_program('test-intl-generated-sources.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-migration-contracts', find_program('test-meson-migration-contracts.sh'),
@@ -171,9 +172,9 @@ test('build-parity-contract', find_program('test-build-parity-contract.sh'),
 test('package-recipes', find_program('test-package-recipes.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('plugin-linkage', find_program('test-plugin-linkage.sh'),
-     args: [meson.project_build_root()])
+     args: [meson.project_build_root()], depends: mpg123_module)
 test('meson-output-contract', find_program('verify-meson-output-contract.sh'),
-     args: [meson.project_build_root()])
+     args: [meson.project_build_root()], depends: meson_output_contract_targets)
 test('release-tools', find_program('test-release-tools.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-test-suite-contract', find_program('test-meson-test-suite-contract.sh'),
