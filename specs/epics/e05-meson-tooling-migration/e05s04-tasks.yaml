@@ -1,0 +1,31 @@
+schema_version: 1
+story_id: e05s04
+title: Build Debian packages and release artifacts through Meson
+status: failing
+risk: P0
+bcps: 8
+tasks:
+  - id: t1
+    scenarios: [SC-e05s04-P0-01]
+    description: Convert Debian rules and local package helpers to configure and compile with Meson while retaining dpkg-buildpackage, package names, and policy checks.
+    verify: "tools/package-deb.sh && tests/verify-debian-package-contract.sh deb-artifacts"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [debian, packaging]}
+  - id: t2
+    scenarios: [SC-e05s04-P0-02]
+    description: Update manual release packaging to consume Meson source/package outputs while retaining annotated-tag, target-matrix, checksum, and draft-only controls.
+    verify: "tests/test-package-recipes.sh \"$PWD\""
+    risk: P0
+    security: high
+    status: failing
+    allure: {severity: critical, categories: [release, github-actions, artifacts]}
+  - id: t3
+    scenarios: [SC-e05s04-P0-01, SC-e05s04-P0-02]
+    description: Run package metadata, install/smoke, per-target checksum, and aggregate-release checksum checks against Meson-produced artifacts.
+    verify: "tools/verify-release-artifacts.sh deb-artifacts"
+    risk: P0
+    security: high
+    status: failing
+    allure: {severity: critical, categories: [checksums, package-smoke]}

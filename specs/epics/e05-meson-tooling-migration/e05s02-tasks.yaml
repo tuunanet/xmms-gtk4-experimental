@@ -1,0 +1,31 @@
+schema_version: 1
+story_id: e05s02
+title: Establish a Meson end-to-end build slice
+status: failing
+risk: P0
+bcps: 8
+tasks:
+  - id: t1
+    scenarios: [SC-e05s02-P0-02]
+    description: Add root Meson project/options/configuration mapping for every supported legacy feature and system dependency, with no network dependency fallback.
+    verify: "meson setup build-meson --wrap-mode=nodownload && meson configure build-meson"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [configuration, supply-chain]}
+  - id: t2
+    scenarios: [SC-e05s02-P0-01]
+    description: Build libxmms, xmms, wmxmms, enabled plugin modules, and the separately linked GTK3 proof from Meson while preserving output and install names.
+    verify: "meson compile -C build-meson && tests/verify-meson-output-contract.sh build-meson"
+    risk: P0
+    security: medium
+    status: failing
+    allure: {severity: critical, categories: [build, plugins, gtk3]}
+  - id: t3
+    scenarios: [SC-e05s02-P0-01, SC-e05s02-P0-02]
+    description: Compare Meson output and feature inventory to the frozen legacy baseline while both toolchains remain available.
+    verify: "tools/verify-build-parity.sh build-meson"
+    risk: P0
+    security: none
+    status: failing
+    allure: {severity: critical, categories: [parity, compatibility]}

@@ -1,0 +1,31 @@
+schema_version: 1
+story_id: e05s03
+title: Prove Meson test, install, gettext, and distribution parity
+status: failing
+risk: P0
+bcps: 8
+tasks:
+  - id: t1
+    scenarios: [SC-e05s03-P0-01]
+    description: Register every current GLib, shell, plugin-linkage, package-contract, and GTK/Xvfb test in Meson with isolated build-tree paths.
+    verify: "xvfb-run --auto-servernum meson test -C build-meson --print-errorlogs"
+    risk: P0
+    security: none
+    status: failing
+    allure: {severity: critical, categories: [tests, gtk, plugins]}
+  - id: t2
+    scenarios: [SC-e05s03-P0-02]
+    description: Reproduce gettext generation and the installed binary, header, plugin, documentation, and translation layout through Meson.
+    verify: "tests/verify-meson-install-layout.sh build-meson"
+    risk: P0
+    security: none
+    status: failing
+    allure: {severity: critical, categories: [install, gettext]}
+  - id: t3
+    scenarios: [SC-e05s03-P0-02]
+    description: Add a project-owned Meson source-distribution verifier that performs clean extraction, setup, compile, test, and staged install checks.
+    verify: "tools/verify-meson-dist.sh"
+    risk: P0
+    security: low
+    status: failing
+    allure: {severity: critical, categories: [distribution, reproducibility]}

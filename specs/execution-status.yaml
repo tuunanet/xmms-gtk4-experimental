@@ -1,11 +1,18 @@
 schema_version: 1
-status: verified
+status: planning
 epics:
+  e05: planned
   e04: uat_pending
   e01: verified
   e02: verified
   e03: verified
 stories:
+  e05s01: planned
+  e05s02: planned
+  e05s03: planned
+  e05s04: planned
+  e05s05: planned
+  e05s06: planned
   e04s01: uat_pending
   e01s01: verified
   e01s02: verified
@@ -16,6 +23,6 @@ stories:
 gate_trace:
   verdict: pending
   generated_at: null
-  rationale: e04 release-packaging workflow planning is in progress.
+  rationale: e05 Meson migration planning is in progress; traceability will be regenerated after implementation evidence exists.
   heuristic_ratio: null
   downgrade_applied: false

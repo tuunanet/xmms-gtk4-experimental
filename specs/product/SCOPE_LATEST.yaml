@@ -1,53 +1,80 @@
 schema_version: 1
-feature_name: generic-release-packaging-workflow
-core_value: Maintainers can manually build, verify, and stage reproducible Linux release packages for an annotated XMMS GTK4 Experimental tag.
+feature_name: meson-tooling-migration
+core_value: >-
+  Maintainers and agents can build, test, package, distribute, and release XMMS
+  through one Meson-based toolchain without sacrificing current runtime or
+  distribution compatibility contracts.
 summary: >-
-  Port the proven multi-distribution release-packaging workflow from the sibling
-  xmms-gtk2 repository under a generic workflow name. The fork needs a
-  reviewable GitHub Actions path that validates the selected release tag,
-  builds source and Debian packages for its declared targets, verifies the
-  resulting artifacts, and creates or resumes a draft GitHub Release without
-  publishing it.
+  Replace the repository's Autotools/libtool toolchain with Meson while keeping
+  a deliberately bounded dual-build parity phase. Meson must become the sole
+  authoritative build definition, and the final delivery removes configure,
+  Automake inputs/generated files, libtool metadata, and Makefile artifacts.
+  The migration covers developer and agent commands, tests, Debian packaging,
+  source distribution, manual release packaging, CI-facing contracts, and the
+  project instructions that describe them.
+
+  This initiative changes build tooling, not the player product model. The
+  staged GTK2 → GTK3 → GTK4 UI migration, historical compatibility names,
+  runtime plugin behavior, and source-level public interfaces must remain
+  stable while their build descriptions move.
 in_scope:
-  - id: e04
-    item: A manually dispatched, generically named release-packaging workflow that accepts a SemVer version and only operates on its matching annotated tag.
-  - id: e04
-    item: Linux Mint 22.3 and Ubuntu 26.04 package matrix ported from the donor, with fork branding and the GTK3 development prerequisite required by the migration proof.
-  - id: e04
-    item: Artifact metadata, checksums, package installation smoke tests, and draft-release assembly protected by least-privilege GitHub token permissions.
-  - id: e04
-    item: Static repository tests and release documentation synchronized with the ported workflow contract.
+  - id: e05s01
+    item: Reconcile current release-planning state with the completed e04 annotated-tag package run and draft pre-release, then record the Meson migration decision ledger and compatibility baselines.
+  - id: e05s02
+    item: Introduce an authoritative Meson build graph and options that reproduce all current required and optional components while Autotools remains temporarily available for parity comparison.
+  - id: e05s03
+    item: Establish build, test, install, lint, plugin-linkage, translation, and source-distribution parity between Meson and the legacy build during the transition.
+  - id: e05s04
+    item: Move Debian packaging, manual release packaging, and release artifact verification to Meson-produced outputs while retaining package names, target platforms, and draft-only release safety.
+  - id: e05s05
+    item: Replace agent and contributor preflight commands, CI/release contracts, architecture documentation, and relevant specifications with Meson equivalents.
+  - id: e05s06
+    item: Remove all Autotools, libtool, configure, and Makefile source/generated artifacts after Meson parity gates and package/release validation pass.
 out_of_scope:
-  - item: Push or pull-request CI.
-    reason: The requested donor workflow is a manual release-packaging pipeline, not continuous integration.
-  - item: Dependabot, issue templates, and pull-request templates from the donor repository.
-    reason: The user requested only the release-packaging workflow.
-  - item: Automatic publication, tag creation, or modification of an existing published release.
-    reason: Publication remains an explicit maintainer decision and immutable releases must not be replaced.
-  - item: New package targets, changed Debian recipes, or a migration away from Autotools.
-    reason: The port must retain the donor target matrix and consume the existing packaging contract.
+  - item: GTK3 or GTK4 production UI port.
+    reason: The build migration must not expand into a UI toolkit migration; ADR-0001 remains the governing staged UI plan.
+  - item: Intentional plugin ABI, libxmms API, control-socket, configuration-path, executable-name, package-name, or skin-format changes.
+    reason: Toolchain replacement must preserve these public compatibility contracts.
+  - item: New distribution package targets or automated publication.
+    reason: Existing Linux Mint 22.3 and Ubuntu 26.04 targets and draft-only publication policy remain the release baseline.
+  - item: Permanent dual-build support.
+    reason: Dual build is a temporary parity mechanism; the approved final state removes Autotools completely.
 constraints:
-  - Keep the workflow filename distro-neutral because it builds more than one distribution.
-  - Preserve the fork's xmms runtime package names while using XMMS GTK4 Experimental branding in release metadata.
-  - Restrict default workflow permissions to contents read; grant contents write only to the draft-release job.
-  - Pin third-party GitHub Actions to the donor's reviewed commit SHAs.
-  - Require libgtk-3-dev in the workflow build dependencies so the enabled GTK3 proof is exercised.
+  - Meson is the final sole build authority; no configure, Autotools, libtool, or Makefile artifacts remain after e05s06.
+  - A temporary dual-build phase must compare observable outputs before any legacy build path is removed.
+  - Preserve source-tree buildability, clean out-of-tree builds, install layout, plugin discovery layout, gettext output, and Debian package contents.
+  - Preserve the isolated GTK3 proof and the no-mixed-GTK-major-process policy.
+  - Define a reproducible agent preflight using Meson setup, compile, test, lint, packaging, and source-distribution gates appropriate to each change class.
+  - Update CLAUDE.md, CONTRIBUTING.md, architecture/build-and-test.md, release documentation, workflows, tests, and lifecycle specifications together when their commands or contracts change.
 success_criteria:
-  - .github/workflows/package-release.yml is manually dispatchable with a required SemVer version input.
-  - The workflow rejects a ref that is not the matching annotated vVERSION tag and validates release metadata before packaging.
-  - Both donor Linux targets build, inspect, install, and checksum xmms and libxmms-dev DEBs using the fork's existing package tooling.
-  - The workflow creates or resumes only a draft release and never silently publishes or overwrites a published release.
-  - Repository tests and release documentation assert the generic workflow filename, fork branding, GTK3 dependency, and release safety contract.
+  - Meson builds every supported required and optional production component, tests, translations, plugins, binaries, and installable artifacts from a clean out-of-tree build.
+  - Automated parity evidence covers configure options/features, executable and plugin outputs, tests, installation layout, Debian packages, release artifacts, and source distribution before legacy removal.
+  - Agent and contributor preflight commands invoke only Meson-era tooling and are executable in documented supported environments.
+  - The manual package-release workflow builds the tagged Meson source, verifies its artifacts, and preserves current target/package/release safety contracts.
+  - No tracked Autotools/libtool/configure/Makefile artifact or documentation contract remains after final cutover.
+  - Existing public runtime compatibility contracts and the current GTK migration evidence remain green.
 prior_art:
-  - candidate: ../xmms-gtk2/.github/workflows/release-linux-packages.yml
+  - candidate: https://mesonbuild.com/Porting-from-autotools.html
     verdict: adopt-and-adapt
-    notes: Proven manually dispatched Linux Mint 22.3 plus Ubuntu 26.04 package matrix, checksum, package smoke-test, and draft-release flow; rename and adapt branding/dependencies for this fork.
-  - candidate: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
+    notes: Official mapping guidance covers option translation, pkg-config dependencies, generated config headers, install rules, and test declarations; Meson requires explicit configuration-header inputs rather than autoheaders.
+  - candidate: https://mesonbuild.com/Unit-tests.html
     verdict: adopt
-    notes: GitHub documents workflow_dispatch inputs and the permissions key; use minimum GITHUB_TOKEN privilege by job.
+    notes: Meson test registration is the target replacement for make check orchestration; GTK/X11 tests need a documented headless test setup.
+  - candidate: https://mesonbuild.com/Localisation.html
+    verdict: evaluate-in-spike
+    notes: Gettext and generated translation behavior require a parity spike because the repository carries a legacy intl subtree and tracked generated files.
+  - candidate: https://mesonbuild.com/Creating-releases.html
+    verdict: evaluate-in-spike
+    notes: Meson source-distribution behavior must replace make distcheck with equivalent clean-tree build, test, install, uninstall, and distribution evidence.
+  - candidate: existing configure.in, Makefile.am, libxmms/configure.in, libxmms/Makefile.am, packaging/debian/rules, tools/build-deb.sh, and package-release.yml
+    verdict: build
+    notes: No Meson build files exist. The legacy graph and delivery helpers are the compatibility baseline to reproduce and then remove.
 references:
-  - docs/releases.md
+  - CLAUDE.md
+  - CONVENTIONS.md
+  - CONTRIBUTING.md
   - docs/architecture/build-and-test.md
-  - tools/build-deb.sh
-  - packaging/debian/rules
+  - docs/architecture/plugin-system.md
+  - docs/releases.md
   - specs/adr/ADR-0001-staged-gtk-migration.md
+  - specs/tech-architecture/tech-stack.md
