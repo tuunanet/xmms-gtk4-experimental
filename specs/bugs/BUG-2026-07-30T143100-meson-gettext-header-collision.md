@@ -55,11 +55,15 @@ existing public gettext, locale, and plugin contracts.
 
 ## Acceptance Criteria
 
-- [ ] Meson's generated i18n header enables gettext.
-- [ ] A fully configured retained build does not prevent Meson compilation.
-- [ ] Meson tests and staged install pass.
-- [ ] The clean source-distribution verifier passes.
+- [x] Meson's generated i18n header enables gettext.
+- [x] A retained source header cannot override Meson's generated header.
+- [x] Meson tests and staged install pass.
+- [x] The clean source-distribution verifier passes.
 
 ## Resolution
 
-<!-- filled in by validate-fix -->
+Meson generates and installs its own numeric gettext header from
+`xmms/i18n.meson.h.in`. Translation-aware XMMS headers use angle includes so
+Meson's build header precedes any retained source output. The configuration
+contract compiles against an isolated retained-header fixture, while the full
+Meson and clean archive gates each passed 25 tests and staged installation.

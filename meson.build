@@ -80,6 +80,9 @@ xmms_compile_args = [
   '-DLOCALEDIR="' + get_option('prefix') / get_option('localedir') + '"',
 ]
 
+xmms_gtk_libs = run_command('pkg-config', '--libs', 'gtk+-2.0', check: true).stdout().strip()
+xmms_gtk_cflags = run_command('pkg-config', '--cflags', 'gtk+-2.0', check: true).stdout().strip()
+
 xmms_config = configuration_data()
 xmms_config.set('prefix', get_option('prefix'))
 xmms_config.set('exec_prefix', get_option('prefix'))
@@ -89,8 +92,8 @@ xmms_config.set('PACKAGE', 'xmms')
 xmms_config.set('VERSION', meson.project_version())
 xmms_config.set('includedir', get_option('prefix') / get_option('includedir'))
 xmms_config.set('libdir', get_option('prefix') / get_option('libdir'))
-xmms_config.set('GTK_LIBS', '$(pkg-config --libs gtk+-2.0)')
-xmms_config.set('GTK_CFLAGS', '$(pkg-config --cflags gtk+-2.0)')
+xmms_config.set('GTK_LIBS', xmms_gtk_libs)
+xmms_config.set('GTK_CFLAGS', xmms_gtk_cflags)
 xmms_config.set('plugindir', get_option('prefix') / xmms_plugin_dir)
 xmms_config.set('VISUALIZATION_PLUGIN_DIR', 'Visualization')
 xmms_config.set('INPUT_PLUGIN_DIR', 'Input')
