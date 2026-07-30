@@ -40,6 +40,11 @@ do
   }
 done
 
+meson compile -C "$build_dir" test-xentry >/dev/null 2>&1 || {
+  printf '%s\n' 'registered Meson xentry test does not compile' >&2
+  exit 1
+}
+
 if pkg-config --exists 'gtk+-3.0 >= 3.24'; then
   printf '%s\n' "$registered_tests" | grep -Fx gtk3-play-button-proof >/dev/null || {
     printf '%s\n' 'missing Meson test registration: gtk3-play-button-proof' >&2
