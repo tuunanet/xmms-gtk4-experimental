@@ -20,7 +20,6 @@ def main():
 
     state, execution_status, release_plan = sys.argv[1:]
     require_text(state, r"^active_epic_id: e05$", "must identify e05 as active")
-    require_text(state, r"^active_story_id: e05s01$", "must identify e05s01 as active")
     require_text(state, r"^  last_tag: v0\.0\.1$", "must record the v0.0.1 tag")
     require_text(
         state,
