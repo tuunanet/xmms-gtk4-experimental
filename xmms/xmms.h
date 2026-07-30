@@ -77,7 +77,7 @@
 #include "equalizer.h"
 #include "about.h"
 #include "hints.h"
-#include <i18n.h>
+#include <xmms/i18n.h>
 #include "sm.h"
 #include "dnd.h"
 #include "urldecode.h"
