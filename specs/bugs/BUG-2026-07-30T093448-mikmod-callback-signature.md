@@ -84,4 +84,7 @@ boundary and avoid edits to MikMod decoding or playback behavior.
 
 ## Resolution
 
-<!-- filled in by validate-fix -->
+Aligned the static empty command-line callback with modern libmikmod's
+const-qualified contract. The forced MikMod Meson build produces
+`libmikmod.so` with `get_iplugin_info`; the complete current Meson graph and
+legacy Xvfb suite pass.

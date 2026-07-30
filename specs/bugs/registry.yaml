@@ -7,7 +7,7 @@ bugs:
     scope: meson-tool-policy-test
     summary: The missing-Meson fixture incorrectly depends on Meson being absent from the host system path.
     file: specs/bugs/BUG-2026-07-30T094819-meson-missing-tool-fixture.md
-    status: investigated
+    status: fixed
   - bug_id: BUG-2026-07-30T094453
     date: 2026-07-30
     severity: high
@@ -15,7 +15,7 @@ bugs:
     scope: lifecycle-validation
     summary: Completed-release validation incorrectly requires e05s01 to remain the active story.
     file: specs/bugs/BUG-2026-07-30T094453-lifecycle-validator-story-coupling.md
-    status: investigated
+    status: fixed
   - bug_id: BUG-2026-07-30T093448
     date: 2026-07-30
     severity: high
@@ -23,7 +23,7 @@ bugs:
     scope: input-mikmod-build
     summary: Modern libmikmod rejects the stale mutable command-line callback signature when Meson enables the plugin.
     file: specs/bugs/BUG-2026-07-30T093448-mikmod-callback-signature.md
-    status: investigated
+    status: fixed
   - bug_id: BUG-2026-07-30T023000
     date: 2026-07-30
     severity: high

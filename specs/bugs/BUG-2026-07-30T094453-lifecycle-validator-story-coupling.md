@@ -68,4 +68,6 @@ release contract.
 
 ## Resolution
 
-<!-- filled in by validate-fix -->
+Removed the transient active-story assertion while retaining the active e05
+epic and all durable e04 release evidence checks. Advanced-story fixtures and
+the full Xvfb suite pass.

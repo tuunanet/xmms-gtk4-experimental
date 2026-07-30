@@ -59,4 +59,6 @@ Risk level: Low. Only test isolation changes.
 
 ## Resolution
 
-<!-- filled in by validate-fix -->
+Replaced the host PATH assumption with a prerequisite-only temporary PATH and
+asserted the actionable missing-Meson diagnostic. The contract now passes with
+system Meson installed and the full Xvfb suite remains green.
