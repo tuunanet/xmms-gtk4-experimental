@@ -1,4 +1,4 @@
-#define ENABLE_NLS
+#define ENABLE_NLS 1
 
 #include <locale.h>
 

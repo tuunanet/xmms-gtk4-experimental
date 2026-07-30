@@ -164,11 +164,13 @@ test('intl-generated-sources', find_program('test-intl-generated-sources.sh'),
 test('meson-migration-contracts', find_program('test-meson-migration-contracts.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-configure-contract', find_program('test-meson-configure-contract.sh'),
-     args: [meson.project_source_root()], workdir: meson.project_source_root())
+     args: [meson.project_source_root()], workdir: meson.project_source_root(),
+     is_parallel: false)
 test('mikmod-build-contract', find_program('test-mikmod-build-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('build-parity-contract', find_program('test-build-parity-contract.sh'),
-     args: [meson.project_source_root()], workdir: meson.project_source_root())
+     args: [meson.project_source_root()], workdir: meson.project_source_root(),
+     is_parallel: false)
 test('package-recipes', find_program('test-package-recipes.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('plugin-linkage', find_program('test-plugin-linkage.sh'),
@@ -178,6 +180,7 @@ test('meson-output-contract', find_program('verify-meson-output-contract.sh'),
 test('release-tools', find_program('test-release-tools.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-test-suite-contract', find_program('test-meson-test-suite-contract.sh'),
-     args: [meson.project_source_root()], workdir: meson.project_source_root())
+     args: [meson.project_source_root()], workdir: meson.project_source_root(),
+     is_parallel: false)
 test('meson-dist-contract', find_program('test-meson-dist-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
