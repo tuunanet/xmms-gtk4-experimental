@@ -28,6 +28,9 @@ meson setup "$build_dir" "$repo_root" --wrap-mode=nodownload >/dev/null
 meson configure "$build_dir" | grep -F 'gtk3-proof' >/dev/null \
 	|| fail "reports the GTK3 proof option"
 test -f "$build_dir/config.h" || fail "generates config.h"
+test -f "$build_dir/xmms/i18n.h" || fail "generates i18n.h"
+grep -F '#define ENABLE_NLS' "$build_dir/xmms/i18n.h" >/dev/null \
+	|| fail "enables gettext in the Meson i18n header"
 grep -F '#define DEV_DSP "/dev/dsp"' "$build_dir/config.h" >/dev/null \
 	|| fail "configures the default OSS DSP path"
 grep -F '#define DEV_MIXER "/dev/mixer"' "$build_dir/config.h" >/dev/null \
