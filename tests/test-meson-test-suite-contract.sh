@@ -43,7 +43,7 @@ done
 
 for source_mutating_test in meson-configure-contract build-parity-contract meson-test-suite-contract
 do
-  grep -A 1 "test('$source_mutating_test'" "$repo_root/tests/meson.build" \
+  grep -A 2 "test('$source_mutating_test'" "$repo_root/tests/meson.build" \
     | grep -F 'is_parallel: false' >/dev/null || {
       printf '%s\n' "source-mutating Meson test is not serialized: $source_mutating_test" >&2
       exit 1
