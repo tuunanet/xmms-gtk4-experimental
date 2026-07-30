@@ -18,13 +18,26 @@ gtk3_dep = dependency(
 )
 zlib_dep = dependency('zlib')
 alsa_dep = dependency('alsa')
+vorbis_dep = dependency('vorbis', required: get_option('vorbis'))
+vorbisfile_dep = dependency('vorbisfile', required: get_option('vorbis'))
+ogg_dep = dependency('ogg', required: get_option('vorbis'))
 mikmod_dep = dependency('libmikmod', required: get_option('mikmod'))
+opengl_dep = dependency('gl', required: get_option('opengl'))
 
 xmms_conf = configuration_data()
 xmms_conf.set_quoted('PACKAGE', 'xmms')
 xmms_conf.set_quoted('VERSION', meson.project_version())
 if cc.has_header('unistd.h')
   xmms_conf.set('HAVE_UNISTD_H', 1)
+endif
+if cc.has_header('linux/cdrom.h')
+  xmms_conf.set('HAVE_LINUX_CDROM_H', 1)
+  if host_machine.system() == 'linux'
+    xmms_conf.set('XMMS_CDROM_SOLARIS', 1)
+  endif
+endif
+if cc.has_header('linux/joystick.h')
+  xmms_conf.set('HAVE_LINUX_JOYSTICK_H', 1)
 endif
 xmms_conf.set_quoted('DEV_DSP', get_option('dev-dsp'))
 xmms_conf.set_quoted('DEV_MIXER', get_option('dev-mixer'))
@@ -71,6 +84,24 @@ subdir('Output/alsa')
 subdir('Effect/echo_plugin')
 subdir('General/song_change')
 subdir('Visualization/sanalyzer')
+subdir('Input/wav')
+subdir('Input/tonegen')
+subdir('Input/cdaudio')
+if vorbis_dep.found()
+  subdir('Input/vorbis')
+endif
 if mikmod_dep.found()
   subdir('Input/mikmod')
+endif
+if not get_option('oss').disabled()
+  subdir('Output/OSS')
+endif
+subdir('Output/disk_writer')
+subdir('Effect/voice')
+subdir('Effect/stereo_plugin')
+subdir('General/ir')
+subdir('General/joystick')
+subdir('Visualization/blur_scope')
+if opengl_dep.found()
+  subdir('Visualization/opengl_spectrum')
 endif
