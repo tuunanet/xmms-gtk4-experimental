@@ -1,0 +1,35 @@
+schema_version: 1
+id: e06
+title: Establish modern GNOME C foundations
+wsjf: 2.0
+total_bcps: 15
+risk: P1
+status: planned
+depends_on:
+  - e05
+adr: []
+stories:
+  - id: e06s01
+    title: Define modern GObject and public-API boundaries
+    bcps: 5
+    risk: P1
+    status: planned
+    delta: ADDED
+    spec: e06s01-gobject-and-api-boundaries.md
+    tasks: e06s01-tasks.yaml
+  - id: e06s02
+    title: Enforce directional subsystem dependencies
+    bcps: 5
+    risk: P1
+    status: planned
+    delta: ADDED
+    spec: e06s02-directional-dependencies.md
+    tasks: e06s02-tasks.yaml
+  - id: e06s03
+    title: Add changed-file GNOME C formatting preflight
+    bcps: 5
+    risk: P1
+    status: planned
+    delta: ADDED
+    spec: e06s03-formatting-preflight.md
+    tasks: e06s03-tasks.yaml
