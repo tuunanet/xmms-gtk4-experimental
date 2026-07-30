@@ -75,6 +75,7 @@ EXTRA_DIST = \
 	tools/verify-build-baseline.sh \
 	tools/verify-meson-toolchain-policy.sh \
 	tools/extract-release-notes.sh \
+	xmms/i18n.meson.h.in \
 	xmms/ui_gtk3_control.c \
 	xmms/ui_gtk3_control.h \
 	xmms.m4
