@@ -16,3 +16,10 @@ lifecycle_checker="$repo_root/tools/validate-lifecycle-state.py"
 	"$repo_root/specs/execution-status.yaml" \
 	"$repo_root/specs/release-plan.yaml"
 echo "ok - records the completed v0.0.1 draft pre-release"
+
+baseline_checker="$repo_root/tools/verify-build-baseline.sh"
+[ -x "$baseline_checker" ] || fail "provides a legacy build baseline verifier"
+"$baseline_checker" "$repo_root"
+test -f "$repo_root/specs/adr/ADR-0002-meson-tooling-migration.md" \
+	|| fail "records the Meson migration decision"
+echo "ok - freezes the legacy build and delivery contract"
