@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-07-30T094819
+    date: 2026-07-30
+    severity: high
+    priority: P0
+    scope: meson-tool-policy-test
+    summary: The missing-Meson fixture incorrectly depends on Meson being absent from the host system path.
+    file: specs/bugs/BUG-2026-07-30T094819-meson-missing-tool-fixture.md
+    status: investigated
   - bug_id: BUG-2026-07-30T094453
     date: 2026-07-30
     severity: high

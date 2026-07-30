@@ -4,7 +4,7 @@ workflow_mode: team-pr
 active_flow: fix_bug
 active_epic_id: e05
 active_story_id: e05s02
-active_bug_id: BUG-2026-07-30T094453
+active_bug_id: BUG-2026-07-30T094819
 git:
   branch: feat/meson-end-to-end-build
   head: 7f9975b
@@ -12,7 +12,7 @@ git:
 handoff:
   status: bug_investigated
   next_skill: develop-tdd
-  reason: Advancing to e05s02 exposed release-evidence validation coupled to e05s01; repair this red project gate before closing the MikMod fix.
+  reason: Installing required Meson exposed a non-hermetic missing-tool fixture; repair this red project gate before closing the lifecycle and MikMod fixes.
 metrics:
   story_start: 2026-07-30T08:56:01Z
 release:
