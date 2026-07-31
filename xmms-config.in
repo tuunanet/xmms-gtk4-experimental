@@ -147,7 +147,8 @@ if test "$echo_exec_prefix" = "yes"; then
     echo $exec_prefix
 fi
 
-if test "$include_dir" != "/usr/include"; then    cflags="-I$include_dir -I$xmms_include_dir $gtk_cflags"
+if test "$include_dir" != "/usr/include"; then
+    cflags="-I$include_dir -I$xmms_include_dir $gtk_cflags"
 else
     cflags="-I$xmms_include_dir $gtk_cflags"
 fi
