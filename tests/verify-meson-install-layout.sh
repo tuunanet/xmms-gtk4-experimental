@@ -26,6 +26,8 @@ else:
 ' "$1"
 }
 
+project_version=$(meson introspect --projectinfo "$build_dir" | python3 -c 'import json, sys; print(json.load(sys.stdin)["version"])')
+
 prefix=$(meson_option prefix)
 bindir=$(meson_option bindir)
 libdir=$(meson_option libdir)
@@ -105,7 +107,7 @@ done
 
 xmms_config="$install_root/$bindir/xmms-config"
 test -x "$xmms_config" || fail 'installs an executable xmms-config'
-test "$("$xmms_config" --version)" = '0.0.1' || fail 'configures xmms-config version'
+test "$("$xmms_config" --version)" = "$project_version" || fail 'configures xmms-config version'
 test "$("$xmms_config" --plugin-dir)" = "$prefix/$libdir/xmms" || fail 'configures xmms-config plugin path'
 
 printf '%s\n' 'ok - Meson staged install preserves the public layout'
