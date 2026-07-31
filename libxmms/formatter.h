@@ -2,6 +2,8 @@
 
 #define XMMS_FORMATTER_H
 
+#include <glib.h>
+
 typedef struct {
 	gchar *values[256];
 } Formatter;

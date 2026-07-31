@@ -94,10 +94,14 @@ require_if_built esdout "$libdir/xmms/Output/libesdout.so"
 require_if_built joy "$libdir/xmms/General/libjoy.so"
 require_if_built ogl_spectrum "$libdir/xmms/Visualization/libogl_spectrum.so"
 
-printf '%s\n' '#include <xmms/util.h>' | \
-  ${CC:-cc} -x c -fsyntax-only -I"$install_root/$includedir" \
-  $(pkg-config --cflags gtk+-2.0 glib-2.0) - \
-  || fail 'installs a self-contained libxmms public header set'
+for header in configfile.h xmmsctrl.h dirbrowser.h util.h formatter.h titlestring.h \
+  plugin.h fullscreen.h i18n.h
+do
+  printf '%s\n' "#include <xmms/$header>" | \
+    ${CC:-cc} -x c -fsyntax-only -I"$install_root/$includedir" \
+    $(pkg-config --cflags gtk+-2.0 glib-2.0) - \
+    || fail "installs a self-contained public header: $header"
+done
 
 xmms_config="$install_root/$bindir/xmms-config"
 test -x "$xmms_config" || fail 'installs an executable xmms-config'
