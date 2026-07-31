@@ -11,8 +11,8 @@
 - [x] The distribution verifier operates in a temporary directory, selects only the archive (not a checksum sidecar), extracts it, and proves configuration, build, Xvfb tests, and staged installation.
 - [x] The gettext fix isolates Meson configuration from retained Autotools output. `ENABLE_NLS` is numeric for legacy `#if ENABLE_NLS` consumers, with a retained-header collision regression test.
 - [x] Source-mutating contracts are marked non-parallel, eliminating the `xmms/i18n.h` create/remove race without imposing execution ordering on independent tests.
-- [x] Full Meson suite passed: `xvfb-run --auto-servernum meson test -C build-meson --print-errorlogs` — 25/25.
-- [x] Clean archive verification passed: `tools/verify-meson-dist.sh` — build, 25/25 Xvfb tests, and staged installation.
+- [x] Full Meson suite passed after final fixes: `xvfb-run --auto-servernum meson test -C build-meson --print-errorlogs` — 25/25.
+- [x] Clean archive verification passed after final fixes: `tools/verify-meson-dist.sh` — build, 25/25 Xvfb tests, staged installation, and installed public-header compilation.
 - [x] Security review found no unaddressed HIGH-confidence finding. No user-controlled input reaches shell execution; new paths are build-system controlled.
 - [x] No plugin ABI, libxmms API, control socket, configuration path, skin format, Debian package name, or release-publication behavior changed.
 
@@ -28,6 +28,16 @@ No Mysterious Name, Feature Envy, Data Clumps, Primitive Obsession, Message Chai
 
 None. The unavailable optional churn-ranking tool is explicitly recorded rather than treated as a pass.
 
+## Review disposition
+
+Independent reviewers found and the branch corrected gettext include precedence,
+source-test isolation, conditional plugin installation, public-header closure,
+Autotools distribution inclusion, locale inventory coverage, and Autotools
+`xmms-config` template isolation. The final asserted prefix-override defect was
+rejected after direct comparison: both the retained configured Autotools script
+and the Meson script retain their configured path for `--plugin-dir` after a
+runtime `--prefix` override.
+
 ## Next gate
 
-Request an independent review before PR delivery.
+Team PR delivery decision.
