@@ -8,8 +8,8 @@ maintainability on current systems.
 
 - Search [existing issues](https://github.com/tuunanet/xmms-gtk4-experimental/issues).
 - For a substantial behavior change, open an issue before writing code.
-- Keep pull requests focused; avoid mixing formatting, refactoring, and behavior
-  changes.
+- Keep each change focused; avoid mixing formatting, refactoring, and behavior
+  changes. Apply the same rule when a pull request is required.
 
 ## Build and test
 
@@ -41,8 +41,8 @@ This creates `deb-artifacts/*.deb`, runs the package test suite, and checks the
 packaged MP3 plugin linkage. It never installs dependencies or elevates
 privileges; required build dependencies must already be installed.
 
-If a change affects UI or audio behavior, also describe the manual runtime
-testing performed in the pull request.
+If a change affects UI or audio behavior, record the manual runtime testing in
+its verification evidence and in the pull request when one is used.
 
 ## C static analysis
 
@@ -61,10 +61,10 @@ checks rather than style-only diagnostics.
 Fix new findings whenever practical. If a finding is confirmed as existing,
 intentional, or a false positive, add only a narrow
 `diagnostic-id:path:line` entry to the suppression baseline at
-`tools/cppcheck-suppressions.txt`, explain it in the pull request, and rerun
-`make lint`. Do not add project-wide diagnostic suppressions or refresh the
-baseline merely to make CI green. Baseline changes must receive the same review
-as source changes.
+`tools/cppcheck-suppressions.txt`, explain it in the review evidence or pull
+request, and rerun `make lint`. Do not add project-wide diagnostic suppressions
+or refresh the baseline merely to make CI green. Baseline changes must receive
+the same review as source changes.
 
 Pull requests that only touch documentation and other non-build metadata still
 report the required `build-and-test` check, but CI skips the full configure,
@@ -81,8 +81,8 @@ same ref (`cancel-in-progress`). The cancelled run’s required gate fails with
 
 ## Local dual-agent review
 
-Maintainers using Pi can run the project-local dual-blind review gate before a
-pull request. Start Pi from a trusted checkout; Pi installs the exact package
+Maintainers using Pi can run the project-local dual-blind review gate before
+integration. Start Pi from a trusted checkout; Pi installs the exact package
 version declared in `.pi/settings.json` into the ignored `.pi/npm/` cache.
 Review the package source before approving a new version.
 
@@ -109,7 +109,7 @@ local and interactive; CI does not receive model credentials.
   without explaining why it is safe.
 - Add user-visible changes to the `Unreleased` section of
   [`CHANGELOG.md`](CHANGELOG.md).
-- Update documentation in the same pull request as the behavior it describes.
+- Update documentation in the same change as the behavior it describes.
 - Use focused commit messages such as `fix: restore playback after ALSA seek`.
 
 ## Autotools files
@@ -122,11 +122,11 @@ unchanged by a modern `autoreconf`.
 When modifying build metadata:
 
 - update the authoritative `.am` or `.in` source;
-- update its shipped generated counterpart in the same pull request; and
+- update its shipped generated counterpart in the same change; and
 - verify both a clean `./configure && make` build and `make distcheck`.
 
 Do not run `autoreconf --force --install` and commit its broad generated diff
-unless the pull request is specifically migrating the Autotools stack.
+unless the change specifically migrates the Autotools stack.
 
 ## Releases
 
@@ -135,9 +135,23 @@ build manually tested candidates from short-lived `release/*` branches, and
 publish official releases from annotated version tags. See the
 [release process](docs/releases.md) for the complete checklist.
 
+## Maintainer integration
+
+Maintainers use the [Solo Git workflow](specs/WORKFLOW-solo-git.md) by default.
+Develop in an isolated worktree, pass the verification and audit gates, and
+commit the reviewed changes. Then use `release-branch` in `solo-local` mode.
+Land only through:
+
+```sh
+bash scripts/land-branch.sh <branch> "<conventional-message>"
+```
+
+Use a pull request explicitly for external contributions or when remote branch
+protection requires one. The land command never opens a pull request itself.
+
 ## Pull requests
 
-A pull request should explain:
+An external or explicitly selected pull request should explain:
 
 - what problem it solves;
 - why the chosen approach fits this preservation-focused fork;

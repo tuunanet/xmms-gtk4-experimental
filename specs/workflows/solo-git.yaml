@@ -1,0 +1,42 @@
+schema_version: 1
+name: solo-git
+command: /solo-git
+description: >-
+  Deliver verified work from isolated task worktrees through a local squash land
+  without routine pull-request ceremony.
+skills:
+  - survey-context
+  - kickoff-branch
+  - develop-tdd
+  - enforce-first
+  - run-evals
+  - verify-work
+  - audit-code
+  - commit-message
+  - release-branch
+args:
+  release-branch:
+    mode: solo-local
+gates:
+  - before: kickoff-branch
+    require: Updated, clean main and green project Preflight.
+  - before: develop-tdd
+    require: Approved scope and an isolated task worktree.
+  - before: release-branch
+    require: Green gates and a clean task worktree whose verified changes are committed.
+  - after: release-branch
+    require: Main contains the squash commit and the task worktree is removed.
+integrate:
+  mode: solo-local
+  command: 'bash scripts/land-branch.sh <branch> "<conventional-message>"'
+  pull_request: opt-in-only
+terminal_states:
+  - success
+  - no-op
+  - blocked
+  - exhausted
+verify: >-
+  python3 -c "import yaml; assert yaml.safe_load(open('specs/state.yaml'))['workflow_mode'] == 'solo-git'" &&
+  test -s CLAUDE.md && test -s CONVENTIONS.md &&
+  test -s specs/WORKFLOW-solo-git.md &&
+  bash -n scripts/land-branch.sh && bash -n scripts/lib/land-branch-push.sh

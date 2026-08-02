@@ -46,6 +46,7 @@ EXTRA_DIST = $(MESON_DIST) \
 	.gitattributes \
 	.gitignore \
 	CHANGELOG.md \
+	CLAUDE.md \
 	CODE_OF_CONDUCT.md \
 	CONTRIBUTING.md \
 	CONVENTIONS.md \
@@ -74,6 +75,10 @@ EXTRA_DIST = $(MESON_DIST) \
 	packaging/debian/xmms.docs \
 	packaging/debian/xmms.install \
 	packaging/xmms.desktop \
+	scripts/land-branch.sh \
+	scripts/lib/land-branch-push.sh \
+	specs/WORKFLOW-solo-git.md \
+	specs/workflows/solo-git.yaml \
 	specs/adr/ADR-0001-staged-gtk-migration.md \
 	specs/adr/ADR-0002-meson-tooling-migration.md \
 	specs/execution-status.yaml \
@@ -102,6 +107,7 @@ EXTRA_DIST = $(MESON_DIST) \
 	tests/test-pluginenum.c \
 	tests/test-popup-position.c \
 	tests/test-release-tools.sh \
+	tests/test-solo-git-workflow.sh \
 	tests/test-xentry.c \
 	tools/build-deb.sh \
 	tools/check-release-version.sh \

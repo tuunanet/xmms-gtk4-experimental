@@ -1,28 +1,27 @@
-# Security review: e04 release-packaging workflow
+# Security review: Solo Git workflow
 
-- **Reviewed range:** `58c4f24...0ca0faa`
+- **Generated:** 2026-08-02T10:46:39Z
+- **Reviewed range:** `c804c7b...working-tree`
 - **Result:** PASS
 - **Unresolved HIGH findings (confidence >= 8):** 0
 
-## Trust and data-flow assessment
+## Trust boundaries and sinks
 
-- The workflow has only a manual `workflow_dispatch` trigger. It does not run
-  on pull requests, pushes, or untrusted fork input.
-- The maintainer-provided version is quoted at shell boundaries and validated by
-  `tools/check-release-version.sh` before it names package or release assets.
-- The workflow additionally requires the matching annotated `vVERSION` tag,
-  validates that tag's target against `GITHUB_SHA`, and requires main ancestry.
-- Default token permission is `contents: read`; only the final job receives
-  `contents: write` to create or update an unpublished draft release.
-- A pre-existing published release is rejected. Artifact manifests are checked
-  before upload and again before draft-release attachment.
-- Third-party actions are pinned to reviewed commit SHAs. Build dependencies are
-  system packages installed within isolated target containers.
+- `scripts/land-branch.sh` accepts a feature-branch name and a commit message
+  from the local maintainer. Both values stay quoted when passed to Git.
+- `BP_PREFLIGHT` is an explicit trusted-operator override. The default path
+  selects checked-in Meson or Autotools commands without input interpolation.
+- Git commit, merge, worktree removal, pull, and push are the privileged sinks.
+  The script requires the primary checkout on a clean default branch, a clean
+  isolated task worktree, an unchanged verified feature SHA, and exact equality
+  between local and remote default-branch SHAs before creating the squash commit.
+- A protected-branch rejection stops without opening a pull request, deleting
+  the task worktree, or rewriting local history.
 
-## Findings
+## Assessment
 
-No reportable injection, authorization bypass, secret exposure, unsafe
-artifact handling, path traversal, or published-release mutation finding was
-identified at confidence 8 or higher. `gh release upload --clobber` is limited
-to an already-confirmed draft release; it is required to resume a failed draft
-run and is guarded by the published-release rejection.
+No reportable command injection, path traversal, credential exposure,
+authorization bypass, unsafe deserialization, or destructive fail-open behavior
+was identified at confidence 8 or higher. The end-to-end test uses an isolated
+temporary repository and local bare remote to cover dirty task state, divergent
+`main`, successful squash landing, push, and worktree cleanup.

@@ -179,6 +179,8 @@ test('meson-output-contract', find_program('verify-meson-output-contract.sh'),
      args: [meson.project_build_root()], depends: meson_output_contract_targets)
 test('release-tools', find_program('test-release-tools.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
+test('solo-git-workflow', find_program('test-solo-git-workflow.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-test-suite-contract', find_program('test-meson-test-suite-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root(),
      is_parallel: false)

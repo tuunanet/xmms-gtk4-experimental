@@ -18,6 +18,9 @@
 /autom4te.cache/
 /config.cache
 
+# Meson build output
+/build-meson/
+
 # Generated localization and configuration headers
 /po/Makefile.in
 /po/POTFILES
@@ -55,6 +58,9 @@
 /tests/test-filebrowser
 /tests/test-font-load
 /tests/test-keyboard-shortcuts
+/tests/test-pbutton-baseline
+/tests/test-ui-control
+/tests/test-gtk3-play-button-proof
 /tests/test-mpg123-file-duration
 /tests/test-mpg123-stream-position
 /tests/test-popup-position

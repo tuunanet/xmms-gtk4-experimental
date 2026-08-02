@@ -1,8 +1,9 @@
 # Release process
 
-XMMS GTK4 Experimental uses deliberate, manually tested releases. Pull requests
-merge through the normal review process; an immutable annotated `v*` tag on
-`main` identifies the exact source that may be packaged. The checked-in
+XMMS GTK4 Experimental uses deliberate, manually tested releases. Verified
+maintainer work normally lands through the Solo Git workflow; external or
+explicitly selected pull requests remain supported. An immutable annotated
+`v*` tag on `main` identifies the exact source that may be packaged. The checked-in
 **Linux packages and release** workflow (`.github/workflows/package-release.yml`)
 is manually dispatched from that tag and creates or resumes an unpublished
 draft GitHub Release. A maintainer publishes the draft only after reviewing its
@@ -11,28 +12,22 @@ assets and checksums.
 ## Release lifecycle
 
 ```text
-pull requests -> main -> release/VERSION -> annotated vVERSION tag on main
-                                                     |
-                                                     v
-                         manually dispatch package-release.yml on that tag
-                                                     |
-                                                     v
-                    Mint + Ubuntu package checks -> draft GitHub Release
-                                                     |
-                                                     v
-                                          manual review and publication
+verified work -> main -> release/VERSION -> annotated vVERSION tag on main
+                                                    |
+                                                    v
+                        manually dispatch package-release.yml on that tag
+                                                    |
+                                                    v
+                   Mint + Ubuntu package checks -> draft GitHub Release
+                                                    |
+                                                    v
+                                         manual review and publication
 ```
 
 ## 1. Prepare the release
 
-Create a short-lived release branch from up-to-date `main` and make one focused
-release preparation commit:
-
-```sh
-git switch main
-git pull --ff-only
-git switch -c release/0.0.1
-```
+Use `kickoff-branch` to create an isolated `release/VERSION` worktree from an
+up-to-date, clean `main`. Prepare one focused release change there.
 
 The commit must update:
 
@@ -50,8 +45,16 @@ Validate the metadata locally:
 tools/check-release-version.sh 0.0.1
 ```
 
-Submit the release branch through a normal pull request. Do not tag until the
-release preparation is merged and its required review is complete.
+After verification, audit, and `commit-message`, use `release-branch` in
+`solo-local` mode and land from the primary checkout:
+
+```sh
+bash scripts/land-branch.sh release/0.0.1 "chore(release): prepare 0.0.1"
+```
+
+If remote protection requires a pull request, select that path explicitly in
+`release-branch`. Do not tag until the preparation is on `main` and its required
+review is complete.
 
 ## 2. Create the annotated release tag
 

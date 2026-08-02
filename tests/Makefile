@@ -15,9 +15,9 @@ ifeq ($(GTK3_PROOF_ENABLED),yes)
 GTK3_CHECK_TARGET = test-gtk3-play-button-proof
 endif
 
-.PHONY: check clean test-c-lint test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-tools
+.PHONY: check clean test-c-lint test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-tools test-solo-git-workflow
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-tools
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-tools test-solo-git-workflow
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
@@ -121,6 +121,9 @@ test-plugin-linkage:
 
 test-release-tools:
 	$(srcdir)/test-release-tools.sh $(top_srcdir)
+
+test-solo-git-workflow:
+	$(srcdir)/test-solo-git-workflow.sh $(top_srcdir)
 
 clean:
 	rm -rf test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control test-gtk3-play-button-proof test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-plugins test-outputplugin-plugins

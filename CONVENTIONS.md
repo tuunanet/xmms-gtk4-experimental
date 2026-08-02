@@ -29,12 +29,15 @@ NEVER add AI attribution footers.
 
 MUST use `kickoff-branch` before implementation.
 MUST NOT implement directly on `main`.
-MUST treat remote `main` as protected.
-MUST use the `team-pr` mode recorded in `specs/state.yaml`.
-MUST merge every change through a pull request.
+MUST treat local and remote `main` as protected.
+MUST use isolated worktrees for task branches.
+MUST use the `solo-git` mode recorded in `specs/state.yaml`.
 MUST run release gates before landing changes.
 MUST use `commit-message` before creating a commit.
-MUST use `release-branch` for integration decisions.
+MUST use `release-branch` in `solo-local` mode.
+MUST land with `bash scripts/land-branch.sh <branch> "<message>"`.
+MUST select a pull request explicitly when remote protection requires one.
+NEVER commit directly on `main` outside `land-branch.sh`.
 NEVER force-push or run destructive Git commands without explicit human approval.
 NEVER create GitHub issues from automated workflows.
 Write investigations and plans under `specs/`.

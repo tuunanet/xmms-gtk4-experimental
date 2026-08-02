@@ -22,7 +22,8 @@ Stack: C, GTK2, GLib2, POSIX threads, GNU Autotools, libtool, Linux, and X11.
 | Lint | Not configured |
 | Preflight | `make -j"$(nproc)" && xvfb-run --auto-servernum make check` |
 | Strict gate | `xvfb-run --auto-servernum make distcheck` |
-| CI | `gh pr checks` when a pull request exists |
+| Integrate | `release-branch` → `bash scripts/land-branch.sh <branch> "<message>"` |
+| CI | Optional after landing; inspect the pushed `main` workflow with `gh run list` |
 
 ## Architecture
 
@@ -65,7 +66,9 @@ Read `docs/architecture/` for subsystem diagrams and maintainer guidance.
 - MUST use `develop-tdd` or `execute-plan` for implementation.
 - MUST use `investigate-bug` before fixing reported defects.
 - MUST start implementation through `kickoff-branch`.
-- MUST deliver every change through a pull request.
+- MUST follow `specs/WORKFLOW-solo-git.md` for integration.
+- MUST integrate through `release-branch` in `solo-local` mode.
+- MUST let `scripts/land-branch.sh` make the only task commit on `main`.
 - MUST evaluate every new path against workflow triggers, path filters, packaging manifests, release automation, and ignore rules.
 - MUST update affected `.github/` workflows when new paths change CI classification or delivery behavior.
 - MUST keep Preflight and CI green.
@@ -95,8 +98,9 @@ Read `docs/architecture/` for subsystem diagrams and maintainer guidance.
 
 ## Workspace Facts
 
-- Use the `team-pr` workflow mode.
-- Treat remote `main` as protected.
-- Merge every change through a pull request.
+- Use the `solo-git` workflow mode.
+- Treat local and remote `main` as protected.
+- Land verified work with `scripts/land-branch.sh`.
+- Select a pull request explicitly when remote protection requires one.
 - Project-local external-agent wiring is disabled.
 <!-- END bigpowers:learned-preferences -->

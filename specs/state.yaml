@@ -1,6 +1,11 @@
 schema_version: 1
 project: xmms-gtk4-experimental
-workflow_mode: team-pr
+workflow_mode: solo-git
+active_decisions:
+  - id: solo-git-workflow
+    status: accepted
+    summary: Use isolated worktrees and release-branch solo-local integration without routine pull requests.
+    artifact: specs/workflows/solo-git.yaml
 active_flow: verify_work
 active_epic_id: e05
 active_story_id: e05s03

@@ -2,6 +2,7 @@
 set -eu
 
 srcdir=${1:-.}
+srcdir=$(cd "$srcdir" && pwd)
 failures=0
 
 ok()
@@ -50,7 +51,14 @@ require_absent_text()
 
 for file in \
 	.github/workflows/package-release.yml \
+	CLAUDE.md \
+	CONVENTIONS.md \
+	scripts/land-branch.sh \
+	scripts/lib/land-branch-push.sh \
+	specs/WORKFLOW-solo-git.md \
+	specs/workflows/solo-git.yaml \
 	tests/test-c-lint.sh \
+	tests/test-solo-git-workflow.sh \
 	tests/test-gtk3-play-button-proof.c \
 	tests/test-pbutton-baseline.c \
 	tests/test-ui-control.c \
@@ -134,6 +142,32 @@ require_text Makefile.am '.github/workflows/package-release.yml' \
 	'distributes the generic release-package workflow'
 require_text Makefile.in '.github/workflows/package-release.yml' \
 	'ships the generic release-package workflow manifest entry'
+require_text specs/state.yaml 'workflow_mode: solo-git' \
+	'enables solo Git integration in lifecycle state'
+require_text CLAUDE.md 'release-branch` in `solo-local` mode' \
+	'documents solo-local integration for agents'
+require_text CONVENTIONS.md 'NEVER commit directly on `main` outside `land-branch.sh`' \
+	'protects main from direct task commits'
+require_text CONTRIBUTING.md 'Maintainers use the [Solo Git workflow]' \
+	'documents solo-local integration for maintainers'
+require_text docs/releases.md 'use `release-branch` in' \
+	'lands release preparation through the selected integration mode'
+require_text Makefile.am 'scripts/land-branch.sh' \
+	'distributes the solo-local land command'
+require_text Makefile.in 'scripts/land-branch.sh' \
+	'ships the solo-local land command manifest entry'
+require_text Makefile.am 'specs/workflows/solo-git.yaml' \
+	'distributes the solo Git workflow recipe'
+require_text Makefile.am 'tests/test-solo-git-workflow.sh' \
+	'distributes the Solo Git workflow contract test'
+require_text Makefile.in 'tests/test-solo-git-workflow.sh' \
+	'ships the Solo Git workflow contract test manifest entry'
+require_text Makefile.in 'tests/meson.build' \
+	'ships the Meson test registry in the Autotools source archive'
+require_text tests/Makefile 'test-solo-git-workflow' \
+	'runs the Solo Git workflow contract from make check'
+require_text tests/meson.build "test('solo-git-workflow'" \
+	'runs the Solo Git workflow contract from Meson'
 require_text configure.in '--disable-gtk3-proof' \
 	'exposes an explicit GTK3 proof configure policy'
 require_text configure.in 'gtk+-3.0 >= 3.24' \
