@@ -15,9 +15,9 @@ ifeq ($(GTK3_PROOF_ENABLED),yes)
 GTK3_CHECK_TARGET = test-gtk3-play-button-proof
 endif
 
-.PHONY: check clean test-c-lint test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-tools test-solo-git-workflow
+.PHONY: check clean test-autotools-meson-dist test-autotools-package-deb test-c-lint test-debian-package-contract test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-artifacts test-release-tools test-solo-git-workflow
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-c-lint test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-tools test-solo-git-workflow
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-autotools-meson-dist test-autotools-package-deb test-c-lint test-debian-package-contract test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-artifacts test-release-tools test-solo-git-workflow
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
@@ -104,6 +104,12 @@ test-mpg123-file-duration: $(srcdir)/test-mpg123-file-duration.c $(top_srcdir)/I
 test-mpg123-stream-position: $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(top_srcdir)/Input/mpg123/stream-position.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $(srcdir)/test-mpg123-stream-position.c $(top_srcdir)/Input/mpg123/stream-position.c $(LDLIBS)
 
+test-autotools-meson-dist:
+	$(srcdir)/test-autotools-meson-dist.sh $(top_srcdir)
+
+test-autotools-package-deb:
+	$(srcdir)/test-autotools-package-deb.sh $(top_srcdir)
+
 test-c-lint:
 	$(srcdir)/test-c-lint.sh $(top_srcdir)
 
@@ -112,6 +118,14 @@ test-intl-generated-sources:
 
 test-meson-migration-contracts:
 	$(srcdir)/test-meson-migration-contracts.sh $(top_srcdir)
+
+test-debian-package-contract:
+	$(srcdir)/test-package-artifact-contracts.sh "$(top_srcdir)" \
+		"$(srcdir)/verify-debian-package-contract.sh"
+
+test-release-artifacts:
+	$(srcdir)/test-package-artifact-contracts.sh "$(top_srcdir)" \
+		"$(top_srcdir)/tools/verify-release-artifacts.sh"
 
 test-package-recipes:
 	$(srcdir)/test-package-recipes.sh $(top_srcdir)

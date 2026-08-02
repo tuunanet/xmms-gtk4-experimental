@@ -21,6 +21,8 @@ for expected_test in \
   alsa-volume \
   mpg123-file-duration \
   mpg123-stream-position \
+  autotools-meson-dist \
+  autotools-package-deb \
   c-lint \
   intl-generated-sources \
   meson-migration-contracts \
@@ -28,6 +30,8 @@ for expected_test in \
   mikmod-build-contract \
   build-parity-contract \
   package-recipes \
+  debian-package-contract \
+  release-artifacts \
   plugin-linkage \
   meson-output-contract \
   release-tools \

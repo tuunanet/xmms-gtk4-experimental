@@ -9,7 +9,7 @@ Primary sources:
 
 | Area | Files |
 | --- | --- |
-| Top-level build | [`configure.in`](../../configure.in), [`Makefile.am`](../../Makefile.am) |
+| Top-level build | [`configure.in`](../../configure.in), [`Makefile.am`](../../Makefile.am), [`meson.build`](../../meson.build) |
 | Library | [`libxmms/`](../../libxmms) |
 | Player + plugins | [`xmms/`](../../xmms), [`Input/`](../../Input), [`Output/`](../../Output), … |
 | Dock app | [`wmxmms/`](../../wmxmms) |
@@ -23,7 +23,7 @@ Primary sources:
 
 ## 1. Top-level shape
 
-Autotools project (autoconf/automake + libtool for plugins):
+Retained Autotools build plus a Meson migration build (libtool remains for the retained plugin path):
 
 ```text
 configure.in / configure     feature probes (GTK2, ALSA, Vorbis, MikMod, …)
@@ -54,6 +54,7 @@ flowchart TB
     CHK --> T["tests/*"]
     MAKE --> DIST[make dist / distcheck]
     MAKE --> DEB[make deb]
+    MESON[meson setup] --> MDEB[tools/package-deb.sh]
 ```
 
 ### Runtime plugin locations
@@ -145,7 +146,9 @@ tested without the full codec stack.
 | `test-package-recipes.sh` | Debian packaging expectations |
 | `test-project-agent-wiring.sh` | Pinned local reviewer package, role parity, tool restrictions, and dual-review gate contract |
 | `test-plugin-linkage.sh` | Built plugins link sanely |
-| `test-release-tools.sh` | `check-release-version` / changelog extraction |
+| `test-release-tools.sh` | `check-release-version` / Meson version / changelog extraction |
+| `test-autotools-meson-dist.sh` | Retained Autotools archive contains and configures Meson inputs |
+| `test-package-artifact-contracts.sh` | Deterministic extracted-package and release-artifact verification |
 
 ### Running tests
 
@@ -196,8 +199,8 @@ also guards the distributed target and CI wiring.
 
 ```mermaid
 flowchart LR
-    SRC[source tree] --> DIST[make dist tarball]
-    SRC --> DEB[make deb / tools/build-deb.sh]
+    SRC[source tree] --> DIST[Meson source tarball]
+    SRC --> DEB[tools/package-deb.sh]
     DEB --> ART["deb-artifacts/*.deb"]
     ART --> LINT[lintian / package tests]
 ```
@@ -205,7 +208,9 @@ flowchart LR
 | Path | Role |
 | --- | --- |
 | `packaging/debian/` | `control`, `rules`, `.install` files for `xmms` and `libxmms-dev` |
-| `tools/build-deb.sh` | Helper invoked via `make deb` |
+| `tools/package-deb.sh` | Creates the Meson source archive and local Debian packages |
+| `tools/build-deb.sh` | Builds retained Debian metadata from the Meson source archive |
+| `tools/verify-release-artifacts.sh` | Checks local package metadata, extracted smoke behavior, and checksum manifests |
 | `packaging/xmms.desktop` | Desktop entry metadata |
 
 Debian packages are a **distribution** concern; runtime architecture does not
@@ -234,8 +239,8 @@ flowchart TB
 | Behavior | Detail |
 | --- | --- |
 | **Targets** | Linux Mint 22.3 and Ubuntu 26.04, each in a pinned container image on an Ubuntu 24.04 runner. |
-| **Dependencies** | The package environment installs GTK2, `libgtk-3-dev`, Cppcheck, Debian packaging tools, and Xvfb before building from the source archive. |
-| **Verification** | Each target builds `xmms` and `libxmms-dev`, inspects metadata, installs both packages, and verifies its SHA-256 manifests. |
+| **Dependencies** | The package environment installs GTK2, `libgtk-3-dev`, Meson, Ninja, Cppcheck, Debian packaging tools, and Xvfb before building from the source archive. |
+| **Verification** | Each target builds `xmms` and `libxmms-dev`, inspects metadata, extracts package payloads for smoke verification without host installation, and verifies its SHA-256 manifests. |
 | **Permissions** | Default workflow permission is `contents: read`; only the final draft-release job receives `contents: write`. |
 | **Publication** | The workflow creates or resumes an unpublished draft only and refuses to modify a published release. |
 
@@ -264,7 +269,7 @@ only on manual UI clicks.
 2. Run `xmms` from the build tree (plugins via `BUILD_PLUGIN_DIR`) or install  
 3. Read [ui-interaction.md](ui-interaction.md) then
    [processing-pipeline.md](processing-pipeline.md)  
-4. For packaging work, start with `packaging/debian/` + `make deb`  
+4. For packaging work, start with `packaging/debian/` + `tools/package-deb.sh`
 5. For release automation, start with `tools/*` + `docs/releases.md`  
 
 ---

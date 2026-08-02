@@ -10,13 +10,13 @@ libxmms_sources = files(
   'charset.c',
 )
 
-libxmms = shared_library(
+libxmms = both_libraries(
   'xmms',
   libxmms_sources,
   dependencies: [glib_dep, gtk2_dep, threads_dep, cc.find_library('m')],
   include_directories: xmms_include_dir,
-  version: '4.1.3',
-  soversion: '4',
+  version: '1.3.1',
+  soversion: '1',
   install: true,
   install_dir: get_option('libdir'),
 )

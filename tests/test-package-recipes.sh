@@ -57,6 +57,8 @@ for file in \
 	scripts/lib/land-branch-push.sh \
 	specs/WORKFLOW-solo-git.md \
 	specs/workflows/solo-git.yaml \
+	tests/test-autotools-meson-dist.sh \
+	tests/test-autotools-package-deb.sh \
 	tests/test-c-lint.sh \
 	tests/test-solo-git-workflow.sh \
 	tests/test-gtk3-play-button-proof.c \
@@ -71,7 +73,12 @@ for file in \
 	packaging/debian/rules \
 	packaging/debian/source/format \
 	packaging/debian/xmms.install \
-	tools/build-deb.sh
+	tools/build-deb.sh \
+	tools/package-deb.sh \
+	tools/verify-release-artifacts.sh \
+	tools/verify-build-parity.sh \
+	tests/test-package-artifact-contracts.sh \
+	tests/verify-debian-package-contract.sh
 do
 	require_file "$file"
 done
@@ -80,6 +87,9 @@ require_text .github/workflows/package-release.yml 'workflow_dispatch:' \
 	'exposes a manual release-package dispatch'
 require_text .github/workflows/package-release.yml 'version:' \
 	'requires a release version input'
+require_text .github/workflows/package-release.yml \
+	'description: SemVer release version from configure.in, meson.build, and CHANGELOG.md' \
+	'documents all release-version authorities'
 require_text .github/workflows/package-release.yml 'refs/tags/v${VERSION}' \
 	'guards the matching release tag'
 require_text .github/workflows/package-release.yml 'git cat-file -t' \
@@ -90,6 +100,24 @@ require_text .github/workflows/package-release.yml 'target_id: ubuntu' \
 	'packages the Ubuntu target'
 require_text .github/workflows/package-release.yml 'libgtk-3-dev' \
 	'installs the GTK3 proof dependency'
+require_text .github/workflows/package-release.yml 'meson' \
+	'installs Meson for target package builds'
+require_text .github/workflows/package-release.yml 'ninja-build' \
+	'installs Ninja for target package builds'
+require_text .github/workflows/package-release.yml 'tools/package-deb.sh' \
+	'builds target packages through the Meson package helper'
+require_text .github/workflows/package-release.yml \
+	'tools/verify-release-artifacts.sh release-artifacts/raw' \
+	'verifies raw Meson package artifacts before release asset renaming'
+require_absent_text .github/workflows/package-release.yml \
+	'- name: Install and smoke-test packages' \
+	'does not install generated Debian packages on the CI host'
+require_absent_text .github/workflows/package-release.yml './configure --disable-esd' \
+	'does not configure target packages through Autotools'
+require_absent_text .github/workflows/package-release.yml 'make dist-gzip' \
+	'does not create target source archives through Autotools'
+require_absent_text .github/workflows/package-release.yml 'DEB_SOURCE_ARCHIVE=' \
+	'does not inject an Autotools source archive into target packaging'
 require_text .github/workflows/package-release.yml 'contents: write' \
 	'limits release mutation to an explicit write permission'
 require_text .github/workflows/package-release.yml 'sha256sum --check SHA256SUMS' \
@@ -106,6 +134,10 @@ require_text docs/releases.md 'package-release.yml' \
 	'documents the generic release-package workflow'
 require_text docs/releases.md 'Linux Mint 22.3' \
 	'documents the Linux Mint release target'
+require_text docs/releases.md '`meson.build` (`project()` version)' \
+	'documents Meson as a release-version authority'
+require_text docs/releases.md 'extracts both DEBs without host installation' \
+	'documents extracted-only release artifact verification'
 require_text docs/releases.md 'Ubuntu 26.04' \
 	'documents the Ubuntu release target'
 require_text docs/releases.md 'annotated `vVERSION` tag' \
@@ -114,14 +146,26 @@ require_text docs/architecture/build-and-test.md 'package-release.yml' \
 	'documents the checked-in release workflow'
 require_text Makefile.am 'deb:' \
 	'exposes a top-level make deb target'
-require_text Makefile.am '$(MAKE) dist-gzip' \
-	'creates a source archive for local Debian builds'
+require_text Makefile.am 'tools/package-deb.sh' \
+	'creates local Debian packages through the Meson helper'
 require_text Makefile.am '.PHONY: deb lint' \
 	'exposes lint as a phony top-level target'
 require_text Makefile.am 'lint:' \
 	'exposes the public C lint target'
 require_text Makefile.am 'tools/run-c-lint.sh' \
 	'runs C lint through the shared helper'
+require_text tests/Makefile 'test-autotools-meson-dist:' \
+	'runs the Autotools Meson distribution contract from make check'
+require_text tests/Makefile 'test-autotools-package-deb:' \
+	'runs retained source-archive package coverage from make check'
+require_text tests/meson.build "test('autotools-package-deb'" \
+	'runs retained source-archive package coverage from Meson'
+require_text tests/meson.build "test('autotools-meson-dist'" \
+	'runs the Autotools Meson distribution contract from Meson'
+require_text libxmms/Makefile.am 'EXTRA_DIST = meson.build' \
+	'declares the recursive libxmms Meson build input for source distribution'
+require_text libxmms/Makefile.in 'EXTRA_DIST = meson.build' \
+	'synchronizes the generated recursive libxmms source-distribution manifest'
 require_text Makefile.in 'lint:' \
 	'ships the generated C lint target'
 require_text tests/Makefile 'test-c-lint:' \
@@ -191,9 +235,29 @@ require_text Makefile.am 'tools/cppcheck-suppressions.txt' \
 require_text Makefile.am 'docs/architecture/build-and-test.md' \
 	'distributes the C lint architecture guide'
 require_text Makefile.am 'tools/build-deb.sh' \
-	'builds Debian packages through the shared helper'
+	'keeps the shared Debian archive builder distributed'
+require_text Makefile.am 'tools/package-deb.sh' \
+	'distributes the Meson Debian package helper'
+require_text Makefile.am 'tests/test-package-artifact-contracts.sh' \
+	'distributes the package artifact contract wrapper'
+require_text Makefile.in 'tests/test-package-artifact-contracts.sh' \
+	'ships the package artifact contract wrapper'
+require_text tests/Makefile 'test-package-artifact-contracts.sh' \
+	'runs the package artifact contract wrapper from Autotools checks'
+require_text tests/meson.build "find_program('test-package-artifact-contracts.sh')" \
+	'uses the package artifact contract wrapper from Meson checks'
+require_text Makefile.am 'tests/verify-debian-package-contract.sh' \
+	'distributes the Debian package contract verifier'
+require_text Makefile.in 'tools/package-deb.sh' \
+	'ships the Meson Debian package helper'
+require_text Makefile.in 'tests/verify-debian-package-contract.sh' \
+	'ships the Debian package contract verifier'
 require_text packaging/debian/control ' cppcheck,' \
 	'declares the C analyzer as a Debian build dependency'
+require_text packaging/debian/control ' meson (>= 1.3.2),' \
+	'declares the required Meson version as a Debian build dependency'
+require_text packaging/debian/control ' ninja-build,' \
+	'declares Ninja as a Debian build dependency'
 require_text CONTRIBUTING.md 'make lint' \
 	'documents the local C lint command'
 require_text CONTRIBUTING.md 'suppression baseline' \
@@ -220,18 +284,78 @@ require_text packaging/debian/control 'Package: xmms' \
 	'defines the Debian runtime package'
 require_text packaging/debian/control 'Package: libxmms-dev' \
 	'defines the Debian development package'
-require_text packaging/debian/rules './configure' \
-	'configures the Debian build explicitly'
-require_text packaging/debian/rules 'override_dh_autoreconf:' \
-	'preserves the shipped legacy Autotools files'
-require_text packaging/debian/rules 'optimize=-lto' \
-	'disables LTO for the legacy bundled libtool'
-require_text packaging/debian/rules '-Wno-error=incompatible-pointer-types' \
-	'permits legacy GTK callbacks with newer Ubuntu GCC'
+require_text packaging/debian/rules '--buildsystem=meson' \
+	'uses the Meson debhelper backend'
+require_text packaging/debian/rules '-Desd=disabled' \
+	'disables the obsolete ESD plugin through Meson'
 require_text packaging/debian/rules 'DEB_BUILD_OPTIONS' \
 	'honors Debian package test controls'
-require_text packaging/debian/rules '--disable-esd' \
-	'disables the obsolete ESD plugin in Debian builds'
+require_absent_text packaging/debian/rules './configure' \
+	'does not configure Debian packages through Autotools'
+require_text packaging/debian/rules 'override_dh_autoreconf:' \
+	'skips unsupported Autotools regeneration during Meson packaging'
+require_text tools/package-deb.sh 'meson dist' \
+	'creates the Debian source archive through Meson from VCS checkouts'
+require_text tools/package-deb.sh 'DEB_SOURCE_ARCHIVE' \
+	'accepts an explicit retained source archive when requested'
+require_text tools/package-deb.sh 'test -e "$repo_root/.git"' \
+	'detects whether Meson dist can use VCS metadata'
+require_text tools/package-deb.sh 'make dist-gzip' \
+	'falls back to the retained source distribution outside VCS checkouts'
+require_text tools/package-deb.sh '--formats=gztar' \
+	'preserves the compressed source release archive format'
+require_text tools/package-deb.sh 'xmms-$version.tar.gz' \
+	'selects the compressed Meson source release archive'
+require_text tools/package-deb.sh '--wrap-mode=nodownload' \
+	'prevents Meson package builds from downloading dependencies'
+require_text tools/package-deb.sh 'tools/build-deb.sh' \
+	'uses the shared Debian archive builder'
+require_text tools/verify-release-artifacts.sh \
+	'build_dir=${MESON_BUILD_DIR:-$repo_root/build-meson}' \
+	'uses the selected Meson build directory for release verification'
+require_text tools/verify-release-artifacts.sh 'dpkg-deb --field' \
+	'checks release package metadata'
+require_text tools/verify-release-artifacts.sh 'dpkg-deb -x' \
+	'extracts release packages without installing them on the host'
+require_text tests/verify-debian-package-contract.sh 'readelf -d' \
+	'asserts the runtime library ELF SONAME'
+require_text tests/verify-debian-package-contract.sh 'libxmms.so.1' \
+	'preserves the historical runtime library SONAME'
+require_text tests/test-package-artifact-contracts.sh 'build_fixture' \
+	'constructs deterministic package verifier fixtures'
+require_absent_text tests/test-package-artifact-contracts.sh \
+	'artifact_dir=$repo_root/deb-artifacts' \
+	'does not depend on leftover package build output'
+require_text tools/verify-release-artifacts.sh 'LD_LIBRARY_PATH=' \
+	'smoke-tests the extracted release binary'
+require_text tools/verify-release-artifacts.sh 'sha256sum --check' \
+	'checks target and aggregate release checksums'
+require_text tools/verify-release-artifacts.sh 'PACKAGE-METADATA.txt' \
+	'creates release package metadata'
+require_text tools/verify-release-artifacts.sh 'SHA256SUMS' \
+	'creates the aggregate release checksum manifest'
+require_absent_text tools/verify-release-artifacts.sh 'sudo' \
+	'never elevates privileges while checking release artifacts'
+require_absent_text tools/verify-release-artifacts.sh 'apt-get' \
+	'never installs release artifacts on the host'
+require_absent_text tools/verify-release-artifacts.sh 'dpkg -i' \
+	'never installs Debian packages on the host'
+require_text Makefile.am 'tools/verify-release-artifacts.sh' \
+	'distributes the release-artifact verifier'
+require_text Makefile.in 'tools/verify-release-artifacts.sh' \
+	'ships the release-artifact verifier manifest entry'
+require_text Makefile.am 'tools/verify-build-parity.sh' \
+	'distributes the Meson build-parity verifier for retained source archives'
+require_text Makefile.in 'tools/verify-build-parity.sh' \
+	'ships the Meson build-parity verifier manifest entry'
+require_text tests/Makefile 'test-release-artifacts' \
+	'runs release-artifact verification from Autotools checks'
+require_text tests/meson.build "test('release-artifacts'" \
+	'runs release-artifact verification from Meson'
+require_text tests/Makefile 'test-debian-package-contract' \
+	'runs the Debian package contract from Autotools checks'
+require_text tests/meson.build "test('debian-package-contract'" \
+	'runs the Debian package contract from Meson'
 require_absent_text Makefile.am 'xmms.spec' \
 	'does not ship legacy RPM package metadata'
 require_absent_text Makefile.am 'packaging/rpm' \

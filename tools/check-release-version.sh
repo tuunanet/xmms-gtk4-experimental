@@ -14,7 +14,7 @@ if ! printf '%s\n' "$expected" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0
 	exit 1
 fi
 
-for file in configure.in configure CHANGELOG.md; do
+for file in configure.in configure meson.build CHANGELOG.md; do
 	if [ ! -f "$root/$file" ]; then
 		echo "error: required release file is missing: $file" >&2
 		exit 1
@@ -30,6 +30,20 @@ if [ "$source_count" -ne 1 ]; then
 fi
 if [ "$source_versions" != "$expected" ]; then
 	echo "error: requested version $expected does not match configure.in version $source_versions" >&2
+	exit 1
+fi
+
+meson_versions=$(sed -n \
+	-e "s/^project(.*version:[[:space:]]*'\\([^']*\\)'.*/\\1/p" \
+	-e "/^project(/,/^)/ { s/^[[:space:]]*version:[[:space:]]*'\\([^']*\\)'.*/\\1/p; }" \
+	"$root/meson.build")
+meson_count=$(printf '%s\n' "$meson_versions" | grep -c . || true)
+if [ "$meson_count" -ne 1 ]; then
+	echo "error: meson.build must contain exactly one XMMS project version" >&2
+	exit 1
+fi
+if [ "$meson_versions" != "$expected" ]; then
+	echo "error: requested version $expected does not match meson.build version $meson_versions" >&2
 	exit 1
 fi
 

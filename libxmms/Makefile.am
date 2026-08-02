@@ -20,3 +20,5 @@ charset.c charset.h
 
 xmmsinclude_HEADERS = configfile.h xmmsctrl.h dirbrowser.h util.h formatter.h titlestring.h
 
+EXTRA_DIST = meson.build
+

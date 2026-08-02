@@ -6,18 +6,17 @@ active_decisions:
     status: accepted
     summary: Use isolated worktrees and release-branch solo-local integration without routine pull requests.
     artifact: specs/workflows/solo-git.yaml
-active_flow: plan
+active_flow: request_review
 active_epic_id: e05
 active_story_id: e05s04
-active_bug_id: null
 git:
-  branch: main
-  head: cc9f17a
-  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
+  branch: feat/meson-debian-release
+  head: cf43b14
+  worktree: /home/tuunanet/git/tuunanet/meson-debian-release
 handoff:
-  status: ready
-  next_skill: kickoff-branch
-  reason: e05s03 is verified on main; begin the planned e05s04 packaging and release conversion from a new isolated worktree.
+  status: review
+  next_skill: request-review
+  reason: Round-three source-archive packaging findings are fixed and fully verified; run dual-blind review round 4 before release integration.
 release:
   last_tag: v0.0.1
   last_publish: draft-prerelease

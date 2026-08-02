@@ -60,6 +60,7 @@ urldecode.c urldecode.h \
 dnd.h \
 mkdtemp.c
 
-EXTRA_DIST= xmms_logo.xpm xmms_mini.xpm xmms.desktop xmms.wmconfig
+EXTRA_DIST= xmms_logo.xpm xmms_mini.xpm xmms.desktop xmms.wmconfig \
+	i18n.meson.h.in glib_thread_compat.c
 
 xmmsinclude_HEADERS = plugin.h fullscreen.h

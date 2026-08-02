@@ -45,7 +45,7 @@ maintainer=${DEB_MAINTAINER:-XMMS GTK4 Experimental contributors <47913151+tuuna
 build_root=$(mktemp -d "${TMPDIR:-/tmp}/xmms-deb.XXXXXX")
 trap 'rm -rf "$build_root"' EXIT HUP INT TERM
 
-tar -xzf "$source_archive" -C "$build_root"
+tar -xf "$source_archive" -C "$build_root"
 source_dir=$build_root/xmms-$version
 if test ! -d "$source_dir"; then
 	echo "error: archive does not contain xmms-$version" >&2

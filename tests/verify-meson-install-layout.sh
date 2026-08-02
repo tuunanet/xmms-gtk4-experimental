@@ -62,7 +62,7 @@ for path in \
   "$bindir/xmms" \
   "$bindir/wmxmms" \
   "$bindir/xmms-config" \
-  "$libdir/libxmms.so.4.1.3" \
+  "$libdir/libxmms.so.1.3.1" \
   "$includedir/xmms/plugin.h" \
   "$includedir/xmms/xmmsctrl.h" \
   "$includedir/xmms/i18n.h" \

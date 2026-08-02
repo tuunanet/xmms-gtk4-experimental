@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: SemVer release version from configure.in and CHANGELOG.md
+        description: SemVer release version from configure.in, meson.build, and CHANGELOG.md
         required: true
         type: string
 
@@ -169,6 +169,8 @@ jobs:
             libvorbis-dev \
             libxxf86vm-dev \
             lintian \
+            meson \
+            ninja-build \
             pkg-config \
             xauth \
             xvfb \
@@ -197,19 +199,24 @@ jobs:
           VERSION: ${{ inputs.version }}
         run: |
           set -euo pipefail
-          touch aclocal.m4 configure config.h.in Makefile.in
-          touch libxmms/aclocal.m4 libxmms/configure \
-            libxmms/config.h.in libxmms/Makefile.in
-          ./configure --disable-esd
-          make dist-gzip
+          rm -rf build-meson release-artifacts
           mkdir -p release-artifacts/raw
-          make \
-            DEB_SOURCE_ARCHIVE="${GITHUB_WORKSPACE}/xmms-${VERSION}.tar.gz" \
-            DEB_OUTPUT_DIR="${GITHUB_WORKSPACE}/release-artifacts/raw" \
-            deb
+          MESON_BUILD_DIR="${GITHUB_WORKSPACE}/build-meson" \
+          DEB_OUTPUT_DIR="${GITHUB_WORKSPACE}/release-artifacts/raw" \
+            tools/package-deb.sh
           if test "${CARRY_SOURCE}" = true; then
-            cp "xmms-${VERSION}.tar.gz" release-artifacts/
+            source_archive="${GITHUB_WORKSPACE}/build-meson/meson-dist/xmms-${VERSION}.tar.gz"
+            test -f "${source_archive}"
+            cp "${source_archive}" release-artifacts/
           fi
+
+      - name: Verify raw package artifacts
+        shell: bash
+        env:
+          MESON_BUILD_DIR: ${{ github.workspace }}/build-meson
+        run: |
+          set -euo pipefail
+          tools/verify-release-artifacts.sh release-artifacts/raw
 
       - name: Name and inspect release artifacts
         shell: bash
@@ -248,19 +255,6 @@ jobs:
               printf '\n'
             done
           } > release-artifacts/PACKAGE-METADATA.txt
-
-      - name: Install and smoke-test packages
-        shell: bash
-        env:
-          DEBIAN_FRONTEND: noninteractive
-          VERSION: ${{ inputs.version }}
-        run: |
-          set -euo pipefail
-          apt-get install -y \
-            "./release-artifacts/xmms_${VERSION}-1.${ASSET_SUFFIX}_amd64.deb" \
-            "./release-artifacts/libxmms-dev_${VERSION}-1.${ASSET_SUFFIX}_amd64.deb"
-          test "$(xmms --version)" = "xmms ${VERSION}"
-          test -f /usr/include/xmms/plugin.h
 
       - name: Generate checksums
         shell: bash

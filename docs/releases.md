@@ -32,8 +32,9 @@ up-to-date, clean `main`. Prepare one focused release change there.
 The commit must update:
 
 1. `configure.in` (`AM_INIT_AUTOMAKE`);
-2. the matching version field in the shipped `configure` script; and
-3. `CHANGELOG.md`, by moving the release contents from `[Unreleased]` into a
+2. `meson.build` (`project()` version);
+3. the matching version field in the shipped `configure` script; and
+4. `CHANGELOG.md`, by moving the release contents from `[Unreleased]` into a
    dated `[VERSION]` entry and retaining a new empty `[Unreleased]` section.
 
 The legacy Autotools stack cannot be regenerated unchanged with modern
@@ -69,8 +70,8 @@ git push origin v0.0.1
 
 The workflow accepts only an annotated `vMAJOR.MINOR.PATCH` tag whose target is
 contained in `main`. It rejects a mismatched version input, a lightweight tag,
-a non-tag ref, stale `configure` metadata, or a missing/duplicate changelog
-entry.
+a non-tag ref, stale `configure` or Meson metadata, or a missing/duplicate
+changelog entry.
 
 ## 3. Dispatch Linux packages and release
 
@@ -86,15 +87,27 @@ both declared x86-64 targets:
 - Ubuntu 26.04 (`resolute`)
 
 Each isolated target image installs the complete package toolchain, including
-GTK2 and `libgtk-3-dev` so the enabled GTK3 migration proof remains covered. It
-creates the source archive, builds `xmms` and `libxmms-dev` DEBs with the
-existing `make deb` path, runs the package tests, inspects package metadata,
-and installs both DEBs for smoke tests.
+GTK2, `libgtk-3-dev`, Meson, and Ninja so the enabled GTK3 migration proof
+remains covered. It creates the Meson `.tar.gz` source archive, builds `xmms`
+and `libxmms-dev` DEBs with `tools/package-deb.sh`, runs the package tests,
+inspects package metadata, extracts both DEBs without host installation, and
+smoke-tests the extracted `xmms` binary.
 
 The jobs upload target artifacts containing DEBs, `PACKAGE-METADATA.txt`, and
 SHA-256 manifests. The final job re-verifies each target manifest, assembles the
 source archive and packages, writes release metadata and release notes, and
 verifies the aggregate `SHA256SUMS` before release attachment.
+
+For a local Meson package-artifact check before dispatch, run:
+
+```sh
+tools/package-deb.sh
+tools/verify-release-artifacts.sh deb-artifacts
+```
+
+The verifier checks package metadata and payloads, smoke-tests the extracted
+`xmms --version` binary without installing packages on the host, and creates
+then verifies target and aggregate checksum manifests in a temporary directory.
 
 ## 4. Review the draft
 

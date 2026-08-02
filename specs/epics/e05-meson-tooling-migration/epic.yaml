@@ -36,7 +36,6 @@ stories:
     title: Build Debian packages and release artifacts through Meson
     bcps: 8
     risk: P0
-    status: planned
     delta: MODIFIED
     spec: e05s04-meson-packaging-and-release.md
     tasks: e05s04-tasks.yaml

@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e05s04
 title: Build Debian packages and release artifacts through Meson
-status: failing
+status: passing
 risk: P0
 bcps: 8
 tasks:
@@ -11,7 +11,7 @@ tasks:
     verify: "tools/package-deb.sh && tests/verify-debian-package-contract.sh deb-artifacts"
     risk: P0
     security: medium
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [debian, packaging]}
   - id: t2
     scenarios: [SC-e05s04-P0-02]
@@ -19,13 +19,13 @@ tasks:
     verify: "tests/test-package-recipes.sh \"$PWD\""
     risk: P0
     security: high
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [release, github-actions, artifacts]}
   - id: t3
     scenarios: [SC-e05s04-P0-01, SC-e05s04-P0-02]
-    description: Run package metadata, install/smoke, per-target checksum, and aggregate-release checksum checks against Meson-produced artifacts.
+    description: Run package metadata, extracted-binary smoke, per-target checksum, and aggregate-release checksum checks against Meson-produced artifacts.
     verify: "tools/verify-release-artifacts.sh deb-artifacts"
     risk: P0
     security: high
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [checksums, package-smoke]}

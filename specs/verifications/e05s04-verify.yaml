@@ -1,0 +1,60 @@
+story_id: e05s04
+verified_at: "2026-08-02T21:00:00Z"
+verifier: verify-work
+risk: P0
+phases:
+  smoke:
+    passed: true
+    command: "MESON_BUILD_DIR=\"$PWD/build-meson\" tools/verify-release-artifacts.sh deb-artifacts"
+    evidence: "Validated package metadata, extracted-package ELF SONAME and smoke behavior, target checksums, and aggregate checksums without host installation."
+  build:
+    passed: true
+    command: "make -j\"$(nproc)\" && tools/package-deb.sh"
+    evidence: "Retained Autotools build and Meson Debian package assembly completed."
+  typecheck:
+    status: not_applicable
+    reason: "C project; no separate type-check command is configured."
+  lint:
+    passed: true
+    command: "make lint"
+    evidence: "Cppcheck 2.19.0 completed with the reviewed suppression baseline."
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum meson test -C build-meson --print-errorlogs && xvfb-run --auto-servernum make check"
+    evidence: "Meson passed 30/30. Retained Xvfb checks passed, including deterministic artifact fixtures, the retained source-archive regression, and source-archive Debian packaging."
+  distribution:
+    passed: true
+    command: "tests/test-autotools-meson-dist.sh \"$PWD\""
+    evidence: "A fresh retained Autotools gzip archive contains every declared Meson input and configures Meson with --wrap-mode=nodownload."
+  security:
+    passed: true
+    report: "specs/security/REVIEW-e05s04-round4.md"
+    high_findings_confidence_gte_8: 0
+  blind_spots:
+    status: unavailable
+    reason: "scripts/check-blind-spots.sh is not provided by this preservation fork."
+  completeness:
+    status: unavailable
+    reason: "scripts/lib/completeness-critic.sh is not provided by this preservation fork."
+  nfr:
+    passed: true
+    report: "specs/verifications/NFR-e05s04.json"
+  manual:
+    steps:
+      - step: "Build fresh Meson Debian artifacts"
+        expected: "A gzip Meson source archive plus xmms and libxmms-dev packages are created."
+        actual: "tools/package-deb.sh built both packages through the VCS Meson source-archive path."
+        passed: true
+      - step: "Verify release artifacts without host installation"
+        expected: "Metadata, payload, ELF SONAME, extracted-binary smoke, package checksum, and aggregate checksum checks pass."
+        actual: "tools/verify-release-artifacts.sh passed; extracted xmms reported xmms 0.0.1; libxmms reports SONAME libxmms.so.1."
+        passed: true
+      - step: "Build Debian packages from a retained source archive"
+        expected: "A configured extracted archive builds both packages without VCS metadata."
+        actual: "tests/test-autotools-package-deb.sh created, extracted, configured, packaged, and verified a retained source archive without .git."
+        passed: true
+  audit:
+    passed: true
+    report: "specs/verifications/AUDIT-e05-e05s04-round4.md"
+  gaps:
+    closed: true

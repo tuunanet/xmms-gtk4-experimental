@@ -156,6 +156,11 @@ test_mpg123_stream_position = executable(
 )
 test('mpg123-stream-position', test_mpg123_stream_position)
 
+test('autotools-meson-dist', find_program('test-autotools-meson-dist.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root(), timeout: 180)
+test('autotools-package-deb', find_program('test-autotools-package-deb.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root(),
+     timeout: 600, is_parallel: false)
 test('c-lint', find_program('test-c-lint.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root(),
      timeout: 120)
@@ -173,6 +178,14 @@ test('build-parity-contract', find_program('test-build-parity-contract.sh'),
      is_parallel: false)
 test('package-recipes', find_program('test-package-recipes.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
+test('debian-package-contract', find_program('test-package-artifact-contracts.sh'),
+     args: [meson.project_source_root(),
+            meson.project_source_root() / 'tests/verify-debian-package-contract.sh'],
+     workdir: meson.project_source_root())
+test('release-artifacts', find_program('test-package-artifact-contracts.sh'),
+     args: [meson.project_source_root(),
+            meson.project_source_root() / 'tools/verify-release-artifacts.sh'],
+     workdir: meson.project_source_root())
 test('plugin-linkage', find_program('test-plugin-linkage.sh'),
      args: [meson.project_build_root()], depends: mpg123_module)
 test('meson-output-contract', find_program('verify-meson-output-contract.sh'),

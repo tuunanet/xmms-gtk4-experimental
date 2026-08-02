@@ -1,5 +1,58 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-08-02T201500
+    date: 2026-08-02
+    severity: high
+    priority: P0
+    scope: source-archive-debian-packaging
+    summary: Meson VCS-only dist generation prevents make deb from a retained source archive.
+    file: specs/bugs/BUG-2026-08-02T201500-source-archive-debian-packaging.md
+    status: fixed
+    risk_level: high
+  - bug_id: BUG-2026-08-02T141240
+    date: 2026-08-02
+    severity: high
+    priority: P0
+    scope: source-distribution-meson-packaging
+    summary: Generated Autotools distribution metadata omits declared Meson packaging inputs.
+    file: specs/bugs/BUG-2026-08-02T141240-autotools-meson-dist-manifest.md
+    status: fixed
+    risk_level: high
+  - bug_id: BUG-2026-08-02T133525
+    date: 2026-08-02
+    severity: high
+    priority: P0
+    scope: meson-debian-release-review
+    summary: Meson release contracts omit build metadata, version validation, extracted verification, and fail-closed artifact checks.
+    file: specs/bugs/BUG-2026-08-02T133525-e05s04-release-review-gaps.md
+    status: fixed
+    files_changed:
+      - packaging/debian/control
+      - .github/workflows/package-release.yml
+      - tools/check-release-version.sh
+      - tools/verify-release-artifacts.sh
+      - tests/test-package-artifact-contracts.sh
+      - tests/verify-debian-package-contract.sh
+    approach: Declare Meson tooling, validate all release versions, verify extracted artifacts, and fail closed for absent package inputs.
+    verification: tools/package-deb.sh && tools/verify-release-artifacts.sh deb-artifacts
+    risk_level: high
+  - bug_id: BUG-2026-08-02T120106
+    date: 2026-08-02
+    severity: high
+    priority: P0
+    scope: libxmms-abi-debian-packaging
+    summary: Meson maps libtool version-info directly and emits an incompatible libxmms SONAME.
+    file: specs/bugs/BUG-2026-08-02T120106-libxmms-soname-parity.md
+    status: fixed
+    files_changed:
+      - libxmms/meson.build
+      - tests/verify-meson-output-contract.sh
+      - tests/verify-meson-install-layout.sh
+      - tests/verify-debian-package-contract.sh
+    approach: Map retained libtool ABI semantics to Meson version and soversion fields.
+    risk_level: high
+    commit_message: "fix(meson): preserve libxmms ABI SONAME"
+    verification: tools/package-deb.sh && tests/verify-debian-package-contract.sh deb-artifacts
   - bug_id: BUG-2026-08-02T113033
     date: 2026-08-02
     severity: medium

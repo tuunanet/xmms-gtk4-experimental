@@ -45,12 +45,10 @@ for relative_path in baseline["test_contract"]["shell_contracts"]:
     if not (root / relative_path).is_file():
         raise SystemExit(f"error: missing test contract: {relative_path}")
 
-rules = (root / "packaging/debian/rules").read_text(encoding="utf-8")
-if "./configure" not in rules:
-    raise SystemExit("error: Debian rules no longer expose the legacy baseline")
 workflow = (root / baseline["delivery_contract"]["release_workflow"]).read_text(encoding="utf-8")
-if "./configure --disable-esd" not in workflow:
-    raise SystemExit("error: release workflow no longer exposes the legacy baseline")
+if ("./configure --disable-esd" not in workflow
+        and "tools/package-deb.sh" not in workflow):
+    raise SystemExit("error: release workflow no longer exposes a declared package baseline")
 
-print("ok - legacy build baseline matches the tracked delivery contract")
+print("ok - legacy source and declared delivery baseline remain intact")
 PY

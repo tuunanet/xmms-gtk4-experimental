@@ -10,6 +10,7 @@ MESON_DIST = \
 	xmms-config.meson.in \
 	libxmms/meson.build \
 	xmms/meson.build \
+	xmms/i18n.meson.h.in \
 	wmxmms/meson.build \
 	Effect/echo_plugin/meson.build \
 	Effect/stereo_plugin/meson.build \
@@ -31,14 +32,18 @@ MESON_DIST = \
 	Visualization/opengl_spectrum/meson.build \
 	Visualization/sanalyzer/meson.build \
 	tests/meson.build \
+	tests/test-build-parity-contract.sh \
 	tests/test-meson-configure-contract.sh \
 	tests/test-meson-dist-contract.sh \
 	tests/test-meson-test-suite-contract.sh \
+	tests/test-mikmod-build-contract.sh \
 	tests/verify-meson-install-layout.sh \
+	tests/verify-meson-output-contract.sh \
 	tests/test-outputplugin-plugins/Output/alsa/.libs/meson.build \
 	tests/test-plugins/Input/fixture/.libs/meson.build \
 	tests/test-plugins/Output/fixture/.libs/meson.build \
-	tools/verify-meson-dist.sh
+	tools/verify-meson-dist.sh \
+	tools/verify-build-parity.sh
 
 EXTRA_DIST = $(MESON_DIST) \
 	.github/workflows/package-release.yml \
@@ -87,6 +92,8 @@ EXTRA_DIST = $(MESON_DIST) \
 	specs/tech-architecture/e05-legacy-build-baseline.json \
 	specs/tech-architecture/e05-meson-toolchain-policy.json \
 	tests/Makefile \
+	tests/test-autotools-meson-dist.sh \
+	tests/test-autotools-package-deb.sh \
 	tests/fixture-input-plugin.c \
 	tests/fixture-output-plugin.c \
 	tests/test-alsa-pcm-state.c \
@@ -100,7 +107,9 @@ EXTRA_DIST = $(MESON_DIST) \
 	tests/test-mpg123-stream-position.c \
 	tests/test-meson-migration-contracts.sh \
 	tests/test-outputplugin.c \
+	tests/test-package-artifact-contracts.sh \
 	tests/test-package-recipes.sh \
+	tests/verify-debian-package-contract.sh \
 	tests/test-pbutton-baseline.c \
 	tests/test-ui-control.c \
 	tests/test-plugin-linkage.sh \
@@ -110,6 +119,8 @@ EXTRA_DIST = $(MESON_DIST) \
 	tests/test-solo-git-workflow.sh \
 	tests/test-xentry.c \
 	tools/build-deb.sh \
+	tools/package-deb.sh \
+	tools/verify-release-artifacts.sh \
 	tools/check-release-version.sh \
 	tools/cppcheck-suppressions.txt \
 	tools/run-c-lint.sh \
@@ -133,13 +144,8 @@ lint:
 	$(SHELL) '$(top_srcdir)/tools/run-c-lint.sh'
 
 deb:
-	@archive='$(DEB_SOURCE_ARCHIVE)'; \
-	if test -z "$$archive"; then \
-		$(MAKE) dist-gzip; \
-		archive='$(top_builddir)/$(PACKAGE)-$(VERSION).tar.gz'; \
-	fi; \
-	$(SHELL) '$(top_srcdir)/tools/build-deb.sh' '$(VERSION)' \
-		"$$archive" '$(DEB_OUTPUT_DIR)' '$(top_srcdir)/packaging'
+	@DEB_OUTPUT_DIR='$(DEB_OUTPUT_DIR)' '$(SHELL)' \
+		'$(top_srcdir)/tools/package-deb.sh'
 
 DEB_OUTPUT_DIR = $(top_builddir)/deb-artifacts
 

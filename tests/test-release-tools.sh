@@ -36,6 +36,9 @@ EOF
 #!/bin/sh
  VERSION=$version
 EOF
+	cat > "$root/meson.build" <<EOF
+project('xmms', 'c', version: '$version')
+EOF
 	cat > "$root/CHANGELOG.md" <<EOF
 # Changelog
 
@@ -58,6 +61,14 @@ write_fixture "$fixture" 1.3.0
 actual=$($checker 1.3.0 "$fixture")
 [ "$actual" = 1.3.0 ] || fail "reports the validated version"
 echo "ok - validates matching release metadata"
+
+mismatched_meson="$tmpdir/mismatched-meson"
+write_fixture "$mismatched_meson" 1.3.0
+sed "s/version: '1.3.0'/version: '9.9.9'/" "$mismatched_meson/meson.build" \
+	> "$mismatched_meson/meson.build.new"
+mv "$mismatched_meson/meson.build.new" "$mismatched_meson/meson.build"
+expect_failure "rejects a mismatched Meson project version" \
+	"$checker" 1.3.0 "$mismatched_meson"
 
 expect_failure "rejects a mismatched requested version" \
 	"$checker" 1.3.1 "$fixture"

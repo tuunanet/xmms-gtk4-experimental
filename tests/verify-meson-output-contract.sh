@@ -26,7 +26,7 @@ require_export()
 		|| fail "$module exports $symbol"
 }
 
-require_file libxmms/libxmms.so.4.1.3
+require_file libxmms/libxmms.so.1.3.1
 for contract in \
 	Input/mpg123/libmpg123.so:get_iplugin_info \
 	Input/wav/libwav.so:get_iplugin_info \

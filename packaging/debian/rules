@@ -4,29 +4,25 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all optimize=-lto
 export DEB_CFLAGS_MAINT_APPEND = -Wno-error -Wno-error=incompatible-pointer-types
 
 %:
-	dh $@
+	dh $@ --buildsystem=meson
 
 override_dh_autoreconf:
-	@echo "Using the shipped Autotools files"
-
-override_dh_autoreconf_clean:
-	@echo "Keeping the shipped Autotools files"
+	@echo "Skipping Autotools regeneration for Meson packaging"
 
 override_dh_auto_configure:
-	./configure \
-		--build=$$(dpkg-architecture -qDEB_BUILD_GNU_TYPE) \
-		--host=$$(dpkg-architecture -qDEB_HOST_GNU_TYPE) \
+	dh_auto_configure --buildsystem=meson -- \
+		--buildtype=plain \
 		--prefix=/usr \
-		--libdir=/usr/lib/$$(dpkg-architecture -qDEB_HOST_MULTIARCH) \
-		--disable-esd
+		--libdir=lib/$$(dpkg-architecture -qDEB_HOST_MULTIARCH) \
+		-Desd=disabled
 
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
-	xvfb-run --auto-servernum $(MAKE) check
+	xvfb-run --auto-servernum dh_auto_test --buildsystem=meson
 endif
 
 override_dh_auto_install:
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	dh_auto_install --buildsystem=meson --destdir=$(CURDIR)/debian/tmp
 	find $(CURDIR)/debian/tmp -name '*.la' -delete
 	install -D -m 0644 packaging/xmms.desktop \
 		$(CURDIR)/debian/tmp/usr/share/applications/xmms.desktop

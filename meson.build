@@ -98,6 +98,9 @@ xmms_config.set('OUTPUT_PLUGIN_DIR', 'Output')
 xmms_config.set('EFFECT_PLUGIN_DIR', 'Effect')
 xmms_config.set('GENERAL_PLUGIN_DIR', 'General')
 configure_file(input: 'xmms-config.meson.in', output: 'xmms-config', configuration: xmms_config, install: true, install_dir: get_option('bindir'), install_mode: 'rwxr-xr-x')
+configure_file(input: 'xmms.1.in', output: 'xmms.1', configuration: xmms_config, install: true, install_dir: get_option('mandir') / 'man1')
+configure_file(input: 'wmxmms.1.in', output: 'wmxmms.1', configuration: xmms_config, install: true, install_dir: get_option('mandir') / 'man1')
+install_data('xmms.m4', install_dir: get_option('datadir') / 'aclocal')
 
 foreach locale : ['af', 'az', 'be', 'bg', 'bs', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en', 'en_GB', 'eo', 'es', 'et', 'eu', 'fi', 'fr', 'ga', 'gl', 'hr', 'hu', 'id', 'it', 'ja', 'ka', 'ko', 'lt', 'lv', 'mk', 'ms', 'nn', 'nl', 'no', 'pl', 'pt', 'pt_BR', 'ro', 'ru', 'sk', 'sl', 'sq', 'sr', 'sr@Latn', 'sv', 'tg', 'th', 'tr', 'uk', 'uz', 'vi', 'wa', 'zh_CN', 'zh_TW']
   install_data('po/' + locale + '.gmo', install_dir: get_option('localedir') / locale / 'LC_MESSAGES', rename: 'xmms.mo')
