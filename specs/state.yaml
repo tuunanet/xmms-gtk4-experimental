@@ -6,20 +6,18 @@ active_decisions:
     status: accepted
     summary: Use isolated worktrees and release-branch solo-local integration without routine pull requests.
     artifact: specs/workflows/solo-git.yaml
-active_flow: verify_work
+active_flow: plan
 active_epic_id: e05
-active_story_id: e05s03
+active_story_id: e05s04
 active_bug_id: null
 git:
-  branch: feat/meson-parity-distribution
-  head: 4c6e969
-  worktree: /home/tuunanet/git/tuunanet/meson-parity-distribution
+  branch: main
+  head: cc9f17a
+  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
 handoff:
-  status: verifying
-  next_skill: request-review
-  reason: Complete the final independent-review gate after the e05s03 Meson parity verification.
-metrics:
-  story_start: 2026-07-30T10:33:34Z
+  status: ready
+  next_skill: kickoff-branch
+  reason: e05s03 is verified on main; begin the planned e05s04 packaging and release conversion from a new isolated worktree.
 release:
   last_tag: v0.0.1
   last_publish: draft-prerelease

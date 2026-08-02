@@ -38,6 +38,21 @@ rejected after direct comparison: both the retained configured Autotools script
 and the Meson script retain their configured path for `--plugin-dir` after a
 runtime `--prefix` override.
 
+## Reconciliation addendum — 2026-08-02
+
+- The prior reviewed e05s03 implementation is present on `main` as stable
+  patch-identical commits, while the recorded branch has a different parent
+  history and cannot meet the solo-local ancestry precondition.
+- The current tree passes a fresh complete Meson suite (26/26) and clean source
+  distribution verification, including build, Xvfb tests, staged installation,
+  and installed-header compilation.
+- The reconciliation changes only lifecycle and investigation records. No
+  runtime, packaging, API, ABI, plugin, socket, or release behavior changed.
+- Security review found no reportable finding. The source-mutating distribution
+  verifier requires a clean tracked tree, so it is re-run after the metadata
+  commit rather than against unstaged documentation.
+
 ## Next gate
 
-Team PR delivery decision.
+Land the reconciliation metadata through the solo-local workflow, then remove
+only the clean local `feat/meson-parity-distribution` worktree and branch.

@@ -1,5 +1,13 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-08-02T113033
+    date: 2026-08-02
+    severity: medium
+    priority: P1
+    scope: e05s03-lifecycle-reconciliation
+    summary: Stale e05s03 branch history duplicates verified main implementation and blocks safe landing.
+    file: specs/bugs/BUG-2026-08-02T113033-e05s03-branch-lifecycle-divergence.md
+    status: fixed
   - bug_id: BUG-2026-07-30T143100
     date: 2026-07-30
     severity: medium
