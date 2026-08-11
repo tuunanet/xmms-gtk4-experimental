@@ -37,12 +37,12 @@ The commit must update:
 4. `CHANGELOG.md`, by moving the release contents from `[Unreleased]` into a
    dated `[VERSION]` entry and retaining a new empty `[Unreleased]` section.
 
-The legacy Autotools stack cannot be regenerated unchanged with modern
-`autoreconf`. Update only the necessary checked-in generated version fields.
-
-Validate the metadata locally:
+The retained release verifier requires these version authorities to agree until
+e05s06 removes the Autotools compatibility artifacts. Run the canonical
+no-download Meson preflight before validating release metadata locally:
 
 ```sh
+tools/preflight.sh
 tools/check-release-version.sh 0.0.1
 ```
 
@@ -70,8 +70,8 @@ git push origin v0.0.1
 
 The workflow accepts only an annotated `vMAJOR.MINOR.PATCH` tag whose target is
 contained in `main`. It rejects a mismatched version input, a lightweight tag,
-a non-tag ref, stale `configure` or Meson metadata, or a missing/duplicate
-changelog entry.
+a non-tag ref, stale Meson, `configure.in`, or generated `configure` metadata,
+or a missing/duplicate changelog entry.
 
 ## 3. Dispatch Linux packages and release
 

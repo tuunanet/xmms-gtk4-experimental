@@ -13,44 +13,44 @@ maintainability on current systems.
 
 ## Build and test
 
-Install a C toolchain, `pkg-config`, GTK2/GLib2 development packages, and zlib.
-ALSA, OpenGL, Vorbis, and MikMod development packages enable their respective
-plugins. See the [README](README.md#requirements) for details.
+Install the complete canonical preflight environment on Debian-family systems:
 
 ```sh
-./configure --disable-esd
-make -j"$(nproc)"
-make check
+sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
+  libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
+  libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
+  dpkg-dev debhelper lintian binutils tar
 ```
 
-`make check` runs the regression tests. The file-browser tests require an X11
-display; in a headless environment, run them through Xvfb:
+The package gate uses every dependency above. OpenGL, Vorbis, and MikMod are
+optional only for an iterative Meson build that explicitly disables their
+features. See the [README](README.md#requirements) for details.
+
+Run the canonical preflight from the repository root:
 
 ```sh
-xvfb-run --auto-servernum make check
+tools/preflight.sh
 ```
 
-On Ubuntu 24.04 or a compatible Debian build environment, build the same
-runtime and development packages checked by CI with:
-
-```sh
-make deb
-```
-
-This creates `deb-artifacts/*.deb`, runs the package test suite, and checks the
-packaged MP3 plugin linkage. It never installs dependencies or elevates
-privileges; required build dependencies must already be installed.
+The command configures an isolated no-download Meson build, compiles XMMS,
+runs Xvfb-backed tests and plugin checks, runs Cppcheck, builds and verifies
+Debian packages, and verifies the Meson source distribution. It never installs
+tools, downloads dependencies, or elevates privileges. It runs from a dirty
+worktree, while source-package verification uses the committed snapshot;
+install every prerequisite as a system package first. From an extracted source
+archive without `.git`, pass its original archive as
+`DEB_SOURCE_ARCHIVE=/path/to/xmms-VERSION.tar.gz tools/preflight.sh`.
 
 If a change affects UI or audio behavior, record the manual runtime testing in
 its verification evidence and in the pull request when one is used.
 
 ## C static analysis
 
-Install Cppcheck, then run the same regression gate used by CI:
+Install Cppcheck as a system package, then run the same regression gate used
+by canonical preflight:
 
 ```sh
-sudo apt-get install cppcheck
-make lint
+tools/run-c-lint.sh
 ```
 
 Ubuntu 24.04's packaged Cppcheck is the authoritative CI environment. The gate
@@ -62,22 +62,14 @@ Fix new findings whenever practical. If a finding is confirmed as existing,
 intentional, or a false positive, add only a narrow
 `diagnostic-id:path:line` entry to the suppression baseline at
 `tools/cppcheck-suppressions.txt`, explain it in the review evidence or pull
-request, and rerun `make lint`. Do not add project-wide diagnostic suppressions
+request, and rerun `tools/run-c-lint.sh`. Do not add project-wide diagnostic suppressions
 or refresh the baseline merely to make CI green. Baseline changes must receive
 the same review as source changes.
 
-Pull requests that only touch documentation and other non-build metadata still
-report the required `build-and-test` check, but CI skips the full configure,
-build, test, distcheck, and Debian package steps. Skipped paths currently
-include `docs/**`, top-level prose (`README.md`, `CHANGELOG.md`,
-`CONTRIBUTING.md`, `CONTRIBUTORS.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`,
-`COPYING`, `ABOUT-NLS`), editor/VCS metadata (`.gitignore`, `.gitattributes`,
-`.editorconfig`), and GitHub issue/PR templates under `.github/` (workflow
-YAML is **not** skipped). Any other path keeps the full suite.
-
-Pushing new commits while a run is in progress cancels the previous run on the
-same ref (`cancel-in-progress`). The cancelled run’s required gate fails with
-`cancelled`; that is expected—only the latest commit’s checks matter for merge.
+The repository currently tracks no push- or pull-request build workflow and no
+path classifier. Run `tools/preflight.sh` locally before integration. The only
+tracked GitHub Actions workflow, `.github/workflows/package-release.yml`, is a
+manual release-packaging workflow described in [docs/releases.md](docs/releases.md).
 
 ## Local dual-agent review
 
@@ -98,7 +90,7 @@ reviewers in parallel with identical briefs and passes only when both report
 zero must-fix findings and scores of at least 94. Do not enable unconfirmed
 project agents or commit package caches, credentials, sessions, or reports.
 
-The static wiring contract runs through `make check`. Model-backed review stays
+The static wiring contract runs through `tools/preflight.sh`. Model-backed review stays
 local and interactive; CI does not receive model credentials.
 
 ## Project conventions
@@ -123,7 +115,7 @@ When modifying build metadata:
 
 - update the authoritative `.am` or `.in` source;
 - update its shipped generated counterpart in the same change; and
-- verify both a clean `./configure && make` build and `make distcheck`.
+- verify a clean Meson build with `tools/preflight.sh`.
 
 Do not run `autoreconf --force --install` and commit its broad generated diff
 unless the change specifically migrates the Autotools stack.

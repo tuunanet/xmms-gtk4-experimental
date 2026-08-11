@@ -26,6 +26,8 @@ for expected_test in \
   c-lint \
   intl-generated-sources \
   meson-migration-contracts \
+  preflight \
+  meson-documentation-contract \
   meson-configure-contract \
   mikmod-build-contract \
   build-parity-contract \

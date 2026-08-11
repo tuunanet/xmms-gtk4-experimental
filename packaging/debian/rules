@@ -11,6 +11,7 @@ override_dh_autoreconf:
 
 override_dh_auto_configure:
 	dh_auto_configure --buildsystem=meson -- \
+		--wrap-mode=nodownload \
 		--buildtype=plain \
 		--prefix=/usr \
 		--libdir=lib/$$(dpkg-architecture -qDEB_HOST_MULTIARCH) \

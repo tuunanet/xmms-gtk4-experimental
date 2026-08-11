@@ -168,6 +168,11 @@ test('intl-generated-sources', find_program('test-intl-generated-sources.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-migration-contracts', find_program('test-meson-migration-contracts.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
+test('preflight', find_program('test-preflight.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root())
+test('meson-documentation-contract',
+     find_program('test-meson-documentation-contract.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-configure-contract', find_program('test-meson-configure-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root(),
      is_parallel: false)

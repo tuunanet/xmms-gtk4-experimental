@@ -1,5 +1,20 @@
 schema_version: 1
 bugs:
+  - bug_id: BUG-2026-08-02T211000
+    date: 2026-08-02
+    severity: high
+    priority: P1
+    scope: meson-preflight
+    summary: Canonical preflight rejects ordinary dirty worktrees at its Meson distribution gate.
+    file: specs/bugs/BUG-2026-08-02T211000-preflight-dirty-source-distribution.md
+    status: fixed
+    files_changed:
+      - tools/preflight.sh
+      - tests/test-preflight.sh
+    approach: Generate one dirty-worktree Meson source archive and pass it to the package helper.
+    verification: tools/preflight.sh
+    risk_level: low
+    commit_message: "fix(preflight): package the verified source archive"
   - bug_id: BUG-2026-08-02T201500
     date: 2026-08-02
     severity: high

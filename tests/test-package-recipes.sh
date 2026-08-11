@@ -254,12 +254,18 @@ require_text Makefile.in 'tests/verify-debian-package-contract.sh' \
 	'ships the Debian package contract verifier'
 require_text packaging/debian/control ' cppcheck,' \
 	'declares the C analyzer as a Debian build dependency'
+require_text packaging/debian/control ' git,' \
+	'declares Git for the solo-workflow package test'
 require_text packaging/debian/control ' meson (>= 1.3.2),' \
 	'declares the required Meson version as a Debian build dependency'
 require_text packaging/debian/control ' ninja-build,' \
 	'declares Ninja as a Debian build dependency'
-require_text CONTRIBUTING.md 'make lint' \
-	'documents the local C lint command'
+require_text packaging/debian/control ' xauth,' \
+	'declares xauth for Xvfb-backed Debian package tests'
+require_text packaging/debian/control ' lintian,' \
+	'declares lintian for the Debian package regression'
+require_text CONTRIBUTING.md 'tools/preflight.sh' \
+	'documents the canonical Meson preflight command'
 require_text CONTRIBUTING.md 'suppression baseline' \
 	'documents controlled lint baseline maintenance'
 require_text docs/architecture/build-and-test.md 'Cppcheck' \
@@ -286,6 +292,8 @@ require_text packaging/debian/control 'Package: libxmms-dev' \
 	'defines the Debian development package'
 require_text packaging/debian/rules '--buildsystem=meson' \
 	'uses the Meson debhelper backend'
+require_text packaging/debian/rules '--wrap-mode=nodownload' \
+	'prevents the inner Debian Meson configure from downloading wraps'
 require_text packaging/debian/rules '-Desd=disabled' \
 	'disables the obsolete ESD plugin through Meson'
 require_text packaging/debian/rules 'DEB_BUILD_OPTIONS' \

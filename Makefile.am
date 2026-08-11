@@ -36,6 +36,9 @@ MESON_DIST = \
 	tests/test-meson-configure-contract.sh \
 	tests/test-meson-dist-contract.sh \
 	tests/test-meson-test-suite-contract.sh \
+	tests/test-meson-documentation-contract.sh \
+	tests/test-preflight.sh \
+	tests/verify-preflight-clean-environment.sh \
 	tests/test-mikmod-build-contract.sh \
 	tests/verify-meson-install-layout.sh \
 	tests/verify-meson-output-contract.sh \
@@ -89,8 +92,10 @@ EXTRA_DIST = $(MESON_DIST) \
 	specs/execution-status.yaml \
 	specs/release-plan.yaml \
 	specs/state.yaml \
+	specs/TRACEABILITY_LATEST.md \
 	specs/tech-architecture/e05-legacy-build-baseline.json \
 	specs/tech-architecture/e05-meson-toolchain-policy.json \
+	specs/tech-architecture/tech-stack.md \
 	tests/Makefile \
 	tests/test-autotools-meson-dist.sh \
 	tests/test-autotools-package-deb.sh \
@@ -120,6 +125,7 @@ EXTRA_DIST = $(MESON_DIST) \
 	tests/test-xentry.c \
 	tools/build-deb.sh \
 	tools/package-deb.sh \
+	tools/preflight.sh \
 	tools/verify-release-artifacts.sh \
 	tools/check-release-version.sh \
 	tools/cppcheck-suppressions.txt \
@@ -128,7 +134,6 @@ EXTRA_DIST = $(MESON_DIST) \
 	tools/verify-build-baseline.sh \
 	tools/verify-meson-toolchain-policy.sh \
 	tools/extract-release-notes.sh \
-	xmms/i18n.meson.h.in \
 	xmms/ui_gtk3_control.c \
 	xmms/ui_gtk3_control.h \
 	xmms.m4

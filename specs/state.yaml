@@ -6,17 +6,19 @@ active_decisions:
     status: accepted
     summary: Use isolated worktrees and release-branch solo-local integration without routine pull requests.
     artifact: specs/workflows/solo-git.yaml
-active_flow: request_review
+active_flow: build_epic
 active_epic_id: e05
-active_story_id: e05s04
+active_story_id: e05s05
 git:
-  branch: feat/meson-debian-release
-  head: cf43b14
-  worktree: /home/tuunanet/git/tuunanet/meson-debian-release
+  branch: feat/meson-preflight-contract
+  head: 166be7f
+  worktree: /home/tuunanet/git/tuunanet/meson-preflight-contract
+metrics:
+  story_start: 2026-08-02T21:06:32Z
 handoff:
-  status: review
+  status: verified
   next_skill: request-review
-  reason: Round-three source-archive packaging findings are fixed and fully verified; run dual-blind review round 4 before release integration.
+  reason: e05s05 proves the complete documented Debian preflight environment and package Build-Depends, Git and xauth fail-fast checks, canonical fail-closed landing enforcement, custom package output, tracked-dirty and extracted-source paths, and no-download Meson configuration through Debian packaging; final evidence is refreshed for review.
 release:
   last_tag: v0.0.1
   last_publish: draft-prerelease

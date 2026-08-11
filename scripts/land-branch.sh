@@ -119,36 +119,15 @@ fi
 require_clean_feature_worktree
 FEATURE_SHA_BEFORE_VERIFY=$(git rev-parse "$FEATURE_BRANCH")
 
-run_meson_preflight() {
-  local build_dir="${BP_MESON_BUILD_DIR:-build-meson}"
-  if [ -d "$build_dir" ]; then
-    meson setup --reconfigure "$build_dir" --wrap-mode=nodownload
-  else
-    meson setup "$build_dir" --wrap-mode=nodownload
-  fi
-  meson compile -C "$build_dir"
-  xvfb-run --auto-servernum meson test -C "$build_dir" --print-errorlogs
-}
-
-run_autotools_preflight() {
-  make -j"$(nproc)"
-  xvfb-run --auto-servernum make check
-}
-
 run_verify_suite() {
   local verify_root="$1"
   (
     cd "$verify_root"
     echo "==> Running pre-land verification in $verify_root..."
-    if [ -n "${BP_PREFLIGHT:-}" ]; then
-      bash -lc "$BP_PREFLIGHT"
-    elif [ -f meson.build ]; then
-      run_meson_preflight
-    elif [ -f Makefile ]; then
-      run_autotools_preflight
-    else
-      land_branch_deny "No project Preflight was found. Set BP_PREFLIGHT before landing."
+    if [ ! -x tools/preflight.sh ]; then
+      land_branch_deny "Canonical project preflight is missing or not executable."
     fi
+    tools/preflight.sh
   )
 }
 

@@ -20,6 +20,7 @@
 
 # Meson build output
 /build-meson/
+/build-meson-preflight/
 
 # Generated localization and configuration headers
 /po/Makefile.in

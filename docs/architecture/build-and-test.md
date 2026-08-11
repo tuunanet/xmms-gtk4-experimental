@@ -5,6 +5,19 @@ not how to develop plugins. For day-to-day contributor commands see
 [CONTRIBUTING.md](../../CONTRIBUTING.md); for release tagging see
 [docs/releases.md](../releases.md).
 
+The canonical contributor and agent gate is [`tools/preflight.sh`](../../tools/preflight.sh).
+It requires system Meson, Ninja, Python 3, Cppcheck, Xvfb, ALSA development
+headers, and Debian packaging tools (`dpkg-dev`, `debhelper`, `lintian`,
+`binutils`, and `tar`); it never installs tools or downloads Meson wraps. On
+Debian-family systems, install the complete package-gate environment:
+
+```sh
+sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
+  libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
+  libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
+  dpkg-dev debhelper lintian binutils tar
+```
+
 Primary sources:
 
 | Area | Files |
@@ -37,7 +50,7 @@ Makefile.am                  SUBDIRS order
 tests/                       regression suite (invoked via make check)
 packaging/debian/            Debian package recipes
 tools/                       deb build + release helpers
-.github/workflows/           CI and release automation
+.github/workflows/           manual release automation
 ```
 
 ```mermaid
@@ -144,7 +157,6 @@ tested without the full codec stack.
 | --- | --- |
 | `test-intl-generated-sources.sh` | i18n/generated source consistency |
 | `test-package-recipes.sh` | Debian packaging expectations |
-| `test-project-agent-wiring.sh` | Pinned local reviewer package, role parity, tool restrictions, and dual-review gate contract |
 | `test-plugin-linkage.sh` | Built plugins link sanely |
 | `test-release-tools.sh` | `check-release-version` / Meson version / changelog extraction |
 | `test-autotools-meson-dist.sh` | Retained Autotools archive contains and configures Meson inputs |
@@ -153,14 +165,13 @@ tested without the full codec stack.
 ### Running tests
 
 ```sh
-./configure --disable-esd
-make -j"$(nproc)"
-make check                          # needs display for some GTK tests
-xvfb-run --auto-servernum make check
+tools/preflight.sh
 ```
 
-`make distcheck` rebuilds from a tarball and re-runs checks—the stricter bar
-used in CI.
+Preflight configures a no-download Meson build, compiles, runs the complete
+Xvfb-backed test suite, lint, package, and Meson source-distribution gates.
+For an iterative check, use `xvfb-run --auto-servernum meson test -C
+build-meson`; preflight remains the required contributor and agent gate.
 
 When GTK3 development files are available, `test-gtk3-play-button-proof`
 builds with target-specific GTK3 flags and `make check` verifies with `ldd`
@@ -190,8 +201,8 @@ review contract can be inspected before trust approval.
 
 `tests/test-c-lint.sh` verifies missing-tool errors, analyzer arguments, source
 scope, the accepted baseline, and rejection of a representative uninitialized
-variable. The test runs through `make check`; `tests/test-package-recipes.sh`
-also guards the distributed target and CI wiring.
+variable. The test runs through Meson; `tests/test-package-recipes.sh` also
+guards the distributed target and manual release workflow wiring.
 
 ---
 
@@ -265,7 +276,7 @@ only on manual UI clicks.
 
 ## 7. Newcomer checklist
 
-1. `./configure --disable-esd && make -j && xvfb-run make check`  
+1. `tools/preflight.sh`
 2. Run `xmms` from the build tree (plugins via `BUILD_PLUGIN_DIR`) or install  
 3. Read [ui-interaction.md](ui-interaction.md) then
    [processing-pipeline.md](processing-pipeline.md)  

@@ -43,7 +43,7 @@ stories:
     title: Make Meson preflight the agent and contributor contract
     bcps: 5
     risk: P1
-    status: planned
+    status: verified
     delta: MODIFIED
     spec: e05s05-meson-preflight-contract.md
     tasks: e05s05-tasks.yaml

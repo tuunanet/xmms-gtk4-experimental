@@ -15,9 +15,9 @@ ifeq ($(GTK3_PROOF_ENABLED),yes)
 GTK3_CHECK_TARGET = test-gtk3-play-button-proof
 endif
 
-.PHONY: check clean test-autotools-meson-dist test-autotools-package-deb test-c-lint test-debian-package-contract test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-artifacts test-release-tools test-solo-git-workflow
+.PHONY: check clean test-autotools-meson-dist test-autotools-package-deb test-c-lint test-debian-package-contract test-intl-generated-sources test-meson-migration-contracts test-meson-documentation-contract test-package-recipes test-plugin-linkage test-preflight test-release-artifacts test-release-tools test-solo-git-workflow
 
-check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-autotools-meson-dist test-autotools-package-deb test-c-lint test-debian-package-contract test-intl-generated-sources test-meson-migration-contracts test-package-recipes test-plugin-linkage test-release-artifacts test-release-tools test-solo-git-workflow
+check: test-xentry test-filebrowser test-font-load test-popup-position test-pbutton-baseline test-ui-control $(GTK3_CHECK_TARGET) test-pluginenum test-outputplugin test-alsa-pcm-state test-alsa-volume test-mpg123-file-duration test-mpg123-stream-position test-autotools-meson-dist test-autotools-package-deb test-c-lint test-debian-package-contract test-intl-generated-sources test-meson-migration-contracts test-meson-documentation-contract test-package-recipes test-plugin-linkage test-preflight test-release-artifacts test-release-tools test-solo-git-workflow
 	./test-xentry
 	./test-filebrowser
 	./test-font-load
@@ -118,6 +118,12 @@ test-intl-generated-sources:
 
 test-meson-migration-contracts:
 	$(srcdir)/test-meson-migration-contracts.sh $(top_srcdir)
+
+test-meson-documentation-contract:
+	$(srcdir)/test-meson-documentation-contract.sh $(top_srcdir)
+
+test-preflight:
+	$(srcdir)/test-preflight.sh $(top_srcdir)
 
 test-debian-package-contract:
 	$(srcdir)/test-package-artifact-contracts.sh "$(top_srcdir)" \

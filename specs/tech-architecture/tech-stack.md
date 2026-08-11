@@ -40,25 +40,31 @@ Primary compatibility surfaces:
 
 ### Build and distribution
 
-- GNU Autotools: autoconf, automake, and libtool.
-- `configure.in` is the source configure definition; generated `configure`,
-  `Makefile.in`, and other distribution artifacts are intentionally present.
+- Meson and Ninja are the active build tooling. Retained Autotools inputs remain
+  source-distribution compatibility artifacts until the approved e05s06 removal.
+- `configure.in`, generated `configure`, and `Makefile.in` remain versioned
+  while the release verifier requires their version parity with Meson.
 - Top-level build order is `intl`, `libxmms`, `xmms`, plugin families,
   `wmxmms`, then `po`.
-- Main validation commands:
+- Main validation command:
 
   ```sh
-  ./configure --disable-esd
-  make -j"$(nproc)"
-  xvfb-run --auto-servernum make check
-  xvfb-run --auto-servernum make distcheck
-  make deb
+  tools/preflight.sh
   ```
 
-- GitHub Actions runs on Ubuntu 24.04, uses ccache, and executes configure,
-  build, Xvfb-backed tests, `distcheck`, and Debian packaging for
-  build-affecting changes. Documentation/metadata-only changes can skip the
-  full build through a path classifier.
+- The canonical Debian-family preflight environment is:
+
+  ```sh
+  sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
+    libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
+    libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
+    dpkg-dev debhelper lintian binutils tar
+  ```
+
+- The only tracked GitHub Actions workflow is the manual Linux package and
+  release workflow in `.github/workflows/package-release.yml`. The repository
+  currently has no push- or pull-request build workflow and no path classifier;
+  `tools/preflight.sh` is the required integration gate.
 
 ### Dependencies
 
@@ -266,7 +272,8 @@ Observability is desktop-oriented and unstructured:
 
 - GLib/stderr messages and user dialogs
 - no metrics, tracing, health endpoint, or structured JSON logs
-- CI build/test/package evidence is the main automated operational signal
+- Local canonical-preflight and manual release-workflow build/test/package
+  evidence are the main automated operational signals
 
 For this local desktop application, absence of a service health check is
 expected. Debugging concurrent audio paths relies on local logs, targeted
@@ -274,26 +281,27 @@ regression tests, and reproduction against specific plugins/devices.
 
 ## Testing strategy
 
-`make check` currently orchestrates thirteen focused C executables and five shell
-checks when the GTK3 migration proof is enabled.
+The canonical `tools/preflight.sh` Meson gate orchestrates the focused C and
+shell checks when the GTK3 migration proof is enabled.
 
 - C tests use GLib `g_test_*` and assertions.
 - Several tests compile selected production `.c` files directly with section
   garbage collection, keeping tests small without starting the full player.
 - Fixture Input/Output shared objects validate build-tree plugin discovery.
-- GTK geometry and font tests need an X11 display; CI uses Xvfb.
+- GTK geometry and font tests need an X11 display; local preflight and the
+  manual release workflow use Xvfb.
 - Play-button migration tests lock GTK2 behavior, exercise toolkit-neutral state without a display, and prove GTK3 rendering/activation in a separate executable whose linkage rejects GTK2.
 - ALSA and mpg123 tests target extracted state/position or fallback behavior.
 - Shell tests cover generated i18n sources, plugin linkage, packaging recipes,
   and release tooling.
-- `make distcheck` validates a clean source-distribution rebuild in addition
-  to the normal suite.
+- The preflight's `meson dist` gate validates a clean source-distribution
+  rebuild in addition to the normal suite.
 
 There is no repository-level coverage threshold. Many UI, playlist,
 control-socket, streaming, and legacy backend paths remain primarily
 integration/manual-test territory. For changes, prefer a focused `g_test`
-against a small extracted function or source slice, then run the full Xvfb
-suite and `distcheck` when practical.
+against a small extracted function or source slice, then run
+`tools/preflight.sh` before integration.
 
 ## Signals and active considerations
 
@@ -355,6 +363,6 @@ suite and `distcheck` when practical.
 - Plugin ABI/discovery: `xmms/plugin.h`, `xmms/pluginenum.c`
 - Remote control: `xmms/controlsocket.[ch]`, `libxmms/xmmsctrl.[ch]`
 - Config format: `libxmms/configfile.[ch]`
-- Build/test: `configure.in`, `Makefile.am`, `tests/Makefile`,
-  `.github/workflows/ci.yml`
+- Build/test: `meson.build`, `tests/meson.build`, `tools/preflight.sh`
+- Manual release packaging: `.github/workflows/package-release.yml`
 - Contributor commands: `CONTRIBUTING.md`

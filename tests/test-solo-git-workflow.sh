@@ -27,17 +27,21 @@ else
   not_ok 'does not open a pull request from solo-local mode'
 fi
 
-if ! grep -F -- '--skip-verify' "$srcdir/scripts/land-branch.sh" >/dev/null; then
+if ! grep -F -- '--skip-verify' "$srcdir/scripts/land-branch.sh" >/dev/null && \
+  ! grep -F 'BP_PREFLIGHT' "$srcdir/scripts/land-branch.sh" >/dev/null; then
   ok 'does not expose a verification bypass'
 else
   not_ok 'does not expose a verification bypass'
 fi
 
-if grep -F 'elif [ -f meson.build ]; then' \
-  "$srcdir/scripts/land-branch.sh" >/dev/null; then
-  ok 'prefers the isolated Meson Preflight'
+if grep -F 'if [ ! -x tools/preflight.sh ]; then' \
+  "$srcdir/scripts/land-branch.sh" >/dev/null && \
+  grep -F 'tools/preflight.sh' "$srcdir/scripts/land-branch.sh" >/dev/null && \
+  ! grep -F 'run_meson_preflight()' "$srcdir/scripts/land-branch.sh" >/dev/null && \
+  ! grep -F 'run_autotools_preflight()' "$srcdir/scripts/land-branch.sh" >/dev/null; then
+  ok 'requires the canonical preflight without a weaker fallback'
 else
-  not_ok 'prefers the isolated Meson Preflight'
+  not_ok 'requires the canonical preflight without a weaker fallback'
 fi
 
 if bash -c '
@@ -76,7 +80,7 @@ if (
   git push -q -u origin main
   git worktree add -q "$land_tmp/task-worktree" -b feature/test
   echo landed >"$land_tmp/task-worktree/result"
-  if BP_PREFLIGHT=true bash scripts/land-branch.sh \
+  if bash scripts/land-branch.sh \
     feature/test 'chore(test): reject dirty feature' >"$land_tmp/dirty.log" 2>&1; then
     exit 1
   fi
@@ -87,7 +91,7 @@ if (
   echo local >local-only
   git add local-only
   git commit -q -m 'chore(test): create local-only main commit'
-  if BP_PREFLIGHT=true bash scripts/land-branch.sh \
+  if bash scripts/land-branch.sh \
     feature/test 'chore(test): reject ahead main' >"$land_tmp/ahead.log" 2>&1; then
     exit 1
   fi
@@ -96,8 +100,24 @@ if (
   git push -q origin main
   git -C "$land_tmp/task-worktree" merge -q main \
     -m 'chore(test): update feature base'
-  BP_PREFLIGHT='test "$(git branch --show-current)" = feature/test && test -f result' \
-    bash scripts/land-branch.sh feature/test \
+  if bash scripts/land-branch.sh feature/test \
+    'chore(test): reject missing preflight' >"$land_tmp/missing-preflight.log" 2>&1; then
+    exit 1
+  fi
+  grep -F 'Canonical project preflight is missing or not executable' \
+    "$land_tmp/missing-preflight.log" >/dev/null
+  mkdir -p "$land_tmp/task-worktree/tools"
+  cat > "$land_tmp/task-worktree/tools/preflight.sh" <<'EOF'
+#!/bin/sh
+set -eu
+test "$(git branch --show-current)" = feature/test
+test -f result
+EOF
+  chmod +x "$land_tmp/task-worktree/tools/preflight.sh"
+  git -C "$land_tmp/task-worktree" add tools/preflight.sh
+  git -C "$land_tmp/task-worktree" commit -q \
+    -m 'chore(test): add canonical preflight'
+  bash scripts/land-branch.sh feature/test \
     'chore(test): land feature' >"$land_tmp/land.log"
   test "$(git branch --show-current)" = main
   test "$(git log -1 --format=%s)" = 'chore(test): land feature'

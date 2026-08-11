@@ -61,17 +61,14 @@ NEVER generate feature code without an approved plan.
 Always Green means Preflight and applicable CI pass before forward work.
 Fixing defects during development costs less than fixing them after release.
 
-Run local Preflight:
+Run the canonical local Preflight:
 
 ```sh
-make -j"$(nproc)" && xvfb-run --auto-servernum make check
+tools/preflight.sh
 ```
 
-Run the stricter distribution gate when release risk warrants it:
-
-```sh
-xvfb-run --auto-servernum make distcheck
-```
+It configures a no-download Meson build and runs compilation, Xvfb-backed
+tests, lint, package verification, and source-distribution verification.
 
 MUST stop forward work when Preflight fails reproducibly.
 MUST stop integration when applicable CI fails.

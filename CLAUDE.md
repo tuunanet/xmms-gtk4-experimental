@@ -15,15 +15,15 @@ Stack: C, GTK2, GLib2, POSIX threads, GNU Autotools, libtool, Linux, and X11.
 
 | Action | Command |
 | --- | --- |
-| Configure | `./configure --disable-esd` |
-| Run | `./xmms/xmms` |
-| Test | `xvfb-run --auto-servernum make check` |
-| Build | `make -j"$(nproc)"` |
-| Lint | Not configured |
-| Preflight | `make -j"$(nproc)" && xvfb-run --auto-servernum make check` |
-| Strict gate | `xvfb-run --auto-servernum make distcheck` |
+| Configure | `meson setup build-meson --wrap-mode=nodownload` |
+| Run | `build-meson/xmms/xmms` |
+| Test | `xvfb-run --auto-servernum meson test -C build-meson` |
+| Build | `meson compile -C build-meson` |
+| Lint | `tools/run-c-lint.sh` |
+| Preflight | `tools/preflight.sh` |
+| Strict gate | `tools/preflight.sh` |
 | Integrate | `release-branch` → `bash scripts/land-branch.sh <branch> "<message>"` |
-| CI | Optional after landing; inspect the pushed `main` workflow with `gh run list` |
+| CI | No push/PR build workflow is tracked; the manual `.github/workflows/package-release.yml` workflow is used only for tagged release packaging. |
 
 ## Architecture
 

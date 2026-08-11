@@ -8,7 +8,7 @@ The machine-readable recipe is [`workflows/solo-git.yaml`](workflows/solo-git.ya
 | --- | --- | --- |
 | 1 | `survey-context` | Read project state and resolve lifecycle drift. |
 | 2 | Planning skill for the task | Approve scope and runnable verification. |
-| 3 | `kickoff-branch` | Start from updated, clean `main`; pass Preflight; create a worktree. |
+| 3 | `kickoff-branch` | Start from updated, clean `main`; pass `tools/preflight.sh`; create a worktree. |
 | 4 | `develop-tdd` or `execute-plan` | Keep the task branch green. |
 | 5 | `run-evals` and `verify-work` | Pass automated and manual verification. |
 | 6 | `audit-code` | Pass conventions, security, traceability, and diff review. |

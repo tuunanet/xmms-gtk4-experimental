@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e05s05
 title: Make Meson preflight the agent and contributor contract
-status: failing
+status: passing
 risk: P1
 bcps: 5
 tasks:
@@ -11,7 +11,7 @@ tasks:
     verify: "tests/test-preflight.sh \"$PWD\" && tools/preflight.sh"
     risk: P1
     security: medium
-    status: failing
+    status: passing
     allure: {severity: high, categories: [agents, preflight, toolchain]}
   - id: t2
     scenarios: [SC-e05s05-P1-02]
@@ -19,7 +19,7 @@ tasks:
     verify: "tests/test-meson-documentation-contract.sh \"$PWD\""
     risk: P1
     security: none
-    status: failing
+    status: passing
     allure: {severity: high, categories: [documentation, workflow]}
   - id: t3
     scenarios: [SC-e05s05-P1-01, SC-e05s05-P1-02]
@@ -27,5 +27,5 @@ tasks:
     verify: "tests/verify-preflight-clean-environment.sh"
     risk: P1
     security: high
-    status: failing
+    status: passing
     allure: {severity: high, categories: [reproducibility, supply-chain]}

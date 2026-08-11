@@ -1,0 +1,31 @@
+story_id: e05s05
+verified_at: "2026-08-08T13:22:07Z"
+verifier: verify-work
+phases:
+  smoke:
+    passed: true
+    command: "tests/verify-preflight-clean-environment.sh"
+    result: "Passed from a clean clone after a tracked README.md modification, with a custom DEB_OUTPUT_DIR, and from an extracted source archive without .git."
+  build:
+    passed: true
+    command: "tools/preflight.sh"
+  lint:
+    passed: true
+    command: "tools/run-c-lint.sh"
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum meson test -C build-meson-preflight"
+    result: "32/32 passed in both the tracked-dirty Git checkout and extracted source archive; source-archive package regression also passed"
+  terminal_verdict:
+    command: "tests/verify-preflight-clean-environment.sh"
+    exit_code: 0
+    captured_at: "2026-08-08T13:22:07Z"
+    note: "Clean local-clone verification completed the no-download Meson preflight from a tracked-dirty Git checkout with custom package output and an extracted archive with DEB_SOURCE_ARCHIVE set. Contract tests proved actionable missing-Meson, missing-Ninja, missing-Git from a Git checkout, missing-Xvfb, missing-xauth, and missing-Python failures; Debian's inner Meson configure used wrap-mode=nodownload; package Build-Depends cover Git, xauth, and lintian; and landing rejects a missing canonical preflight."
+  manual:
+    steps:
+      - step: "Clone the current branch, modify tracked README.md, and run the documented command. Then extract its Meson source archive and rerun with DEB_SOURCE_ARCHIVE set."
+        expected: "Both Git and no-Git source trees use installed system tools only and complete all declared Meson gates."
+        actual: "Both runs completed preflight, created no Meson wrap cache, and left no unignored generated artifact in the Git checkout."
+        passed: true
+  gaps:
+    closed: true

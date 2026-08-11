@@ -56,6 +56,17 @@ match = re.search(r"^MESON_DIST = \\\n(.*?)(?:\n\n|\Z)", makefile_am, re.MULTILI
 if match is None:
     raise SystemExit("not ok - defines the Meson distribution manifest")
 paths = [line.strip().rstrip("\\").strip() for line in match.group(1).splitlines()]
+duplicates_in_meson = sorted(path for path in set(paths) if paths.count(path) > 1)
+if duplicates_in_meson:
+    raise SystemExit("not ok - MESON_DIST does not duplicate inputs: " + ", ".join(duplicates_in_meson))
+extra_match = re.search(r"^EXTRA_DIST = \$\(MESON_DIST\) \\\n(.*?)(?:\n\n|\n\w|\Z)", makefile_am, re.MULTILINE | re.DOTALL)
+if extra_match is None:
+    raise SystemExit("not ok - defines the retained source distribution manifest")
+extra_paths = [line.strip().rstrip("\\").strip()
+               for line in extra_match.group(1).splitlines()]
+duplicates = sorted(set(paths).intersection(extra_paths))
+if duplicates:
+    raise SystemExit("not ok - source distribution does not duplicate Meson inputs: " + ", ".join(duplicates))
 missing_manifest = [path for path in paths
                     if not re.search(r"^\s*" + re.escape(path) + r"\s*\\?$", makefile_in, re.MULTILINE)]
 missing_archive = [path for path in paths

@@ -126,8 +126,8 @@ rather than forced onto an incompatible system.
 
 ## Building from source
 
-XMMS uses the GNU Autotools build system. This repository ships a pre-generated
-`configure` script, so a from-tarball build is straightforward.
+XMMS uses Meson for current builds. Install the declared system tools before
+building; the project never bootstraps them or downloads Meson wraps.
 
 ### Requirements
 
@@ -139,61 +139,67 @@ XMMS uses the GNU Autotools build system. This repository ships a pre-generated
 - **GTK+ 3 ≥ 3.24** for the separately linked migration proof (when enabled)
 - POSIX threads (`pthread`)
 - `zlib`
+- ALSA development headers for the required Linux output plugin
+- Meson ≥ 1.3.2, Ninja, Python 3, Cppcheck, Xvfb, and `xauth` as system packages
+- Debian packaging tools: `dpkg-dev`, `debhelper`, `lintian`, `binutils`, and `tar`
+
+For the canonical `tools/preflight.sh` gate on Debian-family systems, install
+the complete package-build environment:
+
+```sh
+sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
+  libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
+  libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
+  dpkg-dev debhelper lintian binutils tar
+```
 
 GTK4 is the migration target, not yet a production build dependency.
 
-**Optional (enable additional plugins):**
+**Optional (enable additional plugins in an iterative Meson-only build):**
 
 - `libmikmod` ≥ 3.1.5 — module format support (MOD, XM, S3M, IT, …)
 - `libvorbis` — Ogg Vorbis input plugin
 - OpenGL (`libGL` or Mesa) — OpenGL spectrum analyzer visualization
-- ALSA development headers — ALSA output plugin (recommended on Linux)
 - ESD development headers — eSound output plugin (legacy)
+
+These feature libraries are required by the default Debian package build above;
+they are optional only when an iterative Meson build explicitly disables the
+corresponding feature.
 - OSS / Sun audio — platform output plugins
 
 ### Build
 
 ```sh
-./configure
-make -j"$(nproc)"
-make check
+tools/preflight.sh
 ```
 
-`make check` runs the regression suite. The file-browser tests require an X11
-display; CI supplies one with Xvfb. To install system-wide (default prefix
-`/usr/local`):
+This canonical command configures a no-download Meson build, compiles XMMS,
+runs the Xvfb-backed regression, plugin, lint, package, and source-distribution
+gates, and writes unsigned `xmms` and `libxmms-dev` packages to
+`deb-artifacts/`. It does not install dependencies or elevate privileges. It
+runs from a dirty worktree, but the Meson source archive is the committed
+snapshot; commit all release inputs before release verification. In an
+extracted source archive without `.git`, supply that archive explicitly:
+`DEB_SOURCE_ARCHIVE=/path/to/xmms-VERSION.tar.gz tools/preflight.sh`.
 
-```sh
-sudo make install
-```
+For an iterative build, use `meson setup build-meson --wrap-mode=nodownload`,
+`meson compile -C build-meson`, and `xvfb-run --auto-servernum meson test -C
+build-meson`. To install a verified build, run `meson install -C build-meson`.
 
-This installs the `xmms` binary to `<prefix>/bin` and plugins to
-`<prefix>/lib/xmms/`.
-
-On a supported Debian-family build host, after installing the package build
-dependencies, build and verify binary packages from the current source with:
-
-```sh
-make deb
-```
-
-The unsigned `xmms` and `libxmms-dev` packages are written to
-`deb-artifacts/`. The target does not use `sudo` or install dependencies.
-
-### Useful `configure` options
+### Useful Meson options
 
 | Option | Description |
 | --- | --- |
-| `--prefix=PATH` | Installation prefix (default `/usr/local`) |
-| `--disable-opengl` | Disable the OpenGL visualization plugin |
-| `--disable-vorbis` | Disable the Ogg Vorbis input plugin |
-| `--disable-mikmod` | Disable the MikMod input plugin |
-| `--enable-one-plugin-dir` | Use a single plugin directory |
-| `--disable-user-plugin-dir` | Disable per-user plugin directory |
-| `--with-dev-dsp=PATH` | Path to OSS DSP device (default `/dev/dsp`) |
-| `--with-dev-mixer=PATH` | Path to OSS mixer device (default `/dev/mixer`) |
+| `-Dprefix=PATH` | Installation prefix (default `/usr/local`) |
+| `-Dopengl=disabled` | Disable the OpenGL visualization plugin |
+| `-Dvorbis=disabled` | Disable the Ogg Vorbis input plugin |
+| `-Dmikmod=disabled` | Disable the MikMod input plugin |
+| `-Done-plugin-dir=true` | Use a single plugin directory |
+| `-Duser-plugin-dir=false` | Disable per-user plugin directories |
+| `-Ddev-dsp=PATH` | Path to OSS DSP device (default `/dev/dsp`) |
+| `-Ddev-mixer=PATH` | Path to OSS mixer device (default `/dev/mixer`) |
 
-Run `./configure --help` for the full list.
+Run `meson configure build-meson` for the full list.
 
 ---
 
