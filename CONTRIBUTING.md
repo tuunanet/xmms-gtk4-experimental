@@ -36,9 +36,9 @@ The command configures an isolated no-download Meson build, compiles XMMS,
 runs Xvfb-backed tests and plugin checks, runs Cppcheck, builds and verifies
 Debian packages, and verifies the Meson source distribution. It never installs
 tools, downloads dependencies, or elevates privileges. It runs from a dirty
-worktree, while source-package verification uses the committed snapshot;
-install every prerequisite as a system package first. From an extracted source
-archive without `.git`, pass its original archive as
+worktree and verifies a local snapshot of the current working source; install
+every prerequisite as a system package first. From an extracted source archive
+without `.git`, pass its original archive as
 `DEB_SOURCE_ARCHIVE=/path/to/xmms-VERSION.tar.gz tools/preflight.sh`.
 
 If a change affects UI or audio behavior, record the manual runtime testing in

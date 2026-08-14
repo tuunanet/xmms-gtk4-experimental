@@ -6,6 +6,17 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.2] - 2026-08-14
+
+### Changed
+
+- Made Meson the only supported build, test, source-distribution, and Debian package workflow.
+- Removed retired Autotools, configure, libtool, and generated-delivery sources.
+
+### Fixed
+
+- Restored uninstalled discovery of direct Meson-built input and output plugin modules.
+
 ## [0.0.1]
 
 ### Changed

@@ -18,7 +18,7 @@ for command in meson ninja python3; do
 done
 
 if test -d "$build_dir"; then
-	meson setup --reconfigure "$build_dir" --wrap-mode=nodownload
+	meson setup --reconfigure "$build_dir" "$repo_root" --wrap-mode=nodownload
 else
 	meson setup "$build_dir" "$repo_root" --wrap-mode=nodownload
 fi

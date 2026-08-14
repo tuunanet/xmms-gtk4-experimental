@@ -1,7 +1,7 @@
 project(
   'xmms',
   'c',
-  version: '0.0.1',
+  version: '0.0.2',
   meson_version: '>=1.3.2',
   default_options: ['warning_level=1'],
 )

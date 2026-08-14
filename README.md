@@ -177,9 +177,10 @@ This canonical command configures a no-download Meson build, compiles XMMS,
 runs the Xvfb-backed regression, plugin, lint, package, and source-distribution
 gates, and writes unsigned `xmms` and `libxmms-dev` packages to
 `deb-artifacts/`. It does not install dependencies or elevate privileges. It
-runs from a dirty worktree, but the Meson source archive is the committed
-snapshot; commit all release inputs before release verification. In an
-extracted source archive without `.git`, supply that archive explicitly:
+runs from a dirty worktree and creates a local Meson source snapshot from the
+current working source; release inputs can therefore be verified before their
+commit. In an extracted source archive without `.git`, supply that archive
+explicitly:
 `DEB_SOURCE_ARCHIVE=/path/to/xmms-VERSION.tar.gz tools/preflight.sh`.
 
 For an iterative build, use `meson setup build-meson --wrap-mode=nodownload`,
