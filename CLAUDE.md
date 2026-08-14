@@ -9,7 +9,7 @@ Read `specs/` before planning or implementation.
 XMMS GTK4 Experimental is a community-maintained preservation fork of XMMS 1.2.11.
 Keep the classic audio player usable on modern Linux.
 
-Stack: C, GTK2, GLib2, POSIX threads, GNU Autotools, libtool, Linux, and X11.
+Stack: C, GTK2, GLib2, POSIX threads, Meson, Ninja, Linux, and X11.
 
 ## Commands
 
@@ -44,7 +44,7 @@ Read `docs/architecture/` for subsystem diagrams and maintainer guidance.
 - Keep GTK operations on the main thread.
 - NEVER hold playlist locks across slow I/O.
 - Add focused `g_test` regression tests for behavior changes.
-- Edit Autotools source files, not generated output alone.
+- Edit Meson source definitions; do not commit generated build output.
 - Use Conventional Commits.
 
 ## Never

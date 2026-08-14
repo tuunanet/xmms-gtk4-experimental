@@ -21,15 +21,15 @@ Primary compatibility surfaces:
 - `libxmms` public headers and `xmms_remote_*` client API
 - Unix-domain control-socket command framing and `CMD_*` values
 - WinAmp 2 / XMMS skin dimensions, assets, and interaction behavior
-- Autotools source-distribution and Debian package workflows
+- Meson source-distribution and Debian package workflows
 
 ## Stack
 
 ### Language and runtime
 
 - Predominantly C with GLib scalar/container types and manual memory ownership.
-- GTK+ 2 and GLib 2 remain required by the production player; `configure.in` declares a minimum of 2.0.0.
-- GTK+ 3 >= 3.24 is auto-detected for a separately linked Play-button migration proof and can be disabled explicitly for legacy build environments.
+- GTK+ 2 and GLib 2 remain required by the production player; Meson declares them as required dependencies.
+- GTK+ 3 >= 3.24 is auto-detected for a separately linked Play-button migration proof and can be disabled explicitly with Meson options.
 - POSIX threads provide decoder, output, playlist-metadata, and control-socket
   concurrency.
 - X11 integration covers the desktop UI, docking, session management, and
@@ -40,12 +40,10 @@ Primary compatibility surfaces:
 
 ### Build and distribution
 
-- Meson and Ninja are the active build tooling. Retained Autotools inputs remain
-  source-distribution compatibility artifacts until the approved e05s06 removal.
-- `configure.in`, generated `configure`, and `Makefile.in` remain versioned
-  while the release verifier requires their version parity with Meson.
-- Top-level build order is `intl`, `libxmms`, `xmms`, plugin families,
-  `wmxmms`, then `po`.
+- Meson and Ninja are the sole build and distribution tooling.
+- Release metadata is defined by the Meson project version and `CHANGELOG.md`.
+- Top-level Meson build order is `libxmms`, `xmms`, plugin families,
+  `wmxmms`, then translation installation from `po/`.
 - Main validation command:
 
   ```sh
@@ -74,7 +72,7 @@ Required or foundational:
 - GTK+ 2, GLib 2 with gthread
 - GTK+ 3 >= 3.24 for the enabled migration-proof gate; it is not linked into the production GTK2 process
 - POSIX threads
-- libtool/dynamic-loader support
+- dynamic-loader support
 - X11 libraries used by GTK and optional session/video integrations
 - gettext/iconv
 
@@ -87,9 +85,9 @@ Feature-gated dependencies:
 - ESD, OSS, Sun, and Solaris audio paths for legacy platforms
 - zlib for compressed skin/archive support
 
-Notable age constraints: GTK2 is end-of-life, several optional backends are
-legacy, and `configure.in` uses historical Autoconf/Automake macros. Changes to
-build tooling should preserve generated-source and source-tarball workflows.
+Notable age constraints: GTK2 is end-of-life and several optional backends are
+legacy. Changes to build tooling must preserve Meson source-archive and package
+workflows.
 
 ## Repository architecture
 
@@ -324,8 +322,8 @@ against a small extracted function or source slice, then run
   plugins; source comments already note the lack of one proxy configuration
   location.
 - Optional feature detection and README language should be checked together;
-  for example, zlib is described as required in README while `configure.in`
-  probes it without an immediate configure-time error.
+  for example, zlib is described as required in README while Meson resolves it
+  as a required dependency.
 - Generated build products and configured binaries exist in the working tree,
   so edits must distinguish source-of-truth files from generated artifacts.
 - Historical platform/backend code contains known FIXME/TODO paths and may not
@@ -349,8 +347,8 @@ against a small extracted function or source slice, then run
 5. Verify thread ownership and lock boundaries before adding callbacks or I/O.
 6. Add focused tests beside an existing analogous test; keep Xvfb requirements
    explicit.
-7. Update `configure.in` and expected generated/distribution files according to
-   established Autotools practice rather than editing generated output alone.
+7. Update Meson source definitions and expected distribution inputs; do not
+   edit generated build output.
 8. Run packaging/release checks when changing versions, manifests, generated
    sources, plugin linkage, or install paths.
 

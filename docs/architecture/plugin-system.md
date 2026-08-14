@@ -68,7 +68,7 @@ explicit toolkit-switch gate.
 flowchart TD
     A[init_plugins] --> B["~/.xmms/Plugins<br/>(and legacy subdirs)"]
     B --> C{installed PLUGIN_DIR exists?}
-    C -->|no| D["BUILD_PLUGIN_DIR/{Input,Output,...}/.libs<br/>(uninstalled / in-tree run)"]
+    C -->|no| D["BUILD_PLUGIN_DIR/{Input,Output,...}/&lt;target&gt;/lib*.so<br/>(uninstalled Meson run; .libs fixture fallback)"]
     C -->|yes| E["PLUGIN_DIR/{Output,Input,Effect,General,Visualization}"]
     D --> E
     E --> F["scan_plugins: open each *.so"]
@@ -79,8 +79,9 @@ flowchart TD
     J --> K[call init on outputs + inputs]
 ```
 
-Search order favors **user plugins first**, then the build tree (only when
-not installed), then the system plugin directory. Basename de-duplication
+Search order favors **user plugins first**, then direct Meson build-tree
+modules (with `.libs` retained only as a test-fixture fallback when not
+installed), then the system plugin directory. Basename de-duplication
 means a user-installed `libALSA.so` shadows the system one.
 
 ### Classification (`add_plugin`)
@@ -288,7 +289,7 @@ Install location (user override):
 ~/.xmms/Plugins/<anything>.so
 ```
 
-Or the matching system directory under `PLUGIN_DIR` after `make install`.
+Or the matching system directory under `PLUGIN_DIR` after `meson install -C build-meson`.
 
 ---
 

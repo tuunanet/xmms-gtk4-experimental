@@ -124,7 +124,7 @@ MUST prefer early returns over deeper nesting.
 MUST keep changes narrow within historical modules.
 NEVER perform unrelated formatting across legacy files.
 NEVER delete comments that explain historical compatibility or intent.
-NEVER edit generated Autotools files without updating their source definitions.
+NEVER edit generated build output instead of its Meson source definition.
 
 Existing large historical modules are documented architecture constraints.
 The generic 300-line file rule does not apply retroactively.
@@ -169,9 +169,9 @@ NEVER depend on test execution order.
 
 ## Build and Generated Files
 
-MUST treat `configure.in` and `Makefile.am` as source definitions.
-MUST regenerate expected distribution artifacts through established tools.
-MUST distinguish tracked generated sources from local build products.
+MUST treat `meson.build` and `meson_options.txt` as build source definitions.
+MUST regenerate expected distribution artifacts through Meson.
+MUST distinguish tracked source definitions from local build products.
 MUST run plugin-linkage checks after plugin build changes.
 MUST run packaging checks after install-path or package changes.
 MUST run release-tool checks after version or changelog changes.
@@ -213,7 +213,7 @@ Add them only through explicit approved scope.
 ## Hard Stops
 
 NEVER break historical compatibility unintentionally.
-NEVER replace GTK2 or Autotools without an approved migration plan.
+NEVER replace GTK2 or Meson without an approved migration plan.
 NEVER edit historical codec code without explicit task scope.
 NEVER perform GTK work from worker threads.
 NEVER hold playlist locks across slow I/O.

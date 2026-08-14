@@ -54,8 +54,7 @@ tools/run-c-lint.sh
 ```
 
 Ubuntu 24.04's packaged Cppcheck is the authoritative CI environment. The gate
-analyzes maintained C sources and headers while excluding generated `intl/`
-sources. It enables defect-oriented warning, performance, and portability
+analyzes maintained C sources and headers from the Meson build tree. It enables defect-oriented warning, performance, and portability
 checks rather than style-only diagnostics.
 
 Fix new findings whenever practical. If a finding is confirmed as existing,
@@ -104,21 +103,14 @@ local and interactive; CI does not receive model credentials.
 - Update documentation in the same change as the behavior it describes.
 - Use focused commit messages such as `fix: restore playback after ALSA seek`.
 
-## Autotools files
+## Meson build definitions
 
-This repository ships generated Autotools files so users can build directly
-from a checkout without bootstrapping old macro dependencies. The build system
-predates current Autoconf and Automake releases and cannot yet be regenerated
-unchanged by a modern `autoreconf`.
+Meson is the sole build and delivery toolchain. Modify `meson.build`,
+`meson_options.txt`, or the relevant subdirectory `meson.build` source
+definition, then verify the change with `tools/preflight.sh`.
 
-When modifying build metadata:
-
-- update the authoritative `.am` or `.in` source;
-- update its shipped generated counterpart in the same change; and
-- verify a clean Meson build with `tools/preflight.sh`.
-
-Do not run `autoreconf --force --install` and commit its broad generated diff
-unless the change specifically migrates the Autotools stack.
+Do not commit generated build output, source archives, package artifacts, or
+Meson wrap downloads.
 
 ## Releases
 

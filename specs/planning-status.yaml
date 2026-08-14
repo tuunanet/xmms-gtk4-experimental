@@ -1,6 +1,6 @@
 schema_version: 1
 phase: plan
-status: implementing
+status: completed
 steps:
   survey_context: completed
   scope_work: completed
@@ -14,5 +14,5 @@ steps:
 notes:
   - User approved the Meson migration charter: final full legacy-toolchain removal, temporary dual-build parity, legacy-only official releases during parity, project-owned distribution verification, retained dpkg-buildpackage metadata, one fail-fast preflight wrapper, and system dependencies only.
   - Official Meson Autotools-porting guidance was researched; Meson requires explicit configuration-header inputs rather than autoheaders.
-  - e05 is P0/high-impact: 33 legacy source manifests, 34 generated artifacts, and 94 active command-contract references require staged parity.
-  - e04 lifecycle evidence is being reconciled in e05s01 from the successful v0.0.1 draft pre-release.
+  - e05 was P0/high-impact: 33 legacy source manifests, 34 generated artifacts, and 94 active command-contract references received staged parity and final Meson-only cutover coverage.
+  - e05 planning and local verification are complete. Renewed independent review passed after Meson build-tree plugin remediation; v0.0.2 is authorized, and e05 execution awaits post-landing release preparation plus tagged draft-release acceptance.

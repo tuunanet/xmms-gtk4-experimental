@@ -95,8 +95,6 @@ require_glob "$stage_dir/devel/usr/lib/*/libxmms.a" \
 	'installs the static libxmms archive'
 require_glob "$stage_dir/devel/usr/lib/*/libxmms.so" \
 	'installs the libxmms linker name'
-require_file "$stage_dir/devel/usr/share/aclocal/xmms.m4" \
-	'installs the plugin build macro'
 require_absent_glob "$stage_dir/runtime/usr/lib/*/*.la" \
 	'does not install libtool archives in the runtime package'
 require_absent_glob "$stage_dir/devel/usr/lib/*/*.la" \

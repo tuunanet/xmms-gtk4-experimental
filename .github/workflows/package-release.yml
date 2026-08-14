@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: SemVer release version from configure.in, meson.build, and CHANGELOG.md
+        description: SemVer release version from meson.build and CHANGELOG.md
         required: true
         type: string
 

@@ -39,20 +39,8 @@ elif test -e "$repo_root/.git"; then
 		exit 1
 	fi
 else
-	if test ! -f "$repo_root/Makefile"; then
-		echo 'error: source archive builds require ./configure before make deb' >&2
-		exit 1
-	fi
-	(
-		cd "$repo_root"
-		unset MAKEFLAGS MFLAGS
-		make dist-gzip
-	)
-	archive="$repo_root/xmms-$version.tar.gz"
-	if test ! -f "$archive"; then
-		echo "error: retained source distribution did not produce xmms-$version.tar.gz" >&2
-		exit 1
-	fi
+	echo 'error: Meson packaging requires DEB_SOURCE_ARCHIVE outside a Git checkout' >&2
+	exit 1
 fi
 
 exec "$repo_root/tools/build-deb.sh" "$version" "$archive" "$output_dir" \

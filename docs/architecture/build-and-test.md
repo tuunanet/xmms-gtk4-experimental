@@ -22,11 +22,11 @@ Primary sources:
 
 | Area | Files |
 | --- | --- |
-| Top-level build | [`configure.in`](../../configure.in), [`Makefile.am`](../../Makefile.am), [`meson.build`](../../meson.build) |
+| Top-level build | [`meson.build`](../../meson.build), [`meson_options.txt`](../../meson_options.txt) |
 | Library | [`libxmms/`](../../libxmms) |
 | Player + plugins | [`xmms/`](../../xmms), [`Input/`](../../Input), [`Output/`](../../Output), … |
 | Dock app | [`wmxmms/`](../../wmxmms) |
-| Tests | [`tests/`](../../tests), [`tests/Makefile`](../../tests/Makefile) |
+| Tests | [`tests/`](../../tests), [`tests/meson.build`](../../tests/meson.build) |
 | C lint | [`tools/run-c-lint.sh`](../../tools/run-c-lint.sh), [`tools/cppcheck-suppressions.txt`](../../tools/cppcheck-suppressions.txt) |
 | Packaging | [`packaging/debian/`](../../packaging/debian), [`tools/build-deb.sh`](../../tools/build-deb.sh) |
 | Release packaging | [`.github/workflows/package-release.yml`](../../.github/workflows/package-release.yml) |
@@ -36,38 +36,35 @@ Primary sources:
 
 ## 1. Top-level shape
 
-Retained Autotools build plus a Meson migration build (libtool remains for the retained plugin path):
+Meson is the sole build and delivery toolchain:
 
 ```text
-configure.in / configure     feature probes (GTK2, ALSA, Vorbis, MikMod, …)
-Makefile.am                  SUBDIRS order
-  intl
-  libxmms                    shared library + headers
-  xmms                       main binary (links libxmms, dlopens plugins)
-  Output Input Effect General Visualization
-  wmxmms                     dockapp binary
-  po                         translations
-tests/                       regression suite (invoked via make check)
-packaging/debian/            Debian package recipes
-tools/                       deb build + release helpers
-.github/workflows/           manual release automation
+meson.build / meson_options.txt  feature options and recursive build definition
+libxmms/                         shared library + headers
+xmms/                            main binary (links libxmms, dlopens plugins)
+Input Output Effect General Visualization  plugin modules
+wmxmms/                          dockapp binary
+po/                              translations
+tests/                           Meson regression suite
+packaging/debian/                Meson debhelper package recipes
+tools/                           preflight, package, and release helpers
+.github/workflows/               manual release automation
 ```
 
 ```mermaid
 flowchart TB
-    CFG[./configure] --> MAKE[make]
-    MAKE --> LIB[libxmms.la]
-    MAKE --> BIN[xmms binary]
-    MAKE --> PLUG["*.so plugins<br/>Input/Output/Effect/General/Vis"]
-    MAKE --> DOCK[wmxmms]
+    MESON[meson setup] --> NINJA[meson compile]
+    NINJA --> LIB[libxmms.so]
+    NINJA --> BIN[xmms binary]
+    NINJA --> PLUG["*.so plugins<br/>Input/Output/Effect/General/Vis"]
+    NINJA --> DOCK[wmxmms]
     LIB --> BIN
     LIB --> DOCK
     BIN -.->|dlopen at runtime| PLUG
-    MAKE --> CHK[make check]
+    MESON --> CHK[meson test]
     CHK --> T["tests/*"]
-    MAKE --> DIST[make dist / distcheck]
-    MAKE --> DEB[make deb]
-    MESON[meson setup] --> MDEB[tools/package-deb.sh]
+    MESON --> DIST[meson dist]
+    DIST --> DEB[tools/package-deb.sh]
 ```
 
 ### Runtime plugin locations
@@ -75,7 +72,7 @@ flowchart TB
 | Context | Where plugins load from |
 | --- | --- |
 | Installed | `PLUGIN_DIR` (e.g. `.../lib/xmms/{Input,Output,…}`) |
-| Uninstalled / in-tree | `BUILD_PLUGIN_DIR/.../.libs` when `PLUGIN_DIR` is not present yet |
+| Uninstalled / in-tree | Direct Meson targets: `BUILD_PLUGIN_DIR/{Input,Output,…}/<target>/lib*.so` when `PLUGIN_DIR` is not present yet |
 | User override | `~/.xmms/Plugins` (and legacy subdirs) |
 
 See [plugin-system.md](plugin-system.md) for search order and basename shadowing.
@@ -85,13 +82,13 @@ See [plugin-system.md](plugin-system.md) for search order and basename shadowing
 | Flag / probe | Effect |
 | --- | --- |
 | GTK2 / GLib2 | Required production UI toolkit |
-| GTK3 >= 3.24 | Isolated migration proof; auto-detected, or controlled with `--enable-gtk3-proof` / `--disable-gtk3-proof` |
+| GTK3 >= 3.24 | Isolated migration proof; controlled with `-Dgtk3-proof=auto`, `enabled`, or `disabled` |
 | ALSA | `Output/alsa` (default preference on modern Linux) |
-| `--disable-esd` | Skip ESD output (common in CI) |
+| `-Desd=disabled` | Skip ESD output (common in CI) |
 | Vorbis / MikMod / OpenGL | Optional Input / Vis plugins |
 | SIMD / IPv6 | Optional code paths |
 
-Exact flags live in `./configure --help` and [README](../../README.md).
+Exact options live in `meson_options.txt`, `meson configure build-meson`, and [README](../../README.md).
 
 ---
 
@@ -101,7 +98,7 @@ Exact flags live in `./configure --help` and [README](../../README.md).
 | --- | --- | --- |
 | `libxmms/` | `libxmms.so` + headers | Remote API + config/title helpers |
 | `xmms/` | `xmms` executable | Core UI + glue; **does not** statically link codecs |
-| `Input/*`, `Output/*`, … | `lib*.so` via libtool | One plugin per subdirectory |
+| `Input/*`, `Output/*`, … | `lib*.so` Meson shared module | One plugin per subdirectory |
 | `wmxmms/` | `wmxmms` executable | Socket client only |
 | `po/` | `.mo` translations | gettext |
 | `tests/` | test binaries + shell tests | Not installed |
@@ -113,16 +110,16 @@ needs them at **run** time.
 
 ## 3. Test suite layout
 
-Tests are orchestrated by [`tests/Makefile`](../../tests/Makefile) (`make check`
-from the build tree). They are mostly **small C programs** using GLib’s
+Tests are orchestrated by [`tests/meson.build`](../../tests/meson.build)
+through `meson test`. They are mostly **small C programs** using GLib’s
 `g_test_*`, plus a few **shell** checks. Several compile a **slice** of
 production `.c` files directly (not only the final binary)—useful when the
 full UI would be too heavy.
 
 ```mermaid
 flowchart LR
-    MC[make check] --> UNIT[C g_test binaries]
-    MC --> SH[shell scripts]
+    MT[meson test] --> UNIT[C g_test binaries]
+    MT --> SH[shell scripts]
     UNIT --> LIBT["libxmms pieces<br/>xentry, …"]
     UNIT --> CORET["xmms pieces<br/>pluginenum, util, outputplugin, …"]
     UNIT --> PLT["plugin pieces<br/>alsa pcm/volume, mpg123, …"]
@@ -143,23 +140,24 @@ flowchart LR
 | `test-ui-control` | display-independent control state and sprite-command contract |
 | `test-gtk3-play-button-proof` | separately linked GTK3 rendering and activation proof; link check rejects GTK2 |
 | `test-pluginenum` | plugin scan/classify with **fixture** `.so` under `tests/test-plugins` |
-| `test-outputplugin` | ALSA path discovery helpers in `outputplugin.c` |
+| `test-pluginenum-meson-build` | actual Meson input/output plugin discovery from the build tree |
+| `test-outputplugin` | legacy fixture ALSA path discovery helper coverage |
+| `test-outputplugin-meson-build` | actual Meson ALSA path discovery from the build tree |
 | `test-alsa-pcm-state` / `test-alsa-volume` | ALSA output internals |
 | `test-mpg123-file-duration` / `test-mpg123-stream-position` | mpg123 duration/position logic |
 
 Fixture plugins (`fixture-input-plugin.c`, `fixture-output-plugin.c`) are tiny
-shared objects built into `tests/test-plugins/.../.libs` so `pluginenum` can be
-tested without the full codec stack.
+shared objects built into `tests/test-plugins/.../.libs` to retain legacy-layout
+fallback coverage. Actual Meson plugin targets are tested separately.
 
 ### Shell tests
 
 | Script | Focus |
 | --- | --- |
-| `test-intl-generated-sources.sh` | i18n/generated source consistency |
 | `test-package-recipes.sh` | Debian packaging expectations |
 | `test-plugin-linkage.sh` | Built plugins link sanely |
 | `test-release-tools.sh` | `check-release-version` / Meson version / changelog extraction |
-| `test-autotools-meson-dist.sh` | Retained Autotools archive contains and configures Meson inputs |
+| `verify-no-autotools-artifacts.sh` | Final-cutover source-tree contract |
 | `test-package-artifact-contracts.sh` | Deterministic extracted-package and release-artifact verification |
 
 ### Running tests
@@ -174,24 +172,23 @@ For an iterative check, use `xvfb-run --auto-servernum meson test -C
 build-meson`; preflight remains the required contributor and agent gate.
 
 When GTK3 development files are available, `test-gtk3-play-button-proof`
-builds with target-specific GTK3 flags and `make check` verifies with `ldd`
+builds with target-specific GTK3 flags and Meson tests verify with `ldd`
 that it links `libgtk-3` and not `libgtk-x11-2.0`. GTK3 and GTK2 are never
 linked into the same test process. Debian build environments declare
-`libgtk-3-dev`; legacy builds can use `--disable-gtk3-proof` explicitly.
+`libgtk-3-dev`; Meson controls the proof with `-Dgtk3-proof=`.
 
 ### C static analysis
 
-`make lint` invokes Cppcheck through `tools/run-c-lint.sh`. The runner owns the
-maintained source-directory list, defect-oriented analyzer profile, library
-models, relative paths, and fail-closed exit status. Generated compatibility
-sources under `intl/` are deliberately outside this first C lint boundary.
+`tools/run-c-lint.sh` invokes Cppcheck. The runner owns the maintained
+source-directory list, defect-oriented analyzer profile, library models,
+relative paths, and fail-closed exit status.
 
 Existing diagnostics are recorded narrowly as `diagnostic-id:path:line` in
-`tools/cppcheck-suppressions.txt`. Unsuppressed diagnostics make Cppcheck and
-`make lint` exit non-zero. The baseline is review data, not generated build
-output: maintainers update individual entries only after triage, explain the
-change in the pull request, and reject broad project-wide suppressions. Ubuntu
-24.04's packaged Cppcheck is the authoritative CI version.
+`tools/cppcheck-suppressions.txt`. Unsuppressed diagnostics make Cppcheck exit
+non-zero. The baseline is review data, not generated build output: maintainers
+update individual entries only after triage, explain the change in the pull
+request, and reject broad project-wide suppressions. Ubuntu 24.04's packaged
+Cppcheck is the authoritative CI version.
 
 Project-local Pi review configuration lives under `.pi/`. The pinned subagent
 package is installed only after project trust into ignored `.pi/npm/` contents;
@@ -225,7 +222,7 @@ flowchart LR
 | `packaging/xmms.desktop` | Desktop entry metadata |
 
 Debian packages are a **distribution** concern; runtime architecture does not
-change when installed from deb vs `make install`.
+change when installed from deb vs `meson install -C build-meson`.
 
 ---
 
@@ -277,7 +274,7 @@ only on manual UI clicks.
 ## 7. Newcomer checklist
 
 1. `tools/preflight.sh`
-2. Run `xmms` from the build tree (plugins via `BUILD_PLUGIN_DIR`) or install  
+2. Run `build-meson/xmms/xmms` from any working directory (plugins resolve via the absolute `BUILD_PLUGIN_DIR`) or install
 3. Read [ui-interaction.md](ui-interaction.md) then
    [processing-pipeline.md](processing-pipeline.md)  
 4. For packaging work, start with `packaging/debian/` + `tools/package-deb.sh`

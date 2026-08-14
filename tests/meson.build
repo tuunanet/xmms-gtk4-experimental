@@ -102,6 +102,26 @@ test_pluginenum = executable(
 test('pluginenum', test_pluginenum,
      depends: [fixture_input_plugin, fixture_output_plugin])
 
+test_pluginenum_meson_build = executable(
+  'test-pluginenum-meson-build',
+  files('test-pluginenum-meson-build.c', '../xmms/pluginenum.c'),
+  c_args: test_gc_c_args + [
+    '-DBUILD_PLUGIN_DIR="' + meson.project_build_root() + '"',
+    '-DPLUGIN_DIR="/nonexistent"',
+    '-DPLUGINSUBS=0',
+  ],
+  link_args: test_gc_link_args + ['-Wl,--export-dynamic'],
+  dependencies: [glib_dep, gtk2_dep, threads_dep, test_dl_dep, libxmms_dep],
+  include_directories: test_include_dirs,
+  install: false,
+)
+test('pluginenum-meson-build', test_pluginenum_meson_build,
+     depends: [mpg123_module, alsa_module],
+     env: [
+       'HOME=' + meson.current_build_dir() / 'pluginenum-meson-build-home',
+       'LD_LIBRARY_PATH=' + meson.project_build_root() / 'libxmms',
+     ])
+
 test_outputplugin = executable(
   'test-outputplugin',
   files('test-outputplugin.c', '../xmms/outputplugin.c'),
@@ -114,6 +134,20 @@ test_outputplugin = executable(
   install: false,
 )
 test('outputplugin', test_outputplugin, depends: alsa_output_fixture)
+
+test_outputplugin_meson_build = executable(
+  'test-outputplugin-meson-build',
+  files('test-outputplugin-meson-build.c', '../xmms/outputplugin.c'),
+  c_args: [
+    '-DBUILD_PLUGIN_DIR="' + meson.project_build_root() + '"',
+    '-DPLUGIN_DIR="/nonexistent"',
+  ],
+  dependencies: glib_dep,
+  include_directories: test_include_dirs,
+  install: false,
+)
+test('outputplugin-meson-build', test_outputplugin_meson_build,
+     depends: alsa_module)
 
 test_alsa_pcm_state = executable(
   'test-alsa-pcm-state',
@@ -156,16 +190,13 @@ test_mpg123_stream_position = executable(
 )
 test('mpg123-stream-position', test_mpg123_stream_position)
 
-test('autotools-meson-dist', find_program('test-autotools-meson-dist.sh'),
-     args: [meson.project_source_root()], workdir: meson.project_source_root(), timeout: 180)
-test('autotools-package-deb', find_program('test-autotools-package-deb.sh'),
-     args: [meson.project_source_root()], workdir: meson.project_source_root(),
-     timeout: 600, is_parallel: false)
+test('no-autotools-artifacts', find_program('verify-no-autotools-artifacts.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root())
+test('no-autotools-artifacts-source', find_program('test-no-autotools-artifacts.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('c-lint', find_program('test-c-lint.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root(),
      timeout: 120)
-test('intl-generated-sources', find_program('test-intl-generated-sources.sh'),
-     args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-migration-contracts', find_program('test-meson-migration-contracts.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('preflight', find_program('test-preflight.sh'),

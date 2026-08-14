@@ -28,14 +28,6 @@ write_fixture()
 	root=$1
 	version=$2
 	mkdir -p "$root"
-	cat > "$root/configure.in" <<EOF
-AC_INIT([xmms/main.c])
-AM_INIT_AUTOMAKE([xmms], [$version])
-EOF
-	cat > "$root/configure" <<EOF
-#!/bin/sh
- VERSION=$version
-EOF
 	cat > "$root/meson.build" <<EOF
 project('xmms', 'c', version: '$version')
 EOF
@@ -74,13 +66,6 @@ expect_failure "rejects a mismatched requested version" \
 	"$checker" 1.3.1 "$fixture"
 expect_failure "rejects a non-SemVer requested version" \
 	"$checker" '1.3.0; echo unsafe' "$fixture"
-
-stale="$tmpdir/stale-configure"
-write_fixture "$stale" 1.3.0
-sed 's/VERSION=1.3.0/VERSION=1.2.11/' "$stale/configure" > "$stale/configure.new"
-mv "$stale/configure.new" "$stale/configure"
-expect_failure "rejects a stale generated configure script" \
-	"$checker" 1.3.0 "$stale"
 
 missing="$tmpdir/missing-changelog"
 write_fixture "$missing" 1.3.0

@@ -126,8 +126,8 @@ That split avoids driving GTK and playlist locks from the socket thread.
 
 ## 4. wmxmms: Window Maker dock client
 
-[`wmxmms`](../../wmxmms) is a **separate executable** built from the top-level
-Automake tree (`SUBDIRS` includes `wmxmms`). It is a small dockapp that:
+[`wmxmms`](../../wmxmms) is a **separate executable** built by the top-level
+Meson graph. It is a small dockapp that:
 
 - connects with `xmms_session` (CLI `-s` / `--session`, default `0`)
 - polls running/playing state, title, time, volume

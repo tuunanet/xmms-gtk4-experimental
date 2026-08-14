@@ -1,47 +1,19 @@
 # Editor backup files
 *~
 
-# Autotools configuration output
-/Makefile
-**/Makefile
-!/tests/Makefile
-/config.h
-/libxmms/config.h
-/config.log
-**/config.log
-/config.status
-**/config.status
-/libtool
-**/libtool
-/stamp-h[0-9]*
-**/stamp-h[0-9]*
-/autom4te.cache/
-/config.cache
-
 # Meson build output
 /build-meson/
 /build-meson-preflight/
 
-# Generated localization and configuration headers
-/po/Makefile.in
-/po/POTFILES
-/po/remove-potcdate.sed
-/xmms/i18n.h
-
-# Compiler and libtool artifacts
+# Compiler and linker artifacts
 *.o
-*.lo
-*.la
 *.a
 *.so
-*.lai
 *.exp
 *.ver
-.deps/
-.libs/
 
-# Meson source definitions for legacy-layout test fixtures. The generated
-# fixture modules below these paths remain ignored by the artifact rules above.
+# Meson source definitions for legacy-layout test fixtures. Generated fixture
+# modules remain ignored by the shared-library artifact rules above.
 !tests/test-plugins/Input/fixture/.libs/
 !tests/test-plugins/Input/fixture/.libs/meson.build
 !tests/test-plugins/Output/fixture/.libs/

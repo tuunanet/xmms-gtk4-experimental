@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 
-if test "$#" -ne 0; then
-	echo "usage: $0" >&2
+if test "$#" -gt 1 || { test "$#" -eq 1 && test "$1" != '--strict'; }; then
+	echo "usage: $0 [--strict]" >&2
 	exit 2
 fi
 

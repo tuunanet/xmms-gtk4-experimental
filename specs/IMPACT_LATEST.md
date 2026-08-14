@@ -1,72 +1,61 @@
-# Impact: Meson tooling migration
+# Impact: e05s06 Meson cutover (local completion; v0.0.2 preparation pending)
 
-## Target
+## Result
 
-Replace the repository's Autotools/libtool build and delivery contract with
-Meson, including build definitions, developer/agent commands, tests, Debian
-packaging, source distribution, release packaging, documentation, and current
-lifecycle specifications.
+`e05s06` removed the retired Autotools/libtool delivery tree without changing
+public UI, plugin ABI, socket, configuration, or skin contracts. Meson is the
+sole supported build, test, distribution, package, and release-artifact path.
 
-## Dependents
+The cutover removed generated and source build artifacts, root and nested
+Autotools makefiles, configure/libtool support, obsolete gettext rule inputs,
+and retired delivery tests. Translation catalogs (`po/*.po`, `po/*.gmo`, and
+`po/LINGUAS`) remain because Meson packages them directly.
 
-- **33 Autotools source manifests**: root and subsystem `configure.in` and
-  `Makefile.am` files define feature probes, generated headers, build order,
-  plugin modules, install paths, tests, and source distribution.
-- **34 tracked generated build artifacts**: `configure` and `Makefile.in`
-  files must remain consistent during the temporary parity phase, then be
-  removed atomically with their sources.
-- **Packaging and release**: `packaging/debian/rules`, `tools/build-deb.sh`,
-  `tools/check-release-version.sh`, `tools/extract-release-notes.sh`, and the
-  manual package-release workflow all invoke or inspect the legacy build.
-- **Tests**: `tests/Makefile`, `test-package-recipes.sh`,
-  `test-release-tools.sh`, plugin-linkage checks, and C/GTK test binaries
-  depend on Make targets, source-tree locations, or generated configuration.
-- **Agent and contributor contracts**: `CLAUDE.md`, `CONTRIBUTING.md`,
-  `README.md`, build-and-test architecture, release documentation, and
-  non-historical specs contain legacy commands or assumptions.
-- **Compatibility-sensitive outputs**: `xmms`, `wmxmms`, `libxmms`, plugin
-  module names/layout, gettext catalogs, installed headers/man pages,
-  configuration defaults, package names, and source archives.
+## Current dependents
 
-## Affected stories
+- `tools/preflight.sh`, `tools/package-deb.sh`,
+  `tools/verify-meson-dist.sh`, and `tools/verify-release-artifacts.sh` define
+  the no-download Meson delivery path. Package builds require a Meson source
+  archive outside Git; no legacy fallback exists.
+- `packaging/debian/rules` selects Meson and runs the supplied-source-archive
+  validator before package output can hide forbidden inputs.
+- `tests/verify-no-autotools-artifacts.sh` rejects retired build, libtool,
+  gettext, test, and output artifacts from tracked Git trees and extracted
+  source archives. Its fixture test covers regular files and symlinks.
+- `tests/meson.build` is the sole live test registration surface. It retains
+  intentional `.libs` fixture directories only as Meson test data, not
+  libtool output, and tests direct Meson plugin targets separately.
+- Uninstalled plugin discovery uses an absolute Meson build root and direct
+  `{Input,Output,…}/<target>/lib*.so` targets; `.libs` remains fixture fallback
+  only. Actual Meson mpg123 and ALSA modules are integration-tested.
+- Current contributor, architecture, release, package, and workflow guidance
+  names Meson commands. Historical manuals, changelogs, and the Solaris plugin
+  guide are explicitly marked historical.
 
-- **e05s01**: baseline/state reconciliation and decision ledger.
-- **e05s02**: Meson graph/options and temporary dual-build parity.
-- **e05s03**: test, install, gettext, lint, plugin, and distribution parity.
-- **e05s04**: Debian package and release workflow conversion.
-- **e05s05**: agent preflight, contributor commands, workflow contracts, and
-  architecture/specification updates.
-- **e05s06**: final legacy-toolchain removal.
-- **e03s03 / ADR-0001**: GTK3 proof must remain separately linked and
-  observable through the replacement test graph.
-- **e04s01**: package workflow must preserve tagged source, target matrix,
-  checksum, and draft-only release guarantees while changing build commands.
+## Story effect
 
-## Test coverage
+- **e05s02–e05s05:** Meson build, distribution, Debian package, release, and
+  preflight contracts remain green under the final cutover.
+- **e05s06:** Owns source-tree retirement and its regression contract.
+- **e06:** Can begin from a single-toolchain, no-download baseline.
 
-- `tests/test-package-recipes.sh` currently asserts Makefile/configure and
-  Debian-rule text; it must be redesigned as observable Meson/package/release
-  contracts before legacy removal.
-- `tests/test-release-tools.sh` currently creates `configure.in` fixtures;
-  version extraction and release metadata need a Meson-era public source of
-  truth plus backward-compatible release semantics.
-- GLib C tests and plugin-linkage shell checks exercise compiled outputs, but
-  require a Meson test environment that supplies plugin paths and Xvfb for
-  GTK-bearing tests.
-- There is no current Meson parity, install-tree, or source-archive contract.
-  Those are mandatory new gates before deleting the legacy toolchain.
+## Verification coverage
 
-## Risk: High (10/10)
+- `tools/preflight.sh --strict` proves no-download configuration, build,
+  33/33 Xvfb-backed tests, Cppcheck, Debian package verification, and release
+  artifacts.
+- `tools/verify-meson-dist.sh` proves a clean Meson source archive builds,
+  tests, and staged-installs, including public `xmms-config` query behavior.
+- `tests/verify-preflight-clean-environment.sh` proves clean Git, dirty Git,
+  and extracted-source paths use declared system tooling only.
+- The forbidden-artifact test exercises Git and extracted-archive fixtures for
+  every retired artifact class before the full preflight runs.
 
-The change has repository-wide fan-in across build, package, release, agent,
-and source-distribution contracts. A partial migration can silently alter
-plugins, install layout, optional feature availability, translation behavior,
-or release artifacts; it therefore needs staged parity and explicit cutover
-criteria.
+## Residual risk and acceptance
 
-## Recommended action
-
-Proceed only through the e05 staged epic: capture current baselines; spike
-Meson mappings for feature probes, gettext, libtool/plugin modules, and source
-distribution; require observable parity; then update delivery and agent
-contracts before one atomic legacy-toolchain removal slice.
+The change has high fan-in across build, package, distribution, release,
+tests, and documentation, but the final strict local gates pass. Renewed
+independent review passed with zero must-fix findings after the Meson build-tree
+plugin remediation. The maintainer authorized v0.0.2; landing the cutover and
+preparing that release's metadata remain required before tagged draft-release
+acceptance.

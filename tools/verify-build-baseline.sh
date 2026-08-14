@@ -24,31 +24,30 @@ except (OSError, json.JSONDecodeError) as error:
 
 if baseline.get("schema_version") != 1:
     raise SystemExit("error: unsupported baseline schema")
-if baseline.get("legacy_toolchain") != "autotools-libtool":
-    raise SystemExit("error: baseline must identify the legacy toolchain")
+if baseline.get("toolchain") != "meson":
+    raise SystemExit("error: baseline must identify Meson as the sole toolchain")
 
-for relative_path in baseline["source_manifests"] + baseline["generated_artifacts"]:
+for relative_path in ("meson.build", "tests/meson.build",
+                      "tests/verify-no-autotools-artifacts.sh"):
     if not (root / relative_path).is_file():
-        raise SystemExit(f"error: missing baseline artifact: {relative_path}")
+        raise SystemExit(f"error: missing Meson baseline input: {relative_path}")
 
-configure = (root / "configure.in").read_text(encoding="utf-8")
+meson_build = (root / "meson.build").read_text(encoding="utf-8")
 for option in baseline["configuration"]["options"]:
-    if f"AC_ARG_ENABLE([{option}]" not in configure:
-        raise SystemExit(f"error: missing legacy option: {option}")
+    if f"option('{option}'" not in (root / "meson_options.txt").read_text(encoding="utf-8"):
+        raise SystemExit(f"error: missing Meson option: {option}")
 
-makefile = (root / "Makefile.am").read_text(encoding="utf-8")
 for family in baseline["outputs"]["plugin_families"]:
-    if family not in makefile:
-        raise SystemExit(f"error: missing plugin family from build order: {family}")
+    if f"subdir('{family}/" not in meson_build:
+        raise SystemExit(f"error: missing Meson plugin family: {family}")
 
 for relative_path in baseline["test_contract"]["shell_contracts"]:
     if not (root / relative_path).is_file():
         raise SystemExit(f"error: missing test contract: {relative_path}")
 
 workflow = (root / baseline["delivery_contract"]["release_workflow"]).read_text(encoding="utf-8")
-if ("./configure --disable-esd" not in workflow
-        and "tools/package-deb.sh" not in workflow):
-    raise SystemExit("error: release workflow no longer exposes a declared package baseline")
+if "tools/package-deb.sh" not in workflow:
+    raise SystemExit("error: release workflow no longer exposes the Meson package baseline")
 
-print("ok - legacy source and declared delivery baseline remain intact")
+print("ok - Meson source and delivery baseline remain intact")
 PY

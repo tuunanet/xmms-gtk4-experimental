@@ -8,8 +8,9 @@
 
 | Story | Implementation | Tests | Verification | Result |
 |---|---|---|---|---|
-| `e01s01` | `tools/run-c-lint.sh`, `tools/cppcheck-suppressions.txt`, `Makefile.am`, `Makefile.in`, `tests/Makefile` | `tests/test-c-lint.sh` | `specs/verifications/e01s01-verify.yaml`, `specs/verifications/NFR-e01s01.json` | Covered |
+| `e01s01` | `tools/run-c-lint.sh`, `tools/cppcheck-suppressions.txt`, `tests/meson.build` | `tests/test-c-lint.sh` | `specs/verifications/e01s01-verify.yaml`, `specs/verifications/NFR-e01s01.json` | Covered |
 | `e01s02` | `CONTRIBUTING.md`, `docs/architecture/build-and-test.md` | `tests/test-package-recipes.sh` | `specs/verifications/e01s02-verify.yaml` | Covered locally; no push CI workflow tracked |
+| `e05s06` | Meson build/package/release contracts; retired build tree removed | `verify-no-autotools-artifacts.sh`, strict preflight, clean source-distribution and package checks | `specs/verifications/e05s06-verify.yaml`, `specs/verifications/AUDIT-e05-e05s06.md`, `specs/security/REVIEW-e05s06.md` | Local P0 gates covered; tagged draft-release dispatch awaits explicit version/tag authorization |
 
 ## Adversarial refutation
 

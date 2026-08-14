@@ -1,5 +1,9 @@
 
                               Solaris XMMS plugin
+
+   Historical Solaris plugin documentation. The commands below describe the
+   original XMMS release and are retained for archival reference only; current
+   builds use the Meson instructions in the repository README.
                                        
    NEW: Version 0.6.4 is out. This version is compatible with XMMS 1.2.0.
    

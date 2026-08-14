@@ -85,7 +85,6 @@ EOF
 		| cc -c -x c - -o "$fixture/fixture.o"
 	ar rcs "$devel_root/usr/lib/x86_64-linux-gnu/libxmms.a" "$fixture/fixture.o"
 	ln -s libxmms.so.1 "$devel_root/usr/lib/x86_64-linux-gnu/libxmms.so"
-	printf '%s\n' 'fixture macro' > "$devel_root/usr/share/aclocal/xmms.m4"
 
 	dpkg-deb --root-owner-group --build \
 		"$runtime_root" "$artifact_dir/xmms_0.0.1-1_amd64.deb" >/dev/null

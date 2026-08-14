@@ -403,6 +403,10 @@ static void scan_build_tree_plugins(const char *dirname)
 	{
 		if (!strcmp(ent->d_name, ".") || !strcmp(ent->d_name, ".."))
 			continue;
+		plugin_dir = g_build_filename(dirname, ent->d_name, NULL);
+		scan_plugins(plugin_dir);
+		g_free(plugin_dir);
+
 		plugin_dir = g_build_filename(dirname, ent->d_name, ".libs", NULL);
 		scan_plugins(plugin_dir);
 		g_free(plugin_dir);

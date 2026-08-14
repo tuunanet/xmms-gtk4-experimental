@@ -31,15 +31,12 @@ up-to-date, clean `main`. Prepare one focused release change there.
 
 The commit must update:
 
-1. `configure.in` (`AM_INIT_AUTOMAKE`);
-2. `meson.build` (`project()` version);
-3. the matching version field in the shipped `configure` script; and
-4. `CHANGELOG.md`, by moving the release contents from `[Unreleased]` into a
+1. `meson.build` (`project()` version); and
+2. `CHANGELOG.md`, by moving the release contents from `[Unreleased]` into a
    dated `[VERSION]` entry and retaining a new empty `[Unreleased]` section.
 
-The retained release verifier requires these version authorities to agree until
-e05s06 removes the Autotools compatibility artifacts. Run the canonical
-no-download Meson preflight before validating release metadata locally:
+The release verifier requires these two version authorities to agree. Run the
+canonical no-download Meson preflight before validating release metadata locally:
 
 ```sh
 tools/preflight.sh
@@ -70,8 +67,7 @@ git push origin v0.0.1
 
 The workflow accepts only an annotated `vMAJOR.MINOR.PATCH` tag whose target is
 contained in `main`. It rejects a mismatched version input, a lightweight tag,
-a non-tag ref, stale Meson, `configure.in`, or generated `configure` metadata,
-or a missing/duplicate changelog entry.
+a non-tag ref, stale Meson metadata, or a missing/duplicate changelog entry.
 
 ## 3. Dispatch Linux packages and release
 

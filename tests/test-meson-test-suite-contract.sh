@@ -16,15 +16,16 @@ for expected_test in \
   pbutton-baseline \
   ui-control \
   pluginenum \
+  pluginenum-meson-build \
   outputplugin \
+  outputplugin-meson-build \
   alsa-pcm-state \
   alsa-volume \
   mpg123-file-duration \
   mpg123-stream-position \
-  autotools-meson-dist \
-  autotools-package-deb \
+  no-autotools-artifacts \
+  no-autotools-artifacts-source \
   c-lint \
-  intl-generated-sources \
   meson-migration-contracts \
   preflight \
   meson-documentation-contract \
@@ -37,6 +38,7 @@ for expected_test in \
   plugin-linkage \
   meson-output-contract \
   release-tools \
+  solo-git-workflow \
   meson-test-suite-contract \
   meson-dist-contract
 do

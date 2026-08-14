@@ -10,11 +10,11 @@
 | SC-e03s01-P1-04 | Releasing a valid press invokes the Play callback exactly once; invalid releases invoke it zero times. | P1 | Unit/source slice | `tests/test-pbutton-baseline.c`, `xmms/pbutton.c` |
 | SC-e03s02-P0-01 | Toolkit-neutral control headers expose no GTK/GDK types and produce deterministic state transitions and draw commands. | P0 | Unit | `tests/test-ui-control.c`, `xmms/ui_control.[ch]` |
 | SC-e03s02-P0-02 | The GTK2 PButton adapter preserves every e03s01 baseline observation. | P0 | Integration/source slice | `tests/test-pbutton-baseline.c`, `xmms/pbutton.c` |
-| SC-e03s02-P0-03 | Production build, plugin discovery/linkage, package contracts, and source distribution remain green. | P0 | Integration | Existing `make check` and `make distcheck` suite |
+| SC-e03s02-P0-03 | Production build, plugin discovery/linkage, package contracts, and source distribution remain green. | P0 | Integration | `tools/preflight.sh --strict` and `tools/verify-meson-dist.sh` |
 | SC-e03s03-P0-01 | The GTK3 proof binary links GTK3 and does not link GTK2. | P0 | Binary contract | `ldd tests/test-gtk3-play-button-proof` |
 | SC-e03s03-P0-02 | The GTK3 proof renders normal and pressed Play sprites through the shared command contract with deterministic pixel assertions. | P0 | Integration | `tests/test-gtk3-play-button-proof.c` |
 | SC-e03s03-P0-03 | The GTK3 proof translates a primary-button activation into exactly one shared callback and rejects invalid activation. | P0 | Integration | `tests/test-gtk3-play-button-proof.c` |
-| SC-e03s03-P0-04 | GTK3 prerequisites, optional detection, clean rules, package manifests, and distribution inputs remain synchronized. | P0 | Integration | `configure.in`, generated files, Makefiles, package tests |
+| SC-e03s03-P0-04 | GTK3 prerequisites, optional detection, package manifests, and distribution inputs remain synchronized. | P0 | Integration | Meson options, package tests, and source-distribution checks |
 
 ## 2. Fixture Architecture & Isolation
 
@@ -32,9 +32,9 @@
 | Compatibility | Public runtime and plugin ABI contracts are unchanged. | `git diff --exit-code main -- xmms/plugin.h libxmms/xmmsctrl.h xmms/controlsocket.h` |
 | Link isolation | GTK3 proof contains GTK3 and no GTK2 dependency. | `ldd tests/test-gtk3-play-button-proof | grep -F 'libgtk-3.so' && ! ldd tests/test-gtk3-play-button-proof | grep -F 'libgtk-x11-2.0.so'` |
 | Threading | New control and render-command logic performs no GTK work or blocking I/O. | `! rg -n 'Gtk|Gdk|pthread|read\(|write\(|system\(' xmms/ui_control.[ch]` |
-| Regression | Existing player and full suite remain green. | `make -j"$(nproc)" && xvfb-run --auto-servernum make check` |
-| Distribution | Clean source archive rebuild includes all new inputs. | `xvfb-run --auto-servernum make distcheck` |
-| Lint | New maintained C code introduces no Cppcheck regression. | `make lint` |
+| Regression | Existing player and full suite remain green. | `tools/preflight.sh --strict` |
+| Distribution | Clean source archive rebuild includes all new inputs. | `tools/verify-meson-dist.sh` |
+| Lint | New maintained C code introduces no Cppcheck regression. | `tools/run-c-lint.sh` |
 
 ## 4. Manual Acceptance
 

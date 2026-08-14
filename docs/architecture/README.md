@@ -11,7 +11,7 @@ build/test layout.
 | [Plugin system](plugin-system.md) | Discovery, loading, vtables, enable/disable lifecycle |
 | [External control](external-control.md) | libxmms, wmxmms, General plugins, control socket clients |
 | [Playlist and streaming](playlist-and-streaming.md) | Get-info thread, lazy metadata, HTTP/Icecast inside Input plugins |
-| [Build and test](build-and-test.md) | Autotools layout, `make check`, packaging, CI |
+| [Build and test](build-and-test.md) | Meson layout, test, packaging, and release gates |
 | [Skins](skins.md) | Hard requirements for WinAmp 2 / XMMS skin files (artists + developers) |
 
 Diagrams use [Mermaid](https://mermaid.js.org/) and render on GitHub and most
@@ -28,7 +28,7 @@ Effect/               Effect plugins (in-place PCM transforms)
 Visualization/        Vis plugins    (PCM / spectrum renderers)
 General/              General plugins (IR, joystick, song change; not on PCM path)
 wmxmms/               Dockapp client (libxmms remote API)
-tests/                Regression suite (make check)
+tests/                Regression suite (meson test)
 packaging/ tools/     Debian packaging and release helpers
 ```
 

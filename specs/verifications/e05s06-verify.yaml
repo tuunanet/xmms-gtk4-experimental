@@ -1,0 +1,60 @@
+story_id: e05s06
+delivery_status: pending_authorization
+verified_at: "2026-08-14T07:38:19Z"
+verifier: verify-work
+phases:
+  smoke:
+    passed: true
+    command: "tests/verify-preflight-clean-environment.sh"
+    result: "Verified a dirty Git checkout and an extracted no-Git Meson source archive. Both use declared system tools only, complete package and release-artifact checks, and reject retired tracked artifacts."
+  build:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    result: "No-download Meson setup, compilation, 33/33 Xvfb-backed tests, Cppcheck, Debian package verification, and release-artifact verification passed after Meson build-tree plugin discovery remediation. Renewed independent review passed with zero must-fix findings; v0.0.2 is authorized and its post-landing release preparation remains pending."
+  lint:
+    passed: true
+    command: "tools/run-c-lint.sh"
+    result: "Passed as part of strict preflight in the branch and clean-environment paths."
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum meson test -C build-meson-preflight"
+    result: "33/33 passed during strict preflight; clean extracted-source verification repeats the suite successfully after Git/archive regular-file and symlink fixtures covered all removed delivery tests and actual Meson plugin targets."
+  distribution:
+    passed: true
+    command: "tools/verify-meson-dist.sh"
+    result: "A clean Meson source archive built, passed 33/33 tests, staged-installed successfully, and verified all public xmms-config query paths."
+  packages:
+    passed: true
+    command: "tools/package-deb.sh && tools/verify-release-artifacts.sh deb-artifacts"
+    result: "Built xmms and libxmms-dev Debian packages, validated payload/SONAME contracts, and verified extracted smoke tests and checksums. Debian tests validate the supplied Meson source archive before transient package output exists."
+  terminal_verdict:
+    command: "tools/preflight.sh --strict && tools/verify-meson-dist.sh && tools/verify-release-artifacts.sh deb-artifacts && tests/verify-preflight-clean-environment.sh"
+    exit_code: 0
+    captured_at: "2026-08-14T07:38:19Z"
+    note: "Local P0 verification after Meson build-tree plugin discovery remediation: strict no-download preflight, clean Meson distribution, release artifacts, and clean Git/extracted-source proof all pass. Actual Meson mpg123 and ALSA modules load from the absolute build root; artifact validation rejects every legacy source class in Git and archive fixtures, including removed delivery tests, libtool, gettext, output-like paths, and symlinks; ignore rules cannot permit retired outputs; Debian package tests validate every archive root before output exists. Renewed dual review passed with zero must-fix findings. The maintainer authorized v0.0.2; post-landing release preparation and tagged draft-release acceptance remain pending."
+  independent_review:
+    passed: true
+    target: "1d0557cb25d040b50ebf2a436bbc5754eba5710d"
+    reviewers: 2
+    must_fix_findings: 0
+    scores: [98, 100]
+    artifact: specs/verifications/DUAL-REVIEW-1d0557cb25d0.md
+    result: "Renewed dual review passed after Meson build-tree plugin discovery remediation."
+  manual:
+    steps:
+      - step: "Inspect the supplied Meson source archive before Debian package output directories are created."
+        expected: "The source-tree validator rejects retired regular files and symlinks from the original source archive."
+        actual: "Debian package verification passed after validating the supplied archive; the validator reported no retired artifact."
+        passed: true
+      - step: "Run the documented strict contributor command."
+        expected: "tools/preflight.sh --strict completes the canonical no-download Meson gates."
+        actual: "The command completed compilation, 33 tests, lint, package, and release-artifact gates."
+        passed: true
+  release_acceptance:
+    status: pending_release_preparation
+    version: 0.0.2
+    reason: "The maintainer authorized v0.0.2. Existing v0.0.1 is an immutable tag that predates this cutover, so the cutover must land first; then a release/0.0.2 branch must synchronize meson.build and CHANGELOG.md before an annotated tag on main and manual draft-release workflow dispatch."
+  gaps:
+    closed: false
+    remaining:
+      - "Land the verified cutover, prepare and verify release/0.0.2 metadata, then create annotated v0.0.2 and dispatch the draft-release workflow."

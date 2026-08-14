@@ -25,6 +25,60 @@ sed 's/^active_story_id:.*/active_story_id: e05s99/' \
 	"$repo_root/specs/execution-status.yaml" \
 	"$repo_root/specs/release-plan.yaml"
 echo "ok - records the completed v0.0.1 draft pre-release"
+grep -Fx '  head: HEAD' "$repo_root/specs/state.yaml" >/dev/null \
+	|| fail "uses a symbolic head marker for self-updating evidence"
+
+grep -Fx '  e05: pending_authorization' "$repo_root/specs/execution-status.yaml" >/dev/null \
+	|| fail "marks e05 pending release authorization in the execution ledger"
+grep -Fx '  e05s06: pending_authorization' "$repo_root/specs/execution-status.yaml" >/dev/null \
+	|| fail "marks e05s06 pending release authorization in the execution ledger"
+awk '/^status: / { exit $0 != "status: pending_authorization" }' \
+	"$repo_root/specs/epics/e05-meson-tooling-migration/epic.yaml" \
+	|| fail "marks the e05 capsule pending release authorization"
+awk '
+  /^  - id: e05$/ { in_e05 = 1; next }
+  in_e05 && /^  - id:/ { exit !pending }
+  in_e05 && /^    status: pending_authorization$/ { pending = 1 }
+  END { exit !pending }
+' "$repo_root/specs/release-plan.yaml" \
+	|| fail "marks e05 pending release authorization in the release plan"
+grep -Fx 'status: pending_authorization' \
+	"$repo_root/specs/epics/e05-meson-tooling-migration/e05s06-tasks.yaml" >/dev/null \
+	|| fail "marks e05s06 pending release authorization"
+awk '
+  /^  - id: t3$/ { in_t3 = 1; next }
+  in_t3 && /^  - id:/ { exit !pending }
+  in_t3 && /^    status: pending_authorization$/ { pending = 1 }
+  END { exit !pending }
+' "$repo_root/specs/epics/e05-meson-tooling-migration/e05s06-tasks.yaml" \
+	|| fail "marks tagged draft-release acceptance pending authorization"
+grep -Fx '  status: pending_authorization' "$repo_root/specs/state.yaml" >/dev/null \
+	|| fail "hands off e05 release authorization"
+awk '/^wsjf: / { exit $0 != "wsjf: 3.5" }' \
+	"$repo_root/specs/epics/e05-meson-tooling-migration/epic.yaml" \
+	|| fail "matches the release-plan e05 WSJF"
+awk '
+  /^  - id: e05s04$/ { in_e05s04 = 1; next }
+  in_e05s04 && /^  - id:/ { exit !verified }
+  in_e05s04 && /^    status: verified$/ { verified = 1 }
+  END { exit !verified }
+' "$repo_root/specs/epics/e05-meson-tooling-migration/epic.yaml" \
+	|| fail "marks e05s04 verified in the capsule"
+invalid_execution="$contract_tmpdir/invalid-execution-status.yaml"
+sed 's/^  e05: pending_authorization$/  e05: verified/' \
+	"$repo_root/specs/execution-status.yaml" > "$invalid_execution"
+if "$lifecycle_checker" "$repo_root/specs/state.yaml" "$invalid_execution" \
+	"$repo_root/specs/release-plan.yaml"; then
+	fail "rejects a verified e05 awaiting release authorization"
+fi
+echo "ok - synchronizes pending e05 release authorization"
+grep -Fx 'status: completed' "$repo_root/specs/planning-status.yaml" >/dev/null \
+	|| fail "marks e05 planning complete"
+if grep -F 'e04 lifecycle evidence is being reconciled' \
+	"$repo_root/specs/planning-status.yaml" >/dev/null; then
+	fail "removes stale e05 planning reconciliation"
+fi
+echo "ok - records completed e05 planning status"
 
 baseline_checker="$repo_root/tools/verify-build-baseline.sh"
 [ -x "$baseline_checker" ] || fail "provides a legacy build baseline verifier"

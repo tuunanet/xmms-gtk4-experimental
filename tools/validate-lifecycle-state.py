@@ -26,6 +26,31 @@ def main():
         r"^  last_publish: draft-prerelease$",
         "must record the unpublished pre-release state",
     )
+    require_text(
+        state,
+        r"(?ms)^handoff:\n  status: pending_authorization$",
+        "must hand off e05 release authorization",
+    )
+    require_text(
+        execution_status,
+        r"^status: pending_authorization$",
+        "must mark the active execution pending authorization",
+    )
+    require_text(
+        execution_status,
+        r"^  e05: pending_authorization$",
+        "must mark e05 pending authorization",
+    )
+    require_text(
+        execution_status,
+        r"^  e05s06: pending_authorization$",
+        "must mark e05s06 pending authorization",
+    )
+    require_text(
+        release_plan,
+        r"(?ms)^  - id: e05$.*?^    status: pending_authorization$",
+        "must mark e05 pending authorization in the release plan",
+    )
     require_text(execution_status, r"^  e04: verified$", "must mark e04 verified")
     require_text(execution_status, r"^  e04s01: verified$", "must mark e04s01 verified")
     require_text(

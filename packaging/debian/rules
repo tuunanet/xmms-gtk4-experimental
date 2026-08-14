@@ -6,9 +6,6 @@ export DEB_CFLAGS_MAINT_APPEND = -Wno-error -Wno-error=incompatible-pointer-type
 %:
 	dh $@ --buildsystem=meson
 
-override_dh_autoreconf:
-	@echo "Skipping Autotools regeneration for Meson packaging"
-
 override_dh_auto_configure:
 	dh_auto_configure --buildsystem=meson -- \
 		--wrap-mode=nodownload \
@@ -19,7 +16,8 @@ override_dh_auto_configure:
 
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
-	xvfb-run --auto-servernum dh_auto_test --buildsystem=meson
+	DEB_SOURCE_ARCHIVE="$(DEB_SOURCE_ARCHIVE)" \
+		xvfb-run --auto-servernum dh_auto_test --buildsystem=meson
 endif
 
 override_dh_auto_install:

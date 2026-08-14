@@ -108,6 +108,22 @@ done
 xmms_config="$install_root/$bindir/xmms-config"
 test -x "$xmms_config" || fail 'installs an executable xmms-config'
 test "$("$xmms_config" --version)" = "$project_version" || fail 'configures xmms-config version'
+test "$("$xmms_config" --cflags)" = "-I$prefix/$includedir -I$prefix/$includedir/xmms $(pkg-config --cflags gtk+-2.0)" \
+  || fail 'configures xmms-config compiler flags'
+test "$("$xmms_config" --libs)" = "-L$prefix/$libdir $(pkg-config --libs gtk+-2.0) -lxmms" \
+  || fail 'configures xmms-config linker flags'
+test "$("$xmms_config" --data-dir)" = "$prefix/$datadir/xmms" \
+  || fail 'configures xmms-config data path'
 test "$("$xmms_config" --plugin-dir)" = "$prefix/$libdir/xmms" || fail 'configures xmms-config plugin path'
+test "$("$xmms_config" --input-plugin-dir)" = "$prefix/$libdir/xmms/Input" \
+  || fail 'configures xmms-config input plugin path'
+test "$("$xmms_config" --output-plugin-dir)" = "$prefix/$libdir/xmms/Output" \
+  || fail 'configures xmms-config output plugin path'
+test "$("$xmms_config" --effect-plugin-dir)" = "$prefix/$libdir/xmms/Effect" \
+  || fail 'configures xmms-config effect plugin path'
+test "$("$xmms_config" --general-plugin-dir)" = "$prefix/$libdir/xmms/General" \
+  || fail 'configures xmms-config general plugin path'
+test "$("$xmms_config" --visualization-plugin-dir)" = "$prefix/$libdir/xmms/Visualization" \
+  || fail 'configures xmms-config visualization plugin path'
 
 printf '%s\n' 'ok - Meson staged install preserves the public layout'

@@ -1,7 +1,7 @@
 schema_version: 1
-status: implementing
+status: pending_authorization
 epics:
-  e05: implementing
+  e05: pending_authorization
   e06: planned
   e04: verified
   e01: verified
@@ -13,7 +13,7 @@ stories:
   e05s03: verified
   e05s04: verified
   e05s05: verified
-  e05s06: planned
+  e05s06: pending_authorization
   e06s01: planned
   e06s02: planned
   e06s03: planned
@@ -26,7 +26,7 @@ stories:
   e03s03: verified
 gate_trace:
   verdict: WAIVED
-  generated_at: 2026-07-30T10:20:25Z
-  rationale: Traceability scripts and matrix are absent from this preservation fork; e05s02 has explicit task verification, audit, security, and NFR evidence, but no heuristic coverage result can be computed.
+  generated_at: 2026-08-14T08:43:33Z
+  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. e05s06 has explicit task verification, 33-test strict preflight evidence, distribution/package evidence, security review, and renewed zero-must-fix dual review, but no heuristic coverage result can be computed.
   heuristic_ratio: null
   downgrade_applied: false

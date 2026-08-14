@@ -10,6 +10,13 @@ The approved destination is one Meson toolchain. This final slice may remove
 legacy build files only after the Meson build, distribution, packaging, release,
 and agent-preflight gates prove parity.
 
+## Delivery status
+
+Local cutover verification is complete. Tagged draft-release acceptance is
+`pending_authorization`: it needs an approved version, an annotated tag on
+`main`, and explicit maintainer authorization before this story can be marked
+verified.
+
 ## Requirements
 
 #### REMOVED: Autotools/libtool delivery contract

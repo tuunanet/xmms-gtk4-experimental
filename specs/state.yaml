@@ -8,18 +8,18 @@ active_decisions:
     artifact: specs/workflows/solo-git.yaml
 active_flow: build_epic
 active_epic_id: e05
-active_story_id: e05s05
+active_story_id: e05s06
 git:
-  branch: feat/meson-preflight-contract
-  head: 166be7f
-  worktree: /home/tuunanet/git/tuunanet/meson-preflight-contract
+  branch: feat/retire-autotools
+  head: HEAD
+  worktree: /home/tuunanet/git/tuunanet/retire-autotools
 metrics:
-  story_start: 2026-08-02T21:06:32Z
+  story_start: 2026-08-08T13:31:00Z
 handoff:
-  status: verified
-  next_skill: request-review
-  reason: e05s05 proves the complete documented Debian preflight environment and package Build-Depends, Git and xauth fail-fast checks, canonical fail-closed landing enforcement, custom package output, tracked-dirty and extracted-source paths, and no-download Meson configuration through Debian packaging; final evidence is refreshed for review.
+  status: pending_authorization
+  next_skill: release-branch
+  reason: e05s06 local P0 gates pass—strict preflight, clean distribution, release artifacts, and clean-environment verification with 33 tests. The validator rejects every reviewed regular-file and symlink class across all source-archive roots, including all removed delivery tests, and ignores no retired artifact path. Actual Meson build-tree plugins load from the absolute build root. Renewed independent review passed with zero must-fix findings. The maintainer authorized v0.0.2; tagged draft-release acceptance remains pending landing this cutover, preparing release metadata on release/0.0.2, and creating an annotated tag on main. The head marker is symbolic so it remains synchronized with evidence.
 release:
   last_tag: v0.0.1
   last_publish: draft-prerelease
-  target_version: 0.0.1
+  target_version: 0.0.2

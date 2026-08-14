@@ -13,6 +13,8 @@ fail()
 }
 
 [ -x "$preflight" ] || fail "provides the canonical preflight command"
+grep -F -- '--strict' "$preflight" >/dev/null \
+	|| fail "accepts the strict preflight contract"
 
 grep -F 'meson setup' "$preflight" >/dev/null \
 	|| fail "configures an isolated Meson build"

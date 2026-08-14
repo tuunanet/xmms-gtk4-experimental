@@ -35,15 +35,18 @@ grep -F '#define DEV_DSP "/dev/dsp"' "$build_dir/config.h" >/dev/null \
 	|| fail "configures the default OSS DSP path"
 grep -F '#define DEV_MIXER "/dev/mixer"' "$build_dir/config.h" >/dev/null \
 	|| fail "configures the default OSS mixer path"
+grep -F -- "-DBUILD_PLUGIN_DIR=\"' + meson.project_build_root()" \
+	"$repo_root/meson.build" >/dev/null \
+	|| fail "anchors build-tree plugin discovery to the Meson build root"
 
-collision_source="$build_dir/source-with-autotools-header"
+collision_source="$build_dir/source-with-stale-header"
 collision_build_dir="$build_dir/collision-build"
 mkdir "$collision_source"
 (cd "$repo_root" && \
 	tar --exclude='./.git' --exclude='./build-meson' -cf - .) | \
 	tar -xf - -C "$collision_source"
 cat > "$collision_source/xmms/i18n.h" <<'EOF'
-#error Meson must select its generated i18n.h before retained Autotools output
+#error Meson must select its generated i18n.h before stale source output
 EOF
 meson setup "$collision_build_dir" "$collision_source" --wrap-mode=nodownload >/dev/null
 ${CC:-cc} -DHAVE_CONFIG_H \
@@ -52,7 +55,7 @@ ${CC:-cc} -DHAVE_CONFIG_H \
 	$(pkg-config --cflags gtk+-2.0 glib-2.0) \
 	-c "$collision_source/xmms/ui_control.c" \
 	-o "$collision_build_dir/ui_control.o" \
-	|| fail "compiles with a retained Autotools gettext header"
+	|| fail "compiles with a stale source gettext header"
 
 esd_build_dir="$build_dir/esd"
 if pkg-config --exists esound; then

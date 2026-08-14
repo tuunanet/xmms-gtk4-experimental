@@ -12,7 +12,7 @@ epics:
     capsule_dir: epics/e05-meson-tooling-migration
     wsjf: 3.5
     bcps: 42
-    status: implementing
+    status: pending_authorization
     score:
       business_value: 10
       time_criticality: 8

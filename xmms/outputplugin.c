@@ -20,6 +20,12 @@ gchar *output_plugin_find_alsa(const gchar *output_plugin_dir)
 	if (!g_file_test(PLUGIN_DIR, G_FILE_TEST_IS_DIR))
 	{
 		path = g_build_filename(BUILD_PLUGIN_DIR, "Output", "alsa",
+						"libALSA.so", NULL);
+		path = existing_plugin_path(path);
+		if (path)
+			return path;
+
+		path = g_build_filename(BUILD_PLUGIN_DIR, "Output", "alsa",
 						".libs", "libALSA.so", NULL);
 		path = existing_plugin_path(path);
 		if (path)

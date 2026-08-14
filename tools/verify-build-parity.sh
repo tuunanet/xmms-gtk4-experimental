@@ -35,12 +35,12 @@ def introspect(kind):
 try:
     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
 except (OSError, json.JSONDecodeError) as error:
-    fail(f"cannot read legacy baseline: {error}")
+    fail(f"cannot read Meson baseline: {error}")
 
 if baseline.get("schema_version") != 1:
-    fail("unsupported legacy baseline schema")
-if baseline.get("legacy_toolchain") != "autotools-libtool":
-    fail("baseline must identify the Autotools/libtool authority")
+    fail("unsupported Meson baseline schema")
+if baseline.get("toolchain") != "meson":
+    fail("baseline must identify Meson as the sole authority")
 
 options = {option["name"] for option in introspect("--buildoptions")}
 dependencies = {dependency["name"] for dependency in introspect("--dependencies")}
@@ -48,7 +48,7 @@ targets = introspect("--targets")
 
 for option in baseline["configuration"]["options"]:
     if option not in options:
-        fail(f"Meson omits legacy option: {option}")
+        fail(f"Meson omits required option: {option}")
 
 for dependency in baseline["configuration"]["required_pkg_config_modules"]:
     if dependency not in dependencies:
@@ -66,7 +66,7 @@ def has_output(relative_path):
 
 for executable in baseline["outputs"]["executables"]:
     if not has_output(Path(executable) / executable):
-        fail(f"Meson omits legacy executable: {executable}")
+        fail(f"Meson omits required executable: {executable}")
 
 library_name = baseline["outputs"]["library"]
 if not any(
@@ -74,7 +74,7 @@ if not any(
     for target in targets
     for output in target_outputs(target)
 ):
-    fail(f"Meson omits legacy library: {library_name}")
+    fail(f"Meson omits required library: {library_name}")
 
 for family in baseline["outputs"]["plugin_families"]:
     if not any(
@@ -83,7 +83,7 @@ for family in baseline["outputs"]["plugin_families"]:
                 for output in target_outputs(target))
         for target in targets
     ):
-        fail(f"Meson omits legacy plugin family: {family}")
+        fail(f"Meson omits required plugin family: {family}")
 
 proof = Path(baseline["outputs"]["isolated_gtk3_proof"])
 proof_target = next(
@@ -98,5 +98,5 @@ if "gtk+-3.0" not in proof_dependencies:
 if "gtk+-2.0" in proof_dependencies:
     fail("the GTK3 proof declares GTK2")
 
-print("ok - Meson build matches the frozen legacy option and output inventory")
+print("ok - Meson build matches the frozen option and output inventory")
 PY

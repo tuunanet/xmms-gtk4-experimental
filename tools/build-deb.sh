@@ -19,7 +19,7 @@ fi
 
 for command in dpkg-architecture dpkg-buildpackage dpkg-deb ldd lintian readelf tar; do
 	if ! command -v "$command" >/dev/null 2>&1; then
-		echo "error: make deb requires $command" >&2
+		echo "error: Meson Debian packaging requires $command" >&2
 		exit 1
 	fi
 done
@@ -65,7 +65,7 @@ EOF
 
 (
 	cd "$source_dir"
-	dpkg-buildpackage --build=binary --no-sign
+	DEB_SOURCE_ARCHIVE="$source_archive" dpkg-buildpackage --build=binary --no-sign
 )
 
 set -- "$build_root"/*.deb

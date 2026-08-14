@@ -1,32 +1,12 @@
 {
   "schema_version": 1,
   "captured_from": "v0.0.1 release baseline",
-  "legacy_toolchain": "autotools-libtool",
-  "source_manifests": [
-    "configure.in",
-    "libxmms/configure.in",
-    "Makefile.am",
-    "libxmms/Makefile.am"
-  ],
-  "generated_artifacts": [
-    "configure",
-    "Makefile.in",
-    "libxmms/configure",
-    "libxmms/Makefile.in"
-  ],
+  "toolchain": "meson",
   "configuration": {
     "required_pkg_config_modules": ["glib-2.0", "gtk+-2.0"],
     "options": [
-      "one-plugin-dir",
-      "user-plugin-dir",
-      "gtk3-proof",
-      "opengl",
-      "esd",
-      "mikmod",
-      "vorbis",
-      "simd",
-      "ipv6",
-      "oss"
+      "one-plugin-dir", "user-plugin-dir", "gtk3-proof", "opengl", "esd",
+      "mikmod", "vorbis", "simd", "ipv6", "oss"
     ]
   },
   "outputs": {
@@ -36,11 +16,12 @@
     "isolated_gtk3_proof": "tests/test-gtk3-play-button-proof"
   },
   "test_contract": {
-    "orchestrator": "make check",
+    "orchestrator": "meson test",
     "shell_contracts": [
       "tests/test-package-recipes.sh",
       "tests/test-plugin-linkage.sh",
-      "tests/test-release-tools.sh"
+      "tests/test-release-tools.sh",
+      "tests/verify-no-autotools-artifacts.sh"
     ]
   },
   "install_contract": {
@@ -49,8 +30,8 @@
     "translations": "po"
   },
   "delivery_contract": {
-    "source_distribution": "make distcheck",
-    "debian_build": "make deb",
+    "source_distribution": "meson dist",
+    "debian_build": "tools/package-deb.sh",
     "packages": ["xmms", "libxmms-dev"],
     "release_targets": ["linuxmint22.3", "ubuntu26.04"],
     "release_workflow": ".github/workflows/package-release.yml",

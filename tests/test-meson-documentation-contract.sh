@@ -60,4 +60,30 @@ if grep -F '`make check` currently orchestrates' \
 	fail "tech-stack names Meson preflight rather than retired active Autotools gates"
 fi
 
+for document in \
+	CLAUDE.md CONTRIBUTING.md CONVENTIONS.md docs/architecture/README.md \
+	docs/architecture/build-and-test.md docs/architecture/external-control.md \
+	docs/architecture/plugin-system.md docs/releases.md \
+	specs/tech-architecture/tech-stack.md \
+	specs/tech-architecture/e03-TEST_PLAN_LATEST.md \
+	specs/tech-architecture/e04-TEST_PLAN_LATEST.md
+do
+	if grep -Eq 'Autotools|libtool|`make (lint|install|check|dist|distcheck)`|`\./configure|`configure\.in`|`Makefile\.(am|in)`|`autoreconf|`intl/' \
+		"$repo_root/$document"; then
+		fail "$document does not retain a live Autotools build contract"
+	fi
+done
+
+grep -F 'Historical Solaris plugin documentation' \
+	"$repo_root/Output/solaris/README.solaris" >/dev/null \
+	|| fail "Solaris plugin guide identifies its retained historical commands"
+if grep -Eq 'Makefile\.(am|in)|tests/Makefile' \
+	"$repo_root/specs/TRACEABILITY_LATEST.md"; then
+	fail "traceability does not name removed build artifacts"
+fi
+if grep -F 'current configure contract' \
+	"$repo_root/specs/tech-architecture/e05-TEST_PLAN_LATEST.md" >/dev/null; then
+	fail "test plan identifies the captured Meson feature baseline"
+fi
+
 echo "ok - contributor, agent, architecture, release, workflow, and tech-stack guides name Meson preflight"

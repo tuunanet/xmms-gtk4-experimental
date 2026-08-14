@@ -164,3 +164,21 @@ bugs:
     summary: Stale EXTRA_DIST entries reference GitHub metadata absent from the flattened repository.
     file: specs/bugs/BUG-2026-07-29T161500-stale-github-distribution-entries.md
     status: fixed
+  - bug_id: BUG-2026-08-14T070309
+    date: 2026-08-14
+    severity: high
+    priority: P0
+    scope: meson-build-tree-plugin-discovery
+    summary: Meson-built plugins are not discovered by the documented uninstalled player.
+    file: specs/bugs/BUG-2026-08-14T070309-meson-build-tree-plugin-discovery.md
+    status: fixed
+    files_changed:
+      - meson.build
+      - xmms/pluginenum.c
+      - xmms/outputplugin.c
+      - tests/test-pluginenum-meson-build.c
+      - tests/test-outputplugin-meson-build.c
+    approach: Discover direct Meson build-tree modules from an absolute build root before fixture fallback.
+    verification: tools/preflight.sh --strict && tools/verify-meson-dist.sh
+    risk_level: high
+    commit_message: "fix(plugins): load Meson build-tree modules"

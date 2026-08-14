@@ -47,5 +47,5 @@ Depends:
  xmms (= ${binary:Version}),
  ${misc:Depends}
 Description: development files for XMMS GTK4 Experimental plugins
- Headers, static and shared-library linker files, xmms-config, and the Autoconf
- macro required to build compatible XMMS plugins.
+ Headers, static and shared-library linker files, and xmms-config required to
+ build compatible XMMS plugins.

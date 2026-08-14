@@ -25,8 +25,8 @@
   display-independent failures.
 - Build optional dependencies through installed system/pkg-config packages only;
   no wrap/subproject network fetch is permitted.
-- Keep one authoritative feature matrix fixture derived from the current
-  configure contract before that contract is deleted.
+- Keep one authoritative feature matrix fixture derived from the captured
+  Meson feature baseline after the legacy toolchain is deleted.
 
 ## 3. Non-functional verification
 

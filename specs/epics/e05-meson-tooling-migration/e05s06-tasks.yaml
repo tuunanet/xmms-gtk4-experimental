@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e05s06
 title: Remove the retired Autotools toolchain
-status: failing
+status: pending_authorization
 risk: P0
 bcps: 8
 tasks:
@@ -11,7 +11,7 @@ tasks:
     verify: "tools/preflight.sh --strict && tools/verify-meson-dist.sh && tools/package-deb.sh"
     risk: P0
     security: high
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [cutover, gates]}
   - id: t2
     scenarios: [SC-e05s06-P0-01]
@@ -19,7 +19,7 @@ tasks:
     verify: "tests/verify-no-autotools-artifacts.sh \"$PWD\""
     risk: P0
     security: medium
-    status: failing
+    status: passing
     allure: {severity: critical, categories: [removal, source-tree]}
   - id: t3
     scenarios: [SC-e05s06-P0-01]
@@ -27,5 +27,5 @@ tasks:
     verify: "tools/preflight.sh --strict && tools/verify-meson-dist.sh && tools/verify-release-artifacts.sh deb-artifacts"
     risk: P0
     security: high
-    status: failing
+    status: pending_authorization
     allure: {severity: critical, categories: [release, distribution, acceptance]}
