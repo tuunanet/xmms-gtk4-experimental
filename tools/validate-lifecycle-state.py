@@ -20,36 +20,36 @@ def main():
 
     state, execution_status, release_plan = sys.argv[1:]
     require_text(state, r"^active_epic_id: e05$", "must identify e05 as active")
-    require_text(state, r"^  last_tag: v0\.0\.1$", "must record the v0.0.1 tag")
+    require_text(state, r"^  last_tag: v0\.0\.2$", "must record the v0.0.2 tag")
     require_text(
         state,
-        r"^  last_publish: draft-prerelease$",
-        "must record the unpublished pre-release state",
+        r"^  last_publish: failed-draft-release-workflow$",
+        "must record the failed draft-release workflow",
     )
     require_text(
         state,
-        r"(?ms)^handoff:\n  status: pending_authorization$",
-        "must hand off e05 release authorization",
+        r"(?ms)^handoff:\n  status: in_progress$",
+        "must record the active e05 release repair",
     )
     require_text(
         execution_status,
-        r"^status: pending_authorization$",
-        "must mark the active execution pending authorization",
+        r"^status: in_progress$",
+        "must mark the active execution in progress",
     )
     require_text(
         execution_status,
-        r"^  e05: pending_authorization$",
-        "must mark e05 pending authorization",
+        r"^  e05: in_progress$",
+        "must mark e05 repair in progress",
     )
     require_text(
         execution_status,
-        r"^  e05s06: pending_authorization$",
-        "must mark e05s06 pending authorization",
+        r"^  e05s06: in_progress$",
+        "must mark e05s06 repair in progress",
     )
     require_text(
         release_plan,
-        r"(?ms)^  - id: e05$.*?^    status: pending_authorization$",
-        "must mark e05 pending authorization in the release plan",
+        r"(?ms)^  - id: e05$.*?^    status: in_progress$",
+        "must mark e05 repair in progress in the release plan",
     )
     require_text(execution_status, r"^  e04: verified$", "must mark e04 verified")
     require_text(execution_status, r"^  e04s01: verified$", "must mark e04s01 verified")

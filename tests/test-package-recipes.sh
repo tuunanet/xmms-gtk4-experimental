@@ -24,6 +24,18 @@ require_absent_text() {
 		not_ok "$3"
 	fi
 }
+require_order() {
+	first_line=$(grep -n -F -- "$2" "$srcdir/$1" 2>/dev/null |
+		head -n 1 | cut -d: -f1 || true)
+	second_line=$(grep -n -F -- "$3" "$srcdir/$1" 2>/dev/null |
+		head -n 1 | cut -d: -f1 || true)
+	if test -n "$first_line" && test -n "$second_line" && \
+		test "$first_line" -lt "$second_line"; then
+		ok "$4"
+	else
+		not_ok "$4"
+	fi
+}
 
 for file in \
 	.github/workflows/package-release.yml \
@@ -59,6 +71,11 @@ require_text .github/workflows/package-release.yml '--draft' \
 	'creates an unpublished draft release'
 require_text .github/workflows/package-release.yml 'meson' \
 	'installs Meson for target package builds'
+require_text .github/workflows/package-release.yml '            git' \
+	'installs Git for target package source checkout'
+require_order .github/workflows/package-release.yml \
+	'- name: Install package build dependencies' '- name: Check out selected ref' \
+	'installs target dependencies before source checkout'
 require_text .github/workflows/package-release.yml 'tools/package-deb.sh' \
 	'builds target packages through the Meson package helper'
 require_absent_text .github/workflows/package-release.yml './configure --disable-esd' \

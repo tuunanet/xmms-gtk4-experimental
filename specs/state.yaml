@@ -6,20 +6,24 @@ active_decisions:
     status: accepted
     summary: Use isolated worktrees and release-branch solo-local integration without routine pull requests.
     artifact: specs/workflows/solo-git.yaml
+  - id: autonomous-epic-execution
+    status: accepted
+    summary: Advance through approved active-epic stories without routine human checkpoints.
+    artifact: specs/workflows/autonomous-epic.yaml
 active_flow: build_epic
 active_epic_id: e05
 active_story_id: e05s06
 git:
-  branch: feat/retire-autotools
+  branch: fix/release-workflow-autonomy
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/retire-autotools
+  worktree: /home/tuunanet/git/tuunanet/release-workflow-autonomy
 metrics:
   story_start: 2026-08-08T13:31:00Z
 handoff:
-  status: pending_authorization
+  status: in_progress
   next_skill: release-branch
-  reason: e05s06 local P0 gates pass—strict preflight, clean distribution, release artifacts, and clean-environment verification with 33 tests. The validator rejects every reviewed regular-file and symlink class across all source-archive roots, including all removed delivery tests, and ignores no retired artifact path. Actual Meson build-tree plugins load from the absolute build root. Renewed independent review passed with zero must-fix findings. The maintainer authorized v0.0.2; tagged draft-release acceptance remains pending landing this cutover, preparing release metadata on release/0.0.2, and creating an annotated tag on main. The head marker is symbolic so it remains synchronized with evidence.
+  reason: The authorized v0.0.3 repair passed strict preflight (34/34), distribution, package/artifact, clean-environment, lifecycle, audit, and security gates. The immutable v0.0.2 tag remains unchanged; next is protected landing, annotated v0.0.3 tagging, and tagged draft-release acceptance.
 release:
-  last_tag: v0.0.1
-  last_publish: draft-prerelease
-  target_version: 0.0.2
+  last_tag: v0.0.2
+  last_publish: failed-draft-release-workflow
+  target_version: 0.0.3

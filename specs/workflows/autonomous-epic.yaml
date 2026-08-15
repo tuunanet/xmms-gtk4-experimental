@@ -1,0 +1,41 @@
+schema_version: 1
+name: autonomous-epic
+command: /autonomous-epic
+description: >-
+  Execute every approved story in the active epic without routine human
+  checkpoints. Advance only after the applicable verification gate is green.
+skills:
+  - survey-context
+  - security-review
+  - assess-impact
+  - plan-work
+  - kickoff-branch
+  - develop-tdd
+  - verify-work
+  - audit-code
+  - commit-message
+  - release-branch
+args:
+  build-epic:
+    execution_mode: autonomous
+    continue_until: active_epic_complete
+  execute-plan:
+    execution_mode: autonomous
+continuation:
+  after_green_gate: advance
+  on_reproducible_failure: investigate_and_repair
+  on_story_completion: select_next_approved_story
+human_feedback_required_for:
+  - unresolved_scope_or_ambiguity
+  - destructive_operation
+  - credentials_or_sensitive_data
+  - immutable_tag_or_release_authorization
+  - external_blocker_or_exhausted_retries
+terminal_states:
+  - success
+  - no-op
+  - blocked
+  - exhausted
+verify: >-
+  python3 -c "import yaml; d=yaml.safe_load(open('specs/workflows/autonomous-epic.yaml')); assert d['args']['build-epic']['execution_mode'] == 'autonomous'; assert d['continuation']['after_green_gate'] == 'advance'" &&
+  tests/test-autonomous-epic-workflow.sh .

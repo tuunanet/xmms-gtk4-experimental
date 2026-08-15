@@ -6,6 +6,16 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-08-14
+
+### Changed
+
+- Made approved active-epic execution autonomous between green verification gates.
+
+### Fixed
+
+- Installed Git before release-container checkout so Meson can create the verified source archive.
+
 ## [0.0.2] - 2026-08-14
 
 ### Changed

@@ -1,18 +1,18 @@
 schema_version: 1
 release:
   codename: Meson tooling migration
-  version: 0.0.1
-  bump_hint: none
-  status: planning
+  version: 0.0.3
+  bump_hint: patch
+  status: in_progress
   semantic_release: true
-status: planning
+status: in_progress
 epics:
   - id: e05
     title: Replace Autotools with Meson tooling
     capsule_dir: epics/e05-meson-tooling-migration
     wsjf: 3.5
     bcps: 42
-    status: pending_authorization
+    status: in_progress
     score:
       business_value: 10
       time_criticality: 8

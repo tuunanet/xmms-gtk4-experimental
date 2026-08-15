@@ -1,7 +1,7 @@
 schema_version: 1
-status: pending_authorization
+status: in_progress
 epics:
-  e05: pending_authorization
+  e05: in_progress
   e06: planned
   e04: verified
   e01: verified
@@ -13,7 +13,7 @@ stories:
   e05s03: verified
   e05s04: verified
   e05s05: verified
-  e05s06: pending_authorization
+  e05s06: in_progress
   e06s01: planned
   e06s02: planned
   e06s03: planned

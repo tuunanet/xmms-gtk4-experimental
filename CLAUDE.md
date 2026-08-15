@@ -75,6 +75,19 @@ Read `docs/architecture/` for subsystem diagrams and maintainer guidance.
 - MUST provide verification evidence before declaring completion.
 - MUST write the minimum code that solves the approved scope.
 - MUST ask one clarifying question instead of encoding an uncertain assumption.
+
+## Autonomous Epic Execution
+
+- The maintainer authorizes autonomous execution for every approved story in
+the active epic. MUST continue through every approved story in the active epic
+until it is complete or reaches a declared terminal state.
+- MUST use `specs/workflows/autonomous-epic.yaml` and invoke `build-epic` or
+`execute-plan` in autonomous mode. MUST NOT request routine confirmation after a green task, story, or gate.
+- MUST investigate and repair a reproducible failure within approved scope, then
+resume the active epic without a checkpoint.
+- Human feedback is required only for an unresolved scope or ambiguity,
+destructive operation, credentials or sensitive data, immutable tag or release
+authorization, or an external blocker after bounded retries are exhausted.
 <!-- END bigpowers:project -->
 
 <!-- BEGIN bigpowers:context-routing -->

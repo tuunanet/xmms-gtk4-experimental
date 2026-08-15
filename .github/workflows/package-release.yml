@@ -110,10 +110,6 @@ jobs:
       CARRY_SOURCE: ${{ matrix.carry_source }}
 
     steps:
-      - name: Check out selected ref
-        # actions/checkout v7.0.1
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-
       - name: Verify package target
         shell: bash
         run: |
@@ -160,6 +156,7 @@ jobs:
             dpkg-dev \
             file \
             gettext \
+            git \
             libasound2-dev \
             libgl-dev \
             libgtk2.0-dev \
@@ -184,6 +181,10 @@ jobs:
               exit 1
               ;;
           esac
+
+      - name: Check out selected ref
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Validate requested release version
         shell: bash

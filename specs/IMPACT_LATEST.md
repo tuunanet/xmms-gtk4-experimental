@@ -1,61 +1,47 @@
-# Impact: e05s06 Meson cutover (local completion; v0.0.2 preparation pending)
+# Impact: v0.0.3 release-workflow repair and autonomous epic policy
 
-## Result
+## Target
 
-`e05s06` removed the retired Autotools/libtool delivery tree without changing
-public UI, plugin ABI, socket, configuration, or skin contracts. Meson is the
-sole supported build, test, distribution, package, and release-artifact path.
+- `.github/workflows/package-release.yml`: target-container checkout and
+  dependency ordering.
+- `CLAUDE.md` and `specs/workflows/autonomous-epic.yaml`: project-local agent
+  execution policy.
 
-The cutover removed generated and source build artifacts, root and nested
-Autotools makefiles, configure/libtool support, obsolete gettext rule inputs,
-and retired delivery tests. Translation catalogs (`po/*.po`, `po/*.gmo`, and
-`po/LINGUAS`) remain because Meson packages them directly.
+## Dependents
 
-## Current dependents
+1. The manual tagged package-release workflow uses the container checkout to
+   create the Meson source archive consumed by `tools/package-deb.sh`.
+2. `tests/test-package-recipes.sh` statically protects the release workflow's
+   package and draft-release contract.
+3. `tests/meson.build` and its test-inventory contract register policy checks.
+4. `specs/state.yaml` records accepted project workflow decisions and release
+   target state.
+5. `meson.build`, `CHANGELOG.md`, and `tools/check-release-version.sh` form the
+   release-version authority.
 
-- `tools/preflight.sh`, `tools/package-deb.sh`,
-  `tools/verify-meson-dist.sh`, and `tools/verify-release-artifacts.sh` define
-  the no-download Meson delivery path. Package builds require a Meson source
-  archive outside Git; no legacy fallback exists.
-- `packaging/debian/rules` selects Meson and runs the supplied-source-archive
-  validator before package output can hide forbidden inputs.
-- `tests/verify-no-autotools-artifacts.sh` rejects retired build, libtool,
-  gettext, test, and output artifacts from tracked Git trees and extracted
-  source archives. Its fixture test covers regular files and symlinks.
-- `tests/meson.build` is the sole live test registration surface. It retains
-  intentional `.libs` fixture directories only as Meson test data, not
-  libtool output, and tests direct Meson plugin targets separately.
-- Uninstalled plugin discovery uses an absolute Meson build root and direct
-  `{Input,Output,…}/<target>/lib*.so` targets; `.libs` remains fixture fallback
-  only. Actual Meson mpg123 and ALSA modules are integration-tested.
-- Current contributor, architecture, release, package, and workflow guidance
-  names Meson commands. Historical manuals, changelogs, and the Solaris plugin
-  guide are explicitly marked historical.
+## Affected Stories
 
-## Story effect
+- **e05s04:** owns package and release workflow behavior.
+- **e05s06:** cannot complete until tagged draft-release acceptance succeeds.
+- **Future active epics:** consume the autonomous execution policy.
 
-- **e05s02–e05s05:** Meson build, distribution, Debian package, release, and
-  preflight contracts remain green under the final cutover.
-- **e05s06:** Owns source-tree retirement and its regression contract.
-- **e06:** Can begin from a single-toolchain, no-download baseline.
+## Test Coverage
 
-## Verification coverage
+- Existing `tests/test-package-recipes.sh` verifies release workflow presence,
+  targets, permissions, checksums, draft creation, Meson usage, and no
+  Autotools fallback.
+- Gap: it does not require Git to be installed before the container checkout.
+- Gap: no project-local contract currently prevents agents from pausing after
+  routine successful story steps.
 
-- `tools/preflight.sh --strict` proves no-download configuration, build,
-  33/33 Xvfb-backed tests, Cppcheck, Debian package verification, and release
-  artifacts.
-- `tools/verify-meson-dist.sh` proves a clean Meson source archive builds,
-  tests, and staged-installs, including public `xmms-config` query behavior.
-- `tests/verify-preflight-clean-environment.sh` proves clean Git, dirty Git,
-  and extracted-source paths use declared system tooling only.
-- The forbidden-artifact test exercises Git and extracted-archive fixtures for
-  every retired artifact class before the full preflight runs.
+## Risk: High
 
-## Residual risk and acceptance
+The change affects the sole tagged release pipeline and every future epic's
+agent progression. A failed package job blocks release delivery; unsafe
+automation must retain explicit blocked and exhausted terminal states.
 
-The change has high fan-in across build, package, distribution, release,
-tests, and documentation, but the final strict local gates pass. Renewed
-independent review passed with zero must-fix findings after the Meson build-tree
-plugin remediation. The maintainer authorized v0.0.2; landing the cutover and
-preparing that release's metadata remain required before tagged draft-release
-acceptance.
+## Recommended action
+
+Add focused contract tests before changing workflow/policy behavior; retain all
+release authorization, credential, destructive-operation, and external-blocker
+human gates. Run full strict preflight before creating `v0.0.3`.

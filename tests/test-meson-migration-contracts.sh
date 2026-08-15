@@ -24,36 +24,36 @@ sed 's/^active_story_id:.*/active_story_id: e05s99/' \
 	"$repo_root/specs/state.yaml" \
 	"$repo_root/specs/execution-status.yaml" \
 	"$repo_root/specs/release-plan.yaml"
-echo "ok - records the completed v0.0.1 draft pre-release"
+echo "ok - records the failed v0.0.2 draft release and active repair"
 grep -Fx '  head: HEAD' "$repo_root/specs/state.yaml" >/dev/null \
 	|| fail "uses a symbolic head marker for self-updating evidence"
 
-grep -Fx '  e05: pending_authorization' "$repo_root/specs/execution-status.yaml" >/dev/null \
-	|| fail "marks e05 pending release authorization in the execution ledger"
-grep -Fx '  e05s06: pending_authorization' "$repo_root/specs/execution-status.yaml" >/dev/null \
-	|| fail "marks e05s06 pending release authorization in the execution ledger"
-awk '/^status: / { exit $0 != "status: pending_authorization" }' \
+grep -Fx '  e05: in_progress' "$repo_root/specs/execution-status.yaml" >/dev/null \
+	|| fail "marks e05 repair in progress in the execution ledger"
+grep -Fx '  e05s06: in_progress' "$repo_root/specs/execution-status.yaml" >/dev/null \
+	|| fail "marks e05s06 repair in progress in the execution ledger"
+awk '/^status: / { exit $0 != "status: in_progress" }' \
 	"$repo_root/specs/epics/e05-meson-tooling-migration/epic.yaml" \
-	|| fail "marks the e05 capsule pending release authorization"
+	|| fail "marks the e05 capsule repair in progress"
 awk '
   /^  - id: e05$/ { in_e05 = 1; next }
-  in_e05 && /^  - id:/ { exit !pending }
-  in_e05 && /^    status: pending_authorization$/ { pending = 1 }
-  END { exit !pending }
+  in_e05 && /^  - id:/ { exit !in_progress }
+  in_e05 && /^    status: in_progress$/ { in_progress = 1 }
+  END { exit !in_progress }
 ' "$repo_root/specs/release-plan.yaml" \
-	|| fail "marks e05 pending release authorization in the release plan"
-grep -Fx 'status: pending_authorization' \
+	|| fail "marks e05 repair in progress in the release plan"
+grep -Fx 'status: in_progress' \
 	"$repo_root/specs/epics/e05-meson-tooling-migration/e05s06-tasks.yaml" >/dev/null \
-	|| fail "marks e05s06 pending release authorization"
+	|| fail "marks e05s06 repair in progress"
 awk '
   /^  - id: t3$/ { in_t3 = 1; next }
-  in_t3 && /^  - id:/ { exit !pending }
-  in_t3 && /^    status: pending_authorization$/ { pending = 1 }
-  END { exit !pending }
+  in_t3 && /^  - id:/ { exit !in_progress }
+  in_t3 && /^    status: in_progress$/ { in_progress = 1 }
+  END { exit !in_progress }
 ' "$repo_root/specs/epics/e05-meson-tooling-migration/e05s06-tasks.yaml" \
-	|| fail "marks tagged draft-release acceptance pending authorization"
-grep -Fx '  status: pending_authorization' "$repo_root/specs/state.yaml" >/dev/null \
-	|| fail "hands off e05 release authorization"
+	|| fail "marks tagged draft-release repair in progress"
+grep -Fx '  status: in_progress' "$repo_root/specs/state.yaml" >/dev/null \
+	|| fail "hands off active e05 repair"
 awk '/^wsjf: / { exit $0 != "wsjf: 3.5" }' \
 	"$repo_root/specs/epics/e05-meson-tooling-migration/epic.yaml" \
 	|| fail "matches the release-plan e05 WSJF"
@@ -65,13 +65,13 @@ awk '
 ' "$repo_root/specs/epics/e05-meson-tooling-migration/epic.yaml" \
 	|| fail "marks e05s04 verified in the capsule"
 invalid_execution="$contract_tmpdir/invalid-execution-status.yaml"
-sed 's/^  e05: pending_authorization$/  e05: verified/' \
+sed 's/^  e05: in_progress$/  e05: verified/' \
 	"$repo_root/specs/execution-status.yaml" > "$invalid_execution"
 if "$lifecycle_checker" "$repo_root/specs/state.yaml" "$invalid_execution" \
 	"$repo_root/specs/release-plan.yaml"; then
-	fail "rejects a verified e05 awaiting release authorization"
+	fail "rejects a verified e05 while release repair is active"
 fi
-echo "ok - synchronizes pending e05 release authorization"
+echo "ok - synchronizes active e05 release repair"
 grep -Fx 'status: completed' "$repo_root/specs/planning-status.yaml" >/dev/null \
 	|| fail "marks e05 planning complete"
 if grep -F 'e04 lifecycle evidence is being reconciled' \

@@ -230,6 +230,8 @@ test('release-tools', find_program('test-release-tools.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('solo-git-workflow', find_program('test-solo-git-workflow.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
+test('autonomous-epic-workflow', find_program('test-autonomous-epic-workflow.sh'),
+     args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('meson-test-suite-contract', find_program('test-meson-test-suite-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root(),
      is_parallel: false)

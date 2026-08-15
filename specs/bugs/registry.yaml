@@ -198,3 +198,22 @@ bugs:
     verification: tools/preflight.sh --strict && tests/verify-preflight-clean-environment.sh
     risk_level: high
     commit_message: "fix(preflight): harden dirty source snapshots"
+  - bug_id: BUG-2026-08-14T123713
+    date: 2026-08-14
+    severity: high
+    priority: P0
+    scope: tagged-release-workflow
+    summary: Container package jobs check out release source before Git is available.
+    file: specs/bugs/BUG-2026-08-14T123713-container-checkout-without-git.md
+    status: verifying
+    files_changed:
+      - .github/workflows/package-release.yml
+      - tools/validate-lifecycle-state.py
+      - tests/test-package-recipes.sh
+      - tests/test-meson-migration-contracts.sh
+      - tests/test-autonomous-epic-workflow.sh
+      - specs/workflows/autonomous-epic.yaml
+    approach: Install Git with target dependencies before checking out the selected tag, represent the active repair truthfully, and continue approved epic work without routine checkpoints.
+    verification: tools/preflight.sh --strict && tools/verify-meson-dist.sh && tools/package-deb.sh && tests/verify-preflight-clean-environment.sh
+    risk_level: high
+    commit_message: "fix(release): prepare container source checkout"

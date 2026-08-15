@@ -12,10 +12,10 @@ and agent-preflight gates prove parity.
 
 ## Delivery status
 
-Local cutover verification is complete. Tagged draft-release acceptance is
-`pending_authorization`: it needs an approved version, an annotated tag on
-`main`, and explicit maintainer authorization before this story can be marked
-verified.
+Local cutover verification is complete. The immutable `v0.0.2` tag's
+package workflow failed because its containers checked out before Git was
+installed. The maintainer authorized `v0.0.3`; tagged draft-release acceptance
+is now `in_progress` while that repair is verified and delivered.
 
 ## Requirements
 
@@ -41,7 +41,7 @@ are the sole supported build and delivery authority.
 - Given the tracked repository after cutover, when forbidden-path validation
   runs, then no Autotools/libtool/configure/Makefile artifact remains.
 - Given a fresh supported host, when preflight, package, distribution, and
-  tagged release validation run, then they need no legacy build command.
+  v0.0.3 tagged release validation run, then they need no legacy build command.
 
 ## Out of scope
 

@@ -39,6 +39,7 @@ for expected_test in \
   meson-output-contract \
   release-tools \
   solo-git-workflow \
+  autonomous-epic-workflow \
   meson-test-suite-contract \
   meson-dist-contract
 do
