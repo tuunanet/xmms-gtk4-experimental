@@ -1,3 +1,44 @@
+# Audit: e05s06 release build-parity timeout repair
+
+**Reviewed range:** `main...fa83e85`
+**Result:** PASS — ready for protected integration
+
+## Current repair checklist
+
+- [x] Scope is limited to the Linux Mint `v0.0.5` package-job timeout and its
+  release evidence. No runtime, ABI, socket, configuration, skin, dependency,
+  workflow, or packaging-interface behavior changed.
+- [x] The root cause is recorded in
+  `BUG-2026-08-15T115821-release-build-parity-timeout.md`: a full isolated
+  build had Meson's implicit 30-second test limit, while the failed target
+  invocation reached 30.03 seconds.
+- [x] The implementation sets only a bounded 120-second test timeout. The
+  adjacent suite contract rejects absence of that explicit bound; the existing
+  isolated inventory and negative-output checks remain intact.
+- [x] F.I.R.S.T: the new assertion is deterministic and self-validating; it
+  uses the suite's temporary build directory and adds negligible time. The
+  intentionally full build stays serialized and bounded because it validates
+  release output parity.
+- [x] `tools/preflight.sh --strict` passed: all 34 tests, Meson distribution,
+  Debian package, lint, and local artifact verification succeeded.
+- [x] Clean branch clones passed `tools/package-deb.sh` and
+  `tools/verify-release-artifacts.sh` in pinned Linux Mint 22.3 and Ubuntu
+  26.04 images. Both package-stage parity invocations completed within the
+  explicit bound.
+- [x] `git diff --check`, secret scan, Conventional Commit history, and
+  no-attribution checks passed.
+- [x] Security review is current in `specs/security/REVIEW.md`; it finds no
+  reportable vulnerability or exception.
+
+## Smells and rationalizations
+
+No Fowler or Clean Code smell is introduced: no function, public interface,
+or duplicated branch was added. No gate failure was dismissed; the immutable
+`v0.0.5` release remains unchanged and the repair is prepared for newly
+authorized `v0.0.6` acceptance.
+
+## Historical cutover audit
+
 # Audit: e05s06 final Meson cutover
 
 **Reviewed range:** `main...HEAD`

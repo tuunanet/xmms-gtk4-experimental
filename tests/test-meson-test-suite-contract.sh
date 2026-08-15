@@ -58,6 +58,12 @@ do
     }
 done
 
+grep -A 3 "test('build-parity-contract'" "$repo_root/tests/meson.build" \
+  | grep -F 'timeout: 120' >/dev/null || {
+    printf '%s\n' 'build-parity contract must declare a 120-second timeout' >&2
+    exit 1
+  }
+
 meson compile -C "$build_dir" test-xentry >/dev/null 2>&1 || {
   printf '%s\n' 'registered Meson xentry test does not compile' >&2
   exit 1

@@ -211,7 +211,7 @@ test('mikmod-build-contract', find_program('test-mikmod-build-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('build-parity-contract', find_program('test-build-parity-contract.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root(),
-     is_parallel: false)
+     timeout: 120, is_parallel: false)
 test('package-recipes', find_program('test-package-recipes.sh'),
      args: [meson.project_source_root()], workdir: meson.project_source_root())
 test('debian-package-contract', find_program('test-package-artifact-contracts.sh'),
