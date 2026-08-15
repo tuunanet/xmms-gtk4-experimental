@@ -247,7 +247,7 @@ flowchart TB
 | Behavior | Detail |
 | --- | --- |
 | **Targets** | Linux Mint 22.3 and Ubuntu 26.04, each in a pinned container image on an Ubuntu 24.04 runner. |
-| **Dependencies** | The package environment installs Git before checkout, then installs GTK2, `libgtk-3-dev`, Meson, Ninja, Cppcheck, Debian packaging tools, and Xvfb before building from the source archive. |
+| **Dependencies** | The package environment installs Git before checkout, then trusts only the checked-out workspace before Meson reads Git metadata. It also installs GTK2, `libgtk-3-dev`, Meson, Ninja, Cppcheck, Debian packaging tools, and Xvfb before building from the source archive. |
 | **Verification** | Each target builds `xmms` and `libxmms-dev`, inspects metadata, extracts package payloads for smoke verification without host installation, and verifies its SHA-256 manifests. |
 | **Permissions** | Default workflow permission is `contents: read`; only the final draft-release job receives `contents: write`. |
 | **Publication** | The workflow creates or resumes an unpublished draft only and refuses to modify a published release. |

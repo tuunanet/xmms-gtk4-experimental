@@ -76,6 +76,17 @@ require_text .github/workflows/package-release.yml '            git' \
 require_order .github/workflows/package-release.yml \
 	'- name: Install package build dependencies' '- name: Check out selected ref' \
 	'installs target dependencies before source checkout'
+require_text .github/workflows/package-release.yml \
+	'git config --global --add safe.directory "${GITHUB_WORKSPACE}"' \
+	'trusts only the checked-out workspace for Git source distribution'
+require_absent_text .github/workflows/package-release.yml 'safe.directory "*"' \
+	'does not trust every repository for Git source distribution'
+require_order .github/workflows/package-release.yml \
+	'- name: Check out selected ref' '- name: Trust checked-out workspace' \
+	'trusts the workspace only after checkout'
+require_order .github/workflows/package-release.yml \
+	'- name: Trust checked-out workspace' '- name: Build target packages' \
+	'trusts the workspace before Meson source distribution'
 require_text .github/workflows/package-release.yml 'tools/package-deb.sh' \
 	'builds target packages through the Meson package helper'
 require_absent_text .github/workflows/package-release.yml './configure --disable-esd' \

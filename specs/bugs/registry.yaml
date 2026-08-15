@@ -205,7 +205,7 @@ bugs:
     scope: tagged-release-workflow
     summary: Container package jobs check out release source before Git is available.
     file: specs/bugs/BUG-2026-08-14T123713-container-checkout-without-git.md
-    status: verifying
+    status: fixed
     files_changed:
       - .github/workflows/package-release.yml
       - tools/validate-lifecycle-state.py
@@ -214,6 +214,26 @@ bugs:
       - tests/test-autonomous-epic-workflow.sh
       - specs/workflows/autonomous-epic.yaml
     approach: Install Git with target dependencies before checking out the selected tag, represent the active repair truthfully, and continue approved epic work without routine checkpoints.
-    verification: tools/preflight.sh --strict && tools/verify-meson-dist.sh && tools/package-deb.sh && tests/verify-preflight-clean-environment.sh
+    verification: v0.0.3 run 31870919715 reaches Meson in both target containers; the resulting Git ownership failure is tracked separately.
     risk_level: high
     commit_message: "fix(release): prepare container source checkout"
+  - bug_id: BUG-2026-08-15T073425
+    date: 2026-08-15
+    severity: high
+    priority: P0
+    scope: tagged-release-workflow
+    summary: Container Git rejects the differently owned release checkout after Git installation.
+    file: specs/bugs/BUG-2026-08-15T073425-release-container-workspace-trust.md
+    status: verifying
+    files_changed:
+      - .github/workflows/package-release.yml
+      - tests/test-package-recipes.sh
+      - tools/validate-lifecycle-state.py
+      - tests/test-meson-migration-contracts.sh
+      - meson.build
+      - CHANGELOG.md
+      - specs/state.yaml
+    approach: Trust only the runner-provided workspace after checkout and before Meson distribution, then re-run tagged release acceptance.
+    verification: tools/preflight.sh --strict && tools/verify-meson-dist.sh && MESON_BUILD_DIR=build-meson-preflight tools/verify-release-artifacts.sh deb-artifacts
+    risk_level: high
+    commit_message: "fix(release): trust container checkout workspace"

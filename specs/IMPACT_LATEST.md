@@ -1,47 +1,45 @@
-# Impact: v0.0.3 release-workflow repair and autonomous epic policy
+# Impact: v0.0.4 trusted container workspace repair
 
 ## Target
 
-- `.github/workflows/package-release.yml`: target-container checkout and
-  dependency ordering.
-- `CLAUDE.md` and `specs/workflows/autonomous-epic.yaml`: project-local agent
-  execution policy.
+`.github/workflows/package-release.yml` target-container checkout setup.
 
-## Dependents
+## Dependents (5)
 
-1. The manual tagged package-release workflow uses the container checkout to
-   create the Meson source archive consumed by `tools/package-deb.sh`.
-2. `tests/test-package-recipes.sh` statically protects the release workflow's
-   package and draft-release contract.
-3. `tests/meson.build` and its test-inventory contract register policy checks.
-4. `specs/state.yaml` records accepted project workflow decisions and release
-   target state.
-5. `meson.build`, `CHANGELOG.md`, and `tools/check-release-version.sh` form the
-   release-version authority.
+- `tools/package-deb.sh`: requires usable Git metadata to create the Meson
+  source archive for the checkout build.
+- `tests/test-package-recipes.sh`: statically protects package-workflow
+  dependencies, ordering, and release behavior.
+- `tests/test-meson-migration-contracts.sh`: validates the release lifecycle
+  state for the active e05 repair.
+- `docs/architecture/build-and-test.md`: tells maintainers how container
+  release builds obtain a source archive.
+- `e05s06` lifecycle records: own the P0 cutover acceptance criterion.
 
 ## Affected Stories
 
-- **e05s04:** owns package and release workflow behavior.
-- **e05s06:** cannot complete until tagged draft-release acceptance succeeds.
-- **Future active epics:** consume the autonomous execution policy.
+- `e05s06`: Meson final Autotools removal; its release-acceptance task remains
+  in progress until both package targets and the draft release succeed.
 
 ## Test Coverage
 
-- Existing `tests/test-package-recipes.sh` verifies release workflow presence,
-  targets, permissions, checksums, draft creation, Meson usage, and no
-  Autotools fallback.
-- Gap: it does not require Git to be installed before the container checkout.
-- Gap: no project-local contract currently prevents agents from pausing after
-  routine successful story steps.
+- `tests/test-package-recipes.sh` covers Git installation and dependency-before-
+  checkout ordering.
+- Gap: no contract requires a container user to trust the exact checked-out
+  workspace before Meson requests Git metadata.
+- External evidence: `v0.0.3` workflow run `31870919715` reached Meson on both
+  targets but failed because Git rejected the workspace as dubiously owned.
 
 ## Risk: High
 
-The change affects the sole tagged release pipeline and every future epic's
-agent progression. A failed package job blocks release delivery; unsafe
-automation must retain explicit blocked and exhausted terminal states.
+The change is small but affects the protected release path and every supported
+container target. A broad safe-directory setting would weaken Git's ownership
+protection, so the repair must trust only `${GITHUB_WORKSPACE}` and prove that
+it runs after checkout and before package construction.
 
 ## Recommended action
 
-Add focused contract tests before changing workflow/policy behavior; retain all
-release authorization, credential, destructive-operation, and external-blocker
-human gates. Run full strict preflight before creating `v0.0.3`.
+Add the focused static contract first, then configure the one workspace as
+trusted and retain the existing tag validation, pinned actions, no-download
+Meson configuration, and release permissions. Re-run strict preflight and a
+new authorized tagged draft-release workflow before closing e05s06.

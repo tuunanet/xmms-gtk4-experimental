@@ -6,6 +6,12 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.4] - 2026-08-15
+
+### Fixed
+
+- Trust only the checked-out workspace before Meson creates release source archives in package containers.
+
 ## [0.0.3] - 2026-08-14
 
 ### Changed

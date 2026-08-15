@@ -1,7 +1,7 @@
 schema_version: 1
 release:
   codename: Meson tooling migration
-  version: 0.0.3
+  version: 0.0.4
   bump_hint: patch
   status: in_progress
   semantic_release: true
@@ -70,7 +70,7 @@ epics:
     bcps: 8
     status: verified
 bugs:
-  total: 3
+  total: 4
   fixed: 3
   deferred: 0
   wontfix: 0

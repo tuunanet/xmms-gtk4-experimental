@@ -79,10 +79,10 @@ contract.
 
 ## Resolution
 
-**Status:** local repair verified; tagged acceptance pending
+**Status:** fixed
 
-The workflow now installs Git with the target dependencies before it checks out
-the selected tag. Local strict preflight (34/34), Meson distribution, package
-and artifact verification, and clean/dirty/extracted-source checks pass. The
-immutable `v0.0.2` tag remains unchanged; `v0.0.3` awaits tagged draft-release
-acceptance before this defect is closed.
+The workflow installs Git with the target dependencies before it checks out the
+selected tag. Immutable `v0.0.3` run `31870919715` reached Meson in both target
+containers, proving this prerequisite is restored. That run exposed a separate
+checkout-ownership trust failure, tracked by
+`BUG-2026-08-15T073425-release-container-workspace-trust.md`.

@@ -186,6 +186,13 @@ jobs:
         # actions/checkout v7.0.1
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
+      - name: Trust checked-out workspace
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+          test "$(git -C "${GITHUB_WORKSPACE}" rev-parse --is-inside-work-tree)" = true
+
       - name: Validate requested release version
         shell: bash
         env:

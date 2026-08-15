@@ -14,8 +14,10 @@ and agent-preflight gates prove parity.
 
 Local cutover verification is complete. The immutable `v0.0.2` tag's
 package workflow failed because its containers checked out before Git was
-installed. The maintainer authorized `v0.0.3`; tagged draft-release acceptance
-is now `in_progress` while that repair is verified and delivered.
+installed. The immutable `v0.0.3` tag repaired that prerequisite but its
+containers did not trust the differently owned checkout. The maintainer
+authorized `v0.0.4`; tagged draft-release acceptance is now `in_progress` for
+the scoped workspace-trust repair.
 
 ## Requirements
 
@@ -41,7 +43,7 @@ are the sole supported build and delivery authority.
 - Given the tracked repository after cutover, when forbidden-path validation
   runs, then no Autotools/libtool/configure/Makefile artifact remains.
 - Given a fresh supported host, when preflight, package, distribution, and
-  v0.0.3 tagged release validation run, then they need no legacy build command.
+  v0.0.4 tagged release validation run, then they need no legacy build command.
 
 ## Out of scope
 

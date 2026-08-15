@@ -14,16 +14,16 @@ active_flow: build_epic
 active_epic_id: e05
 active_story_id: e05s06
 git:
-  branch: fix/release-workflow-autonomy
+  branch: fix/release-workspace-trust
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/release-workflow-autonomy
+  worktree: /home/tuunanet/git/tuunanet/release-workspace-trust
 metrics:
   story_start: 2026-08-08T13:31:00Z
 handoff:
   status: in_progress
   next_skill: release-branch
-  reason: The authorized v0.0.3 repair passed strict preflight (34/34), distribution, package/artifact, clean-environment, lifecycle, audit, and security gates. The immutable v0.0.2 tag remains unchanged; next is protected landing, annotated v0.0.3 tagging, and tagged draft-release acceptance.
+  reason: The authorized v0.0.4 scoped workspace-trust repair passed strict preflight (34/34), clean distribution, preflight artifact verification, lifecycle validation, container ownership reproduction, audit, and security review. Next is protected landing, immutable tagging, and tagged draft-release acceptance.
 release:
-  last_tag: v0.0.2
+  last_tag: v0.0.3
   last_publish: failed-draft-release-workflow
-  target_version: 0.0.3
+  target_version: 0.0.4
