@@ -26,7 +26,7 @@ stories:
   e03s03: verified
 gate_trace:
   verdict: WAIVED
-  generated_at: 2026-08-14T08:43:33Z
-  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. e05s06 has explicit task verification, 33-test strict preflight evidence, distribution/package evidence, security review, and renewed zero-must-fix dual review, but no heuristic coverage result can be computed.
+  generated_at: 2026-08-15T14:01:14Z
+  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. BUG-2026-08-15T140114 has explicit reproduction, a transition-fixture regression test, strict-preflight evidence, audit, and security review; no heuristic coverage result can be computed.
   heuristic_ratio: null
   downgrade_applied: false

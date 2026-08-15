@@ -10,17 +10,21 @@ active_decisions:
     status: accepted
     summary: Advance through approved active-epic stories without routine human checkpoints.
     artifact: specs/workflows/autonomous-epic.yaml
-active_flow: sustain
+active_flow: fix_bug
+active_bug_id: BUG-2026-08-15T140114
+bug_cycle:
+  current_step: 5
+  completed_steps: [1, 2, 3, 4]
 git:
-  branch: main
+  branch: feat/e06s01-gobject-api-boundaries
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
+  worktree: /home/tuunanet/git/tuunanet/e06s01-gobject-api-boundaries
 metrics:
   story_start: 2026-08-08T13:31:00Z
 handoff:
-  status: complete
-  next_skill: survey-context
-  reason: v0.0.6 is published after protected landing, an annotated tag, successful Linux Mint and Ubuntu package jobs, draft checksum review, and explicit release authorization. e05 final Meson cutover is complete.
+  status: in_progress
+  next_skill: release-branch
+  reason: BUG-2026-08-15T140114 passed focused validation, strict preflight, audit, and Conventional Commit review; land the separate lifecycle fix before starting e06.
 release:
   last_tag: v0.0.6
   last_publish: published-v0.0.6

@@ -275,3 +275,19 @@ bugs:
     approach: Give the isolated full-build parity contract an explicit bounded 120-second timeout and protect it with the suite contract.
     verification: tools/preflight.sh --strict && tools/package-deb.sh && tools/verify-release-artifacts.sh deb-artifacts
     risk_level: medium
+  - bug_id: BUG-2026-08-15T140114
+    date: 2026-08-15
+    severity: high
+    priority: P1
+    scope: lifecycle-validation
+    summary: Completed e05 lifecycle validation blocks transition to the planned e06 epic.
+    file: specs/bugs/BUG-2026-08-15T140114-lifecycle-validator-epic-coupling.md
+    status: fixed
+    files_changed:
+      - tools/validate-lifecycle-state.py
+      - tests/test-meson-migration-contracts.sh
+      - specs/state.yaml
+    approach: Validate durable v0.0.6/e05 facts without requiring a transient terminal workflow snapshot.
+    verification: tests/test-meson-migration-contracts.sh "$PWD" && tools/preflight.sh --strict
+    risk_level: low
+    commit_message: "fix(lifecycle): allow future epic transitions"

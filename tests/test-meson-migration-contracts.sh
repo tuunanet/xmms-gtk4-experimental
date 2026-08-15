@@ -13,13 +13,17 @@ lifecycle_checker="$repo_root/tools/validate-lifecycle-state.py"
 [ -x "$lifecycle_checker" ] || fail "provides lifecycle validation for the completed release dispatch"
 contract_tmpdir=$(mktemp -d)
 trap 'rm -rf "$contract_tmpdir"' EXIT HUP INT TERM
-advanced_state="$contract_tmpdir/state.yaml"
-sed 's/^active_story_id:.*/active_story_id: e05s99/' \
-	"$repo_root/specs/state.yaml" > "$advanced_state"
+transition_state="$contract_tmpdir/e06-transition-state.yaml"
+transition_execution="$contract_tmpdir/e06-transition-execution-status.yaml"
+sed 's/^active_flow:.*/active_flow: build_epic/' \
+	"$repo_root/specs/state.yaml" > "$transition_state"
+sed '0,/^status: verified$/{s/^status: verified$/status: in_progress/}' \
+	"$repo_root/specs/execution-status.yaml" > "$transition_execution"
 "$lifecycle_checker" \
-	"$advanced_state" \
-	"$repo_root/specs/execution-status.yaml" \
-	"$repo_root/specs/release-plan.yaml"
+	"$transition_state" \
+	"$transition_execution" \
+	"$repo_root/specs/release-plan.yaml" \
+	|| fail "allows a future epic while retaining published e05 evidence"
 "$lifecycle_checker" \
 	"$repo_root/specs/state.yaml" \
 	"$repo_root/specs/execution-status.yaml" \
@@ -66,10 +70,6 @@ awk '
   END { exit !passing }
 ' "$repo_root/specs/epics/e05-meson-tooling-migration/e05s06-tasks.yaml" \
 	|| fail "marks tagged draft-release repair passing"
-grep -Fx 'active_flow: sustain' "$repo_root/specs/state.yaml" >/dev/null \
-	|| fail "hands off the completed e05 release to sustain mode"
-grep -Fx '  status: complete' "$repo_root/specs/state.yaml" >/dev/null \
-	|| fail "records completed release handoff"
 awk '/^wsjf: / { exit $0 != "wsjf: 3.5" }' \
 	"$repo_root/specs/epics/e05-meson-tooling-migration/epic.yaml" \
 	|| fail "matches the release-plan e05 WSJF"
