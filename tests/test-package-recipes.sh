@@ -105,8 +105,10 @@ require_absent_text packaging/debian/rules 'dh_autoreconf' \
 require_absent_text packaging/debian/control 'Autoconf' \
 	'does not promise a removed plugin build macro'
 
-require_text tools/package-deb.sh 'meson dist' \
-	'creates source archives through Meson in VCS checkouts'
+require_text tools/package-deb.sh 'for command in meson ninja python3 xvfb-run; do' \
+	'requires Xvfb for headless source-distribution tests'
+require_text tools/package-deb.sh 'xvfb-run --auto-servernum meson dist' \
+	'creates source archives through Meson in an Xvfb session'
 require_text tools/package-deb.sh 'DEB_SOURCE_ARCHIVE' \
 	'accepts an explicit Meson source archive outside Git'
 require_text tools/package-deb.sh 'requires DEB_SOURCE_ARCHIVE outside a Git checkout' \

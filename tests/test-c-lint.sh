@@ -67,6 +67,13 @@ else
 	ok "excludes generated intl sources"
 fi
 
+if grep -Fx 'readdirCalled:xmms/pluginenum.c:428 # legacy portability (Cppcheck 2.13)' \
+	"$srcdir/tools/cppcheck-suppressions.txt" >/dev/null; then
+	ok "records the reviewed Linux Mint readdir diagnostic"
+else
+	not_ok "records the reviewed Linux Mint readdir diagnostic"
+fi
+
 if "$srcdir/tools/run-c-lint.sh" >"$output_file" 2>&1; then
 	ok "accepts the reviewed legacy baseline"
 else

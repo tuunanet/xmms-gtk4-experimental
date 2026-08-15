@@ -23,7 +23,7 @@ tasks:
     allure: {severity: critical, categories: [removal, source-tree]}
   - id: t3
     scenarios: [SC-e05s06-P0-01]
-    description: Repair failed tagged release delivery, then re-run full Meson preflight, Debian package verification, clean distribution verification, and v0.0.4 draft-release acceptance before declaring the cutover complete.
+    description: Repair failed tagged release delivery, then re-run full Meson preflight, Debian package verification, clean distribution verification, and v0.0.5 draft-release acceptance before declaring the cutover complete.
     verify: "tools/preflight.sh --strict && tools/verify-meson-dist.sh && MESON_BUILD_DIR=build-meson-preflight tools/verify-release-artifacts.sh deb-artifacts"
     risk: P0
     security: high

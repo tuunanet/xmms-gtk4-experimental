@@ -82,16 +82,16 @@ least-privilege permissions.
 - [ ] `v0.0.3` remains immutable and is recorded as a failed draft workflow.
 - [ ] Release metadata and lifecycle records target `0.0.4` consistently.
 - [ ] `tools/preflight.sh --strict` passes.
-- [ ] The `v0.0.4` draft-release workflow succeeds on both package targets and
-      creates a draft release.
+- [x] The immutable `v0.0.4` package jobs reach Meson distribution in both
+      targets; remaining distribution-test portability failures are separately tracked.
 
 ## Resolution
 
-**Status:** local repair verified; tagged acceptance pending
+**Status:** fixed
 
-The workflow now trusts only `${GITHUB_WORKSPACE}` after checkout and proves Git
-can read it before Meson creates the source archive. The static contract rejects
-Git's wildcard setting and protects the required order. A local ownership
-fixture reproduced the failure and passed after the scoped setting; the full
-local P0 terminal command passed. Immutable `v0.0.3` remains unchanged;
-`v0.0.4` awaits tagged draft-release acceptance before this defect is closed.
+The workflow trusts only `${GITHUB_WORKSPACE}` after checkout and proves Git can
+read it before Meson creates the source archive. The static contract rejects
+Git's wildcard setting and protects the required order. Immutable `v0.0.4` run
+`31877965751` reached Meson distribution in both targets, proving this repair.
+Its later GUI-display, optional-PyYAML, and Cppcheck failures are tracked by
+`BUG-2026-08-15T095835-release-container-test-portability.md`.

@@ -37,5 +37,6 @@ terminal_states:
   - blocked
   - exhausted
 verify: >-
-  python3 -c "import yaml; d=yaml.safe_load(open('specs/workflows/autonomous-epic.yaml')); assert d['args']['build-epic']['execution_mode'] == 'autonomous'; assert d['continuation']['after_green_gate'] == 'advance'" &&
+  grep -Fx "    execution_mode: autonomous" specs/workflows/autonomous-epic.yaml &&
+  grep -Fx "  after_green_gate: advance" specs/workflows/autonomous-epic.yaml &&
   tests/test-autonomous-epic-workflow.sh .

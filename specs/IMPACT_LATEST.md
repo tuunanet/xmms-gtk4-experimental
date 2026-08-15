@@ -1,45 +1,46 @@
-# Impact: v0.0.4 trusted container workspace repair
+# Impact: release-container test portability repair
 
 ## Target
 
-`.github/workflows/package-release.yml` target-container checkout setup.
+Target-container source distribution in `tools/package-deb.sh`, plus its
+portable shell and C-lint contracts.
 
-## Dependents (5)
+## Dependents (6)
 
-- `tools/package-deb.sh`: requires usable Git metadata to create the Meson
-  source archive for the checkout build.
-- `tests/test-package-recipes.sh`: statically protects package-workflow
-  dependencies, ordering, and release behavior.
-- `tests/test-meson-migration-contracts.sh`: validates the release lifecycle
-  state for the active e05 repair.
-- `docs/architecture/build-and-test.md`: tells maintainers how container
-  release builds obtain a source archive.
-- `e05s06` lifecycle records: own the P0 cutover acceptance criterion.
+- `.github/workflows/package-release.yml`: invokes `tools/package-deb.sh` in
+  the Linux Mint and Ubuntu release containers.
+- `tools/preflight.sh`: uses the same package helper and is the canonical local
+  release proof.
+- `tests/test-package-recipes.sh`: protects package-helper release behavior.
+- `tests/test-autonomous-epic-workflow.sh`: is run from generated source trees
+  during Meson distribution testing.
+- `tools/run-c-lint.sh` and `tools/cppcheck-suppressions.txt`: define the
+  reviewed legacy diagnostic baseline for every supported build image.
+- `e05s06`: remains blocked on a successful tagged container draft release.
 
 ## Affected Stories
 
-- `e05s06`: Meson final Autotools removal; its release-acceptance task remains
-  in progress until both package targets and the draft release succeed.
+- `e05s06`: final Meson cutover; its tagged release acceptance must work in
+  both declared target containers.
 
 ## Test Coverage
 
-- `tests/test-package-recipes.sh` covers Git installation and dependency-before-
-  checkout ordering.
-- Gap: no contract requires a container user to trust the exact checked-out
-  workspace before Meson requests Git metadata.
-- External evidence: `v0.0.3` workflow run `31870919715` reached Meson on both
-  targets but failed because Git rejected the workspace as dubiously owned.
+- External `v0.0.4` run `31877965751` reproduces all three defects in the real
+  release images.
+- Gap 1: package source-distribution tests are not wrapped in Xvfb.
+- Gap 2: the autonomous policy contract imports optional PyYAML.
+- Gap 3: the reviewed Cppcheck baseline lacks one known narrow diagnostic from
+  Linux Mint's Cppcheck 2.13.
 
 ## Risk: High
 
-The change is small but affects the protected release path and every supported
-container target. A broad safe-directory setting would weaken Git's ownership
-protection, so the repair must trust only `${GITHUB_WORKSPACE}` and prove that
-it runs after checkout and before package construction.
+All changes affect the protected release path and two different container
+images. The runtime application is untouched; each correction must remain
+narrow and have a direct regression contract.
 
 ## Recommended action
 
-Add the focused static contract first, then configure the one workspace as
-trusted and retain the existing tag validation, pinned actions, no-download
-Meson configuration, and release permissions. Re-run strict preflight and a
-new authorized tagged draft-release workflow before closing e05s06.
+Add one TDD slice per defect: run Meson distribution under Xvfb, remove the
+nonstandard Python dependency from the policy test, and add a line-specific
+Cppcheck suppression. Re-run the actual target containers locally where
+possible, then obtain authorization for a new immutable patch tag.

@@ -6,6 +6,14 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.5] - 2026-08-15
+
+### Fixed
+
+- Ran release-container Meson distribution tests under Xvfb.
+- Removed the optional PyYAML dependency from autonomous-policy verification.
+- Corrected the reviewed Linux Mint Cppcheck 2.13 plugin-enumeration baseline.
+
 ## [0.0.4] - 2026-08-15
 
 ### Fixed

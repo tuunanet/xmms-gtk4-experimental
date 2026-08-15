@@ -83,7 +83,7 @@ invalidPrintfArgType_sint:xmms/fft.c:245 # legacy warning
 invalidPrintfArgType_sint:xmms/fft.c:246 # legacy warning
 readdirCalled:xmms/playlist.c:439 # legacy portability (Cppcheck 2.13)
 readdirCalled:xmms/pluginenum.c:402 # legacy portability (Cppcheck 2.13)
-readdirCalled:xmms/pluginenum.c:424 # legacy portability (Cppcheck 2.13)
+readdirCalled:xmms/pluginenum.c:428 # legacy portability (Cppcheck 2.13)
 invalidPrintfArgType_uint:xmms/prefswin.c:1389 # legacy warning
 memleak:xmms/skin.c:626 # legacy error
 memleak:xmms/skin.c:628 # legacy error

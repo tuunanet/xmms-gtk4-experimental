@@ -10,7 +10,7 @@ repo_root=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)
 build_dir=${MESON_BUILD_DIR:-$repo_root/build-meson}
 output_dir=${DEB_OUTPUT_DIR:-$repo_root/deb-artifacts}
 
-for command in meson ninja python3; do
+for command in meson ninja python3 xvfb-run; do
 	if ! command -v "$command" >/dev/null 2>&1; then
 		echo "error: Meson Debian packages require $command" >&2
 		exit 1
@@ -32,7 +32,7 @@ if test -n "${DEB_SOURCE_ARCHIVE:-}"; then
 		exit 1
 	fi
 elif test -e "$repo_root/.git"; then
-	meson dist -C "$build_dir" --formats=gztar
+	xvfb-run --auto-servernum meson dist -C "$build_dir" --formats=gztar
 	archive="$build_dir/meson-dist/xmms-$version.tar.gz"
 	if test ! -f "$archive"; then
 		echo "error: Meson did not produce xmms-$version.tar.gz source archive" >&2

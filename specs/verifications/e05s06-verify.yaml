@@ -1,6 +1,6 @@
 story_id: e05s06
 delivery_status: release_acceptance_pending
-verified_at: "2026-08-15T07:58:39Z"
+verified_at: "2026-08-15T11:34:25Z"
 verifier: verify-work
 phases:
   smoke:
@@ -14,40 +14,40 @@ phases:
   lint:
     passed: true
     command: "tools/run-c-lint.sh"
-    result: "Passed as part of strict preflight."
+    result: "Passed locally and under Linux Mint's Cppcheck 2.13 with the one reviewed plugin-enumeration suppression."
   tests:
     passed: true
     command: "xvfb-run --auto-servernum meson test -C build-meson-preflight"
-    result: "34/34 tests passed during strict preflight, including release workflow, lifecycle, package, and source-distribution contracts."
+    result: "34/34 passed locally and in the Meson distribution test suites of both declared target containers."
   distribution:
     passed: true
     command: "tools/verify-meson-dist.sh"
     result: "A clean Meson source archive built, passed all tests, and staged-installed successfully."
   packages:
     passed: true
-    command: "MESON_BUILD_DIR=build-meson-preflight tools/verify-release-artifacts.sh deb-artifacts"
-    result: "The preflight-produced Meson source archive and Debian packages passed metadata, extraction, smoke, and checksum verification."
+    command: "tools/package-deb.sh"
+    result: "Pinned Ubuntu 26.04 and Linux Mint 22.3 containers each built the source archive and Debian packages, then passed extracted-artifact verification."
   terminal_verdict:
     command: "tools/preflight.sh --strict && tools/verify-meson-dist.sh && MESON_BUILD_DIR=build-meson-preflight tools/verify-release-artifacts.sh deb-artifacts"
     exit_code: 0
-    captured_at: "2026-08-15T07:58:39Z"
-    note: "Single contiguous local P0 run. The workflow contract requires Git before checkout, scoped trust only for GITHUB_WORKSPACE after checkout, and trust before Meson source distribution."
+    captured_at: "2026-08-15T11:34:25Z"
+    note: "Single contiguous local P0 run. Separate clean-clone executions in both pinned target images passed tools/package-deb.sh, all 34 Meson distribution tests, and artifact verification."
   manual:
     steps:
-      - step: "Run Git as a non-owner against a mounted fixture repository."
-        expected: "Git rejects the checkout until only its workspace path is configured as safe."
-        actual: "The fixture reproduced the ownership rejection; scoped safe-directory configuration restored repository access."
+      - step: "Build the clean release branch inside the pinned Ubuntu 26.04 container."
+        expected: "Xvfb-backed distribution tests, dependency-free policy checks, and package artifacts pass."
+        actual: "34/34 distribution tests and artifact verification passed."
         passed: true
-      - step: "Inspect the release workflow contract."
-        expected: "It rejects wildcard trust and requires scoped workspace trust after checkout and before package construction."
-        actual: "tests/test-package-recipes.sh passed those assertions."
+      - step: "Build the clean release branch inside the pinned Linux Mint 22.3 container."
+        expected: "The reviewed Cppcheck 2.13 baseline and all package checks pass."
+        actual: "34/34 distribution tests and artifact verification passed with Cppcheck 2.13."
         passed: true
   release_acceptance:
     status: pending_tagged_draft_release
-    version: 0.0.4
+    version: 0.0.5
     authorized: true
-    reason: "v0.0.2 and v0.0.3 are immutable failed tagged runs. Local P0 acceptance is complete; only a new annotated v0.0.4 tag and successful manual draft-release workflow remain."
+    reason: "v0.0.2, v0.0.3, and v0.0.4 are immutable failed tagged runs. Local and target-container P0 acceptance is complete; only a new annotated v0.0.5 tag and successful manual draft-release workflow remain."
   gaps:
     closed: false
     remaining:
-      - "Land the verified repair, create immutable annotated v0.0.4, and confirm both target package jobs plus draft creation succeed."
+      - "Land the verified repair, create immutable annotated v0.0.5, and confirm both target package jobs plus draft creation succeed."

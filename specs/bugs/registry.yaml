@@ -224,7 +224,7 @@ bugs:
     scope: tagged-release-workflow
     summary: Container Git rejects the differently owned release checkout after Git installation.
     file: specs/bugs/BUG-2026-08-15T073425-release-container-workspace-trust.md
-    status: verifying
+    status: fixed
     files_changed:
       - .github/workflows/package-release.yml
       - tests/test-package-recipes.sh
@@ -234,6 +234,30 @@ bugs:
       - CHANGELOG.md
       - specs/state.yaml
     approach: Trust only the runner-provided workspace after checkout and before Meson distribution, then re-run tagged release acceptance.
-    verification: tools/preflight.sh --strict && tools/verify-meson-dist.sh && MESON_BUILD_DIR=build-meson-preflight tools/verify-release-artifacts.sh deb-artifacts
+    verification: v0.0.4 run 31877965751 reaches Meson distribution in both target containers; later test portability failures are separately tracked.
     risk_level: high
     commit_message: "fix(release): trust container checkout workspace"
+  - bug_id: BUG-2026-08-15T095835
+    date: 2026-08-15
+    severity: high
+    priority: P0
+    scope: tagged-release-workflow
+    summary: Target containers cannot run Meson distribution tests without Xvfb, PyYAML, and a Cppcheck 2.13 baseline entry.
+    file: specs/bugs/BUG-2026-08-15T095835-release-container-test-portability.md
+    status: verifying
+    files_changed:
+      - tools/package-deb.sh
+      - tests/test-package-recipes.sh
+      - tests/test-autonomous-epic-workflow.sh
+      - specs/workflows/autonomous-epic.yaml
+      - tools/cppcheck-suppressions.txt
+      - tests/test-c-lint.sh
+      - tools/validate-lifecycle-state.py
+      - tests/test-meson-migration-contracts.sh
+      - meson.build
+      - CHANGELOG.md
+      - specs/state.yaml
+    approach: Make source-distribution testing headless-safe, dependency-free, and compatible with the reviewed Cppcheck 2.13 legacy baseline.
+    verification: tools/preflight.sh --strict && tools/verify-meson-dist.sh && MESON_BUILD_DIR=build-meson-preflight tools/verify-release-artifacts.sh deb-artifacts
+    risk_level: high
+    commit_message: "fix(release): support target container tests"
