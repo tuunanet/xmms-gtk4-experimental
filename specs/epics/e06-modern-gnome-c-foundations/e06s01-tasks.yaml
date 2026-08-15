@@ -1,23 +1,23 @@
 schema_version: 1
 story_id: e06s01
 title: Define modern GObject and public-API boundaries
-status: planned
+status: passing
 risk: P1
 bcps: 5
 tasks:
   - id: t1
     scenarios: [SC-e06s01-P1-01]
-    description: Record the final-type, private-instance-data, minimal-header, property/signal, genuine-interface, and no-new-global-state rules with explicit legacy ABI exemptions.
-    verify: "tests/test-gnome-c-foundations.sh \"$PWD\" --gobject-boundaries"
+    description: Record and contract-test final-type, private-instance-data, minimal-header, property/signal, genuine-interface, no-new-global-state, and explicit legacy-ABI-exemption rules.
+    verify: "tests/test-gnome-c-foundations.sh \"$PWD\" --policy"
     risk: P1
     security: none
-    status: planned
-    allure: {severity: normal, categories: [architecture, api]}
+    status: passing
+    allure: {severity: high, categories: [architecture, api, gobject-boundaries]}
   - id: t2
     scenarios: [SC-e06s01-P1-01]
-    description: Apply the rules to one newly introduced GTK migration module without converting existing plugin, socket, or skin contracts.
-    verify: "xvfb-run --auto-servernum meson test -C build --suite gobject-boundaries"
+    description: Apply the policy only to the isolated GTK3 proof adapter as a final private-state XmmsUiGtk3Control, preserve observable render/activation behavior, and register the focused suite.
+    verify: "meson setup build-meson --wrap-mode=nodownload && xvfb-run --auto-servernum meson test -C build-meson --suite gobject-boundaries"
     risk: P1
     security: low
-    status: planned
-    allure: {severity: normal, categories: [gtk, compatibility]}
+    status: passing
+    allure: {severity: high, categories: [gtk, compatibility, gobject-boundaries]}

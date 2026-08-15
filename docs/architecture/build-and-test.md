@@ -138,6 +138,7 @@ flowchart LR
 | `test-popup-position` | menu/popup coordinate helpers (needs X11) |
 | `test-pbutton-baseline` | GTK2 Play-button sprite, hit-boundary, pointer-state, and callback parity |
 | `test-ui-control` | display-independent control state and sprite-command contract |
+| `test-gnome-c-foundations` | final-type, private-state, API-boundary, and legacy-facade policy contract |
 | `test-gtk3-play-button-proof` | separately linked GTK3 rendering and activation proof; link check rejects GTK2 |
 | `test-pluginenum` | plugin scan/classify with **fixture** `.so` under `tests/test-plugins` |
 | `test-pluginenum-meson-build` | actual Meson input/output plugin discovery from the build tree |

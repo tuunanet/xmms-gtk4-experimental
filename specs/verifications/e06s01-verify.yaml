@@ -1,0 +1,51 @@
+story_id: e06s01
+verified_at: "2026-08-15T14:34:10Z"
+verifier: verify-work
+risk: P1
+phases:
+  smoke:
+    passed: true
+    command: "xvfb-run --auto-servernum meson test -C build-meson --suite gobject-boundaries"
+    result: "The isolated policy contract and GTK3 proof passed without starting the production player."
+  build:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  typecheck:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    result: "The strict build compiles the final GObject adapter with the project C flags."
+  lint:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  tests:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    result: "All 35 Meson tests passed, including both gobject-boundaries suite tests."
+  security:
+    passed: true
+    report: specs/security/REVIEW.md
+    result: "No unresolved HIGH finding."
+  blind_spot_check:
+    status: waived
+    reason: "scripts/check-blind-spots.sh is absent."
+  completeness_critic:
+    status: waived
+    reason: "scripts/lib/completeness-critic.sh is absent."
+  terminal_verdict:
+    command: "tools/preflight.sh --strict"
+    exit_code: 0
+    captured_at: "2026-08-15T14:34:10Z"
+    note: "Single contiguous strict-preflight run on the completed e06s01 working tree; all 35 Meson tests, lint, distribution, package, and artifact gates passed."
+  manual:
+    steps:
+      - step: "Run the gobject-boundaries suite under Xvfb."
+        expected: "The policy contract and GTK3 proof pass without a production player."
+        actual: "Both focused tests passed; only the isolated GTK3 proof executable ran."
+        passed: true
+      - step: "Send press and release events through the final adapter."
+        expected: "Rendering changes to the pressed sprite and exactly one activation result is returned."
+        actual: "The GTK3 proof's public-API tests passed both render and single-activation scenarios."
+        passed: true
+  gaps:
+    closed: true
+    remaining: []

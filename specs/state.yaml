@@ -10,21 +10,26 @@ active_decisions:
     status: accepted
     summary: Advance through approved active-epic stories without routine human checkpoints.
     artifact: specs/workflows/autonomous-epic.yaml
-active_flow: fix_bug
-active_bug_id: BUG-2026-08-15T140114
-bug_cycle:
-  current_step: 5
-  completed_steps: [1, 2, 3, 4]
+active_flow: build_epic
+active_epic_id: e06
+active_story_id: e06s01
+epic_cycle:
+  epic_id: e06
+  story_id: e06s01
+  step: 8
+  story_bcps: 5
+  fast_mode: false
+  audit_result: pass
 git:
-  branch: feat/e06s01-gobject-api-boundaries
+  branch: feat/e06s01-gobject-boundaries
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/e06s01-gobject-api-boundaries
+  worktree: /home/tuunanet/git/tuunanet/e06s01-gobject-boundaries
 metrics:
-  story_start: 2026-08-08T13:31:00Z
+  story_start: 2026-08-15T14:16:26Z
 handoff:
   status: in_progress
   next_skill: release-branch
-  reason: BUG-2026-08-15T140114 passed focused validation, strict preflight, audit, and Conventional Commit review; land the separate lifecycle fix before starting e06.
+  reason: e06s01 passed verify-work, security review, audit, F.I.R.S.T, and Conventional Commit review; land the completed story through solo-git.
 release:
   last_tag: v0.0.6
   last_publish: published-v0.0.6

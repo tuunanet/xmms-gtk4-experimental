@@ -74,6 +74,12 @@ test_ui_control = executable(
 )
 test('ui-control', test_ui_control)
 
+test('gnome-c-foundations', find_program('test-gnome-c-foundations.sh'),
+  args: [meson.project_source_root(), '--gobject-boundaries'],
+  workdir: meson.project_source_root(),
+  suite: 'gobject-boundaries',
+)
+
 if gtk3_dep.found()
   gtk3_proof = executable(
     'test-gtk3-play-button-proof',
@@ -83,7 +89,7 @@ if gtk3_dep.found()
     include_directories: test_include_dirs,
     install: false,
   )
-  test('gtk3-play-button-proof', gtk3_proof)
+  test('gtk3-play-button-proof', gtk3_proof, suite: 'gobject-boundaries')
 endif
 
 test_pluginenum = executable(

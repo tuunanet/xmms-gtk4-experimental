@@ -1,32 +1,30 @@
-# Security review: lifecycle transition fix
+# Security review: e06s01 GObject boundaries
 
-- **Generated:** 2026-08-15T14:01:14Z
+- **Generated:** 2026-08-15T14:34:10Z
 - **Reviewed range:** `main...HEAD`
 - **Result:** PASS
 - **Unresolved HIGH findings (confidence >= 8):** 0
 
 ## Scope and trust boundaries
 
-The range removes transient workflow-state requirements from a local Python
-validator, adds an isolated shell-test fixture, and records the discovered
-workflow bug. It adds no runtime application path, dependency, workflow,
-network request, credential, release API call, user-controlled input, file
-path derived from untrusted input, or permission change.
+The range adds an isolated final GObject adapter to the GTK3 migration proof,
+a policy contract, and Meson suite registration. The adapter is compiled only
+into the separately linked proof test. It does not alter the production GTK2
+player, plugin ABI, libxmms API, control socket, configuration, skins,
+workflows, dependencies, credentials, or network behavior.
 
 ## Assessment
 
-- **Command injection / path traversal:** The test retains repository-owned
-  temporary paths and fixed `sed` expressions. No external input reaches a
-  shell or filesystem sink.
-- **Authorization / CI permissions:** No workflow, token, release, or access
-  control definition changed.
-- **Deserialization / injection:** No parser or data-processing boundary
-  changed. The validator continues to read only trusted project lifecycle
-  records supplied by project-owned test commands.
-- **Secrets:** Diff scan found no credential, private-key, or token signature.
-- **Availability:** Removing a terminal workflow snapshot requirement avoids a
-  false blocking validation result; no runtime resource or retry behavior
-  changes.
+- **Input and command injection:** `GdkEvent` fields reach only the existing
+  toolkit-neutral pointer-state helper and return a control-result bitmask.
+  They do not reach a shell, filesystem, network, parser, or playback sink.
+- **Authorization / compatibility:** the new object is private to the proof
+  target; no plugin, socket, or installed-public API boundary changes.
+- **Deserialization / path traversal:** no serialization or untrusted-path
+  code changed.
+- **Secrets:** the diff contains no credential, private-key, or token pattern.
+- **Availability / threading:** the object owns its state per instance, adds
+  no mutable globals, and is exercised on the GTK test main thread under Xvfb.
 
 No concrete exploit path exists. No finding meets the reporting threshold, and
 no exception is required.

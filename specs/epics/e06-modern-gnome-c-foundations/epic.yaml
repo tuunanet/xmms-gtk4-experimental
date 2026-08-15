@@ -4,7 +4,7 @@ title: Establish modern GNOME C foundations
 wsjf: 2.0
 total_bcps: 15
 risk: P1
-status: planned
+status: in_progress
 depends_on:
   - e05
 adr: []
@@ -13,7 +13,7 @@ stories:
     title: Define modern GObject and public-API boundaries
     bcps: 5
     risk: P1
-    status: planned
+    status: in_progress
     delta: ADDED
     spec: e06s01-gobject-and-api-boundaries.md
     tasks: e06s01-tasks.yaml

@@ -40,19 +40,12 @@ static guint32 surface_pixel(cairo_surface_t *surface, gint x, gint y)
 	return ((guint32 *) (data + y * stride))[x];
 }
 
-static guint activation_count;
-
-static void apply_control_result(XmmsUiControlResult result)
-{
-	if (result & XMMS_UI_CONTROL_ACTIVATE)
-		activation_count++;
-}
-
 static void test_gtk3_renders_shared_play_button_commands(void)
 {
-	XmmsUiButtonState state;
+	XmmsUiButtonState initial_state;
 	XmmsUiButtonSprites sprite_map = { 0, 23, 0, 0, 23, 18 };
-	XmmsUiDrawCommand command;
+	XmmsUiGtk3Control *control;
+	GdkEvent *press;
 	GdkPixbuf *sprites;
 	cairo_surface_t *surface;
 	cairo_t *cr;
@@ -67,16 +60,23 @@ static void test_gtk3_renders_shared_play_button_commands(void)
 	g_assert_cmpint(cairo_surface_status(surface), ==, CAIRO_STATUS_SUCCESS);
 	cr = cairo_create(surface);
 
-	xmms_ui_button_init(&state, 39, 88, 23, 18);
-	xmms_ui_button_get_draw_command(&state, &sprite_map, &command);
-	xmms_ui_gtk3_draw_command(cr, sprites, &command);
+	xmms_ui_button_init(&initial_state, 39, 88, 23, 18);
+	control = xmms_ui_gtk3_control_new(&initial_state, &sprite_map);
+	g_assert_nonnull(control);
+	xmms_ui_gtk3_control_draw(control, cr, sprites);
 	g_assert_cmphex(surface_pixel(surface, 40, 89), ==, 0xffff0000);
 
-	xmms_ui_button_handle_pointer(&state, XMMS_UI_POINTER_PRESS, 1, 40, 89);
-	xmms_ui_button_get_draw_command(&state, &sprite_map, &command);
-	xmms_ui_gtk3_draw_command(cr, sprites, &command);
+	press = gdk_event_new(GDK_BUTTON_PRESS);
+	press->button.button = 1;
+	press->button.x = 40;
+	press->button.y = 89;
+	g_assert_true(xmms_ui_gtk3_control_handle_event(control, press) &
+		XMMS_UI_CONTROL_REDRAW);
+	xmms_ui_gtk3_control_draw(control, cr, sprites);
 	g_assert_cmphex(surface_pixel(surface, 40, 89), ==, 0xff0000ff);
 
+	gdk_event_free(press);
+	g_object_unref(control);
 	cairo_destroy(cr);
 	cairo_surface_destroy(surface);
 	g_object_unref(sprites);
@@ -84,33 +84,35 @@ static void test_gtk3_renders_shared_play_button_commands(void)
 
 static void test_gtk3_activates_shared_play_button_once(void)
 {
-	XmmsUiButtonState state;
+	XmmsUiButtonState initial_state;
+	XmmsUiButtonSprites sprite_map = { 0, 23, 0, 0, 23, 18 };
+	XmmsUiGtk3Control *control;
 	GdkEvent *press;
 	GdkEvent *release;
 
-	xmms_ui_button_init(&state, 39, 88, 23, 18);
-	activation_count = 0;
+	xmms_ui_button_init(&initial_state, 39, 88, 23, 18);
+	control = xmms_ui_gtk3_control_new(&initial_state, &sprite_map);
+	g_assert_nonnull(control);
 
 	press = gdk_event_new(GDK_BUTTON_PRESS);
 	press->button.button = 1;
 	press->button.x = 40;
 	press->button.y = 89;
-	apply_control_result(xmms_ui_gtk3_handle_event(&state, press));
-	g_assert_true(state.pressed);
+	g_assert_true(xmms_ui_gtk3_control_handle_event(control, press) &
+		XMMS_UI_CONTROL_REDRAW);
 
 	release = gdk_event_new(GDK_BUTTON_RELEASE);
 	release->button.button = 1;
 	release->button.x = 40;
 	release->button.y = 89;
-	apply_control_result(xmms_ui_gtk3_handle_event(&state, release));
-	g_assert_cmpuint(activation_count, ==, 1);
-	g_assert_false(state.pressed);
-
-	apply_control_result(xmms_ui_gtk3_handle_event(&state, release));
-	g_assert_cmpuint(activation_count, ==, 1);
+	g_assert_true(xmms_ui_gtk3_control_handle_event(control, release) &
+		XMMS_UI_CONTROL_ACTIVATE);
+	g_assert_cmpint(xmms_ui_gtk3_control_handle_event(control, release), ==,
+		XMMS_UI_CONTROL_NONE);
 
 	gdk_event_free(press);
 	gdk_event_free(release);
+	g_object_unref(control);
 }
 
 int main(int argc, char **argv)

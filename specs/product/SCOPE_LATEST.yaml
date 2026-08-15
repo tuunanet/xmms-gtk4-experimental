@@ -1,80 +1,61 @@
 schema_version: 1
-feature_name: meson-tooling-migration
+feature_name: modern-gnome-c-foundations
 core_value: >-
-  Maintainers and agents can build, test, package, distribute, and release XMMS
-  through one Meson-based toolchain without sacrificing current runtime or
-  distribution compatibility contracts.
+  Future GTK migration work has a small, testable GNOME C foundation that keeps
+  new APIs private by default and preserves XMMS's established compatibility
+  contracts.
 summary: >-
-  Replace the repository's Autotools/libtool toolchain with Meson while keeping
-  a deliberately bounded dual-build parity phase. Meson must become the sole
-  authoritative build definition, and the final delivery removes configure,
-  Automake inputs/generated files, libtool metadata, and Makefile artifacts.
-  The migration covers developer and agent commands, tests, Debian packaging,
-  source distribution, manual release packaging, CI-facing contracts, and the
-  project instructions that describe them.
+  Establish the modern C conventions needed for future GTK3/GTK4 migration
+  slices without converting the production GTK2 player. The initiative defines
+  final-type and public-API boundaries, constrains new subsystem dependencies,
+  and applies formatting checks to changed GNOME C files.
 
-  This initiative changes build tooling, not the player product model. The
-  staged GTK2 → GTK3 → GTK4 UI migration, historical compatibility names,
-  runtime plugin behavior, and source-level public interfaces must remain
-  stable while their build descriptions move.
+  The work applies these rules first to the isolated GTK3 migration proof. It
+  must preserve the historic plugin ABI, libxmms API, control socket,
+  configuration, skins, and the separate-process GTK-major boundary.
 in_scope:
-  - id: e05s01
-    item: Reconcile current release-planning state with the completed e04 annotated-tag package run and draft pre-release, then record the Meson migration decision ledger and compatibility baselines.
-  - id: e05s02
-    item: Introduce an authoritative Meson build graph and options that reproduce all current required and optional components while Autotools remains temporarily available for parity comparison.
-  - id: e05s03
-    item: Establish build, test, install, lint, plugin-linkage, translation, and source-distribution parity between Meson and the legacy build during the transition.
-  - id: e05s04
-    item: Move Debian packaging, manual release packaging, and release artifact verification to Meson-produced outputs while retaining package names, target platforms, and draft-only release safety.
-  - id: e05s05
-    item: Replace agent and contributor preflight commands, CI/release contracts, architecture documentation, and relevant specifications with Meson equivalents.
-  - id: e05s06
-    item: Remove all Autotools, libtool, configure, and Makefile source/generated artifacts after Meson parity gates and package/release validation pass.
+  - id: e06s01
+    item: Define final GObject, private-instance-data, minimal-public-header,
+      property/signal, extension-interface, and mutable-state boundaries, then
+      prove them in the isolated GTK3 migration module.
+  - id: e06s02
+    item: Define and enforce directional dependencies for new GNOME C modules.
+  - id: e06s03
+    item: Add changed-file GNOME C formatting checks to the developer preflight.
 out_of_scope:
-  - item: GTK3 or GTK4 production UI port.
-    reason: The build migration must not expand into a UI toolkit migration; ADR-0001 remains the governing staged UI plan.
-  - item: Intentional plugin ABI, libxmms API, control-socket, configuration-path, executable-name, package-name, or skin-format changes.
-    reason: Toolchain replacement must preserve these public compatibility contracts.
-  - item: New distribution package targets or automated publication.
-    reason: Existing Linux Mint 22.3 and Ubuntu 26.04 targets and draft-only publication policy remain the release baseline.
-  - item: Permanent dual-build support.
-    reason: Dual build is a temporary parity mechanism; the approved final state removes Autotools completely.
+  - item: Production GTK3 or GTK4 player port.
+    reason: The isolated proof remains a migration tracer until a separately
+      approved UI slice changes the production toolkit.
+  - item: Plugin ABI, libxmms API, or control-socket conversion to GObject.
+    reason: These are explicit compatibility facades, not approved extension
+      boundaries for this initiative.
+  - item: Bulk conversion of existing GTK2-era structs or historical modules.
+    reason: Modernization-by-style would expand risk without a caller-visible
+      migration benefit.
+  - item: New external dependencies.
+    reason: GLib and the optional GTK3 proof dependency already supply the
+      required GObject facilities.
 constraints:
-  - Meson is the final sole build authority; no configure, Autotools, libtool, or Makefile artifacts remain after e05s06.
-  - A temporary dual-build phase must compare observable outputs before any legacy build path is removed.
-  - Preserve source-tree buildability, clean out-of-tree builds, install layout, plugin discovery layout, gettext output, and Debian package contents.
-  - Preserve the isolated GTK3 proof and the no-mixed-GTK-major-process policy.
-  - Define a reproducible agent preflight using Meson setup, compile, test, lint, packaging, and source-distribution gates appropriate to each change class.
-  - Update CLAUDE.md, CONTRIBUTING.md, architecture/build-and-test.md, release documentation, workflows, tests, and lifecycle specifications together when their commands or contracts change.
+  - Preserve the separately linked GTK3 proof and prohibit mixed GTK major
+    versions in the production process.
+  - Keep GTK work on the main thread and use Xvfb for GTK tests.
+  - Keep new instance data private, do not add process-global mutable state,
+    and expose properties, signals, or interfaces only for genuine observable
+    or extension boundaries.
+  - Preserve all plugin, socket, configuration, skin, source-distribution, and
+    package contracts.
 success_criteria:
-  - Meson builds every supported required and optional production component, tests, translations, plugins, binaries, and installable artifacts from a clean out-of-tree build.
-  - Automated parity evidence covers configure options/features, executable and plugin outputs, tests, installation layout, Debian packages, release artifacts, and source distribution before legacy removal.
-  - Agent and contributor preflight commands invoke only Meson-era tooling and are executable in documented supported environments.
-  - The manual package-release workflow builds the tagged Meson source, verifies its artifacts, and preserves current target/package/release safety contracts.
-  - No tracked Autotools/libtool/configure/Makefile artifact or documentation contract remains after final cutover.
-  - Existing public runtime compatibility contracts and the current GTK migration evidence remain green.
-prior_art:
-  - candidate: https://mesonbuild.com/Porting-from-autotools.html
-    verdict: adopt-and-adapt
-    notes: Official mapping guidance covers option translation, pkg-config dependencies, generated config headers, install rules, and test declarations; Meson requires explicit configuration-header inputs rather than autoheaders.
-  - candidate: https://mesonbuild.com/Unit-tests.html
-    verdict: adopt
-    notes: Meson test registration is the target replacement for make check orchestration; GTK/X11 tests need a documented headless test setup.
-  - candidate: https://mesonbuild.com/Localisation.html
-    verdict: evaluate-in-spike
-    notes: Gettext and generated translation behavior require a parity spike because the repository carries a legacy intl subtree and tracked generated files.
-  - candidate: https://mesonbuild.com/Creating-releases.html
-    verdict: evaluate-in-spike
-    notes: Meson source-distribution behavior must replace make distcheck with equivalent clean-tree build, test, install, uninstall, and distribution evidence.
-  - candidate: existing configure.in, Makefile.am, libxmms/configure.in, libxmms/Makefile.am, packaging/debian/rules, tools/build-deb.sh, and package-release.yml
-    verdict: build
-    notes: No Meson build files exist. The legacy graph and delivery helpers are the compatibility baseline to reproduce and then remove.
+  - A documented and regression-tested policy defines the approved GObject and
+    public-API boundaries with explicit legacy compatibility exemptions.
+  - The isolated GTK3 migration module demonstrates a final type with private
+    state and no unnecessary property, signal, or interface.
+  - Directional dependencies and changed-file formatting have focused,
+    repeatable checks.
+  - Strict preflight remains green without new dependencies or runtime
+    compatibility changes.
 references:
-  - CLAUDE.md
-  - CONVENTIONS.md
-  - CONTRIBUTING.md
-  - docs/architecture/build-and-test.md
-  - docs/architecture/plugin-system.md
-  - docs/releases.md
+  - specs/product/VISION_LATEST.yaml
   - specs/adr/ADR-0001-staged-gtk-migration.md
-  - specs/tech-architecture/tech-stack.md
+  - docs/architecture/ui-interaction.md
+  - docs/architecture/build-and-test.md
+  - specs/epics/e06-modern-gnome-c-foundations/epic.yaml

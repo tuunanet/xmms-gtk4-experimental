@@ -154,7 +154,7 @@ MUST define bounded shutdown behavior for new worker threads.
 NEVER call GTK from decoder, output, metadata, or socket-reader threads.
 NEVER add blocking I/O to `idle_func`.
 
-## Tests
+## Tests (F.I.R.S.T)
 
 Tests MUST remain Fast, Independent, Repeatable, Self-Validating, and Timely.
 MUST add a regression test for each practical bug fix.

@@ -1,8 +1,8 @@
 schema_version: 1
-status: verified
+status: in_progress
 epics:
   e05: verified
-  e06: planned
+  e06: in_progress
   e04: verified
   e01: verified
   e02: verified
@@ -14,7 +14,9 @@ stories:
   e05s04: verified
   e05s05: verified
   e05s06: verified
-  e06s01: planned
+  e06s01:
+    status: in_progress
+    started_at: "2026-08-15T14:16:26Z"
   e06s02: planned
   e06s03: planned
   e04s01: verified
@@ -26,7 +28,7 @@ stories:
   e03s03: verified
 gate_trace:
   verdict: WAIVED
-  generated_at: 2026-08-15T14:01:14Z
-  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. BUG-2026-08-15T140114 has explicit reproduction, a transition-fixture regression test, strict-preflight evidence, audit, and security review; no heuristic coverage result can be computed.
+  generated_at: 2026-08-15T14:36:24Z
+  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. e06s01 has explicit task verification, a focused GObject-boundaries suite, 35-test strict-preflight evidence, audit, and security review; no heuristic coverage result can be computed.
   heuristic_ratio: null
   downgrade_applied: false
