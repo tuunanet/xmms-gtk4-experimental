@@ -10,20 +10,18 @@ active_decisions:
     status: accepted
     summary: Advance through approved active-epic stories without routine human checkpoints.
     artifact: specs/workflows/autonomous-epic.yaml
-active_flow: build_epic
-active_epic_id: e05
-active_story_id: e05s06
+active_flow: sustain
 git:
-  branch: release/0.0.6
+  branch: main
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/release-0.0.6
+  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
 metrics:
   story_start: 2026-08-08T13:31:00Z
 handoff:
-  status: in_progress
-  next_skill: release-branch
-  reason: Authorized v0.0.6 repairs the immutable v0.0.5 Linux Mint build-parity timeout. Strict preflight and clean-clone package verification in both pinned targets passed; next land the prepared metadata, create the annotated tag, and confirm the draft-release workflow.
+  status: complete
+  next_skill: survey-context
+  reason: v0.0.6 is published after protected landing, an annotated tag, successful Linux Mint and Ubuntu package jobs, draft checksum review, and explicit release authorization. e05 final Meson cutover is complete.
 release:
-  last_tag: v0.0.5
-  last_publish: failed-v0.0.5-draft-release-workflow
+  last_tag: v0.0.6
+  last_publish: published-v0.0.6
   target_version: 0.0.6

@@ -1,7 +1,7 @@
 schema_version: 1
-status: in_progress
+status: verified
 epics:
-  e05: in_progress
+  e05: verified
   e06: planned
   e04: verified
   e01: verified
@@ -13,7 +13,7 @@ stories:
   e05s03: verified
   e05s04: verified
   e05s05: verified
-  e05s06: in_progress
+  e05s06: verified
   e06s01: planned
   e06s02: planned
   e06s03: planned

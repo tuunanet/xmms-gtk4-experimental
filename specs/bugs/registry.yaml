@@ -244,7 +244,7 @@ bugs:
     scope: tagged-release-workflow
     summary: Target containers cannot run Meson distribution tests without Xvfb, PyYAML, and a Cppcheck 2.13 baseline entry.
     file: specs/bugs/BUG-2026-08-15T095835-release-container-test-portability.md
-    status: verifying
+    status: fixed
     files_changed:
       - tools/package-deb.sh
       - tests/test-package-recipes.sh
@@ -268,7 +268,7 @@ bugs:
     scope: tagged-release-workflow
     summary: Linux Mint package verification times out the full build-parity contract at Meson's default 30-second limit.
     file: specs/bugs/BUG-2026-08-15T115821-release-build-parity-timeout.md
-    status: verifying
+    status: fixed
     files_changed:
       - tests/meson.build
       - tests/test-meson-test-suite-contract.sh

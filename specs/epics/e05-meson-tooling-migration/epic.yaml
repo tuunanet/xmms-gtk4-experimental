@@ -4,7 +4,7 @@ title: Replace Autotools with Meson tooling
 wsjf: 3.5
 total_bcps: 42
 risk: P0
-status: in_progress
+status: verified
 adr:
   - ADR-0001-staged-gtk-migration.md
 stories:
@@ -52,7 +52,7 @@ stories:
     title: Remove the retired Autotools toolchain
     bcps: 8
     risk: P0
-    status: in_progress
+    status: verified
     delta: REMOVED
     spec: e05s06-retire-autotools.md
     tasks: e05s06-tasks.yaml

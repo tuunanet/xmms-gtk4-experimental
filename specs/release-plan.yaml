@@ -3,16 +3,16 @@ release:
   codename: Meson tooling migration
   version: 0.0.6
   bump_hint: patch
-  status: in_progress
+  status: verified
   semantic_release: true
-status: in_progress
+status: verified
 epics:
   - id: e05
     title: Replace Autotools with Meson tooling
     capsule_dir: epics/e05-meson-tooling-migration
     wsjf: 3.5
     bcps: 42
-    status: in_progress
+    status: verified
     score:
       business_value: 10
       time_criticality: 8

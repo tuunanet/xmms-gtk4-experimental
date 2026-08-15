@@ -94,12 +94,12 @@ any lint suppression.
 
 ## Resolution
 
-**Status:** local and target-container repair verified; tagged acceptance pending
+**Status:** fixed and release-accepted in `v0.0.6`.
 
 The package helper runs Meson distribution under Xvfb, autonomous-policy
 verification uses only POSIX text checks, and the Cppcheck baseline updates only
 the externally reported plugin-enumeration line. Strict preflight passed 34/34.
-Clean-clone package runs in the pinned Ubuntu 26.04 and Linux Mint 22.3 images
-also passed all 34 distribution tests, Debian package checks, and artifact
-verification. Immutable `v0.0.4` remains unchanged; authorized `v0.0.5` awaits
-tagged draft-release acceptance before this defect is closed.
+Workflow `31886668793` then passed Linux Mint 22.3 and Ubuntu 26.04 package
+jobs, assembled the draft release, and produced assets whose checksums were
+verified before the explicitly authorized `v0.0.6` release was published.
+Immutable `v0.0.4` and `v0.0.5` remain unchanged.

@@ -80,12 +80,12 @@ negative artifact check; only correct its bounded runner budget.
 
 ## Resolution
 
-**Status:** local and declared-container verification passed; tagged `v0.0.6`
-acceptance pending.
+**Status:** fixed and release-accepted in `v0.0.6`.
 
 The contract now has an explicit 120-second budget, and the test-suite
-contract rejects its removal. Strict preflight passed with all 34 tests. Clean
-branch clones also passed the full Debian package and extracted-artifact
-verification in the pinned Linux Mint 22.3 and Ubuntu 26.04 images; their two
-build-parity invocations completed within the new bound. The immutable
-`v0.0.5` tag and failed workflow remain unchanged.
+contract rejects its removal. Strict preflight passed with all 34 tests.
+Workflow `31886668793` then passed the Linux Mint 22.3 and Ubuntu 26.04 package
+jobs, whose complete Meson suites included the bounded build-parity contract.
+The draft's 11 checksum entries verified before the explicitly authorized
+release was published. The immutable `v0.0.5` tag and failed workflow remain
+unchanged.

@@ -19,37 +19,37 @@ def main():
         )
 
     state, execution_status, release_plan = sys.argv[1:]
-    require_text(state, r"^active_epic_id: e05$", "must identify e05 as active")
-    require_text(state, r"^  last_tag: v0\.0\.5$", "must record the immutable failed v0.0.5 tag")
+    require_text(state, r"^active_flow: sustain$", "must hand off the completed cutover to sustain mode")
+    require_text(state, r"^  last_tag: v0\.0\.6$", "must record the immutable published v0.0.6 tag")
     require_text(
         state,
-        r"^  last_publish: failed-v0\.0\.5-draft-release-workflow$",
-        "must record the failed v0.0.5 draft-release workflow",
+        r"^  last_publish: published-v0\.0\.6$",
+        "must record the published v0.0.6 release",
     )
     require_text(
         state,
-        r"(?ms)^handoff:\n  status: in_progress$",
-        "must record the active e05 release repair",
+        r"(?ms)^handoff:\n  status: complete$",
+        "must record the completed e05 release handoff",
     )
     require_text(
         execution_status,
-        r"^status: in_progress$",
-        "must mark the active execution in progress",
+        r"^status: verified$",
+        "must mark the completed execution verified",
     )
     require_text(
         execution_status,
-        r"^  e05: in_progress$",
-        "must mark e05 repair in progress",
+        r"^  e05: verified$",
+        "must mark e05 verified",
     )
     require_text(
         execution_status,
-        r"^  e05s06: in_progress$",
-        "must mark e05s06 repair in progress",
+        r"^  e05s06: verified$",
+        "must mark e05s06 verified",
     )
     require_text(
         release_plan,
-        r"(?ms)^  - id: e05$.*?^    status: in_progress$",
-        "must mark e05 repair in progress in the release plan",
+        r"(?ms)^  - id: e05$.*?^    status: verified$",
+        "must mark e05 verified in the release plan",
     )
     require_text(execution_status, r"^  e04: verified$", "must mark e04 verified")
     require_text(execution_status, r"^  e04s01: verified$", "must mark e04s01 verified")

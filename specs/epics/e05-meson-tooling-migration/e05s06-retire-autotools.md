@@ -20,8 +20,10 @@ containers did not trust the differently owned checkout. The immutable
 PyYAML, and Cppcheck 2.13 portability defects in distribution tests. The
 immutable `v0.0.5` tag repaired those failures but exposed the default
 30-second timeout for the full build-parity contract in Linux Mint packaging.
-The maintainer authorized `v0.0.6`; tagged draft-release acceptance is now
-`in_progress` for that bounded timeout repair.
+The `v0.0.6` published release repaired that timeout. Workflow `31886668793`
+passed release-tag validation, Linux Mint 22.3 and Ubuntu 26.04 package jobs,
+and draft assembly; checksum review preceded publication. The final Meson
+cutover is verified.
 
 ## Requirements
 
@@ -47,7 +49,7 @@ are the sole supported build and delivery authority.
 - Given the tracked repository after cutover, when forbidden-path validation
   runs, then no Autotools/libtool/configure/Makefile artifact remains.
 - Given a fresh supported host, when preflight, package, distribution, and
-  v0.0.6 tagged release validation run, then they need no legacy build command.
+  v0.0.6 published release validation run, then they need no legacy build command.
 
 ## Out of scope
 

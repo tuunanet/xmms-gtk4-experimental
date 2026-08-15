@@ -1,6 +1,6 @@
 story_id: e05s06
-delivery_status: release_acceptance_pending
-verified_at: "2026-08-15T13:08:40Z"
+delivery_status: release_accepted
+verified_at: "2026-08-15T13:20:13Z"
 verifier: verify-work
 phases:
   smoke:
@@ -43,11 +43,12 @@ phases:
         actual: "34/34 distribution tests and artifact verification passed with Cppcheck 2.13."
         passed: true
   release_acceptance:
-    status: pending_tagged_draft_release
+    status: published
     version: 0.0.6
     authorized: true
-    reason: "v0.0.2 through v0.0.5 are immutable failed tagged runs. The v0.0.6 local P0 gate and release metadata are complete; only protected landing, a new annotated v0.0.6 tag, and successful manual draft-release workflow remain."
+    workflow_run: 31886668793
+    release_url: https://github.com/tuunanet/xmms-gtk4-experimental/releases/tag/v0.0.6
+    reason: "The protected v0.0.6 release commit received an immutable annotated tag. Workflow 31886668793 passed release-tag validation, Linux Mint 22.3 and Ubuntu 26.04 package jobs, and draft creation. All 11 release checksum entries verified before the explicitly authorized release was published."
   gaps:
-    closed: false
-    remaining:
-      - "Land the prepared v0.0.6 release, create its immutable annotated tag, and confirm both target package jobs plus draft creation succeed."
+    closed: true
+    remaining: []

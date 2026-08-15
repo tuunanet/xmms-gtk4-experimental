@@ -1,7 +1,7 @@
 # Audit: e05s06 release build-parity timeout repair
 
 **Reviewed range:** `main...HEAD`
-**Result:** PASS — ready for protected integration
+**Result:** PASS — release accepted and cutover complete
 
 ## Current repair checklist
 
@@ -25,10 +25,9 @@
 - [x] `tools/preflight.sh --strict` passed on the prepared v0.0.6 tree: all 34
   tests, Meson distribution, Debian package, lint, and local artifact
   verification succeeded.
-- [x] Clean branch clones passed `tools/package-deb.sh` and
-  `tools/verify-release-artifacts.sh` in pinned Linux Mint 22.3 and Ubuntu
-  26.04 images. Both package-stage parity invocations completed within the
-  explicit bound.
+- [x] Workflow `31886668793` passed release-tag validation, Linux Mint 22.3
+  and Ubuntu 26.04 package jobs, and draft assembly for the exact annotated
+  v0.0.6 commit. All 11 checksum entries verified before publication.
 - [x] `git diff --check`, secret scan, Conventional Commit history, and
   no-attribution checks passed.
 - [x] Security review is current in `specs/security/REVIEW.md`; it finds no
@@ -37,9 +36,9 @@
 ## Smells and rationalizations
 
 No Fowler or Clean Code smell is introduced: no function, public interface,
-or duplicated branch was added. No gate failure was dismissed; the immutable
-`v0.0.5` release remains unchanged and the repair is prepared for newly
-authorized `v0.0.6` acceptance.
+or duplicated branch was added. No gate failure was dismissed; immutable
+`v0.0.5` remains unchanged and the explicitly authorized `v0.0.6` release is
+published.
 
 ## Historical cutover audit
 
