@@ -1,6 +1,6 @@
 story_id: e05s06
 delivery_status: release_acceptance_pending
-verified_at: "2026-08-15T11:34:25Z"
+verified_at: "2026-08-15T13:08:40Z"
 verifier: verify-work
 phases:
   smoke:
@@ -26,12 +26,12 @@ phases:
   packages:
     passed: true
     command: "tools/package-deb.sh"
-    result: "Pinned Ubuntu 26.04 and Linux Mint 22.3 containers each built the source archive and Debian packages, then passed extracted-artifact verification."
+    result: "The v0.0.6 local package gate passed. Pinned Ubuntu 26.04 and Linux Mint 22.3 clean-clone package checks passed for the repair source; the tagged v0.0.6 workflow remains the authoritative two-target acceptance."
   terminal_verdict:
     command: "tools/preflight.sh --strict && tools/verify-meson-dist.sh && MESON_BUILD_DIR=build-meson-preflight tools/verify-release-artifacts.sh deb-artifacts"
     exit_code: 0
-    captured_at: "2026-08-15T11:34:25Z"
-    note: "Single contiguous local P0 run. Separate clean-clone executions in both pinned target images passed tools/package-deb.sh, all 34 Meson distribution tests, and artifact verification."
+    captured_at: "2026-08-15T13:08:40Z"
+    note: "Single contiguous local v0.0.6 P0 run. Separate clean-clone executions in both pinned target images passed tools/package-deb.sh, all 34 Meson distribution tests, and artifact verification for the repair source; tagged v0.0.6 acceptance remains pending."
   manual:
     steps:
       - step: "Build the clean release branch inside the pinned Ubuntu 26.04 container."
@@ -44,10 +44,10 @@ phases:
         passed: true
   release_acceptance:
     status: pending_tagged_draft_release
-    version: 0.0.5
+    version: 0.0.6
     authorized: true
-    reason: "v0.0.2, v0.0.3, and v0.0.4 are immutable failed tagged runs. Local and target-container P0 acceptance is complete; only a new annotated v0.0.5 tag and successful manual draft-release workflow remain."
+    reason: "v0.0.2 through v0.0.5 are immutable failed tagged runs. The v0.0.6 local P0 gate and release metadata are complete; only protected landing, a new annotated v0.0.6 tag, and successful manual draft-release workflow remain."
   gaps:
     closed: false
     remaining:
-      - "Land the verified repair, create immutable annotated v0.0.5, and confirm both target package jobs plus draft creation succeed."
+      - "Land the prepared v0.0.6 release, create its immutable annotated tag, and confirm both target package jobs plus draft creation succeed."

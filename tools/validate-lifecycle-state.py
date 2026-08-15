@@ -20,11 +20,11 @@ def main():
 
     state, execution_status, release_plan = sys.argv[1:]
     require_text(state, r"^active_epic_id: e05$", "must identify e05 as active")
-    require_text(state, r"^  last_tag: v0\.0\.4$", "must record the immutable failed v0.0.4 tag")
+    require_text(state, r"^  last_tag: v0\.0\.5$", "must record the immutable failed v0.0.5 tag")
     require_text(
         state,
-        r"^  last_publish: failed-draft-release-workflow$",
-        "must record the failed draft-release workflow",
+        r"^  last_publish: failed-v0\.0\.5-draft-release-workflow$",
+        "must record the failed v0.0.5 draft-release workflow",
     )
     require_text(
         state,

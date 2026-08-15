@@ -6,6 +6,8 @@ The project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.6] - 2026-08-15
+
 ### Fixed
 
 - Gave the release build-parity contract a bounded 120-second test budget for slower package environments.

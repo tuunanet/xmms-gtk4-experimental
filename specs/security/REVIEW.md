@@ -1,16 +1,17 @@
 # Security review: v0.0.6 release build-parity timeout repair
 
-- **Generated:** 2026-08-15T12:00:00Z
-- **Reviewed range:** `main...fa83e85`
+- **Generated:** 2026-08-15T13:08:40Z
+- **Reviewed range:** `main...HEAD`
 - **Result:** PASS
 - **Unresolved HIGH findings (confidence >= 8):** 0
 
 ## Scope and trust boundaries
 
-The range changes only Meson test scheduling, a shell-test contract, changelog
-text, and release-investigation records. It adds no application runtime path,
-workflow permission, dependency, network request, credential, release API
-call, or user-controlled input.
+The range changes only Meson test scheduling, a shell-test contract, release
+version authorities, lifecycle validation, changelog text, and
+release-investigation records. It adds no application runtime path, workflow
+permission, dependency, network request, credential, release API call, or
+user-controlled input.
 
 ## Assessment
 

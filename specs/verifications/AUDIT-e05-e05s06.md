@@ -1,6 +1,6 @@
 # Audit: e05s06 release build-parity timeout repair
 
-**Reviewed range:** `main...fa83e85`
+**Reviewed range:** `main...HEAD`
 **Result:** PASS — ready for protected integration
 
 ## Current repair checklist
@@ -19,8 +19,12 @@
   uses the suite's temporary build directory and adds negligible time. The
   intentionally full build stays serialized and bounded because it validates
   release output parity.
-- [x] `tools/preflight.sh --strict` passed: all 34 tests, Meson distribution,
-  Debian package, lint, and local artifact verification succeeded.
+- [x] The v0.0.6 release preparation updates the two release version
+  authorities, changelog, and lifecycle contract together; the release checker
+  rejects a mismatch.
+- [x] `tools/preflight.sh --strict` passed on the prepared v0.0.6 tree: all 34
+  tests, Meson distribution, Debian package, lint, and local artifact
+  verification succeeded.
 - [x] Clean branch clones passed `tools/package-deb.sh` and
   `tools/verify-release-artifacts.sh` in pinned Linux Mint 22.3 and Ubuntu
   26.04 images. Both package-stage parity invocations completed within the

@@ -1,7 +1,7 @@
 schema_version: 1
 release:
   codename: Meson tooling migration
-  version: 0.0.5
+  version: 0.0.6
   bump_hint: patch
   status: in_progress
   semantic_release: true

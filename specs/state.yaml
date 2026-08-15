@@ -14,16 +14,16 @@ active_flow: build_epic
 active_epic_id: e05
 active_story_id: e05s06
 git:
-  branch: fix/release-container-portability
+  branch: release/0.0.6
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/release-container-portability
+  worktree: /home/tuunanet/git/tuunanet/release-0.0.6
 metrics:
   story_start: 2026-08-08T13:31:00Z
 handoff:
   status: in_progress
   next_skill: release-branch
-  reason: Authorized v0.0.5 container-portability repairs passed strict preflight (34/34), clean distribution, preflight artifact verification, and clean-clone package verification in both pinned target containers; audit and security review passed. Next is protected landing, immutable tagging, and tagged draft-release acceptance.
+  reason: Authorized v0.0.6 repairs the immutable v0.0.5 Linux Mint build-parity timeout. Strict preflight and clean-clone package verification in both pinned targets passed; next land the prepared metadata, create the annotated tag, and confirm the draft-release workflow.
 release:
-  last_tag: v0.0.4
-  last_publish: failed-draft-release-workflow
-  target_version: 0.0.5
+  last_tag: v0.0.5
+  last_publish: failed-v0.0.5-draft-release-workflow
+  target_version: 0.0.6

@@ -24,21 +24,21 @@ sed 's/^active_story_id:.*/active_story_id: e05s99/' \
 	"$repo_root/specs/state.yaml" \
 	"$repo_root/specs/execution-status.yaml" \
 	"$repo_root/specs/release-plan.yaml"
-echo "ok - records the failed v0.0.4 draft release and active v0.0.5 repair"
+echo "ok - records the failed v0.0.5 draft release and active v0.0.6 repair"
 grep -Fx '  head: HEAD' "$repo_root/specs/state.yaml" >/dev/null \
 	|| fail "uses a symbolic head marker for self-updating evidence"
-grep -Fx '  last_tag: v0.0.4' "$repo_root/specs/state.yaml" >/dev/null \
-	|| fail "records the immutable failed v0.0.4 tag"
-grep -Fx '  target_version: 0.0.5' "$repo_root/specs/state.yaml" >/dev/null \
-	|| fail "targets the authorized v0.0.5 repair"
-grep -Fx '  version: 0.0.5' "$repo_root/specs/release-plan.yaml" >/dev/null \
-	|| fail "plans the v0.0.5 release metadata"
-grep -F 'v0.0.5 tagged release validation' \
+grep -Fx '  last_tag: v0.0.5' "$repo_root/specs/state.yaml" >/dev/null \
+	|| fail "records the immutable failed v0.0.5 tag"
+grep -Fx '  target_version: 0.0.6' "$repo_root/specs/state.yaml" >/dev/null \
+	|| fail "targets the authorized v0.0.6 repair"
+grep -Fx '  version: 0.0.6' "$repo_root/specs/release-plan.yaml" >/dev/null \
+	|| fail "plans the v0.0.6 release metadata"
+grep -F 'v0.0.6 tagged release validation' \
 	"$repo_root/specs/epics/e05-meson-tooling-migration/e05s06-retire-autotools.md" >/dev/null \
-	|| fail "requires v0.0.5 tagged release acceptance"
-grep -F 'v0.0.5 draft-release acceptance' \
+	|| fail "requires v0.0.6 tagged release acceptance"
+grep -F 'v0.0.6 draft-release acceptance' \
 	"$repo_root/specs/epics/e05-meson-tooling-migration/e05s06-tasks.yaml" >/dev/null \
-	|| fail "tracks v0.0.5 in the active release task"
+	|| fail "tracks v0.0.6 in the active release task"
 
 grep -Fx '  e05: in_progress' "$repo_root/specs/execution-status.yaml" >/dev/null \
 	|| fail "marks e05 repair in progress in the execution ledger"
