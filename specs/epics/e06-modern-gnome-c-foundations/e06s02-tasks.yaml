@@ -1,7 +1,7 @@
 schema_version: 1
 story_id: e06s02
 title: Enforce directional subsystem dependencies
-status: planned
+status: passing
 risk: P1
 bcps: 5
 tasks:
@@ -11,13 +11,13 @@ tasks:
     verify: "tests/test-gnome-c-foundations.sh \"$PWD\" --dependency-contract"
     risk: P1
     security: none
-    status: planned
+    status: passing
     allure: {severity: normal, categories: [architecture, boundaries]}
   - id: t2
     scenarios: [SC-e06s02-P1-01]
-    description: Add a deterministic source-level edge checker and run it from Meson preflight without modifying legacy edges outside the allowlist.
-    verify: "tools/preflight.sh --dependency-contract"
+    description: Add a deterministic source-level edge checker in the Meson gobject-boundaries suite without modifying legacy edges outside the allowlist.
+    verify: "tools/preflight.sh --strict"
     risk: P1
     security: low
-    status: planned
+    status: passing
     allure: {severity: normal, categories: [tooling, regression]}

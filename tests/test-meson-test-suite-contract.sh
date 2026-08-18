@@ -26,6 +26,7 @@ for expected_test in \
   no-autotools-artifacts \
   no-autotools-artifacts-source \
   c-lint \
+  gnome-c-dependency-contract \
   meson-migration-contracts \
   preflight \
   meson-documentation-contract \

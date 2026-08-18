@@ -24,7 +24,7 @@ epics:
     depends_on: [e05]
     wsjf: 2.0
     bcps: 15
-    status: planned
+    status: in_progress
     score:
       business_value: 5
       time_criticality: 3

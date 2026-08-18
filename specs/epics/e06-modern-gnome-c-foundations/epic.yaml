@@ -13,7 +13,7 @@ stories:
     title: Define modern GObject and public-API boundaries
     bcps: 5
     risk: P1
-    status: in_progress
+    status: verified
     delta: ADDED
     spec: e06s01-gobject-and-api-boundaries.md
     tasks: e06s01-tasks.yaml
@@ -21,7 +21,7 @@ stories:
     title: Enforce directional subsystem dependencies
     bcps: 5
     risk: P1
-    status: planned
+    status: in_progress
     delta: ADDED
     spec: e06s02-directional-dependencies.md
     tasks: e06s02-tasks.yaml

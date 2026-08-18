@@ -1,8 +1,9 @@
 # Threat model: e06 modern GNOME C foundations
 
-**Scope:** e06s01 establishes policy and one new GTK-migration module without
-changing the historic plugin ABI, control socket, configuration, skins, or
-legacy module behavior.
+**Scope:** e06s01 establishes policy and one new GTK-migration module; e06s02
+adds a deterministic source-level dependency contract for only those managed
+modules. Neither story changes the historic plugin ABI, control socket,
+configuration, skins, or legacy module behavior.
 
 ## Assets and boundaries
 
@@ -22,6 +23,7 @@ legacy module behavior.
 | GObject interface expansion | Low | Add an interface only where third parties genuinely implement a boundary; do not convert the existing plugin vtable. |
 | Mutable global state | Low | Require explicit ownership or injection; test for absence of new global mutable state. |
 | GTK thread use | Low | Keep GTK operations on the main thread and use focused Xvfb tests. |
+| Build-policy parsing | Low | Check a fixed managed-file set with literal include matching; do not evaluate source text, shell fragments, paths from input, or generated output. |
 | Injection, auth, secrets, network, deserialization | None in approved scope | Do not add these paths. Any such addition requires a new threat review. |
 
 ## Security verdict

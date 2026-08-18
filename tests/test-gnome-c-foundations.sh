@@ -6,6 +6,8 @@ mode=${2:?mode is required}
 policy="$repo_root/docs/architecture/gnome-c-foundations.md"
 header="$repo_root/xmms/ui_gtk3_control.h"
 source="$repo_root/xmms/ui_gtk3_control.c"
+control_header="$repo_root/xmms/ui_control.h"
+control_source="$repo_root/xmms/ui_control.c"
 meson="$repo_root/tests/meson.build"
 
 fail()
@@ -39,10 +41,50 @@ check_policy()
 		"exempts the historic control socket"
 }
 
+check_no_forbidden_includes()
+{
+	file=$1
+
+	for forbidden in plugin.h controlsocket.h configfile.h skin.h main.h; do
+		if grep -F "#include \"$forbidden\"" "$file" >/dev/null; then
+			fail "rejects $forbidden in managed dependency modules"
+		fi
+	done
+}
+
+check_dependency_contract()
+{
+	check_policy
+	require_text '## Directional dependencies' "$policy" \
+		"documents directional dependencies"
+	require_text 'UI/rendering adapter' "$policy" \
+		"defines the UI rendering adapter layer"
+	require_text 'Toolkit-neutral UI control' "$policy" \
+		"defines the toolkit-neutral control layer"
+	require_text 'plugin.h' "$policy" \
+		"prohibits plugin dependencies in managed modules"
+	require_text 'controlsocket.h' "$policy" \
+		"prohibits control socket dependencies in managed modules"
+	require_text 'Historical compatibility allowlist' "$policy" \
+		"documents historical compatibility exemptions"
+	require_text 'xmms/pbutton.c' "$policy" \
+		"allowlists the GTK2 Play-button bridge"
+	require_text '#include "ui_control.h"' "$header" \
+		"allows the GTK3 adapter to use the control contract"
+	check_no_forbidden_includes "$header"
+	check_no_forbidden_includes "$source"
+	check_no_forbidden_includes "$control_header"
+	check_no_forbidden_includes "$control_source"
+}
+
 case "$mode" in
 --policy)
 	check_policy
 	echo "ok - documents GNOME C foundation boundaries"
+	;;
+--dependency-contract)
+	check_dependency_contract
+	echo "ok - enforces directional GTK migration dependencies"
 	;;
 --gobject-boundaries)
 	check_policy
@@ -73,6 +115,6 @@ case "$mode" in
 	echo "ok - enforces final GTK3 proof boundaries"
 	;;
 *)
-	fail "supports --policy and --gobject-boundaries modes"
+	fail "supports --policy, --dependency-contract, and --gobject-boundaries modes"
 	;;
 esac

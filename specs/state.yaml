@@ -12,24 +12,24 @@ active_decisions:
     artifact: specs/workflows/autonomous-epic.yaml
 active_flow: build_epic
 active_epic_id: e06
-active_story_id: e06s01
+active_story_id: e06s02
 epic_cycle:
   epic_id: e06
-  story_id: e06s01
+  story_id: e06s02
   step: 8
   story_bcps: 5
   fast_mode: false
   audit_result: pass
 git:
-  branch: feat/e06s01-gobject-boundaries
+  branch: feat/e06s02-subsystem-dependencies
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/e06s01-gobject-boundaries
+  worktree: /home/tuunanet/git/tuunanet/e06s02-subsystem-dependencies
 metrics:
-  story_start: 2026-08-15T14:16:26Z
+  story_start: 2026-08-15T14:41:58Z
 handoff:
   status: in_progress
   next_skill: release-branch
-  reason: e06s01 passed verify-work, security review, audit, F.I.R.S.T, and Conventional Commit review; land the completed story through solo-git.
+  reason: e06s02 passed verification, security review, audit, F.I.R.S.T, traceability waiver, and Conventional Commit review; land through solo-git.
 release:
   last_tag: v0.0.6
   last_publish: published-v0.0.6

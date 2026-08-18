@@ -1,0 +1,54 @@
+story_id: e06s02
+verified_at: "2026-08-18T13:55:05Z"
+verifier: verify-work
+risk: P1
+phases:
+  smoke:
+    passed: true
+    command: "tests/test-gnome-c-foundations.sh \"$PWD\" --dependency-contract"
+    result: "The deterministic managed-module policy and include-edge contract passed."
+  build:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  typecheck:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  lint:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  tests:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    result: "All 36 Meson tests passed, including the three gobject-boundaries tests."
+  security:
+    passed: true
+    report: specs/security/REVIEW.md
+    result: "No unresolved HIGH finding."
+  blind_spot_check:
+    status: waived
+    reason: "scripts/check-blind-spots.sh is absent."
+  completeness_critic:
+    status: waived
+    reason: "scripts/lib/completeness-critic.sh is absent."
+  terminal_verdict:
+    command: "tools/preflight.sh --strict"
+    exit_code: 0
+    captured_at: "2026-08-18T13:55:05Z"
+    note: "Strict preflight built the source snapshot and packages, ran all 36 Meson tests, and completed artifact gates."
+  manual:
+    steps:
+      - step: "Run the managed-module dependency contract directly."
+        expected: "The approved policy, allowlist, and forbidden include edges pass."
+        actual: "Passed; the checker scans only ui_control and ui_gtk3_control production paths."
+        passed: true
+      - step: "Run the gobject-boundaries suite under Xvfb."
+        expected: "Policy, dependency, and GTK3 proof tests pass without running the player."
+        actual: "All three focused tests passed."
+        passed: true
+      - step: "Run strict preflight."
+        expected: "Full build, distribution, package, and artifact validation remain green."
+        actual: "Passed with 36 tests and zero failures."
+        passed: true
+  gaps:
+    closed: true
+    remaining: []
