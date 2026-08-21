@@ -10,26 +10,17 @@ active_decisions:
     status: accepted
     summary: Advance through approved active-epic stories without routine human checkpoints.
     artifact: specs/workflows/autonomous-epic.yaml
-active_flow: build_epic
-active_epic_id: e06
-active_story_id: e06s03
-epic_cycle:
-  epic_id: e06
-  story_id: e06s03
-  step: 8
-  story_bcps: 5
-  fast_mode: false
-  audit_result: pass
+active_flow: sustain
 git:
-  branch: feat/e06s03-gnome-c-formatting
+  branch: main
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/e06s03-gnome-c-formatting
+  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
 metrics:
   story_start: 2026-08-18T13:55:05Z
 handoff:
-  status: in_progress
-  next_skill: release-branch
-  reason: e06s03 verification evidence and audit passed; traceability refresh is unavailable because the repository scripts are absent, so release-branch must retain the WAIVED gate.
+  status: complete
+  next_skill: survey-context
+  reason: e06 modern GNOME C foundations is complete after protected landing; traceability refresh remains waived because the repository scripts are absent.
 release:
   last_tag: v0.0.6
   last_publish: published-v0.0.6

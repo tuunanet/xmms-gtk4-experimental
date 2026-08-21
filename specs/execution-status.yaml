@@ -2,7 +2,7 @@ schema_version: 1
 status: in_progress
 epics:
   e05: verified
-  e06: in_progress
+  e06: verified
   e04: verified
   e01: verified
   e02: verified
@@ -25,6 +25,7 @@ stories:
   e06s03:
     status: verified
     started_at: "2026-08-18T13:55:05Z"
+    completed_at: "2026-08-21T11:53:14Z"
   e04s01: verified
   e01s01: verified
   e01s02: verified

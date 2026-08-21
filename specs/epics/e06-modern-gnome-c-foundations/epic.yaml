@@ -4,7 +4,7 @@ title: Establish modern GNOME C foundations
 wsjf: 2.0
 total_bcps: 15
 risk: P1
-status: in_progress
+status: verified
 depends_on:
   - e05
 adr: []
