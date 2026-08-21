@@ -140,7 +140,7 @@ building; the project never bootstraps them or downloads Meson wraps.
 - POSIX threads (`pthread`)
 - `zlib`
 - ALSA development headers for the required Linux output plugin
-- Meson ≥ 1.3.2, Ninja, Python 3, Cppcheck, Xvfb, and `xauth` as system packages
+- Meson ≥ 1.3.2, Ninja, Python 3, clang-format, Cppcheck, Xvfb, and `xauth` as system packages
 - Debian packaging tools: `dpkg-dev`, `debhelper`, `lintian`, `binutils`, and `tar`
 
 For the canonical `tools/preflight.sh` gate on Debian-family systems, install
@@ -149,8 +149,8 @@ the complete package-build environment:
 ```sh
 sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
   libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
-  libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
-  dpkg-dev debhelper lintian binutils tar
+  libxxf86vm-dev zlib1g-dev meson ninja-build python3 clang-format cppcheck \
+  xvfb xauth dpkg-dev debhelper lintian binutils tar
 ```
 
 GTK4 is the migration target, not yet a production build dependency.

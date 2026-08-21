@@ -27,6 +27,17 @@ modern-code paths. The gate must not rewrite files, download tools, or impose a
 whole-tree formatting diff; it must provide actionable system-package guidance
 when clang-format is absent.
 
+## Approved first-enforcement scope
+
+The repository-owned `tools/clang-format-gnome.yml` config applies only when
+`tools/check-gnome-c-format.sh` checks the managed GTK3 adapter files:
+`xmms/ui_gtk3_control.c` and `xmms/ui_gtk3_control.h`. The fixed scope is the
+first changed-modern-code set; it does not inspect or reformat the historical
+GTK2 tree. The checker invokes the system `clang-format` in dry-run mode with
+that config and fixed paths, reports the failing path with an explicit
+remediation command, and is registered as a Meson test so strict preflight and
+CI run it. The preflight wrapper retains its `--strict`-only interface.
+
 ## Acceptance criteria
 
 - Given an incorrectly formatted changed modern C/H file, when preflight runs,

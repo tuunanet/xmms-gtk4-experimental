@@ -6,16 +6,17 @@ not how to develop plugins. For day-to-day contributor commands see
 [docs/releases.md](../releases.md).
 
 The canonical contributor and agent gate is [`tools/preflight.sh`](../../tools/preflight.sh).
-It requires system Meson, Ninja, Python 3, Cppcheck, Xvfb, ALSA development
-headers, and Debian packaging tools (`dpkg-dev`, `debhelper`, `lintian`,
-`binutils`, and `tar`); it never installs tools or downloads Meson wraps. On
+It requires system Meson, Ninja, Python 3, clang-format, Cppcheck, Xvfb,
+ALSA development headers, and Debian packaging tools (`dpkg-dev`, `debhelper`,
+`lintian`, `binutils`, and `tar`); it never installs tools or downloads Meson
+wraps. On
 Debian-family systems, install the complete package-gate environment:
 
 ```sh
 sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
   libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
-  libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
-  dpkg-dev debhelper lintian binutils tar
+  libxxf86vm-dev zlib1g-dev meson ninja-build python3 clang-format cppcheck \
+  xvfb xauth dpkg-dev debhelper lintian binutils tar
 ```
 
 Primary sources:
@@ -180,6 +181,10 @@ linked into the same test process. Debian build environments declare
 
 ### C static analysis
 
+`tools/check-gnome-c-format.sh` checks only the GTK3 adapter C/H files with
+system `clang-format` in non-mutating dry-run mode. Missing `clang-format` or a
+format mismatch fails the gate with a system-package or remediation command.
+
 `tools/run-c-lint.sh` invokes Cppcheck. The runner owns the maintained
 source-directory list, defect-oriented analyzer profile, library models,
 relative paths, and fail-closed exit status.
@@ -248,7 +253,9 @@ flowchart TB
 | Behavior | Detail |
 | --- | --- |
 | **Targets** | Linux Mint 22.3 and Ubuntu 26.04, each in a pinned container image on an Ubuntu 24.04 runner. |
-| **Dependencies** | The package environment installs Git before checkout, then trusts only the checked-out workspace before Meson reads Git metadata. It installs GTK2, `libgtk-3-dev`, Meson, Ninja, Cppcheck, Debian packaging tools, and Xvfb; Meson distribution tests run inside that Xvfb session before source-archive packaging. |
+| **Dependencies** | The package environment installs Git before checkout, then trusts only the checked-out workspace before Meson reads Git metadata. It installs GTK2, `libgtk-3-dev`, Meson, Ninja, clang-format, Cppcheck,
+Debian packaging tools, and Xvfb; Meson distribution tests run inside that Xvfb
+session before source-archive packaging. |
 | **Verification** | Each target builds `xmms` and `libxmms-dev`, inspects metadata, extracts package payloads for smoke verification without host installation, and verifies its SHA-256 manifests. |
 | **Permissions** | Default workflow permission is `contents: read`; only the final draft-release job receives `contents: write`. |
 | **Publication** | The workflow creates or resumes an unpublished draft only and refuses to modify a published release. |

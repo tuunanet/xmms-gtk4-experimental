@@ -12,24 +12,24 @@ active_decisions:
     artifact: specs/workflows/autonomous-epic.yaml
 active_flow: build_epic
 active_epic_id: e06
-active_story_id: e06s02
+active_story_id: e06s03
 epic_cycle:
   epic_id: e06
-  story_id: e06s02
+  story_id: e06s03
   step: 8
   story_bcps: 5
   fast_mode: false
   audit_result: pass
 git:
-  branch: feat/e06s02-subsystem-dependencies
+  branch: feat/e06s03-gnome-c-formatting
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/e06s02-subsystem-dependencies
+  worktree: /home/tuunanet/git/tuunanet/e06s03-gnome-c-formatting
 metrics:
-  story_start: 2026-08-15T14:41:58Z
+  story_start: 2026-08-18T13:55:05Z
 handoff:
   status: in_progress
   next_skill: release-branch
-  reason: e06s02 passed verification, security review, audit, F.I.R.S.T, traceability waiver, and Conventional Commit review; land through solo-git.
+  reason: e06s03 verification evidence and audit passed; traceability refresh is unavailable because the repository scripts are absent, so release-branch must retain the WAIVED gate.
 release:
   last_tag: v0.0.6
   last_publish: published-v0.0.6

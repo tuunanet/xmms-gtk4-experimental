@@ -124,7 +124,7 @@ require_text tools/build-deb.sh 'lintian --fail-on error' \
 require_text tools/build-deb.sh 'DEB_SOURCE_ARCHIVE="$source_archive" dpkg-buildpackage' \
 	'validates package tests against the supplied Meson source archive'
 
-for package in ' cppcheck,' ' git,' ' lintian,' ' meson (>= 1.3.2),' ' ninja-build,' ' xauth,'; do
+for package in ' clang-format,' ' cppcheck,' ' git,' ' lintian,' ' meson (>= 1.3.2),' ' ninja-build,' ' xauth,'; do
 	require_text packaging/debian/control "$package" \
 		"declares ${package# } for package verification"
 done

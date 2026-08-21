@@ -70,7 +70,7 @@ if test -e "$repo_root/.git"; then
 	git_bin="$tmpdir/git-bin"
 	mkdir "$git_bin"
 	ln -s "$(command -v dirname)" "$git_bin/dirname"
-	for command in meson ninja xvfb-run xauth python3; do
+	for command in meson ninja xvfb-run xauth python3 clang-format; do
 		printf '%s\n' '#!/bin/sh' 'exit 0' > "$git_bin/$command"
 		chmod +x "$git_bin/$command"
 	done
@@ -86,7 +86,7 @@ fi
 xvfb_bin="$tmpdir/xvfb-bin"
 mkdir "$xvfb_bin"
 ln -s "$(command -v dirname)" "$xvfb_bin/dirname"
-for command in meson ninja; do
+for command in meson ninja clang-format; do
 	printf '%s\n' '#!/bin/sh' 'exit 0' > "$xvfb_bin/$command"
 	chmod +x "$xvfb_bin/$command"
 done
@@ -101,7 +101,7 @@ echo "ok - preflight fails clearly without Xvfb"
 xauth_bin="$tmpdir/xauth-bin"
 mkdir "$xauth_bin"
 ln -s "$(command -v dirname)" "$xauth_bin/dirname"
-for command in meson ninja xvfb-run; do
+for command in meson ninja xvfb-run clang-format; do
 	printf '%s\n' '#!/bin/sh' 'exit 0' > "$xauth_bin/$command"
 	chmod +x "$xauth_bin/$command"
 done
@@ -116,7 +116,7 @@ echo "ok - preflight fails clearly without xauth"
 python_bin="$tmpdir/python-bin"
 mkdir "$python_bin"
 ln -s "$(command -v dirname)" "$python_bin/dirname"
-for command in meson ninja xvfb-run xauth; do
+for command in meson ninja xvfb-run xauth clang-format; do
 	printf '%s\n' '#!/bin/sh' 'exit 0' > "$python_bin/$command"
 	chmod +x "$python_bin/$command"
 done
@@ -127,6 +127,24 @@ fi
 grep -F "install system package 'python3'" "$missing_log" >/dev/null \
 	|| fail "explains the Python system-package prerequisite"
 echo "ok - preflight fails clearly without Python"
+
+grep -F 'require_tool clang-format clang-format' "$preflight" >/dev/null \
+	|| fail "checks clang-format before running the build"
+
+clang_format_bin="$tmpdir/missing-clang-format-bin"
+mkdir "$clang_format_bin"
+ln -s "$(command -v dirname)" "$clang_format_bin/dirname"
+for command in meson ninja xvfb-run xauth python3; do
+	printf '%s\n' '#!/bin/sh' 'exit 0' > "$clang_format_bin/$command"
+	chmod +x "$clang_format_bin/$command"
+done
+missing_log="$tmpdir/missing-clang-format.log"
+if PATH="$clang_format_bin" "$preflight" >"$missing_log" 2>&1; then
+	fail "fails when clang-format is unavailable"
+fi
+grep -F "install system package 'clang-format'" "$missing_log" >/dev/null \
+	|| fail "explains the clang-format system-package prerequisite"
+echo "ok - preflight fails clearly without clang-format"
 
 clean_environment_verifier="$repo_root/tests/verify-preflight-clean-environment.sh"
 [ -x "$clean_environment_verifier" ] \

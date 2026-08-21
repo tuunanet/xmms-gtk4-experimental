@@ -18,8 +18,8 @@ Install the complete canonical preflight environment on Debian-family systems:
 ```sh
 sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
   libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
-  libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
-  dpkg-dev debhelper lintian binutils tar
+  libxxf86vm-dev zlib1g-dev meson ninja-build python3 clang-format cppcheck \
+  xvfb xauth dpkg-dev debhelper lintian binutils tar
 ```
 
 The package gate uses every dependency above. OpenGL, Vorbis, and MikMod are
@@ -33,8 +33,9 @@ tools/preflight.sh
 ```
 
 The command configures an isolated no-download Meson build, compiles XMMS,
-runs Xvfb-backed tests and plugin checks, runs Cppcheck, builds and verifies
-Debian packages, and verifies the Meson source distribution. It never installs
+runs Xvfb-backed tests and plugin checks, runs the GNOME C formatter and
+Cppcheck, builds and verifies Debian packages, and verifies the Meson source
+distribution. It never installs
 tools, downloads dependencies, or elevates privileges. It runs from a dirty
 worktree and verifies a local snapshot of the current working source; install
 every prerequisite as a system package first. From an extracted source archive

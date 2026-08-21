@@ -87,6 +87,18 @@ test('gnome-c-dependency-contract',
   suite: 'gobject-boundaries',
 )
 
+test('gnome-c-format', find_program('../tools/check-gnome-c-format.sh'),
+  args: [meson.project_source_root()],
+  workdir: meson.project_source_root(),
+  suite: 'gobject-boundaries',
+)
+
+test('gnome-c-format-contract', find_program('test-gnome-c-format.sh'),
+  args: [meson.project_source_root()],
+  workdir: meson.project_source_root(),
+  suite: 'gobject-boundaries',
+)
+
 if gtk3_dep.found()
   gtk3_proof = executable(
     'test-gtk3-play-button-proof',

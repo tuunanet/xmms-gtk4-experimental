@@ -12,16 +12,17 @@
 
 #include "ui_control.h"
 
-#define XMMS_TYPE_UI_GTK3_CONTROL (xmms_ui_gtk3_control_get_type ())
-G_DECLARE_FINAL_TYPE(XmmsUiGtk3Control, xmms_ui_gtk3_control,
-	XMMS, UI_GTK3_CONTROL, GObject)
+#define XMMS_TYPE_UI_GTK3_CONTROL (xmms_ui_gtk3_control_get_type())
+G_DECLARE_FINAL_TYPE(XmmsUiGtk3Control, xmms_ui_gtk3_control, XMMS,
+                     UI_GTK3_CONTROL, GObject)
 
-XmmsUiGtk3Control *xmms_ui_gtk3_control_new(
-	const XmmsUiButtonState *initial_state,
-	const XmmsUiButtonSprites *sprites);
+XmmsUiGtk3Control *
+xmms_ui_gtk3_control_new(const XmmsUiButtonState *initial_state,
+                         const XmmsUiButtonSprites *sprites);
 void xmms_ui_gtk3_control_draw(XmmsUiGtk3Control *control, cairo_t *cr,
-	GdkPixbuf *sprites);
-XmmsUiControlResult xmms_ui_gtk3_control_handle_event(
-	XmmsUiGtk3Control *control, const GdkEvent *event);
+                               GdkPixbuf *sprites);
+XmmsUiControlResult
+xmms_ui_gtk3_control_handle_event(XmmsUiGtk3Control *control,
+                                  const GdkEvent *event);
 
 #endif

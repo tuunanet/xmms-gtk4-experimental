@@ -22,7 +22,7 @@ do
 		|| fail "$document documents the canonical Meson preflight"
 done
 
-preflight_prerequisites='build-essential git pkg-config gettext libasound2-dev libgl-dev libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth dpkg-dev debhelper lintian binutils tar'
+preflight_prerequisites='build-essential git pkg-config gettext libasound2-dev libgl-dev libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev libxxf86vm-dev zlib1g-dev meson ninja-build python3 clang-format cppcheck xvfb xauth dpkg-dev debhelper lintian binutils tar'
 for document in README.md CONTRIBUTING.md docs/architecture/build-and-test.md specs/tech-architecture/tech-stack.md; do
 	for prerequisite in $preflight_prerequisites; do
 		grep -F "$prerequisite" "$repo_root/$document" >/dev/null \

@@ -19,9 +19,12 @@ stories:
     started_at: "2026-08-15T14:16:26Z"
     completed_at: "2026-08-15T14:41:58Z"
   e06s02:
-    status: in_progress
+    status: verified
     started_at: "2026-08-15T14:41:58Z"
-  e06s03: planned
+    completed_at: "2026-08-18T13:55:05Z"
+  e06s03:
+    status: verified
+    started_at: "2026-08-18T13:55:05Z"
   e04s01: verified
   e01s01: verified
   e01s02: verified
@@ -31,7 +34,7 @@ stories:
   e03s03: verified
 gate_trace:
   verdict: WAIVED
-  generated_at: 2026-08-18T13:55:05Z
-  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. e06s02 has explicit task verification, a focused GObject-boundaries suite, 36-test strict-preflight evidence, audit, and security review; no heuristic coverage result can be computed.
+  generated_at: 2026-08-21T11:43:41Z
+  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. e06s03 has explicit task verification, a focused non-mutating formatter suite, 38-test strict-preflight evidence, audit, and security review; no heuristic coverage result can be computed.
   heuristic_ratio: null
   downgrade_applied: false

@@ -1,0 +1,8 @@
+# GNOME C style for the isolated GTK3 migration proof only.
+# Managed paths: xmms/ui_gtk3_control.c, xmms/ui_gtk3_control.h
+BasedOnStyle: LLVM
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+BreakBeforeBraces: Linux
+ColumnLimit: 80

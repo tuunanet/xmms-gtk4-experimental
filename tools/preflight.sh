@@ -110,6 +110,7 @@ require_tool ninja ninja-build
 require_tool xvfb-run xvfb
 require_tool xauth xauth
 require_tool python3 python3
+require_tool clang-format clang-format
 if test -e "$repo_root/.git"; then
 	require_tool git git
 	reject_unsupported_source_entries

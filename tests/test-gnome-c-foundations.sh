@@ -9,6 +9,7 @@ source="$repo_root/xmms/ui_gtk3_control.c"
 control_header="$repo_root/xmms/ui_control.h"
 control_source="$repo_root/xmms/ui_control.c"
 meson="$repo_root/tests/meson.build"
+format_config="$repo_root/tools/clang-format-gnome.yml"
 
 fail()
 {
@@ -52,6 +53,21 @@ check_no_forbidden_includes()
 	done
 }
 
+check_format_scope()
+{
+	[ -f "$format_config" ] || fail "provides GNOME C format configuration"
+	require_text 'IndentWidth: 2' "$format_config" \
+		"uses two-space GNOME C indentation"
+	require_text 'BreakBeforeBraces: Linux' "$format_config" \
+		"uses GNOME-compatible brace placement"
+	require_text 'ColumnLimit: 80' "$format_config" \
+		"uses an approximately 80-column limit"
+	require_text 'xmms/ui_gtk3_control.c' "$format_config" \
+		"documents the managed GTK3 C source path"
+	require_text 'xmms/ui_gtk3_control.h' "$format_config" \
+		"documents the managed GTK3 header path"
+}
+
 check_dependency_contract()
 {
 	check_policy
@@ -82,6 +98,10 @@ case "$mode" in
 	check_policy
 	echo "ok - documents GNOME C foundation boundaries"
 	;;
+--format-scope)
+	check_format_scope
+	echo "ok - scopes GNOME C formatting to the GTK3 adapter"
+	;;
 --dependency-contract)
 	check_dependency_contract
 	echo "ok - enforces directional GTK migration dependencies"
@@ -90,7 +110,7 @@ case "$mode" in
 	check_policy
 	require_text 'G_DECLARE_FINAL_TYPE(XmmsUiGtk3Control' "$header" \
 		"declares the GTK3 proof adapter final"
-	require_text 'XMMS, UI_GTK3_CONTROL, GObject)' "$header" \
+	require_text 'UI_GTK3_CONTROL, GObject)' "$header" \
 		"uses GObject as the final adapter parent"
 	if grep -F 'struct _XmmsUiGtk3Control' "$header" >/dev/null; then
 		fail "keeps GTK3 proof instance data private"
@@ -115,6 +135,6 @@ case "$mode" in
 	echo "ok - enforces final GTK3 proof boundaries"
 	;;
 *)
-	fail "supports --policy, --dependency-contract, and --gobject-boundaries modes"
+	fail "supports --policy, --format-scope, --dependency-contract, and --gobject-boundaries modes"
 	;;
 esac

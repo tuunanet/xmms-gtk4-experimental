@@ -55,8 +55,8 @@ Primary compatibility surfaces:
   ```sh
   sudo apt install build-essential git pkg-config gettext libasound2-dev libgl-dev \
     libgtk2.0-dev libgtk-3-dev libmikmod-dev libsm-dev libvorbis-dev \
-    libxxf86vm-dev zlib1g-dev meson ninja-build python3 cppcheck xvfb xauth \
-    dpkg-dev debhelper lintian binutils tar
+    libxxf86vm-dev zlib1g-dev meson ninja-build python3 clang-format cppcheck \
+    xvfb xauth dpkg-dev debhelper lintian binutils tar
   ```
 
 - The only tracked GitHub Actions workflow is the manual Linux package and

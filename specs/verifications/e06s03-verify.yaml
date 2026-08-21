@@ -1,0 +1,58 @@
+story_id: e06s03
+verified_at: "2026-08-21T11:43:41Z"
+verifier: verify-work
+risk: P1
+phases:
+  smoke:
+    passed: true
+    command: "tests/test-gnome-c-format.sh \"$PWD\""
+    result: "The managed GTK3 C/H files pass the non-mutating formatter contract, and the missing-tool diagnostic is actionable."
+  build:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  typecheck:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  lint:
+    passed: true
+    command: "tools/preflight.sh --strict"
+  tests:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    result: "All 38 Meson tests passed, including gnome-c-format and gnome-c-format-contract."
+  security:
+    passed: true
+    report: specs/security/REVIEW.md
+    result: "No unresolved HIGH finding."
+  blind_spot_check:
+    status: waived
+    reason: "scripts/check-blind-spots.sh is absent."
+  completeness_critic:
+    status: waived
+    reason: "scripts/lib/completeness-critic.sh is absent."
+  terminal_verdict:
+    command: "tools/preflight.sh --strict"
+    exit_code: 0
+    captured_at: "2026-08-21T11:42:00Z"
+    note: "Single contiguous strict-preflight run: build, 38/38 Meson tests, formatter gate, lint, source distribution, Debian packages, and release-artifact checks passed."
+  manual:
+    steps:
+      - step: "Run clang-format in dry-run mode on the managed GTK3 adapter files."
+        expected: "Both approved C/H files pass without being rewritten."
+        actual: "Passed; the source and header remain unchanged."
+        passed: true
+      - step: "Run the checker without clang-format on PATH."
+        expected: "The check fails without network or installation attempts and gives system-package guidance."
+        actual: "Failed as expected with: install system package 'clang-format'."
+        passed: true
+      - step: "Run the checker against a temporary malformed copy of the managed source."
+        expected: "The check fails, identifies the file, and prints a clang-format remediation command."
+        actual: "Failed as expected and identified xmms/ui_gtk3_control.c with the remediation command."
+        passed: true
+      - step: "Run strict preflight."
+        expected: "The complete build, test, lint, package, and distribution gates remain green."
+        actual: "Passed with 38 tests and zero failures."
+        passed: true
+  gaps:
+    closed: true
+    remaining: []

@@ -3,6 +3,7 @@ Section: sound
 Priority: optional
 Maintainer: XMMS GTK4 Experimental contributors <47913151+tuunanet@users.noreply.github.com>
 Build-Depends:
+ clang-format,
  cppcheck,
  debhelper-compat (= 13),
  gettext,
