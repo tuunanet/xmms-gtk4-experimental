@@ -37,6 +37,11 @@ separately linked GTK3 proof consumes that same boundary. This is a migration
 tracer, not a second player: it does not start playback, load plugins, open the
 control socket, or read user configuration.
 
+The e07 GTK3 main-window tracer now extends this boundary with a deterministic
+275×116 shell fixture and isolated Play/Stop activation observations. Its
+transport callbacks stop at the toolkit-neutral control result; they do not
+reach playlist, plugin, socket, configuration, or audio code.
+
 The GTK2 and GTK3 paths deliberately live in separate executables. Later
 window slices must retain that process boundary until the production toolkit
 switch is approved.

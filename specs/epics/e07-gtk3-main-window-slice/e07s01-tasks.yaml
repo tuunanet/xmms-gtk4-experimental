@@ -1,0 +1,22 @@
+schema_version: 1
+story_id: e07s01
+title: Render the GTK3 main-window shell and geometry fixture
+status: passing
+bcps: 5
+tasks:
+  - id: t1
+    scenarios: [SC-e07s01-P1-01]
+    description: Add a GTK3 shell model and deterministic fixture for the classic main-window dimensions, frame regions, and display surface.
+    verify: "tests/test-gtk3-main-window-shell.sh \"$PWD\" --geometry"
+    risk: P1
+    security: none
+    status: passing
+    allure: {severity: high, categories: [gtk-migration, geometry, rendering]}
+  - id: t2
+    scenarios: [SC-e07s01-P1-02]
+    description: Render the shell fixture through a separately linked GTK3 test target and assert representative pixels without loading the production player.
+    verify: "xvfb-run --auto-servernum meson test -C build-meson gtk3-main-window-shell"
+    risk: P1
+    security: none
+    status: passing
+    allure: {severity: high, categories: [gtk3, xvfb, skin-parity]}

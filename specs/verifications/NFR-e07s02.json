@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "story_id": "e07s02",
+  "verdict": "PASS",
+  "verified_at": "2026-08-22T03:30:00Z",
+  "dimensions": {
+    "performance": {
+      "status": "OK",
+      "requirement": "The deterministic transport tracer completes within the focused test gate without a timing-sensitive assertion.",
+      "command": "xvfb-run --auto-servernum meson test -C build-meson gtk3-main-window-transport --print-errorlogs",
+      "evidence": "Focused transport test passed."
+    },
+    "reliability": {
+      "status": "OK",
+      "requirement": "Valid activation is exactly once; invalid events do not activate.",
+      "command": "tests/test-gtk3-main-window-shell.sh \"$PWD\" --transport",
+      "evidence": "Both valid-action and invalid-input tests passed."
+    },
+    "operability": {
+      "status": "OK",
+      "requirement": "The test remains isolated from production playback, plugins, configuration, and control socket paths.",
+      "command": "ldd build-meson/tests/test-gtk3-main-window-transport",
+      "evidence": "The target is a GTK3 test executable with no production player or GTK2 dependency; full preflight passed 40/40."
+    }
+  }
+}

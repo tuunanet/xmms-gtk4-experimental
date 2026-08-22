@@ -1,0 +1,46 @@
+schema_version: 1
+story_id: e07s01
+verified_at: "2026-08-22T01:26:43Z"
+verifier: verify-work
+risk: P1
+phases:
+  smoke:
+    passed: true
+    command: "xvfb-run --auto-servernum build-meson/tests/test-gtk3-main-window-shell"
+    note: "Both GTK3 shell checks passed: classic geometry and fixture rendering."
+  build:
+    passed: true
+    command: "tools/preflight.sh"
+    note: "Canonical preflight completed with 39 tests passing and 0 failures."
+  lint:
+    passed: true
+    command: "tools/preflight.sh"
+    note: "Preflight lint and formatting gates passed."
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum meson test -C build-meson gtk3-main-window-shell --print-errorlogs"
+    note: "Meson GTK3 shell test passed."
+  terminal_verdict:
+    command: "xvfb-run --auto-servernum meson test -C build-meson gtk3-main-window-shell --print-errorlogs"
+    exit_code: 0
+    captured_at: "2026-08-22T01:26:43Z"
+    note: "Single contiguous terminal-verdict run; 1 Meson test passed, 0 failed."
+  manual:
+    status: passed
+    confirmed_by_user: true
+    steps:
+      - step: "Run the GTK3 shell test under Xvfb."
+        expected: "The geometry and fixture-rendering checks pass without starting the player."
+        actual: "Both checks passed."
+        passed: true
+      - step: "Inspect the GTK3 tracer dependencies."
+        expected: "The tracer links libgtk-3 and not libgtk-x11-2.0."
+        actual: "The tracer links libgtk-3 and has no GTK2 dependency."
+        passed: true
+      - step: "Inspect the production xmms dependencies."
+        expected: "The production target retains its GTK2 dependency."
+        actual: "build-meson/xmms/xmms links libgtk-x11-2.0."
+        passed: true
+  gaps:
+    closed: true
+    note: "No implementation or verification gaps found; manual UAT was confirmed by the user."

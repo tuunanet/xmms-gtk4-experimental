@@ -109,6 +109,27 @@ if gtk3_dep.found()
     install: false,
   )
   test('gtk3-play-button-proof', gtk3_proof, suite: 'gobject-boundaries')
+
+  gtk3_main_window_shell = executable(
+    'test-gtk3-main-window-shell',
+    files('test-gtk3-main-window-shell.c', '../xmms/ui_gtk3_shell.c'),
+    dependencies: gtk3_dep,
+    include_directories: test_include_dirs,
+    install: false,
+  )
+  test('gtk3-main-window-shell', gtk3_main_window_shell,
+       suite: 'gobject-boundaries')
+
+  gtk3_main_window_transport = executable(
+    'test-gtk3-main-window-transport',
+    files('test-gtk3-main-window-transport.c', '../xmms/ui_control.c',
+          '../xmms/ui_gtk3_control.c'),
+    dependencies: gtk3_dep,
+    include_directories: test_include_dirs,
+    install: false,
+  )
+  test('gtk3-main-window-transport', gtk3_main_window_transport,
+       suite: 'gobject-boundaries')
 endif
 
 test_pluginenum = executable(

@@ -1,61 +1,91 @@
 schema_version: 1
-feature_name: modern-gnome-c-foundations
+feature_name: gtk3-main-window-slice
 core_value: >-
-  Future GTK migration work has a small, testable GNOME C foundation that keeps
-  new APIs private by default and preserves XMMS's established compatibility
-  contracts.
+  Future toolkit migration work gains a testable GTK3 main-window tracer that
+  preserves classic XMMS geometry and transport behavior without putting the
+  production GTK2 player or its compatibility contracts at risk.
 summary: >-
-  Establish the modern C conventions needed for future GTK3/GTK4 migration
-  slices without converting the production GTK2 player. The initiative defines
-  final-type and public-API boundaries, constrains new subsystem dependencies,
-  and applies formatting checks to changed GNOME C files.
+  Extend the existing Play-button GTK3 proof into the next bounded migration
+  initiative: a separately linked GTK3 main-window shell. The shell gives
+  maintainers executable evidence for the classic main-window frame, display
+  surface, and a small transport-control path while the shipped player remains
+  GTK2.
 
-  The work applies these rules first to the isolated GTK3 migration proof. It
-  must preserve the historic plugin ABI, libxmms API, control socket,
-  configuration, skins, and the separate-process GTK-major boundary.
+  The initiative is a migration tracer, not a production toolkit switch or a
+  second full player. It focuses on deterministic rendering and activation
+  evidence that can be run under Xvfb and checked for GTK-major linkage
+  isolation. Existing plugin, socket, configuration, skin, package, and
+  executable contracts remain unchanged.
 in_scope:
-  - id: e06s01
-    item: Define final GObject, private-instance-data, minimal-public-header,
-      property/signal, extension-interface, and mutable-state boundaries, then
-      prove them in the isolated GTK3 migration module.
-  - id: e06s02
-    item: Define and enforce directional dependencies for new GNOME C modules.
-  - id: e06s03
-    item: Add changed-file GNOME C formatting checks to the developer preflight.
+  - id: e07s01
+    item: >-
+      Render a GTK3 main-window shell with the classic dimensions, skin-frame
+      geometry, and deterministic display fixtures.
+  - id: e07s02
+    item: >-
+      Exercise a GTK3 transport-control slice through the established
+      toolkit-neutral boundary, covering state presentation and valid or
+      invalid activation without starting playback.
+  - id: e07s03
+    item: >-
+      Make the GTK3 main-window tracer reproducible in Meson tests and source
+      distribution checks, with explicit GTK2/GTK3 linkage isolation and
+      architecture documentation.
 out_of_scope:
-  - item: Production GTK3 or GTK4 player port.
-    reason: The isolated proof remains a migration tracer until a separately
-      approved UI slice changes the production toolkit.
-  - item: Plugin ABI, libxmms API, or control-socket conversion to GObject.
-    reason: These are explicit compatibility facades, not approved extension
-      boundaries for this initiative.
-  - item: Bulk conversion of existing GTK2-era structs or historical modules.
-    reason: Modernization-by-style would expand risk without a caller-visible
-      migration benefit.
-  - item: New external dependencies.
-    reason: GLib and the optional GTK3 proof dependency already supply the
-      required GObject facilities.
+  - item: >-
+      Switching the production xmms process from GTK2 to GTK3 or GTK4.
+    reason: >-
+      The staged migration requires more behavior slices and an explicit
+      production-switch approval after the tracer proves sufficient coverage.
+  - item: >-
+      Porting the playlist, equalizer, preferences, skin browser, or dock
+      windows.
+    reason: >-
+      These are separate UI surfaces with distinct state and interaction
+      contracts; including them would make this tracer non-vertical and too
+      broad.
+  - item: >-
+      Starting audio playback, loading plugins, reading user configuration, or
+      opening the control socket from the GTK3 process.
+    reason: >-
+      Mixed GTK-major plugin linkage and production-core coupling are explicit
+      risks that this initiative must continue to avoid.
+  - item: GTK4 compilation or runtime support.
+    reason: >-
+      GTK3 remains the accepted bridge and must be exercised before a GTK4
+      slice is planned.
+  - item: >-
+      Changes to plugin ABI, libxmms APIs, control-socket commands, skin file
+      format, installed executable names, or package contracts.
+    reason: >-
+      These are preservation contracts and are not required to prove the
+      next UI migration boundary.
 constraints:
-  - Preserve the separately linked GTK3 proof and prohibit mixed GTK major
-    versions in the production process.
-  - Keep GTK work on the main thread and use Xvfb for GTK tests.
-  - Keep new instance data private, do not add process-global mutable state,
-    and expose properties, signals, or interfaces only for genuine observable
-    or extension boundaries.
-  - Preserve all plugin, socket, configuration, skin, source-distribution, and
-    package contracts.
+  - Keep the GTK3 tracer in a separately linked executable; never mix GTK2 and
+    GTK3 in one process or plugin-loading path.
+  - Use existing GLib, GTK3, Cairo, GdkPixbuf, Meson, Xvfb, and C tooling only;
+    do not add external dependencies.
+  - Keep GTK operations on the main thread and keep test fixtures deterministic
+    and in memory where practical.
+  - Preserve production GTK2 behavior and all plugin, socket, configuration,
+    skin, source-distribution, and Debian packaging contracts.
+  - Do not reformat or refactor historical GTK2 modules unless a later story
+    explicitly scopes the change.
 success_criteria:
-  - A documented and regression-tested policy defines the approved GObject and
-    public-API boundaries with explicit legacy compatibility exemptions.
-  - The isolated GTK3 migration module demonstrates a final type with private
-    state and no unnecessary property, signal, or interface.
-  - Directional dependencies and changed-file formatting have focused,
-    repeatable checks.
-  - Strict preflight remains green without new dependencies or runtime
-    compatibility changes.
+  - A GTK3 tracer renders the approved main-window shell geometry and fixture
+    states with repeatable assertions under Xvfb.
+  - The tracer exercises the approved transport-control boundary and rejects
+    invalid activation without invoking playback or plugin code.
+  - Automated linkage checks prove the tracer links GTK3 and not GTK2 while
+    the production target retains its GTK2 dependency.
+  - Meson test, strict preflight, and source-distribution checks include the
+    tracer without changing the production delivery artifacts.
+  - Architecture documentation records the new boundary, its limitations, and
+    the conditions for a future production toolkit decision.
 references:
   - specs/product/VISION_LATEST.yaml
   - specs/adr/ADR-0001-staged-gtk-migration.md
+  - specs/epics/e03-gtk-migration-foundation/e03s03-gtk3-play-button-proof.md
   - docs/architecture/ui-interaction.md
   - docs/architecture/build-and-test.md
-  - specs/epics/e06-modern-gnome-c-foundations/epic.yaml
+  - docs/architecture/gnome-c-foundations.md

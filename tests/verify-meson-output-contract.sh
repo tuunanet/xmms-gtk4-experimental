@@ -49,13 +49,18 @@ for contract in \
  do
 	require_export "${contract%%:*}" "${contract#*:}"
 done
-require_file tests/test-gtk3-play-button-proof
-
-if ! ldd "$build_dir/tests/test-gtk3-play-button-proof" | grep -F 'libgtk-3.so' >/dev/null; then
-	fail "links the GTK3 proof to GTK3"
-fi
-if ldd "$build_dir/tests/test-gtk3-play-button-proof" | grep -F 'libgtk-x11-2.0.so' >/dev/null; then
-	fail "keeps GTK2 out of the GTK3 proof"
-fi
+for gtk3_tracer in \
+	test-gtk3-play-button-proof \
+	test-gtk3-main-window-shell \
+	test-gtk3-main-window-transport
+do
+	require_file "tests/$gtk3_tracer"
+	if ! ldd "$build_dir/tests/$gtk3_tracer" | grep -F 'libgtk-3.so' >/dev/null; then
+		fail "$gtk3_tracer links to GTK3"
+	fi
+	if ldd "$build_dir/tests/$gtk3_tracer" | grep -F 'libgtk-x11-2.0.so' >/dev/null; then
+		fail "$gtk3_tracer keeps GTK2 out of the GTK3 tracer"
+	fi
+done
 
 echo "ok - preserves full supported plugin and isolated GTK3 Meson outputs"

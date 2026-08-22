@@ -1,0 +1,22 @@
+schema_version: 1
+story_id: e07s02
+title: Exercise the GTK3 transport-control slice
+status: passing
+bcps: 5
+tasks:
+  - id: t1
+    scenarios: [SC-e07s02-P0-01, SC-e07s02-P0-02]
+    description: Extend the toolkit-neutral control fixture and GTK3 adapter for the approved transport states and valid or invalid pointer activation paths.
+    verify: "tests/test-gtk3-main-window-shell.sh \"$PWD\" --transport"
+    risk: P0
+    security: none
+    status: failing
+    allure: {severity: critical, categories: [gtk-migration, interaction, compatibility]}
+  - id: t2
+    scenarios: [SC-e07s02-P0-01, SC-e07s02-P0-02]
+    description: Prove the GTK3 transport tracer never starts playback, loads plugins, or opens the control socket while reporting redraw and activation results.
+    verify: "xvfb-run --auto-servernum meson test -C build-meson gtk3-main-window-transport"
+    risk: P0
+    security: low
+    status: passing
+    allure: {severity: critical, categories: [isolation, regression, gtk3]}

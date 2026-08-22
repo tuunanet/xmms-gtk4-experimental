@@ -1,0 +1,53 @@
+schema_version: 1
+story_id: e07s02
+verified_at: "2026-08-22T03:29:00Z"
+verifier: verify-work
+risk: P0
+phases:
+  smoke:
+    passed: true
+    command: "xvfb-run --auto-servernum build-meson/tests/test-gtk3-main-window-transport"
+    note: "Valid Play/Stop activation and invalid-event rejection passed."
+  build:
+    passed: true
+    command: "tools/preflight.sh"
+    note: "Canonical preflight completed with 40 tests passing and 0 failures."
+  lint:
+    passed: true
+    command: "tools/preflight.sh"
+    note: "Preflight C lint, formatting, and packaging gates passed."
+  tests:
+    passed: true
+    command: "xvfb-run --auto-servernum meson test -C build-meson gtk3-main-window-transport --print-errorlogs"
+    note: "Focused GTK3 transport test passed."
+  security:
+    passed: true
+    report: "specs/security/REVIEW-e07s02.md"
+    note: "No reportable findings at confidence 8 or higher."
+  nfr:
+    passed: true
+    report: "specs/verifications/NFR-e07s02.json"
+  terminal_verdict:
+    command: "xvfb-run --auto-servernum meson test -C build-meson gtk3-main-window-transport --print-errorlogs"
+    exit_code: 0
+    captured_at: "2026-08-22T03:29:00Z"
+    note: "Single contiguous terminal-verdict run; 1 Meson test passed, 0 failed."
+  manual:
+    status: passed
+    executed_by_agent_at_user_request: true
+    steps:
+      - step: "Run the transport test under Xvfb."
+        expected: "Play and Stop each activate exactly once; invalid input produces no activation."
+        actual: "Both transport scenarios passed."
+        passed: true
+      - step: "Inspect the transport tracer dependencies."
+        expected: "The target links libgtk-3 and not libgtk-x11-2.0."
+        actual: "The target links libgtk-3 and has no GTK2 dependency."
+        passed: true
+      - step: "Confirm the test output contains no production playback or plugin activity."
+        expected: "Only in-memory GTK3 control assertions run."
+        actual: "The test completed with only the two GTK3 transport assertions."
+        passed: true
+  gaps:
+    closed: true
+    note: "No implementation or verification gaps found; manual UAT was executed at the user's request and passed."

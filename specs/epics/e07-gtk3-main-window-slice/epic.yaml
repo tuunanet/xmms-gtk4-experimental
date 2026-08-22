@@ -1,0 +1,37 @@
+schema_version: 1
+id: e07
+title: Extend the GTK3 migration tracer to the main-window shell
+wsjf: 2.6
+total_bcps: 15
+risk: P0
+status: verified
+depends_on:
+  - e03
+  - e06
+adr:
+  - ../../adr/ADR-0001-staged-gtk-migration.md
+stories:
+  - id: e07s01
+    title: Render the GTK3 main-window shell and geometry fixture
+    bcps: 5
+    risk: P1
+    status: verified
+    delta: ADDED
+    spec: e07s01-main-window-shell.md
+    tasks: e07s01-tasks.yaml
+  - id: e07s02
+    title: Exercise the GTK3 transport-control slice
+    bcps: 5
+    risk: P0
+    status: verified
+    delta: ADDED
+    spec: e07s02-transport-control-slice.md
+    tasks: e07s02-tasks.yaml
+  - id: e07s03
+    title: Seal GTK3 tracer delivery and linkage contracts
+    bcps: 5
+    risk: P1
+    status: verified
+    delta: ADDED
+    spec: e07s03-tracer-delivery-contract.md
+    tasks: e07s03-tasks.yaml

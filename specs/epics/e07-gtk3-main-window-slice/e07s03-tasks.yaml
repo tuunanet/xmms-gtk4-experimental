@@ -1,0 +1,22 @@
+schema_version: 1
+story_id: e07s03
+title: Seal GTK3 tracer delivery and linkage contracts
+status: passing
+bcps: 5
+tasks:
+  - id: t1
+    scenarios: [SC-e07s03-P1-01]
+    description: Register the GTK3 main-window tracer and its linkage guard in Meson tests, including the production GTK2 dependency assertion.
+    verify: "tests/test-gtk3-main-window-shell.sh \"$PWD\" --linkage"
+    risk: P1
+    security: low
+    status: passing
+    allure: {severity: high, categories: [build-boundary, linkage, packaging]}
+  - id: t2
+    scenarios: [SC-e07s03-P1-02]
+    description: Include the tracer sources, tests, and documentation in clean source-distribution and strict preflight contracts without changing installed production artifacts.
+    verify: "tools/preflight.sh --strict"
+    risk: P1
+    security: low
+    status: passing
+    allure: {severity: high, categories: [preflight, distribution, documentation]}

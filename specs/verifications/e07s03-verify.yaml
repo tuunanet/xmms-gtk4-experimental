@@ -1,0 +1,50 @@
+schema_version: 1
+story_id: e07s03
+verified_at: "2026-08-22T03:57:01Z"
+verifier: verify-work
+risk: P1
+phases:
+  smoke:
+    passed: true
+    command: "tests/test-gtk3-main-window-shell.sh \"$PWD\" --linkage"
+    note: "All GTK3 tracer binaries link GTK3 without GTK2 and delivery markers are present."
+  build:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    note: "Strict preflight completed with 40 tests passing and 0 failures."
+  lint:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    note: "Strict preflight lint and formatting gates passed."
+  tests:
+    passed: true
+    command: "tools/preflight.sh --strict"
+    note: "Meson test inventory, source-distribution, package, and release contracts passed."
+  terminal_verdict:
+    command: "tests/test-gtk3-main-window-shell.sh \"$PWD\" --linkage"
+    exit_code: 0
+    captured_at: "2026-08-22T03:57:01Z"
+    note: "Single contiguous terminal-verdict run; linkage and delivery markers passed."
+  manual:
+    status: passed
+    executed_by_agent_at_user_request: true
+    steps:
+      - step: "Inspect all GTK3 tracer binaries."
+        expected: "Play-button, shell, and transport targets link GTK3 and not GTK2."
+        actual: "All three linkage checks passed."
+        passed: true
+      - step: "List the Meson test inventory."
+        expected: "The shell and transport tests appear in the test suite."
+        actual: "Both test registrations were found."
+        passed: true
+      - step: "Inspect Meson install boundaries."
+        expected: "The test-only tracer targets use install: false."
+        actual: "Both target definitions retain install: false."
+        passed: true
+      - step: "Run strict preflight from a clean source-distribution path."
+        expected: "Tracer sources, tests, docs, packages, and release contracts remain green."
+        actual: "40 tests passed with 0 failures."
+        passed: true
+  gaps:
+    closed: true
+    note: "No implementation or verification gaps found."

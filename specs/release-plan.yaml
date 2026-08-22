@@ -18,6 +18,18 @@ epics:
       time_criticality: 8
       risk_reduction: 10
       job_size: 8
+  - id: e07
+    title: Extend the GTK3 migration tracer to the main-window shell
+    capsule_dir: epics/e07-gtk3-main-window-slice
+    depends_on: [e03, e06]
+    wsjf: 2.6
+    bcps: 15
+    status: verified
+    score:
+      business_value: 8
+      time_criticality: 5
+      risk_reduction: 8
+      job_size: 8
   - id: e06
     title: Establish modern GNOME C foundations
     capsule_dir: epics/e06-modern-gnome-c-foundations

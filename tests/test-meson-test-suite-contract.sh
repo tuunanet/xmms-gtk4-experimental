@@ -73,10 +73,16 @@ meson compile -C "$build_dir" test-xentry >/dev/null 2>&1 || {
 }
 
 if pkg-config --exists 'gtk+-3.0 >= 3.24'; then
-  printf '%s\n' "$registered_tests" | grep -Fx gtk3-play-button-proof >/dev/null || {
-    printf '%s\n' 'missing Meson test registration: gtk3-play-button-proof' >&2
-    exit 1
-  }
+  for gtk3_test in \
+    gtk3-play-button-proof \
+    gtk3-main-window-shell \
+    gtk3-main-window-transport
+  do
+    printf '%s\n' "$registered_tests" | grep -Fx "$gtk3_test" >/dev/null || {
+      printf '%s\n' "missing Meson test registration: $gtk3_test" >&2
+      exit 1
+    }
+  done
 fi
 
 printf '%s\n' 'ok - Meson registers the complete regression test inventory'

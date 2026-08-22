@@ -1,7 +1,8 @@
 schema_version: 1
-status: in_progress
+status: verified
 epics:
   e05: verified
+  e07: verified
   e06: verified
   e04: verified
   e01: verified
@@ -26,6 +27,15 @@ stories:
     status: verified
     started_at: "2026-08-18T13:55:05Z"
     completed_at: "2026-08-21T11:53:14Z"
+  e07s01:
+    status: verified
+    completed_at: "2026-08-22T01:26:43Z"
+  e07s02:
+    status: verified
+    completed_at: "2026-08-22T03:44:40Z"
+  e07s03:
+    status: verified
+    completed_at: "2026-08-22T03:57:01Z"
   e04s01: verified
   e01s01: verified
   e01s02: verified
@@ -35,7 +45,7 @@ stories:
   e03s03: verified
 gate_trace:
   verdict: WAIVED
-  generated_at: 2026-08-21T11:43:41Z
-  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. e06s03 has explicit task verification, a focused non-mutating formatter suite, 38-test strict-preflight evidence, audit, and security review; no heuristic coverage result can be computed.
+  generated_at: 2026-08-22T04:40:16Z
+  rationale: Traceability scripts, matrix, completeness critic, and drift checker are absent from this preservation fork. e07s01, e07s02, and e07s03 have explicit task verification, focused GTK3 tests, 40-test strict-preflight and source-distribution evidence, audits, security/NFR evidence where required, and requested manual UAT; no heuristic coverage result can be computed.
   heuristic_ratio: null
   downgrade_applied: false

@@ -1,37 +1,33 @@
-# Security review: e06s03 GNOME C formatting preflight
+# Security review: e07 GTK3 main-window tracer
 
-- **Generated:** 2026-08-21T11:43:41Z
+- **Generated:** 2026-08-22T03:57:01Z
 - **Reviewed range:** `main...HEAD`
 - **Result:** PASS
 - **Unresolved HIGH findings (confidence >= 8):** 0
 
 ## Scope and trust boundaries
 
-The change adds a fixed-path, non-mutating `clang-format` check for
-`ui_gtk3_control.[ch]`, registers it in the Meson test suite, and makes the
-system formatter a fail-fast preflight prerequisite. It also synchronizes
-package and contributor documentation. Production player code, plugin ABI,
-`libxmms`, socket, configuration, skins, credentials, and network behavior
-remain unchanged.
+The branch adds an isolated GTK3 main-window geometry/fixture tracer, bounded
+Play/Stop activation observations, Meson test and linkage contracts, and
+architecture documentation. The tracer uses synthetic in-memory events and
+fixtures only. It does not start playback, load plugins, read configuration,
+open the control socket, access audio devices, or perform network/file/archive
+I/O in its new paths.
 
 ## Assessment
 
-- **Command and data injection:** the POSIX-shell checker invokes only the
-  system `clang-format` with a repository-owned config and two literal paths.
-  It does not evaluate source text, execute found content, or build commands
-  from file contents.
-- **Path handling:** all managed paths are fixed beneath the supplied root;
-  the root is the only argument and is not derived from source data. The check
-  uses dry-run mode, so it cannot rewrite developer files.
-- **Authorization / compatibility:** no privilege, authentication, network,
-  plugin, socket, or public ABI boundary changed. Historical GTK2 paths remain
-  outside the managed set.
-- **Secrets and supply chain:** no download, package bootstrap, credential,
-  release, or remote execution path was added. The preflight requires a system
-  package and fails with installation guidance when it is absent.
-- **Availability:** formatting adds one small deterministic test and no
-  runtime path or process-global state. Denial-of-service concerns are outside
-  this review's security scope.
+- **Command and data injection:** new shell checks use fixed command structure,
+  quoted repository/build paths, and literal target names. No source or user
+  value is interpolated into a shell command.
+- **Path handling:** linkage and contract checks inspect fixed files below the
+  supplied repository/build roots. They do not write source files or execute
+  discovered content.
+- **Authorization / compatibility:** no privilege, authentication, public ABI,
+  socket command, plugin-loading, or configuration boundary changed.
+- **Secrets and supply chain:** no new dependency, download, credential, or
+  release path was added.
+- **Runtime exposure:** the new code is test-only and the Meson targets retain
+  `install: false`; production remains GTK2-linked.
 
 No attacker-reachable exploit path was introduced. No finding meets the
 reporting threshold, and no exception is required.

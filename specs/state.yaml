@@ -10,17 +10,25 @@ active_decisions:
     status: accepted
     summary: Advance through approved active-epic stories without routine human checkpoints.
     artifact: specs/workflows/autonomous-epic.yaml
-active_flow: sustain
+active_flow: build_epic
+active_epic_id: e07
+active_story_id: e07s03
+epic_cycle:
+  epic_id: e07
+  story_id: e07s03
+  step: release-branch
+  story_bcps: 5
+  fast_mode: false
 git:
-  branch: main
+  branch: plan/e07-gtk3-window-shell
   head: HEAD
-  worktree: /home/tuunanet/git/tuunanet/xmms-gtk4-experimental
+  worktree: /home/tuunanet/git/tuunanet/e07-gtk3-window-shell
 metrics:
-  story_start: 2026-08-18T13:55:05Z
+  story_start: 2026-08-22T03:46:06Z
 handoff:
-  status: complete
-  next_skill: survey-context
-  reason: e06 modern GNOME C foundations is complete after protected landing; traceability refresh remains waived because the repository scripts are absent.
+  status: in_progress
+  next_skill: release-branch
+  reason: "e07 epic is verified: all three stories, strict preflight, linkage, source-distribution, security, UAT, and audits passed."
 release:
   last_tag: v0.0.6
   last_publish: published-v0.0.6

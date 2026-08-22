@@ -29,7 +29,7 @@ stories:
     title: Add changed-file GNOME C formatting preflight
     bcps: 5
     risk: P1
-    status: in_progress
+    status: verified
     delta: ADDED
     spec: e06s03-formatting-preflight.md
     tasks: e06s03-tasks.yaml
